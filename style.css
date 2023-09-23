@@ -1,36 +1,143 @@
-header div {
-  box-sizing: border-box;
+body {
+  overflow-x: hidden;
 }
-header {
-  width: 100%;
+
+a {
+  color: #666;
+  text-decoration: none;
 }
-#hd_wrpper {
-  width: 100%;
-  height: 100px;
-}
-.hd_top {
-  width: 100%;
-  height: 50px;
-}
-.hd_gnb {
+
+header,
+.hd_top,
+.hd_gnb,
+.hd_center,
+.hd_center figure,
+.hd_center figure a img,
+.hd_search,
+.hd_lnb,
+.main_slider_wrap,
+.slider {
   display: flex;
   width: 100%;
-  height: 100%;
+}
+.hd_gnb,
+.hd_center,
+.hd_lnb {
   border-bottom: #666 solid 1px;
+}
+
+li {
+  float: left;
+}
+
+input[type="text"] {
+  height: 30px;
+  width: 200px;
+  border: none;
+  background: none;
+}
+
+#hd_wrap {
+  height: 100px;
+}
+
+.hd_top {
+  height: 40px;
+}
+.hd_gnb {
+  height: 100%;
   align-items: center;
   justify-content: flex-end;
   padding-right: 100px;
   padding-bottom: 2px;
 }
-.hd_gnb ul {
-  line-height: 10px;
-}
 .hd_gnb ul li {
-  display: inline-block;
+  margin-right: 10px;
 }
 .hd_gnb ul li a {
-  margin-right: 10px;
   font-size: 13px;
-  color: #666;
-  text-decoration: none;
+}
+
+.hd_center {
+  position: relative;
+  height: 100px;
+  align-items: center;
+}
+.hd_center figure {
+  position: absolute;
+  justify-content: center;
+}
+.hd_center figure a {
+  width: 130px;
+}
+.hd_search {
+  justify-content: flex-end;
+  margin-right: 103px;
+  z-index: 1;
+}
+.hd_search form {
+  background-color: #949494;
+  border-radius: 10%;
+  height: 30px;
+  width: 230px;
+}
+.search_icon {
+  display: flex;
+  position: relative;
+  align-items: center;
+}
+.search_icon img {
+  position: absolute;
+  right: 8px;
+  width: 20px;
+}
+
+.hd_lnb {
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+}
+.hd_lnb_menu {
+  margin-right: 30px;
+}
+.hd_lnb_list ul li {
+  margin-right: 30px;
+}
+.hd_lnb_list ul li a {
+  font-size: 15px;
+}
+.main_slider_wrap {
+  position: relative;
+  height: 500px;
+  justify-content: center;
+  border: #666 solid 1px;
+  margin-top: 91px;
+}
+.main_slider {
+  max-width: 300px;
+  overflow: hidden;
+}
+.slider {
+  position: relative;
+  transition: 0.5s;
+}
+.slider li img {
+  vertical-align: top;
+}
+.arrow {
+  position: relative;
+}
+.prev,
+.next {
+  font-size: 80px;
+  z-index: 999;
+}
+.prev {
+  position: absolute;
+  left: -350px;
+  top: 100px;
+}
+.next {
+  position: absolute;
+  top: 100px;
 }
