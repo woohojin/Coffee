@@ -1,0 +1,36 @@
+header div {
+  box-sizing: border-box;
+}
+header {
+  width: 100%;
+}
+#hd_wrpper {
+  width: 100%;
+  height: 100px;
+}
+.hd_top {
+  width: 100%;
+  height: 50px;
+}
+.hd_gnb {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  border-bottom: #666 solid 1px;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 100px;
+  padding-bottom: 2px;
+}
+.hd_gnb ul {
+  line-height: 10px;
+}
+.hd_gnb ul li {
+  display: inline-block;
+}
+.hd_gnb ul li a {
+  margin-right: 10px;
+  font-size: 13px;
+  color: #666;
+  text-decoration: none;
+}
