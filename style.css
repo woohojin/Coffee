@@ -1,3 +1,5 @@
+@import "/animations/keyframes.css";
+
 body {
   overflow-x: hidden;
 }
@@ -5,25 +7,6 @@ body {
 a {
   color: #666;
   text-decoration: none;
-}
-
-header,
-.hd_top,
-.hd_gnb,
-.hd_center,
-.hd_center figure,
-.hd_center figure a img,
-.hd_search,
-.hd_lnb,
-.main_slider_wrap,
-.slider {
-  display: flex;
-  width: 100%;
-}
-.hd_gnb,
-.hd_center,
-.hd_lnb {
-  border-bottom: #666 solid 1px;
 }
 
 li {
@@ -37,10 +20,35 @@ input[type="text"] {
   background: none;
 }
 
+.fade_in {
+  animation: fadeIn 0.5s linear forwards;
+}
+.fade_out {
+  animation: fadeOut 0.5s linear forwards;
+}
+header,
+.hd_top,
+.hd_gnb,
+.hd_center,
+.hd_center figure,
+.hd_center figure a img,
+.hd_search,
+.hd_lnb,
+.main_slider_wrap,
+.slider {
+  display: flex;
+  width: 100%;
+}
+
+.hd_gnb,
+.hd_center,
+.hd_lnb {
+  border-bottom: #666 solid 1px;
+}
+
 #hd_wrap {
   height: 100px;
 }
-
 .hd_top {
   height: 40px;
 }
@@ -106,6 +114,7 @@ input[type="text"] {
 .hd_lnb_list ul li a {
   font-size: 15px;
 }
+
 .main_slider_wrap {
   position: relative;
   height: 500px;
@@ -115,13 +124,13 @@ input[type="text"] {
 }
 .main_slider {
   max-width: 300px;
-  overflow: hidden;
 }
 .slider {
   position: relative;
   transition: 0.5s;
 }
 .slider li img {
+  position: absolute;
   vertical-align: top;
 }
 .arrow {
