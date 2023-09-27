@@ -34,7 +34,7 @@ header,
 .hd_center figure a img,
 .hd_search,
 .hd_lnb,
-.main_slider_wrap,
+.main_slider,
 .slider,
 .main_premium_product {
   display: flex;
@@ -84,7 +84,6 @@ header {
 .hd_search {
   justify-content: flex-end;
   margin-right: 103px;
-  z-index: 1;
 }
 .hd_search form {
   background-color: #949494;
@@ -122,16 +121,11 @@ main {
   margin-top: 192px;
 }
 .main_slider_wrap {
-  position: relative;
-  height: 500px;
-  justify-content: center;
-  border-bottom: #666 solid 1px;
+  height: 648px;
 }
 .main_slider {
-  max-width: 300px;
 }
 .slider {
-  position: relative;
   transition: 0.5s;
 }
 .slider li img {
@@ -139,19 +133,20 @@ main {
   vertical-align: top;
 }
 .arrow {
+  width: 100%;
   position: relative;
+  top: 240px;
 }
 .prev,
 .next {
   position: absolute;
   font-size: 80px;
-  top: 100px;
 }
 .prev {
   left: -350px;
 }
 .next {
-  right: -200px;
+  left: -200px;
 }
 .main_product {
   margin-top: 100px;
