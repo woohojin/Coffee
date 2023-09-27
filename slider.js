@@ -10,8 +10,14 @@ window.onload = function () {
   function moveSlide(event) {
     event.preventDefault();
     if (event.target.className === "next") {
-      if (currentIdx === 0) {
-        return 0;
+      if (currentIdx <= 0) {
+        sliderList[0].classList.add("fade_out");
+        sliderList[0].classList.remove("fade_in");
+        sliderList[1].classList.add("fade_out");
+        sliderList[2].classList.add("fade_out");
+        sliderList[3].classList.add("fade_in");
+        sliderList[3].classList.remove("fade_out");
+        currentIdx = sliderList.length - 1;
       } else if (currentIdx !== currentIdx - 1) {
         sliderList[currentIdx - 1].classList.add("fade_in");
         sliderList[currentIdx - 1].classList.remove("fade_out");
