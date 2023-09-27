@@ -46,9 +46,11 @@ header,
 .hd_lnb {
   border-bottom: #666 solid 1px;
 }
-
-#hd_wrap {
-  height: 100px;
+header {
+  position: fixed;
+  top: 0px;
+  z-index: 999;
+  background-color: white;
 }
 .hd_top {
   height: 40px;
@@ -116,12 +118,14 @@ header,
   font-size: 15px;
 }
 
+main {
+  margin-top: 192px;
+}
 .main_slider_wrap {
   position: relative;
   height: 500px;
   justify-content: center;
-  border: #666 solid 1px;
-  margin-top: 91px;
+  border-bottom: #666 solid 1px;
 }
 .main_slider {
   max-width: 300px;
@@ -139,21 +143,19 @@ header,
 }
 .prev,
 .next {
+  position: absolute;
   font-size: 80px;
-  z-index: 999;
+  top: 100px;
 }
 .prev {
-  position: absolute;
   left: -350px;
-  top: 100px;
 }
 .next {
-  position: absolute;
-  top: 100px;
   right: -200px;
 }
 .main_product {
   margin-top: 100px;
+  height: 10000px;
 }
 .main_product h1 {
   display: flex;
