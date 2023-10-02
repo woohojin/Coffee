@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+					       http://www.springframework.org/schema/beans/spring-beans.xsd
+					       http://www.springframework.org/schema/context
+					       http://www.springframework.org/schema/context/spring-context.xsd
+					       http://www.springframework.org/schema/mvc
+					       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+    <!-- web 환경에서 객체 주입을 위한 설정 : @Autowired, @Controller... 기능 사용 -->
+    <mvc:annotation-driven/>
+
+    <!-- base-package="controller, service" 패키지를 먼저 scan 해서 @Component를 가진 클래스의 객체 생성 -->
+    <context:component-scan base-package="controller, service"/>
+
+    <!-- css,js,html 웹에서 제공되는 파일의 기본 기능 제외 -->
+    <mvc:default-servlet-handler/>
+
+    <mvc:view-controller path="/index" view-name="index"/>
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/view/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <!-- 파일 업로드 설정 : enctype="multipart/form-data"형식의 요청이 들어오면 구동.
+    maxUploadSize : 100M. 최대 업로등 가능 크기
+    maxInMemorySize : 10M.  10M까지는 메모리에 파일의 내용 저장.  -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"></property>
+        <property name="maxUploadSize" value="104854600"></property>
+        <property name="maxInMemorySize" value="10485460"></property>
+    </bean>
+    <!-- mybatis db -->
+    <bean id="dataSource"   class="com.mchange.v2.c3p0.ComboPooledDataSource"
+          destroy-method="close">
+        <property name="driverClass"><value>oracle.jdbc.OracleDriver</value></property>
+        <property name="jdbcUrl"><value>jdbc:oracle:thin:@localhost:1521:xe</value></property>
+
+        <property name="user"><value>c##CUBE</value></property>
+        <property name="password"><value>1029</value></property>
+        <property name="maxPoolSize"><value>20</value></property><!-- 최대 연결 객체 갯수 -->
+        <property name="minPoolSize"><value>3</value></property> <!-- 최소 연결 객체 갯수 -->
+        <property name="initialPoolSize"><value>5</value></property> <!-- 초기 연결 객체 갯수 -->
+        <property name="acquireIncrement"><value>5</value></property> <!-- 연결 객체 증가 갯수 -->
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+        <!-- <property name="mapperLocations" value="classpath:mapper/*.xml"></property> -->
+    </bean>
+    <bean class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg ref="sqlSessionFactory"/>
+    </bean>
+
+</beans>
