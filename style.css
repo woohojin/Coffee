@@ -26,6 +26,9 @@ input[type="text"] {
 .fade_out {
   animation: fadeOut 0.5s linear forwards;
 }
+.sold_out {
+  background-color: rgba(131, 131, 131, 100);
+}
 header,
 .hd_top,
 .hd_gnb,
