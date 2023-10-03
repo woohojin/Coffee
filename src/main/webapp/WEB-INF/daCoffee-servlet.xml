@@ -10,10 +10,8 @@
 					       http://www.springframework.org/schema/context/spring-context.xsd
 					       http://www.springframework.org/schema/mvc
 					       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
-
-
     <!-- web 환경에서 객체 주입을 위한 설정 : @Autowired, @Controller... 기능 사용 -->
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven></mvc:annotation-driven>
 
     <!-- base-package="controller, service" 패키지를 먼저 scan 해서 @Component를 가진 클래스의 객체 생성 -->
     <context:component-scan base-package="controller, service"/>
@@ -49,13 +47,5 @@
         <property name="acquireIncrement"><value>5</value></property> <!-- 연결 객체 증가 갯수 -->
     </bean>
 
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
-        <!-- <property name="mapperLocations" value="classpath:mapper/*.xml"></property> -->
-    </bean>
-    <bean class="org.mybatis.spring.SqlSessionTemplate">
-        <constructor-arg ref="sqlSessionFactory"/>
-    </bean>
 
 </beans>
