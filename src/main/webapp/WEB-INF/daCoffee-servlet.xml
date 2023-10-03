@@ -37,7 +37,7 @@
     <bean id="dataSource"
           class="org.apache.commons.dbcp2.BasicDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/hsdb?characterEncoding=UTF-8" />
+        <property name="url" value="jdbc:mysql://localhost:3306/da_coffee?characterEncoding=UTF-8" />
         <property name="username" value="root" />
         <property name="password" value="1029" />
 

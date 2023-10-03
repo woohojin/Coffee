@@ -1,5 +1,6 @@
 package controller;
 
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 import java.io.File;
@@ -7,6 +8,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.inject.Inject;
+import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/board/")
 public class mainController {
+
+    @Inject
+    private DataSource ds;
 
     HttpServletRequest request;
     Model m;
@@ -33,6 +39,14 @@ public class mainController {
 
     @RequestMapping("main")
     public String main() throws Exception {
+
+        try{
+            Connection conn = (Connection) ds.getConnection();
+            System.out.println("성공 : " + conn);
+        } catch (Exception ex) {
+            System.out.println("실패");
+            ex.printStackTrace();
+        }
 
         return "main";
     }
