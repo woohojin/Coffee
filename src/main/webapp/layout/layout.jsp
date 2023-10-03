@@ -9,9 +9,10 @@
         <sitemesh:write property='head'/>
     </head>
     <body>
-	    <div class="mainBody">
 		    <sitemesh:write property='body'/>
-	    </div>
+
+        	<%@ include file="/common/footer.jsp" %>
+        	<sitemesh:write property='footer'/>
 
     </body>
 </html>

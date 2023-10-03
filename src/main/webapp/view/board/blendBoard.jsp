@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 
   <body>
-    <main>
+    <main class="board_main">
       <div class="product_wrap">
         <h1>블렌드 커피</h1>
         <div class="product">
