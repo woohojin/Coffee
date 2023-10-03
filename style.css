@@ -5,12 +5,10 @@
 body {
   overflow-x: hidden;
 }
-
 a {
   color: #666;
   text-decoration: none;
 }
-
 li {
   float: left;
 }
@@ -41,6 +39,7 @@ main {
 }
 .main_slider_wrap {
   height: 648px;
+  margin-bottom: 115px;
 }
 .slider {
   transition: 0.5s;
