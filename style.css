@@ -177,11 +177,11 @@ main {
   border: black solid 1px;
   justify-content: flex-start;
 }
-.main_premium_product ul li span {
-  display: block;
+.main_premium_product ul li p {
   font-size: 20px;
   margin-bottom: 15px;
 }
+
 footer {
   background-color: #0069d8;
   height: 200px;

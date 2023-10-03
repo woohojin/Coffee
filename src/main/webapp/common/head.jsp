@@ -4,9 +4,9 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/header.css?after" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/style.css?after" />
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/header.css?after" />
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/board.css?after" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/reset.css" />
   </head>
   <body>
@@ -16,7 +16,7 @@
           <div class="hd_gnb">
             <ul>
               <li>
-                <a href="${ pageContext.request.contextPath }/board/mainBoard">로그인</a>
+                <a href="${ pageContext.request.contextPath }/board/main">로그인</a>
               </li>
               <li>
                 <a href="">회원가입</a>
@@ -32,7 +32,7 @@
         </div>
         <div class="hd_center">
           <figure>
-            <a href="">
+            <a href="${ pageContext.request.contextPath }">
               <img src="${ pageContext.request.contextPath }/view/image/logo.png" />
             </a>
           </figure>
@@ -64,7 +64,7 @@
                 <a href="">이벤트</a>
               </li>
               <li>
-                <a href="">블렌드</a>
+                <a href="${ pageContext.request.contextPath }/board/blend">블렌드</a>
               </li>
               <li>
                 <a href="">스페셜티</a>

@@ -34,17 +34,18 @@
         <property name="maxInMemorySize" value="10485460"></property>
     </bean>
     <!-- mybatis db -->
-    <bean id="dataSource"   class="com.mchange.v2.c3p0.ComboPooledDataSource"
-          destroy-method="close">
-        <property name="driverClass"><value>oracle.jdbc.OracleDriver</value></property>
-        <property name="jdbcUrl"><value>jdbc:oracle:thin:@localhost:1521:xe</value></property>
+    <bean id="dataSource"
+          class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/hsdb?characterEncoding=UTF-8" />
+        <property name="username" value="root" />
+        <property name="password" value="1029" />
 
-        <property name="user"><value>c##CUBE</value></property>
-        <property name="password"><value>1029</value></property>
-        <property name="maxPoolSize"><value>20</value></property><!-- 최대 연결 객체 갯수 -->
-        <property name="minPoolSize"><value>3</value></property> <!-- 최소 연결 객체 갯수 -->
-        <property name="initialPoolSize"><value>5</value></property> <!-- 초기 연결 객체 갯수 -->
-        <property name="acquireIncrement"><value>5</value></property> <!-- 연결 객체 증가 갯수 -->
+        <property name="initialSize" value="0"/>
+        <property name="minIdle" value="0"/>
+        <property name="maxIdle" value="10"/>
+        <property name="maxTotal" value="10"/>
+        <property name="maxWaitMillis" value="1000"/>
     </bean>
 
 

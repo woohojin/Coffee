@@ -44,8 +44,8 @@
                   <img src="${ pageContext.request.contextPath }/view/image/1.jpg" alt="" />
                 </a>
                 <div>
-                  <span>케냐AA</span>
-                  <span>10500원</span>
+                  <p>케냐AA</p>
+                  <p>10500원</p>
                 </div>
               </div>
             </li>
@@ -54,8 +54,8 @@
                 <img src="${ pageContext.request.contextPath }/view/image/2.jpg" alt="" />
               </a>
               <div>
-                <span>예가체프</span>
-                <span>10500원</span>
+                <p>예가체프</p>
+                <p>10500원</p>
               </div>
             </li>
             <li>
@@ -63,8 +63,8 @@
                 <img src="${ pageContext.request.contextPath }/view/image/3.jpg" alt="" />
               </a>
               <div>
-                <span>탄자니아</span>
-                <span>10500원</span>
+                <p>탄자니아</p>
+                <p>10500원</p>
               </div>
             </li>
             <li>
@@ -72,8 +72,8 @@
                 <img src="${ pageContext.request.contextPath }/view/image/4.jpg" alt="" />
               </a>
               <div>
-                <span>아리차</span>
-                <span>10500원</span>
+                <p>아리차</p>
+                <p>10500원</p>
               </div>
             </li>
           </ul>

@@ -31,9 +31,16 @@ public class mainController {
         this.session = request.getSession();
     }
 
-    @RequestMapping("mainBoard")
-    public String mainBoard() throws Exception {
+    @RequestMapping("main")
+    public String main() throws Exception {
 
-        return "index";
+        return "main";
     }
+
+    @RequestMapping("blend")
+    public String blend() throws Exception {
+
+        return "board/blendBoard";
+    }
+
 }
