@@ -13,11 +13,13 @@
     <header>
           <div id="hd_wrap">
             <div class="hd_gnb">
-              <figure>
-                <a href="${ pageContext.request.contextPath }/board/main">
-                  <img src="${ pageContext.request.contextPath }/view/image/logo.png" />
-                </a>
-              </figure>
+              <div class="hd_logo_wrap">
+                <figure>
+                  <a href="${ pageContext.request.contextPath }/board/main">
+                    <img src="${ pageContext.request.contextPath }/view/image/logo.png" />
+                  </a>
+                </figure>
+              </div>
 
               <div class="hd_search">
                 <form action="../">
@@ -36,14 +38,20 @@
                     <a href="">회원가입</a>
                   </li>
                   <li>
-                    <a href="">마이페이지</a>
+                    <span> | </span>
                   </li>
                   <li>
-                    <a href="">장바구니</a>
+                    <a href="" class="cart">
+                      <div>
+                        <span>1</span>
+                      </div>
+                      <img src="${ pageContext.request.contextPath }/view/image/cart.png" alt="" />
+                    </a>
                   </li>
                 </ul>
               </div>
             </div>
+            
             <div class="hd_lnb">
               <div class="hd_lnb_menu">
                 <a href="">메뉴</a>
@@ -57,12 +65,6 @@
                     <a href="">베스트</a>
                   </li>
                   <li>
-                    <a href="">할인품</a>
-                  </li>
-                  <li>
-                    <a href="">이벤트</a>
-                  </li>
-                  <li>
                     <a href="${ pageContext.request.contextPath }/board/blend">블렌드</a>
                   </li>
                   <li>
@@ -73,9 +75,6 @@
                   </li>
                   <li>
                     <a href="">신선한 생두</a>
-                  </li>
-                  <li>
-                    <a href="">드립용품</a>
                   </li>
                   <li>
                     <a href="">카페몰</a>

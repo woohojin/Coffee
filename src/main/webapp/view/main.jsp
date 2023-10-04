@@ -28,14 +28,18 @@
             </li>
           </ul>
           <div class="arrow">
-            <a href="" class="prev"><</a>
-            <a href="" class="next">></a>
+            <a href="" class="prev">
+              <img class="prev_button" src="${ pageContext.request.contextPath }/view/image/left-arrow.png" alt="" />
+            </a>
+            <a href="" class="next">
+              <img class="next_button" src="${ pageContext.request.contextPath }/view/image/right-arrow.png" alt="" />
+            </a>
           </div>
         </div>
       </div>
 
       <div class="main_product">
-        <h1>Premium Product</h1>
+        <h1>프리미엄 제품</h1>
         <div class="main_premium_product">
           <ul>
             <li>
