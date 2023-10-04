@@ -11,25 +11,8 @@ window.onload = function () {
 
   let currentIdx = sliderList.length - 1;
 
-  slideInterval = setInterval(function () {
-    if (currentIdx != 0) {
-      sliderList[currentIdx - 1].classList.add("fade_in");
-      sliderList[currentIdx - 1].classList.remove("fade_out");
-      sliderList[currentIdx].classList.add("fade_out");
-      sliderList[currentIdx].classList.remove("fade_in");
-      currentIdx -= 1;
-    } else if (currentIdx <= 0) {
-      for (var i = currentIdx; i <= sliderList.length - 1; i++) {
-        sliderList[i].classList.add("fade_out");
-        if (i === 0) {
-          sliderList[i].classList.remove("fade_in");
-        } else if (i === sliderList.length - 1) {
-          sliderList[i].classList.remove("fade_out");
-          sliderList[i].classList.add("fade_in");
-          currentIdx = sliderList.length - 1;
-        }
-      }
-    } else if (currentIdx >= sliderList.length - 1) {
+  function prevMove() {
+    if (currentIdx >= sliderList.length - 1) {
       for (var i = currentIdx; i >= 0; i--) {
         sliderList[i].classList.add("fade_out");
         if (i === 0) {
@@ -40,31 +23,53 @@ window.onload = function () {
           currentIdx = 0;
         }
       }
+    } else if (currentIdx !== currentIdx + 1) {
+      sliderList[currentIdx].classList.add("fade_out");
+      sliderList[currentIdx].classList.remove("fade_in");
+      sliderList[currentIdx + 1].classList.add("fade_in");
+      sliderList[currentIdx + 1].classList.remove("fade_out");
+      currentIdx += 1;
     }
+  }
+
+  function nextMove() {
+    if (currentIdx <= 0) {
+      for (var i = currentIdx; i <= sliderList.length - 1; i++) {
+        sliderList[i].classList.add("fade_out");
+        if (i === 0) {
+          sliderList[i].classList.remove("fade_in");
+        } else if (i === sliderList.length - 1) {
+          sliderList[i].classList.remove("fade_out");
+          sliderList[i].classList.add("fade_in");
+          currentIdx = sliderList.length - 1;
+        }
+      }
+    } else if (currentIdx !== currentIdx - 1) {
+      sliderList[currentIdx - 1].classList.add("fade_in");
+      sliderList[currentIdx - 1].classList.remove("fade_out");
+      sliderList[currentIdx].classList.add("fade_out");
+      sliderList[currentIdx].classList.remove("fade_in");
+      currentIdx -= 1;
+    }
+  }
+
+  let slideInterval = setInterval(function () {
+    nextMove();
   }, 6000);
+
+  function restartInterval() {
+    clearInterval(slideInterval);
+    slideInterval = setInterval(function () {
+      nextMove();
+    }, 6000);
+  }
 
   function prevSlide(event) {
     event.preventDefault();
 
     if (event.target.className === "prev_button") {
-      if (currentIdx >= sliderList.length - 1) {
-        for (var i = currentIdx; i >= 0; i--) {
-          sliderList[i].classList.add("fade_out");
-          if (i === 0) {
-            sliderList[i].classList.add("fade_in");
-            sliderList[i].classList.remove("fade_out");
-          } else if (i === sliderList.length - 1) {
-            sliderList[i].classList.remove("fade_in");
-            currentIdx = 0;
-          }
-        }
-      } else if (currentIdx !== currentIdx + 1) {
-        sliderList[currentIdx].classList.add("fade_out");
-        sliderList[currentIdx].classList.remove("fade_in");
-        sliderList[currentIdx + 1].classList.add("fade_in");
-        sliderList[currentIdx + 1].classList.remove("fade_out");
-        currentIdx += 1;
-      }
+      prevMove();
+      restartInterval();
     }
   }
 
@@ -72,27 +77,11 @@ window.onload = function () {
     event.preventDefault();
 
     if (event.target.className === "next_button") {
-      if (currentIdx <= 0) {
-        for (var i = currentIdx; i <= sliderList.length - 1; i++) {
-          sliderList[i].classList.add("fade_out");
-          if (i === 0) {
-            sliderList[i].classList.remove("fade_in");
-          } else if (i === sliderList.length - 1) {
-            sliderList[i].classList.remove("fade_out");
-            sliderList[i].classList.add("fade_in");
-            currentIdx = sliderList.length - 1;
-          }
-        }
-      } else if (currentIdx !== currentIdx - 1) {
-        sliderList[currentIdx - 1].classList.add("fade_in");
-        sliderList[currentIdx - 1].classList.remove("fade_out");
-        sliderList[currentIdx].classList.add("fade_out");
-        sliderList[currentIdx].classList.remove("fade_in");
-        currentIdx -= 1;
-      }
+      nextMove();
+      restartInterval();
     }
   }
 
-  nextButton.addEventListener("click", nextSlide);
   prevButton.addEventListener("click", prevSlide);
+  nextButton.addEventListener("click", nextSlide);
 };

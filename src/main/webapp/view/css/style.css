@@ -3,6 +3,9 @@
 @import "/animations/keyframes.css";
 * {
   box-sizing: border-box;
+}
+*,
+.main_product h1 {
   font-family: "Noto Sans KR", sans-serif;
 }
 body {
@@ -62,10 +65,15 @@ main {
   font-size: 80px;
 }
 .prev {
-  left: -350px;
+  left: -650px;
 }
 .next {
-  left: 350px;
+  left: 650px;
+}
+.arrow a img {
+  width: 50px;
+  height: 70px;
+  opacity: 0.5;
 }
 .main_product {
   margin-top: 100px;
@@ -81,8 +89,7 @@ main {
   justify-content: center;
 }
 .main_premium_product ul li {
-  margin-right: 50px;
-  border: black solid 1px;
+  margin-right: 70px;
   justify-content: flex-start;
 }
 .main_premium_product ul li p {
@@ -91,7 +98,7 @@ main {
   margin-bottom: 15px;
 }
 footer {
-  background-color: #0069d8;
+  background-color: rgba(51, 144, 255, 1);
   height: 200px;
 }
 footer div {
