@@ -22,7 +22,8 @@ header,
 .hd_top,
 .hd_gnb,
 .hd_gnb figure,
-.hd_lnb {
+.hd_lnb,
+.hd_menu .cart {
   display: flex;
   width: 100%;
 }
@@ -39,6 +40,7 @@ header {
   height: 80px;
   align-items: center;
   justify-content: flex-end;
+  margin: 15px 0px 10px 0px;
 }
 .hd_logo_wrap {
   position: absolute;
@@ -53,12 +55,12 @@ header {
 .hd_search {
   display: flex;
   align-items: center;
-  margin-right: 100px;
+  margin-right: 60px;
 }
 .hd_search form {
   display: flex;
   align-items: center;
-  border-radius: 13px;
+  border-radius: 25px;
   background-color: rgba(111, 111, 111, 0.2);
   height: 50px;
   width: 300px;
@@ -77,11 +79,14 @@ header {
 }
 .search_icon img {
   position: absolute;
-  right: 10px;
+  right: 15px;
   width: 25px;
+  filter: invert(45%) sepia(70%) saturate(1629%) hue-rotate(194deg)
+    brightness(99%) contrast(104%);
 }
 .hd_menu {
   margin-right: 100px;
+  z-index: 1;
 }
 .hd_menu ul {
   display: flex;
@@ -94,7 +99,29 @@ header {
   font-size: 15px;
 }
 .hd_menu ul li a img {
-  width: 30px;
+  width: 37px;
+}
+.hd_menu ul li span {
+  user-select: none;
+}
+.hd_menu .cart {
+  position: relative;
+}
+.hd_menu .cart div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 25px;
+  top: -5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: rgba(51, 144, 255, 1);
+  color: white;
+}
+.hd_menu .cart span {
+  font-size: 13px;
 }
 .hd_lnb {
   height: 50px;

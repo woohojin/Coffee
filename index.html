@@ -5,42 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Coffee</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="header.css" />
     <link rel="stylesheet" href="reset.css" />
   </head>
   <body>
     <header>
       <div id="hd_wrap">
-        <div class="hd_top">
-          <div class="hd_gnb">
-            <ul>
-              <li>
-                <a href="">로그인</a>
-              </li>
-              <li>
-                <a href="">회원가입</a>
-              </li>
-              <li>
-                <a href="">마이페이지</a>
-              </li>
-              <li>
-                <a href="">장바구니</a>
-              </li>
-            </ul>
+        <div class="hd_gnb">
+          <div class="hd_logo_wrap">
+            <figure>
+              <a href="${ pageContext.request.contextPath }">
+                <img src="/image/logo.png" />
+              </a>
+            </figure>
           </div>
-        </div>
-        <div class="hd_center">
-          <figure>
-            <a href="">
-              <img src="image/logo.png" />
-            </a>
-          </figure>
+
           <div class="hd_search">
             <form action="../">
               <input type="text" />
             </form>
             <a href="" class="search_icon">
-              <img src="./image/search.png" alt="" />
+              <img src="/image/search.png" alt="" />
             </a>
+          </div>
+          <div class="hd_menu">
+            <ul>
+              <li>
+                <a href="${ pageContext.request.contextPath }/board/main"
+                  >로그인</a
+                >
+              </li>
+              <li>
+                <a href="">회원가입</a>
+              </li>
+              <li>
+                <span> | </span>
+              </li>
+              <li>
+                <a href="" class="cart">
+                  <div>
+                    <span>1</span>
+                  </div>
+                  <img src="/image/cart.png" alt="" />
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
         <div class="hd_lnb">
@@ -56,13 +65,9 @@
                 <a href="">베스트</a>
               </li>
               <li>
-                <a href="">할인품</a>
-              </li>
-              <li>
-                <a href="">이벤트</a>
-              </li>
-              <li>
-                <a href="">블렌드</a>
+                <a href="${ pageContext.request.contextPath }/board/blend"
+                  >블렌드</a
+                >
               </li>
               <li>
                 <a href="">스페셜티</a>
@@ -72,9 +77,6 @@
               </li>
               <li>
                 <a href="">신선한 생두</a>
-              </li>
-              <li>
-                <a href="">드립용품</a>
               </li>
               <li>
                 <a href="">카페몰</a>
@@ -111,14 +113,18 @@
             </li>
           </ul>
           <div class="arrow">
-            <a href="" class="prev"><</a>
-            <a href="" class="next">></a>
+            <a href="" class="prev">
+              <img class="prev_button" src="image/left-arrow.png" alt="" />
+            </a>
+            <a href="" class="next">
+              <img class="next_button" src="image/right-arrow.png" alt="" />
+            </a>
           </div>
         </div>
       </div>
 
       <div class="main_product">
-        <h1>Premium Product</h1>
+        <h1>프리미엄 제품</h1>
         <div class="main_premium_product">
           <ul>
             <li>
@@ -171,7 +177,10 @@
             <p>사업자 등록번호 : 111-111111</p>
           </li>
           <li>
-            <p>회사 : 경기도 부천시 도약로 261 (부천대우테크노파크) C동 901호 (주)다올커피</p>
+            <p>
+              회사 : 경기도 부천시 도약로 261 (부천대우테크노파크) C동 901호
+              (주)다올커피
+            </p>
           </li>
           <li>
             <p>이메일 : xxx@gmail.com</p>
