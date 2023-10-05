@@ -57,4 +57,55 @@ public class mainController {
         return "board/blendBoard";
     }
 
+    @RequestMapping("productBoardForm")
+    public String productBoardForm() throws Exception {
+
+        return "board/product/productBoardForm";
+    }
+//
+//    @RequestMapping("productBoardPro")
+//    public String productBoardPro() throws Exception {
+//
+//        String msg = "게시물 등록 실패";
+//        String url = "/board/petBoardForm";
+//
+//        int boardType = (int) session.getAttribute("boardType");
+//
+//        int num = petDao.boardInsert(petBoard);
+//
+//        if (num > 0) {
+//            msg = "게시물을 등록하였습니다.";
+//            url = "/board/petBoard?boardType=" + boardType;
+//        }
+//
+//        request.setAttribute("msg", msg);
+//        request.setAttribute("url", url);
+//
+//        return "index";
+//    }
+
+    @RequestMapping("imageInputForm")
+    public String imageInputForm() throws Exception {
+        return "board/imageInputForm";
+    }
+
+    @RequestMapping("imageInputPro")
+    public String imageInputPro(@RequestParam("picture") MultipartFile multipartFile) throws Exception {
+
+        String path = request.getServletContext().getRealPath("/") + "view/board/img/";
+        String filename = null;
+
+        if (!multipartFile.isEmpty()) {
+
+            File file = new File(path, multipartFile.getOriginalFilename());
+            multipartFile.transferTo(file);
+            filename = multipartFile.getOriginalFilename();
+
+        }
+
+        request.setAttribute("filename", filename);
+        return "board/imageInputPro";
+    }
+
 }
+
