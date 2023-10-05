@@ -81,8 +81,7 @@ header {
   position: absolute;
   right: 15px;
   width: 25px;
-  filter: invert(45%) sepia(70%) saturate(1629%) hue-rotate(194deg)
-    brightness(99%) contrast(104%);
+  filter: invert(45%) sepia(70%) saturate(1629%) hue-rotate(194deg) brightness(99%) contrast(104%);
 }
 .hd_gnb_menu {
   margin-right: 80px;
@@ -152,7 +151,7 @@ header {
   top: 155px;
   background-color: aquamarine;
   width: 100vw;
-  height: 200px;
+  height: 150px;
   cursor: default;
 }
 .hd_lnb_dropdown ul {

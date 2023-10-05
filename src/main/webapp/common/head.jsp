@@ -4,18 +4,13 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/style.css?after" />
-    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/header.css?after" />
-    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/board.css?after" />
-    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/reset.css" />
-  </head>
   <body>
     <header>
           <div id="hd_wrap">
             <div class="hd_gnb">
               <div class="hd_logo_wrap">
                 <figure>
-                  <a href="${ pageContext.request.contextPath }/board/main">
+                  <a href="${ pageContext.request.contextPath }">
                     <img src="${ pageContext.request.contextPath }/view/image/logo.png" />
                   </a>
                 </figure>
@@ -29,10 +24,12 @@
                   <img src="${ pageContext.request.contextPath }/view/image/search.png" alt="" />
                 </a>
               </div>
-              <div class="hd_menu">
+              <div class="hd_gnb_menu">
                 <ul>
                   <li>
-                    <a href="${ pageContext.request.contextPath }/board/main">로그인</a>
+                    <a href="${ pageContext.request.contextPath }/board/main"
+                      >로그인</a
+                    >
                   </li>
                   <li>
                     <a href="">회원가입</a>
@@ -51,10 +48,60 @@
                 </ul>
               </div>
             </div>
-            
+
             <div class="hd_lnb">
               <div class="hd_lnb_menu">
-                <a href="">메뉴</a>
+                <div class="hd_lnb_dropdown_wrap">
+                  <div class="hd_lnb_dropdown_icon">
+                    <img src="${ pageContext.request.contextPath }/view/image/menu.png" alt="" />
+                  </div>
+                  <div class="hd_lnb_dropdown">
+                    <ul>
+                      <li>
+                        <a href="">Menu Name</a>
+                      </li>
+                      <li>
+                        <a href="">Menu 1</a>
+                      </li>
+                      <li>
+                        <a href="">Menu 2</a>
+                      </li>
+                    </ul>
+                    <ul>
+                      <li>
+                        <a href="">Menu Name</a>
+                      </li>
+                      <li>
+                        <a href="">Menu 1</a>
+                      </li>
+                      <li>
+                        <a href="">Menu 2</a>
+                      </li>
+                    </ul>
+                    <ul>
+                      <li>
+                        <a href="">Menu Name</a>
+                      </li>
+                      <li>
+                        <a href="">Menu 1</a>
+                      </li>
+                      <li>
+                        <a href="">Menu 2</a>
+                      </li>
+                    </ul>
+                    <ul>
+                      <li>
+                        <a href="">Menu Name</a>
+                      </li>
+                      <li>
+                        <a href="">Menu 1</a>
+                      </li>
+                      <li>
+                        <a href="">Menu 2</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
               <div class="hd_lnb_list">
                 <ul>
@@ -65,7 +112,9 @@
                     <a href="">베스트</a>
                   </li>
                   <li>
-                    <a href="${ pageContext.request.contextPath }/board/blend">블렌드</a>
+                    <a href="${ pageContext.request.contextPath }/board/blend"
+                      >블렌드</a
+                    >
                   </li>
                   <li>
                     <a href="">스페셜티</a>

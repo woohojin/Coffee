@@ -42,9 +42,9 @@
         <property name="password" value="1029" />
 
         <property name="initialSize" value="0"/>
-        <property name="minIdle" value="0"/>
-        <property name="maxIdle" value="10"/>
-        <property name="maxTotal" value="10"/>
+        <property name="minIdle" value="2"/>
+        <property name="maxIdle" value="30"/>
+        <property name="maxTotal" value="30"/>
         <property name="maxWaitMillis" value="1000"/>
     </bean>
 
