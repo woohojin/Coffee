@@ -133,15 +133,38 @@ header {
   height: 100%;
   cursor: pointer;
 }
-.hd_lnb_menu > div {
+.hd_lnb_dropdown_wrap {
   display: flex;
-  position: relative;
   height: 100%;
   align-items: center;
   top: 1px;
 }
-.hd_lnb_menu > div img {
+.hd_lnb_dropdown_wrap:hover .hd_lnb_dropdown {
+  display: flex;
+}
+.hd_lnb_dropdown_icon img {
   width: 40px;
+}
+.hd_lnb_dropdown {
+  display: none;
+  position: absolute;
+  left: 0px;
+  top: 155px;
+  background-color: aquamarine;
+  width: 100vw;
+  height: 200px;
+  cursor: default;
+}
+.hd_lnb_dropdown ul {
+  margin: 10px 0px 0px 40px;
+}
+.hd_lnb_dropdown ul li {
+  clear: both;
+  margin-bottom: 7px;
+}
+.hd_lnb_dropdown ul li:first-child {
+  font-size: 20px;
+  margin-bottom: 14px;
 }
 .hd_lnb_list {
   display: flex;
