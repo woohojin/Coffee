@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
+@import "variables.css";
+
 *,
 .hd_gnb_menu li a,
 .hd_lnb li a {
@@ -104,7 +106,7 @@ header {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: rgba(51, 144, 255, 1);
+  background-color: var(--mainColor);
   color: white;
 }
 .hd_gnb_menu .cart span {

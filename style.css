@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
-
 @import "/animations/keyframes.css";
+@import "variables.css";
+
 * {
   box-sizing: border-box;
 }
@@ -27,7 +28,7 @@ body::-webkit-scrollbar {
   width: 12px;
 }
 body::-webkit-scrollbar-thumb {
-  background: rgba(51, 144, 255, 1);
+  background: var(--mainColor);
   border-radius: 25px;
 }
 .fade_in {
@@ -106,7 +107,7 @@ main {
   margin-bottom: 15px;
 }
 footer {
-  background-color: rgba(51, 144, 255, 1);
+  background-color: var(--mainColor);
   height: 200px;
 }
 footer div {

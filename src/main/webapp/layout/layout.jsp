@@ -5,9 +5,10 @@
     <head>
         <meta charset="UTF-8">
         <title>DaCOFFEE <sitemesh:write property='title'/></title>
-        <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/style.css?after" />
-        <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/board.css?after" />
-        <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/header.css?after" />
+        <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/style.css" />
+        <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/board.css" />
+        <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/header.css" />
+        <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/form.css?version=1" />
         <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/reset.css" />
         <%@ include file="/common/head.jsp" %>
         <sitemesh:write property='head'/>
