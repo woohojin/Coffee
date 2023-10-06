@@ -1,17 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
 @import "variables.css";
 
-a {
-  text-decoration: none;
-}
 * {
   font-family: "Noto Sans KR", sans-serif;
 }
+a {
+  text-decoration: none;
+}
+main {
+  margin: 200px 0 100px 0;
+}
 form {
   text-align: center;
-}
-main form {
-  margin-top: 50px;
 }
 
 .input_image_wrap {
@@ -34,6 +34,7 @@ main form {
 .product_form ul li {
   text-align: right;
   margin-bottom: 20px;
+  float: none;
 }
 .submit {
   display: inline-flex;
@@ -65,6 +66,7 @@ main form {
 .submit_btn {
   width: 90px;
   margin-right: 10px;
+  cursor: pointer;
 }
 .btn a {
   color: white;
