@@ -42,9 +42,9 @@ public class mainController {
 
         try{
             Connection conn = (Connection) ds.getConnection();
-            System.out.println("성공 : " + conn);
+            System.out.println("Success : " + conn);
         } catch (Exception ex) {
-            System.out.println("실패");
+            System.out.println("Fail");
             ex.printStackTrace();
         }
 
