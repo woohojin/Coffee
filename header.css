@@ -81,7 +81,8 @@ header {
   position: absolute;
   right: 15px;
   width: 25px;
-  filter: invert(45%) sepia(70%) saturate(1629%) hue-rotate(194deg) brightness(99%) contrast(104%);
+  filter: invert(45%) sepia(70%) saturate(1629%) hue-rotate(194deg)
+    brightness(99%) contrast(104%);
 }
 .hd_gnb_menu {
   margin-right: 80px;
@@ -140,6 +141,7 @@ header {
 }
 .hd_lnb_dropdown_wrap:hover .hd_lnb_dropdown {
   display: flex;
+  animation: dropDown 0.15s ease-in forwards;
 }
 .hd_lnb_dropdown_icon img {
   width: 40px;
@@ -149,9 +151,8 @@ header {
   position: absolute;
   left: 0px;
   top: 155px;
-  background-color: aquamarine;
+  background-color: white;
   width: 100vw;
-  height: 150px;
   cursor: default;
 }
 .hd_lnb_dropdown ul {

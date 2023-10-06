@@ -1,0 +1,36 @@
+Product
+
+Product Code
+Product Type
+Product Name
+Product Price
+Product Unit
+Product Country
+Product Species
+Product Company
+
+Board
+
+Board ID
+Board Type
+Board Writer
+Board Title
+Board Main Text
+Board File
+Board Visible
+
+Member
+
+Member ID
+Member Name
+Member Company Name
+Member Password
+Member Phone Number
+Member Address
+Member Delivery Address
+Member Email
+Member File
+Member Code
+
+
+https://www.privacy.go.kr/front/contents/cntntsView.do?contsNo=81
