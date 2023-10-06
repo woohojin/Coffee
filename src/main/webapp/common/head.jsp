@@ -10,7 +10,7 @@
             <div class="hd_gnb">
               <div class="hd_logo_wrap">
                 <figure>
-                  <a href="${ pageContext.request.contextPath }">
+                  <a href="${ pageContext.request.contextPath }/board/main">
                     <img src="${ pageContext.request.contextPath }/view/image/logo.png" />
                   </a>
                 </figure>
@@ -126,7 +126,7 @@
                     <a href="">신선한 생두</a>
                   </li>
                   <li>
-                    <a href="">카페몰</a>
+                    <a href="${ pageContext.request.contextPath }/board/productBoardForm">이미지 테스트</a>
                   </li>
                 </ul>
               </div>
