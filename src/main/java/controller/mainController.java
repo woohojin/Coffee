@@ -1,14 +1,9 @@
 package controller;
 
-import service.productBoardDAO;
-
-import model.productBoard;
+import service.productDAO;
 
 import java.sql.Connection;
-import java.util.HashMap;
-import java.util.Map;
 import java.io.File;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -31,7 +26,7 @@ public class mainController {
     private DataSource ds;
 
     @Autowired
-    productBoardDAO productDAO;
+    productDAO productDao;
 
     HttpServletRequest request;
     Model m;
@@ -58,10 +53,40 @@ public class mainController {
         return "main";
     }
 
-    @RequestMapping("blend")
-    public String blend() throws Exception {
+    @RequestMapping("product")
+    public String product() throws Exception {
 
-        return "board/blendBoard";
+        session.setAttribute("pageNum", "1");
+
+        String pageNum = (String) session.getAttribute("pageNum");
+        if (pageNum == null) {
+            pageNum = "1";
+        }
+
+        int pageInt = Integer.parseInt(pageNum);
+        int boardCount = 0;
+        int limit = 8; // 한 page당 게시물 개수
+
+        int bottomLine = 3;
+
+        int start = (pageInt - 1) / bottomLine * bottomLine + 1;
+        int end = start + bottomLine - 1;
+        int maxPage = (boardCount / limit) + (boardCount % limit == 0 ? 0 : 1);
+        if (end > maxPage) {
+            end = maxPage;
+        }
+
+        int boardNum = boardCount - (pageInt - 1) * limit;
+
+        request.setAttribute("boardCount", boardCount);
+        request.setAttribute("boardNum", boardNum);
+        request.setAttribute("start", start);
+        request.setAttribute("end", end);
+        request.setAttribute("bottomLine", bottomLine);
+        request.setAttribute("maxPage", maxPage);
+        request.setAttribute("pageInt", pageInt);
+
+        return "board/productBoard";
     }
 
     @RequestMapping("productBoardForm")
@@ -70,26 +95,26 @@ public class mainController {
         return "board/product/productBoardForm";
     }
 
-    @RequestMapping("productBoardPro")
-    public String productBoardPro(productBoard productBOARD) throws Exception {
-
-        String msg = "게시물 등록 실패";
-        String url = "/board/petBoardForm";
-
-        int boardType = (int) session.getAttribute("boardType");
-
-        int num = productDAO.boardInsert(productBOARD);
-
-        if (num > 0) {
-            msg = "게시물을 등록하였습니다.";
-            url = "/board/petBoard?boardType=" + boardType;
-        }
-
-        request.setAttribute("msg", msg);
-        request.setAttribute("url", url);
-
-        return "index";
-    }
+//    @RequestMapping("productBoardPro")
+//    public String productBoardPro(productBoard productBOARD) throws Exception {
+//
+//        String msg = "게시물 등록 실패";
+//        String url = "/board/petBoardForm";
+//
+//        int boardType = (int) session.getAttribute("boardType");
+//
+//        int num = productDAO.boardInsert(productBOARD);
+//
+//        if (num > 0) {
+//            msg = "게시물을 등록하였습니다.";
+//            url = "/board/petBoard?boardType=" + boardType;
+//        }
+//
+//        request.setAttribute("msg", msg);
+//        request.setAttribute("url", url);
+//
+//        return "index";
+//    }
 
     @RequestMapping("imageInputForm")
     public String imageInputForm() throws Exception {

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<%@ taglib prefix="c" uri = "http://java.sun.com/jsp/jstl/core" %>
+
 <html lang="en">
   <body>
     <main class="board_main">
@@ -47,6 +49,17 @@
           </ul>
         </div>
       </div>
+
+      <div class="modPage center">
+          <div class="inner center">
+            <a <c:if test="${ start >= 3}" >href="${ pageContext.request.contextPath }/board/blend?pageNum=${start-3}" class="active"</c:if>>&laquo;</a>
+            <c:forEach var="p" begin="${ start }" end="${ end }">
+            <a class="active" href="${ pageContext.request.contextPath }/board/blend?pageNum=${p}">${ p }</a>
+            </c:forEach>
+            <a <c:if test="${ end < maxPage }">href="${ pageContext.request.contextPath }/board/blend?pageNum=${end + 3}" class="active"</c:if>>&raquo;</a>
+          </div>
+      </div>
+
     </main>
   </body>
 </html>

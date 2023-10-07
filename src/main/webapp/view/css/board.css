@@ -16,7 +16,6 @@
   justify-content: center;
 }
 .product ul li {
-  border: black solid 1px;
   margin-right: 50px;
   justify-content: flex-start;
 }
