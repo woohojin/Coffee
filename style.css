@@ -1,15 +1,11 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
 @import "./animations/keyframes.css";
 @import "variables.css";
+@import "font.css";
 
 * {
   box-sizing: border-box;
 }
-*,
-.main_product h1,
-footer p {
-  font-family: "Noto Sans KR", sans-serif;
-}
+
 body {
   overflow-x: hidden;
 }

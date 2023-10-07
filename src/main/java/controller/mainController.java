@@ -1,5 +1,9 @@
 package controller;
 
+import service.productBoardDAO;
+
+import model.productBoard;
+
 import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +30,9 @@ public class mainController {
     @Inject
     private DataSource ds;
 
+    @Autowired
+    productBoardDAO productDAO;
+
     HttpServletRequest request;
     Model m;
     HttpSession session;
@@ -44,7 +51,7 @@ public class mainController {
             Connection conn = (Connection) ds.getConnection();
             System.out.println("Success : " + conn);
         } catch (Exception ex) {
-            System.out.println("Fail");
+            System.out.println("Failed");
             ex.printStackTrace();
         }
 
@@ -62,27 +69,27 @@ public class mainController {
 
         return "board/product/productBoardForm";
     }
-//
-//    @RequestMapping("productBoardPro")
-//    public String productBoardPro() throws Exception {
-//
-//        String msg = "게시물 등록 실패";
-//        String url = "/board/petBoardForm";
-//
-//        int boardType = (int) session.getAttribute("boardType");
-//
-//        int num = petDao.boardInsert(petBoard);
-//
-//        if (num > 0) {
-//            msg = "게시물을 등록하였습니다.";
-//            url = "/board/petBoard?boardType=" + boardType;
-//        }
-//
-//        request.setAttribute("msg", msg);
-//        request.setAttribute("url", url);
-//
-//        return "index";
-//    }
+
+    @RequestMapping("productBoardPro")
+    public String productBoardPro(productBoard productBOARD) throws Exception {
+
+        String msg = "게시물 등록 실패";
+        String url = "/board/petBoardForm";
+
+        int boardType = (int) session.getAttribute("boardType");
+
+        int num = productDAO.boardInsert(productBOARD);
+
+        if (num > 0) {
+            msg = "게시물을 등록하였습니다.";
+            url = "/board/petBoard?boardType=" + boardType;
+        }
+
+        request.setAttribute("msg", msg);
+        request.setAttribute("url", url);
+
+        return "index";
+    }
 
     @RequestMapping("imageInputForm")
     public String imageInputForm() throws Exception {

@@ -1,0 +1,3 @@
+<insert id="boardInsert" parameterType="petBoard">
+    insert into productboard values (postId_seq.nextval, 0, 0, #{userId}, #{tel}, #{content}, #{place}, to_char(sysdate, 'yyyy-mm-dd'), #{petName}, #{petGender}, #{petType}, #{petDate}, #{petImg}, #{petDetail}, #{boardId}, 0)
+</insert>
