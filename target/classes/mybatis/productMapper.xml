@@ -7,7 +7,6 @@
         <id column="product_type" property="productType" />
         <id column="product_name" property="productName" />
         <id column="product_price" property="productPrice" />
-        <id column="product_lease_price" property="productLeasePrice" />
         <id column="product_unit" property="productUnit" />
         <id column="product_country" property="productCountry" />
         <id column="product_species" property="productSpecies" />
@@ -25,6 +24,14 @@
     </select>
 
     <select id="productList" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_tier = "0" order by product_code ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productLeaseList" parameterType="map" resultMap="productMap">
         select * from (
         select @rownum := @rownum + 1 as rownum,
         a.* from product a, (select @rownum := 0) tmp

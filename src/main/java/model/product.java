@@ -5,11 +5,11 @@ public class product {
     int productType;
     String productName;
     int productPrice;
-    int productLeasePrice;
     String productUnit;
     String productCountry;
     String productSpecies;
     String productCompany;
+    int productTier;
     String productImage;
     int productVisible;
 
@@ -45,14 +45,6 @@ public class product {
         this.productPrice = productPrice;
     }
 
-    public int getProductLeasePrice() {
-        return productLeasePrice;
-    }
-
-    public void setProductLeasePrice(int productLeasePrice) {
-        this.productLeasePrice = productLeasePrice;
-    }
-
     public String getProductUnit() {
         return productUnit;
     }
@@ -85,6 +77,14 @@ public class product {
         this.productCompany = productCompany;
     }
 
+    public int getProductTier() {
+        return productTier;
+    }
+
+    public void setProductTier(int productTier) {
+        this.productTier = productTier;
+    }
+
     public String getProductImage() {
         return productImage;
     }
@@ -99,22 +99,5 @@ public class product {
 
     public void setProductVisible(int productVisible) {
         this.productVisible = productVisible;
-    }
-
-    @Override
-    public String toString() {
-        return "product{" +
-                "productCode='" + productCode + '\'' +
-                ", productType=" + productType +
-                ", productName='" + productName + '\'' +
-                ", productPrice=" + productPrice +
-                ", productLeasePrice=" + productLeasePrice +
-                ", productUnit='" + productUnit + '\'' +
-                ", productCountry='" + productCountry + '\'' +
-                ", productSpecies='" + productSpecies + '\'' +
-                ", productCompany='" + productCompany + '\'' +
-                ", productImage='" + productImage + '\'' +
-                ", productVisible=" + productVisible +
-                '}';
     }
 }

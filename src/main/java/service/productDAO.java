@@ -24,6 +24,11 @@ public class productDAO {
         return num;
     }
 
+    public int productSet() {
+        session.selectOne(NS + "productSet");
+        return 0;
+    }
+
     public List<product> productList(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
@@ -31,9 +36,14 @@ public class productDAO {
         List<product> list = session.selectList(NS + "productList", map);
         return list;
     }
-    public int productSet() {
-        session.selectOne(NS + "productSet");
-        return 0;
+
+    public List<product> productLeaseList(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<product> list = session.selectList(NS + "productLeaseList", map);
+        return list;
     }
+
 
 }
