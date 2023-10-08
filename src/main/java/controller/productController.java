@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.servlet.ServletContext;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 
@@ -36,6 +37,7 @@ public class productController {
     HttpServletRequest request;
     Model m;
     HttpSession session;
+    ServletContext application;
 
     @ModelAttribute
     void init(HttpServletRequest request, Model m) {
@@ -82,7 +84,6 @@ public class productController {
         }
 
         int boardNum = productCount - (pageInt - 1) * limit;
-
         String memberId = request.getParameter("memberId");
 
         int memberTier = memberDao.memberCheckTierById(memberId);
