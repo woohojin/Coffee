@@ -64,7 +64,7 @@ public class mainController {
         }
 
         int pageInt = Integer.parseInt(pageNum);
-        int boardCount = 0;
+        int boardCount = productDao.boardCount();
         int limit = 8; // 한 page당 게시물 개수
 
         int bottomLine = 3;

@@ -112,8 +112,8 @@
                     <a href="">베스트</a>
                   </li>
                   <li>
-                    <a href="${ pageContext.request.contextPath }/board/blend"
-                      >블렌드</a
+                    <a href="${ pageContext.request.contextPath }/board/product"
+                      >원두</a
                     >
                   </li>
                   <li>

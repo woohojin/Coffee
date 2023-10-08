@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="product">
+
+    <select id="boardCount" parameterType="map" resultType="int">
+        select nvl(count(*), 0) from product where product_visible = 0
+    </select>
+
+    <insert id="boardInsert" parameterType="product">
+        insert into product values ("AA0001", 0, "레브 마일드",  10000, NULL, 200, "인도", "아라비카",  "다올커피");
+    </insert>
+
+</mapper>

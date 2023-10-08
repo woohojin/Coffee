@@ -13,7 +13,7 @@
 
     <mappers><!-- sql 구문 -->
 
-        <mapper resource="mybatis/mybatis-config.xml>
+        <mapper resource="mybatis/product.xml"/>
 
     </mappers>
 
