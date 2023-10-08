@@ -10,11 +10,11 @@
         <h1>블렌드 커피</h1>
         <div class="product">
           <ul>
-            <c:if test="${ boardCount == 0 }">
+            <c:if test="${ productCount == 0 }">
                 <h2 class="center">아직 게시물이 작성되지 않았습니다.</h2>
             </c:if>
-            <c:if test="${ boardCount > 0 }">
-                <c:forEach var="p" items="${ list }">
+            <c:if test="${ productCount > 0 }">
+                <c:forEach var="p" items="${ list }" varStatus="status">
                     <li>
                       <a href="${ pageContext.request.contextPath }/board/product?productCode=${ p.productCode }">
                         <img src="${ pageContext.request.contextPath }/view/image/1.jpg" alt="" />
@@ -30,13 +30,13 @@
         </div>
       </div>
 
-      <div class="modPage center">
-          <div class="inner center">
-            <a <c:if test="${ start >= 3}" >href="${ pageContext.request.contextPath }/board/product?pageNum=${start-3}" class="active"</c:if>>&laquo;</a>
+      <div class="">
+          <div class="">
+            <a <c:if test="${ start >= 3}" >href="${ pageContext.request.contextPath }/board/product?pageNum=${start-3}"</c:if>>&laquo;</a>
             <c:forEach var="p" begin="${ start }" end="${ end }">
             <a class="active" href="${ pageContext.request.contextPath }/board/product?pageNum=${p}">${ p }</a>
             </c:forEach>
-            <a <c:if test="${ end < maxPage }">href="${ pageContext.request.contextPath }/board/product?pageNum=${end + 3}" class="active"</c:if>>&raquo;</a>
+            <a <c:if test="${ end < maxPage }">href="${ pageContext.request.contextPath }/board/product?pageNum=${end + 3}"</c:if>>&raquo;</a>
           </div>
       </div>
 

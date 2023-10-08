@@ -1,9 +1,11 @@
 package controller;
 
 import service.productDAO;
+import model.product;
 
 import java.sql.Connection;
 import java.io.File;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -56,29 +58,33 @@ public class mainController {
     @RequestMapping("product")
     public String product() throws Exception {
 
-        session.setAttribute("pageNum", "1");
+        request.setAttribute("pageNum", "1");
 
-        String pageNum = (String) session.getAttribute("pageNum");
+        String pageNum = (String) request.getParameter("pageNum");
         if (pageNum == null) {
             pageNum = "1";
         }
 
         int pageInt = Integer.parseInt(pageNum);
-        int boardCount = productDao.boardCount();
-        int limit = 8; // 한 page당 게시물 개수
+        int productCount = productDao.productCount();
 
-        int bottomLine = 3;
+        int limit = 12; // 한 page당 게시물 개수
+        int bottomLine = 100; // pagination 개수
 
         int start = (pageInt - 1) / bottomLine * bottomLine + 1;
         int end = start + bottomLine - 1;
-        int maxPage = (boardCount / limit) + (boardCount % limit == 0 ? 0 : 1);
+        int maxPage = (productCount / limit) + (productCount % limit == 0 ? 0 : 1);
         if (end > maxPage) {
             end = maxPage;
         }
 
-        int boardNum = boardCount - (pageInt - 1) * limit;
+        int boardNum = productCount - (pageInt - 1) * limit;
 
-        request.setAttribute("boardCount", boardCount);
+        productDao.productSet();
+        List<product> list = productDao.productList(pageInt, limit);
+
+        request.setAttribute("list", list);
+        request.setAttribute("productCount", productCount);
         request.setAttribute("boardNum", boardNum);
         request.setAttribute("start", start);
         request.setAttribute("end", end);
@@ -86,7 +92,7 @@ public class mainController {
         request.setAttribute("maxPage", maxPage);
         request.setAttribute("pageInt", pageInt);
 
-        return "board/productBoard";
+        return "board/product/productBoard";
     }
 
     @RequestMapping("productBoardForm")

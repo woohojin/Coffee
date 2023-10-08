@@ -8,6 +8,10 @@ public class product {
     int productLeasePrice;
     String productUnit;
     String productCountry;
+    String productSpecies;
+    String productCompany;
+    String productImage;
+    int productVisible;
 
     public String getProductCode() {
         return productCode;
@@ -97,8 +101,20 @@ public class product {
         this.productVisible = productVisible;
     }
 
-    String productSpecies;
-    String productCompany;
-    String productImage;
-    int productVisible;
+    @Override
+    public String toString() {
+        return "product{" +
+                "productCode='" + productCode + '\'' +
+                ", productType=" + productType +
+                ", productName='" + productName + '\'' +
+                ", productPrice=" + productPrice +
+                ", productLeasePrice=" + productLeasePrice +
+                ", productUnit='" + productUnit + '\'' +
+                ", productCountry='" + productCountry + '\'' +
+                ", productSpecies='" + productSpecies + '\'' +
+                ", productCompany='" + productCompany + '\'' +
+                ", productImage='" + productImage + '\'' +
+                ", productVisible=" + productVisible +
+                '}';
+    }
 }
