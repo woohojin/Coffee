@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<%@ taglib prefix="c" uri = "http://java.sun.com/jsp/jstl/core" %>
+
 <html lang="en">
 <head>
 <script type="text/javascript">
@@ -16,7 +18,9 @@
         <div class="input_image_wrap">
           <div class="input_image">
             <input type="hidden" name="productImg" value="" />
-            <img src="${ pageContext.request.contextPath }/view/image/video_cover_pattern.png" alt="img" id="pic" />
+            <div class="input_image_wrap">
+                <img src="${ pageContext.request.contextPath }/view/image/video_cover_pattern.png" alt="img" id="pic" />
+            </div>
             <div class="image_btn">
               <a href="javascript:win_upload()">사진 넣기</a>
             </div>

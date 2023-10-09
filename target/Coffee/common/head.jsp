@@ -27,7 +27,7 @@
               <div class="hd_gnb_menu">
                 <ul>
                   <li>
-                    <a href="${ pageContext.request.contextPath }/board/main"
+                    <a href="${ pageContext.request.contextPath }/member/memberLogin"
                       >로그인</a
                     >
                   </li>
@@ -106,24 +106,9 @@
               <div class="hd_lnb_list">
                 <ul>
                   <li>
-                    <a href="">신상품</a>
-                  </li>
-                  <li>
-                    <a href="">베스트</a>
-                  </li>
-                  <li>
-                    <a href="${ pageContext.request.contextPath }/board/blend"
-                      >블렌드</a
+                    <a href="${ pageContext.request.contextPath }/board/product"
+                      >원두</a
                     >
-                  </li>
-                  <li>
-                    <a href="">스페셜티</a>
-                  </li>
-                  <li>
-                    <a href="">스트레이트</a>
-                  </li>
-                  <li>
-                    <a href="">신선한 생두</a>
                   </li>
                   <li>
                     <a href="${ pageContext.request.contextPath }/board/productBoardForm">이미지 테스트</a>

@@ -25,6 +25,11 @@ public class memberDAO {
         return list;
     }
 
+    public member memberCheckOne(String memberId) {
+        member mem = session.selectOne(NS + "memberCheckOne", map);
+        return mem;
+    }
+
     public int memberCheckTierById(String memberId) {
         int num = session.selectOne(NS + "memberCheckTier0");
         return num;

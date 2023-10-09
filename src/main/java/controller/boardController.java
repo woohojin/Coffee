@@ -3,7 +3,6 @@ package controller;
 import service.productDAO;
 import service.memberDAO;
 import model.product;
-import model.member;
 
 import java.sql.Connection;
 import java.io.File;
@@ -25,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/board/")
-public class productController {
+public class boardController {
 
     @Inject
     private DataSource ds;
@@ -86,17 +85,17 @@ public class productController {
         int boardNum = productCount - (pageInt - 1) * limit;
         String memberId = request.getParameter("memberId");
 
-        int memberTier = memberDao.memberCheckTierById(memberId);
-
-        if(memberTier == 1) {
-            productDao.productSet();
-            List<product> list = productDao.productList(pageInt, limit);
-            request.setAttribute("list", list);
-        } else if(memberTier == 2) {
-            productDao.productSet();
-            List<product> list = productDao.productLeaseList(pageInt, limit);
-            request.setAttribute("list", list);
-        }
+//        int memberTier = memberDao.memberCheckTierById(memberId);
+//
+//        if(memberTier == 1) {
+//            productDao.productSet();
+//            List<product> list = productDao.productList(pageInt, limit);
+//            request.setAttribute("list", list);
+//        } else if(memberTier == 2) {
+//            productDao.productSet();
+//            List<product> list = productDao.productLeaseList(pageInt, limit);
+//            request.setAttribute("list", list);
+//        }
 
         productDao.productSet();
         List<product> list = productDao.productList(pageInt, limit);

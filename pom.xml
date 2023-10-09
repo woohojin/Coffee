@@ -144,6 +144,6 @@
 
   </dependencies>
   <build>
-    <finalName>Coffee</finalName>
+    <finalName>da_Coffee</finalName>
   </build>
 </project>

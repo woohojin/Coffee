@@ -6,14 +6,15 @@
 
     <typeAliases>
 
-        <!-- 회원관련 -->
         <typeAlias type="model.product" alias="product" />
+        <typeAlias type="model.member" alias="member" />
 
     </typeAliases>
 
     <mappers><!-- sql 구문 -->
 
         <mapper resource="mybatis/productMapper.xml"/>
+        <mapper resource="mybatis/memberMapper.xml"/>
 
     </mappers>
 

@@ -2,6 +2,7 @@
 <sitemesh>
 
     <mapping path="/board/*" decorator="/layout/layout.jsp" />
+    <mapping path="/member/*" decorator="/layout/layout.jsp" />
 
     <mapping path="*/imageInputForm" exclude="true" />
     <mapping path="*/imageInputPro" exclude="true" />

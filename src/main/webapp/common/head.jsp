@@ -27,7 +27,7 @@
               <div class="hd_gnb_menu">
                 <ul>
                   <li>
-                    <a href="${ pageContext.request.contextPath }/board/main"
+                    <a href="${ pageContext.request.contextPath }/member/memberLogin"
                       >로그인</a
                     >
                   </li>
