@@ -67,11 +67,16 @@ public class memberController {
         return "alert";
     }
 
-    @RequestMapping("memberLoginPro")
-    public String memberLoginPro(String memberId, String memberPassword) throws Exception {
+    @RequestMapping("memberSignIn")
+    public String memberSignIn() throws Exception {
+        return "member/memberSignInForm";
+    }
+
+    @RequestMapping("memberSignInPro")
+    public String memberSignInPro(String memberId, String memberPassword) throws Exception {
 
         String msg = "유효하지 않은 회원입니다.";
-        String url = "/member/signIn";
+        String url = "/member/signInForm";
 
         Member mem = memberDao.memberSelectOne(memberId);
 
@@ -88,6 +93,7 @@ public class memberController {
             }
         } else {
             msg = "유효하지 않은 회원입니다.";
+            System.out.println(mem);
         }
 
         request.setAttribute("msg", msg);

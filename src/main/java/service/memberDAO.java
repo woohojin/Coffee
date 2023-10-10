@@ -28,7 +28,7 @@ public class memberDAO {
     }
 
     public Member memberSelectOne(String memberId) {
-        Member mem = session.selectOne(NS + "memberSelectOne", map);
+        Member mem = session.selectOne(NS + "memberSelectOne", memberId);
         return mem;
     }
 
