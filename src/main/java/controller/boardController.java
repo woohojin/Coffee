@@ -2,7 +2,7 @@ package controller;
 
 import service.productDAO;
 import service.memberDAO;
-import model.product;
+import model.Product;
 
 import java.sql.Connection;
 import java.io.File;
@@ -98,7 +98,7 @@ public class boardController {
 //        }
 
         productDao.productSet();
-        List<product> list = productDao.productList(pageInt, limit);
+        List<Product> list = productDao.productList(pageInt, limit);
 
         request.setAttribute("list", list);
         request.setAttribute("productCount", productCount);

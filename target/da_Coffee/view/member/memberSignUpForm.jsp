@@ -14,7 +14,7 @@
 </head>
 <body>
     <main>
-        <form action="${ pageContext.request.contextPath }/member/memberLoginPro" name="f" method="post">
+        <form action="${ pageContext.request.contextPath }/member/memberSignUpPro" name="f" method="post">
             <div class="input_image_wrap">
                 <div class="input_image">
                     <input type="hidden" name="productImg" value="" />
@@ -62,7 +62,16 @@
                                 name="memberPassword"
                                 id="member_password"
                                 class="memberPassword"
-                                type="text"
+                                type="password"
+                        />
+                    </li>
+                    <li>
+                        <label for="member_password_check">비밀번호 확인</label>
+                        <input
+                                name="memberPasswordCheck"
+                                id="member_password_check"
+                                class="memberPasswordCheck"
+                                type="password"
                         />
                     </li>
                     <li>

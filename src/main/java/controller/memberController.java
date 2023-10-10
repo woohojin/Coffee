@@ -1,11 +1,7 @@
 package controller;
 
 import service.memberDAO;
-import model.member;
-
-import java.sql.Connection;
-import java.io.File;
-import java.util.List;
+import model.Member;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -18,8 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/member/")
@@ -43,9 +37,34 @@ public class memberController {
         this.session = request.getSession();
     }
 
-    @RequestMapping("memberLogin")
-    public String memberLogin() throws Exception {
-       return "/member/memberLoginForm";
+    @RequestMapping("memberSignUp")
+    public String memberSignUp() throws Exception {
+       return "member/memberSignUpForm";
+    }
+
+    @RequestMapping("memberSignUpPro")
+    public String memberSignUpPro(String memberId, Member member) throws Exception {
+
+        String msg = "이미 있는 아이디 입니다.";
+        String url = "/member/signIn";
+
+        Member mem = memberDao.memberSelectOne(memberId);
+
+        if(mem == null) {
+            int num = memberDao.memberInsert(member);
+            if (num > 0) {
+                msg = memberId + "님의 가입이 완료되었습니다.";
+                url = "/member/signIn";
+            } else {
+                msg = "회원가입을 실패 했습니다.";
+                url = "/member/signUp";
+            }
+        }
+
+        request.setAttribute("msg", msg);
+        request.setAttribute("url", url);
+
+        return "alert";
     }
 
     @RequestMapping("memberLoginPro")
@@ -54,7 +73,7 @@ public class memberController {
         String msg = "유효하지 않은 회원입니다.";
         String url = "/member/signIn";
 
-        member mem = memberDao.memberCheckOne(memberId);
+        Member mem = memberDao.memberSelectOne(memberId);
 
         if(mem != null) {
            int memberTier = mem.getMemberTier();
@@ -74,7 +93,7 @@ public class memberController {
         request.setAttribute("msg", msg);
         request.setAttribute("url", url);
 
-        return "anchor";
+        return "alert";
     }
 
 }

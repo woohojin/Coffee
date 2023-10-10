@@ -4,13 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
-import model.product;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import model.member;
+import model.Member;
 
 @Component
 public class memberDAO {
@@ -20,13 +18,17 @@ public class memberDAO {
     private final static String NS = "member.";
     private static Map map = new HashMap<>();
 
-    public List<member> memberList() {
-        List<member> list = session.selectList(NS + "memberList");
+    public int memberInsert(Member mem) {
+        int num = session.insert(NS+"memberInsert", mem);
+        return num;
+    }
+    public List<Member> memberList() {
+        List<Member> list = session.selectList(NS + "memberList");
         return list;
     }
 
-    public member memberCheckOne(String memberId) {
-        member mem = session.selectOne(NS + "memberCheckOne", map);
+    public Member memberSelectOne(String memberId) {
+        Member mem = session.selectOne(NS + "memberSelectOne", map);
         return mem;
     }
 

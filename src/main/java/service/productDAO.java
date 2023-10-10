@@ -7,9 +7,8 @@ import java.util.List;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import model.product;
+import model.Product;
 
 @Component
 public class productDAO {
@@ -24,24 +23,23 @@ public class productDAO {
         return num;
     }
 
-    public int productSet() {
+    public void productSet() {
         session.selectOne(NS + "productSet");
-        return 0;
     }
 
-    public List<product> productList(int pageInt, int limit) {
+    public List<Product> productList(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<product> list = session.selectList(NS + "productList", map);
+        List<Product> list = session.selectList(NS + "productList", map);
         return list;
     }
 
-    public List<product> productLeaseList(int pageInt, int limit) {
+    public List<Product> productLeaseList(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<product> list = session.selectList(NS + "productLeaseList", map);
+        List<Product> list = session.selectList(NS + "productLeaseList", map);
         return list;
     }
 

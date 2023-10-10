@@ -16,11 +16,16 @@
         <id column="member_tier" property="memberTier" />
     </resultMap>
 
+    <insert id="memberInsert" parameterType="member">
+        insert into member values (#{memberId}, #{memberName}, #{memberCompanyName}, #{memberPassword}, #{memberTel},
+                                   #{memberAddress}, #{memberDeliveryAddress}, #{memberEmail}, #{memberFile}, #{memberFranCode}, 0)
+    </insert>
+
     <select id="memberList" parameterType="map" resultType="int">
         select * from member
     </select>
 
-    <select id="memberCheckOne" parameterType="map" resultType="int">
+    <select id="memberSelectOne" parameterType="map" resultType="int">
         select * from member where member_id = #{memberId}
     </select>
 

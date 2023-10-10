@@ -6,8 +6,8 @@
 
     <typeAliases>
 
-        <typeAlias type="model.product" alias="product" />
-        <typeAlias type="model.member" alias="member" />
+        <typeAlias type="model.Product" alias="product" />
+        <typeAlias type="model.Member" alias="member" />
 
     </typeAliases>
 

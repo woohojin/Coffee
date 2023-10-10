@@ -1,6 +1,6 @@
 package model;
 
-public class member {
+public class Member {
     String memberId;
     String memberName;
     String memberCompanyName;
