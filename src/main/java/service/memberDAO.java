@@ -32,16 +32,4 @@ public class memberDAO {
         return mem;
     }
 
-    public int memberCheckTierById(String memberId) {
-        int num = session.selectOne(NS + "memberCheckTier0");
-        return num;
-    }
-
-    public int memberCheckTierByTier(int memberTier) {
-        map.clear();
-        map.put("memberTier", memberTier);
-        int num = session.selectOne(NS + "memberCheckTier1");
-        return num;
-    }
-
 }

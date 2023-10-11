@@ -27,7 +27,7 @@
         select * from (
         select @rownum := @rownum + 1 as rownum,
         a.* from product a, (select @rownum := 0) tmp
-        where product_tier = "1" order by product_code ) b
+        where product_tier = "0" order by product_code ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -35,7 +35,7 @@
         select * from (
         select @rownum := @rownum + 1 as rownum,
         a.* from product a, (select @rownum := 0) tmp
-        where product_tier = "2" order by product_code ) b
+        where product_tier = "1" order by product_code ) b
         where b.rownum between #{start} and #{end};
     </select>
 

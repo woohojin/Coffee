@@ -3,6 +3,7 @@ package controller;
 import service.productDAO;
 import service.memberDAO;
 import model.Product;
+import model.Member;
 
 import java.sql.Connection;
 import java.io.File;
@@ -31,6 +32,7 @@ public class boardController {
 
     @Autowired
     productDAO productDao;
+    @Autowired
     memberDAO memberDao;
 
     HttpServletRequest request;
@@ -83,24 +85,27 @@ public class boardController {
         }
 
         int boardNum = productCount - (pageInt - 1) * limit;
-        String memberId = request.getParameter("memberId");
 
-//        int memberTier = memberDao.memberCheckTierById(memberId);
-//
-//        if(memberTier == 1) {
-//            productDao.productSet();
-//            List<product> list = productDao.productList(pageInt, limit);
-//            request.setAttribute("list", list);
-//        } else if(memberTier == 2) {
-//            productDao.productSet();
-//            List<product> list = productDao.productLeaseList(pageInt, limit);
-//            request.setAttribute("list", list);
-//        }
+        String memberId = (String)session.getAttribute("memberId");
+        int memberTier = 0;
 
-        productDao.productSet();
-        List<Product> list = productDao.productList(pageInt, limit);
+        if(memberId != null && memberId.length() != 0) {
+            Member mem = memberDao.memberSelectOne(memberId);
+            memberTier = mem.getMemberTier();
+        }
 
-        request.setAttribute("list", list);
+
+
+        if(memberTier == 1) {
+            productDao.productSet();
+            List<Product> list = productDao.productList(pageInt, limit);
+            request.setAttribute("list", list);
+        } else if(memberTier == 2) {
+            productDao.productSet();
+            List<Product> list = productDao.productLeaseList(pageInt, limit);
+            request.setAttribute("list", list);
+        }
+
         request.setAttribute("productCount", productCount);
         request.setAttribute("boardNum", boardNum);
         request.setAttribute("start", start);

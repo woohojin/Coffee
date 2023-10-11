@@ -46,7 +46,7 @@ public class memberController {
     public String memberSignUpPro(String memberId, Member member) throws Exception {
 
         String msg = "이미 있는 아이디 입니다.";
-        String url = "/member/signIn";
+        String url = "/member/memberSignIn";
 
         Member mem = memberDao.memberSelectOne(memberId);
 
@@ -54,10 +54,10 @@ public class memberController {
             int num = memberDao.memberInsert(member);
             if (num > 0) {
                 msg = memberId + "님의 가입이 완료되었습니다.";
-                url = "/member/signIn";
+                url = "/member/memberSignIn";
             } else {
                 msg = "회원가입을 실패 했습니다.";
-                url = "/member/signUp";
+                url = "/member/memberSignUp";
             }
         }
 

@@ -21,20 +21,12 @@
                                    #{memberAddress}, #{memberDeliveryAddress}, #{memberEmail}, #{memberFile}, #{memberFranCode}, 0)
     </insert>
 
-    <select id="memberList" parameterType="map" resultType="int">
+    <select id="memberList" parameterType="map" resultMap="memberMap">
         select * from member
     </select>
 
     <select id="memberSelectOne" parameterType="String" resultMap="memberMap">
         select * from member where member_id =  #{memberId}
-    </select>
-
-    <select id="memberCheckTierById" parameterType="map" resultType="int">
-        select member_tier from member where member_id = #{memberId}
-    </select>
-
-    <select id="memberCheckTierByTier" parameterType="map" resultType="int">
-        select member_tier from member where member_tier = #{memberTier}
     </select>
 
 </mapper>

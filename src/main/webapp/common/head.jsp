@@ -26,14 +26,31 @@
               </div>
               <div class="hd_gnb_menu">
                 <ul>
-                  <li>
-                    <a href="${ pageContext.request.contextPath }/member/memberSignIn"
-                      >로그인</a
-                    >
-                  </li>
-                  <li>
-                    <a href="${ pageContext.request.contextPath }/member/memberSignUp">회원가입</a>
-                  </li>
+                  <c:choose>
+                    <c:when test="${ sessionScope.memberId == null }" >
+                      <li>
+                        <a href="${ pageContext.request.contextPath }/member/memberSignIn"
+                        >로그인</a
+                        >
+                      </li>
+                      <li>
+                        <a href="${ pageContext.request.contextPath }/member/memberSignUp">회원가입</a>
+                      </li>
+                    </c:when>
+
+                    <c:when test="${ sessionScope.memberId != null }">
+                      <li>
+                        <a href="${ pageContext.request.contextPath }/member/memberProfile">마이페이지</a>
+                      </li>
+                    </c:when>
+
+                    <c:when test="${ sessionScope.memberId == 'admin' }">
+                      <li>
+                        <a href="${ pageContext.request.contextPath }/member/Admin">관리자페이지</a>
+                      </li>
+                    </c:when>
+
+                  </c:choose>
                   <li>
                     <span> | </span>
                   </li>
