@@ -15,6 +15,11 @@
         <id column="product_visible" property="productVisible" />
     </resultMap>
 
+    <insert id="productInsert" parameterType="product">
+        insert into product values (#{productCode}, #{productType}, #{productName}, #{productPrice}, #{productUnit}, #{productCountry},
+                                    #{productSpecies}, #{productCompany}, 0, NULL, 0)
+    </insert>
+
     <select id="productCount" parameterType="map" resultType="int">
         select count(*) from product where product_visible = 0
     </select>

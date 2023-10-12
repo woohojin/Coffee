@@ -18,6 +18,11 @@ public class productDAO {
     private final static String NS = "product.";
     private static Map map = new HashMap<>();
 
+    public int productInsert(Product product) {
+        int num = session.insert(NS+"productInsert", product);
+        return num;
+    }
+
     public int productCount() {
         int num = session.selectOne(NS + "productCount");
         return num;

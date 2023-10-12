@@ -8,7 +8,7 @@
     <script type="text/javascript">
         function win_upload() {
             const op = "width=500, height=150, left=50, top=150";
-            open("${pageContext.request.contextPath}/board/imageInputForm", "", op);
+            open("${pageContext.request.contextPath}/board/fileUploadForm", "", op);
         }
     </script>
 </head>
@@ -18,9 +18,6 @@
             <div class="input_image_wrap">
                 <div class="input_image">
                     <input type="hidden" name="productImg" value="" />
-                    <div class="input_image_wrap">
-                        <img src="${ pageContext.request.contextPath }/view/image/video_cover_pattern.png" alt="img" id="pic" />
-                    </div>
                     <div class="image_btn">
                         <a href="javascript:win_upload()">사진 넣기</a>
                     </div>

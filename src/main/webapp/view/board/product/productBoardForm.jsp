@@ -8,7 +8,7 @@
 <script type="text/javascript">
 		function win_upload() {
 			const op = "width=500, height=150, left=50, top=150";
-			open("${pageContext.request.contextPath}/board/imageInputForm", "", op);
+			open("${pageContext.request.contextPath}/board/fileUploadForm", "", op);
 		}
 </script>
 </head>
@@ -17,9 +17,9 @@
       <form action="${ pageContext.request.contextPath }/board/productBoardPro" name="f" method="post">
         <div class="input_image_wrap">
           <div class="input_image">
-            <input type="hidden" name="productImg" value="" />
+            <input type="hidden" name="file" value="" />
             <div class="input_image_wrap">
-                <img src="${ pageContext.request.contextPath }/view/image/video_cover_pattern.png" alt="img" id="pic" />
+              <img src="${ pageContext.request.contextPath }/view/image/video_cover_pattern.png" alt="img" id="pic" />
             </div>
             <div class="image_btn">
               <a href="javascript:win_upload()">사진 넣기</a>
@@ -29,6 +29,24 @@
 
         <div class="product_form">
           <ul>
+            <li>
+              <label for="product_code">제품코드 : </label>
+              <input
+                      name="productCode"
+                      id="product_code"
+                      class="productCode"
+                      type="text"
+              />
+            </li>
+            <li>
+              <label for="product_type">제품종류 : </label>
+              <input
+                      name="productType"
+                      id="product_type"
+                      class="productType"
+                      type="text"
+              />
+            </li>
             <li>
               <label for="product_name">제품명 : </label>
               <input

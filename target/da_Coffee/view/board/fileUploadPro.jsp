@@ -10,8 +10,8 @@
 <body>
 	<script defer>
 		img = opener.document.getElementById("pic");
-		img.src = "${ pageContext.request.contextPath }/view/board/img/${filename}"; // 업로드 된 이미지 회원가입 화면에 출력
-		opener.document.f.petImg.value = "${filename}";
+		img.src = "${ pageContext.request.contextPath }/view/board/files/${filename}"; // 업로드 된 이미지 회원가입 화면에 출력
+		opener.document.f.value = "${filename}";
 		const WinClose = (() => {
 		   window.open('','_self').close();
 		})();

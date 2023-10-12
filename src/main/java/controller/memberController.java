@@ -1,5 +1,7 @@
 package controller;
 
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import service.memberDAO;
 import model.Member;
 
@@ -44,7 +46,6 @@ public class memberController {
 
     @RequestMapping("memberSignUpPro")
     public String memberSignUpPro(String memberId, Member member) throws Exception {
-
         String msg = "이미 있는 아이디 입니다.";
         String url = "/member/memberSignIn";
 

@@ -94,8 +94,6 @@ public class boardController {
             memberTier = mem.getMemberTier();
         }
 
-
-
         if(memberTier == 1) {
             productDao.productSet();
             List<Product> list = productDao.productList(pageInt, limit);
@@ -118,53 +116,49 @@ public class boardController {
     }
 
     @RequestMapping("productBoardForm")
-    public String productBoardForm() throws Exception {
-
+    public String productBoardForm() {
         return "board/product/productBoardForm";
     }
 
-//    @RequestMapping("productBoardPro")
-//    public String productBoardPro(productBoard productBOARD) throws Exception {
-//
-//        String msg = "게시물 등록 실패";
-//        String url = "/board/petBoardForm";
-//
-//        int boardType = (int) session.getAttribute("boardType");
-//
-//        int num = productDAO.boardInsert(productBOARD);
-//
-//        if (num > 0) {
-//            msg = "게시물을 등록하였습니다.";
-//            url = "/board/petBoard?boardType=" + boardType;
-//        }
-//
-//        request.setAttribute("msg", msg);
-//        request.setAttribute("url", url);
-//
-//        return "index";
-//    }
+    @RequestMapping("productBoardPro")
+    public String productBoardPro(Product product) throws Exception {
 
-    @RequestMapping("imageInputForm")
-    public String imageInputForm() throws Exception {
-        return "board/imageInputForm";
+        String msg = "게시물 등록 실패";
+        String url = "/board/product/productBoardForm";
+
+        int num = productDao.productInsert(product);
+
+        if (num > 0) {
+            msg = "게시물을 등록하였습니다.";
+            url = "/board/main";
+        }
+
+        request.setAttribute("msg", msg);
+        request.setAttribute("url", url);
+
+        return "alert";
     }
 
-    @RequestMapping("imageInputPro")
-    public String imageInputPro(@RequestParam("picture") MultipartFile multipartFile) throws Exception {
+    @RequestMapping("fileUploadForm")
+    public String fileUploadForm() throws Exception {
+        return "board/fileUploadForm";
+    }
 
-        String path = request.getServletContext().getRealPath("/") + "view/board/img/";
+    @RequestMapping("fileUploadPro")
+    public String fileUploadPro(@RequestParam("file") MultipartFile multipartFile) throws Exception {
+
+        String path = request.getServletContext().getRealPath("/") + "view/board/files/";
         String filename = null;
 
         if (!multipartFile.isEmpty()) {
-
             File file = new File(path, multipartFile.getOriginalFilename());
             multipartFile.transferTo(file);
             filename = multipartFile.getOriginalFilename();
-
+            System.out.println(file);
         }
 
         request.setAttribute("filename", filename);
-        return "board/imageInputPro";
+        return "board/fileUploadPro";
     }
 
 }

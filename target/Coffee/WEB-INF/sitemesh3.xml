@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<sitemesh>
-
-    <mapping path="/board/*" decorator="/layout/layout.jsp" />
-    <mapping path="/member/*" decorator="/layout/layout.jsp" />
-
-    <mapping path="*/imageInputForm" exclude="true" />
-    <mapping path="*/imageInputPro" exclude="true" />
-</sitemesh>

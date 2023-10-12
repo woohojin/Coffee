@@ -9,8 +9,8 @@
 </head>
 <body>
     <div class="input_image_form_wrap">
-      <form action="${ pageContext.request.contextPath }/board/imageInputPro" method="post" enctype="multipart/form-data">
-        <input type="file" name="picture" value="" />
+      <form action="${ pageContext.request.contextPath }/board/fileUploadPro" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" value="" />
         <input class="submit_btn" type="submit" value="파일등록" />
       </form>
     </div>
