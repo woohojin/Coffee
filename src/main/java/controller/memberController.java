@@ -102,5 +102,19 @@ public class memberController {
         return "alert";
     }
 
+    @RequestMapping("memberLogout")
+    public String memberLogout() throws Exception {
+
+        String memberId = (String) session.getAttribute("memberId");
+        Member mem = memberDao.memberSelectOne(memberId);
+
+        session.invalidate();
+
+        request.setAttribute("msg", memberId + "님이 로그아웃 되었습니다.");
+        request.setAttribute("url", "/board/main");
+
+        return "alert";
+    }
+
 }
 

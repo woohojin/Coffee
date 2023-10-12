@@ -6,8 +6,11 @@
 sitemesh css 개선
 css 정리
 productCount 개선
-로그아웃
 product Insert
+장바구니
+
+로그 저장
+전체적인 보안
 
 https://www.privacy.go.kr/front/contents/cntntsView.do?contsNo=81
 https://www.erdcloud.com/d/ifkt7zHppbaMgXAyF

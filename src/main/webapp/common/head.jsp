@@ -29,9 +29,7 @@
                   <c:choose>
                     <c:when test="${ sessionScope.memberId == null }" >
                       <li>
-                        <a href="${ pageContext.request.contextPath }/member/memberSignIn"
-                        >로그인</a
-                        >
+                        <a href="${ pageContext.request.contextPath }/member/memberSignIn">로그인</a>
                       </li>
                       <li>
                         <a href="${ pageContext.request.contextPath }/member/memberSignUp">회원가입</a>
@@ -39,6 +37,9 @@
                     </c:when>
 
                     <c:when test="${ sessionScope.memberId != null }">
+                      <li>
+                        <a href="${ pageContext.request.contextPath }/member/memberLogout">로그아웃</a>
+                      </li>
                       <li>
                         <a href="${ pageContext.request.contextPath }/member/memberProfile">마이페이지</a>
                       </li>
