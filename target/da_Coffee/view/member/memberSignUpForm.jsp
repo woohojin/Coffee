@@ -115,19 +115,21 @@
                         />
                     </li>
                     <li>
-                        <label for="file"></label>
-                        <div class="image_btn">
-                            <a href="javascript:win_upload()">사진 넣기</a>
+                        <div class="file_input_wrap">
+                            <label for="file">사업자등록증 사본</label>
+                            <input
+                                    name="memberFile"
+                                    id="file"
+                                    class="memberFile"
+                                    type="text"
+                                    value=""
+                                    readonly
+                                    required
+                            />
+                            <div class="image_btn">
+                                <a href="javascript:win_upload()">사진 넣기</a>
+                            </div>
                         </div>
-                        <input
-                                name="memberFile"
-                                id="file"
-                                class="memberFile"
-                                type="text"
-                                value=""
-                                readonly
-                                required
-                        />
                     </li>
                     <li>
                         <label for="member_fran_code">가맹점코드</label>

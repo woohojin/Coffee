@@ -90,3 +90,13 @@ input::file-selector-button {
 .input_image_form_wrap form input:first-child {
   margin-bottom: 60px;
 }
+
+.file_input_wrap{
+  position: relative;
+}
+
+.file_input_wrap .image_btn {
+  position:absolute;
+  left:210px;
+  top: -5px;
+}
