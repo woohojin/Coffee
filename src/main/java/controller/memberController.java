@@ -77,7 +77,7 @@ public class memberController {
     public String memberSignInPro(String memberId, String memberPassword) throws Exception {
 
         String msg = "유효하지 않은 회원입니다.";
-        String url = "/member/signInForm";
+        String url = "/member/membersignInForm";
 
         Member mem = memberDao.memberSelectOne(memberId);
 

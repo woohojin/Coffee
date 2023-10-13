@@ -11,7 +11,6 @@ public class Product {
     String productCompany;
     int productTier;
     String productFile;
-    int productVisible;
 
     public String getProductCode() {
         return productCode;
@@ -93,11 +92,4 @@ public class Product {
         this.productFile = productFile;
     }
 
-    public int getProductVisible() {
-        return productVisible;
-    }
-
-    public void setProductVisible(int productVisible) {
-        this.productVisible = productVisible;
-    }
 }

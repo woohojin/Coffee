@@ -21,11 +21,11 @@
     </insert>
 
     <select id="productLeaseCount" parameterType="map" resultType="int">
-        select count(*) from product where product_visible = 1 and product_tier = 1
+        select count(*) from product where product_tier = 1
     </select>
 
     <select id="productCount" parameterType="map" resultType="int">
-        select count(*) from product where product_visible = 1 and product_tier = 2
+        select count(*) from product where product_tier = 2
     </select>
 
     <select id="productSet" parameterType="int" resultType="int">
@@ -36,7 +36,7 @@
         select * from (
         select @rownum := @rownum + 1 as rownum,
         a.* from product a, (select @rownum := 0) tmp
-        where product_tier = "1" and product_visible = "1" order by product_code ) b
+        where product_tier = "1" order by product_code ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -44,7 +44,7 @@
         select * from (
         select @rownum := @rownum + 1 as rownum,
         a.* from product a, (select @rownum := 0) tmp
-        where product_tier = "2" and product_visible = "1" order by product_code ) b
+        where product_tier = "2" order by product_code ) b
         where b.rownum between #{start} and #{end};
     </select>
 

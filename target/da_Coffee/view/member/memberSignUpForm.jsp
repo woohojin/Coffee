@@ -14,16 +14,7 @@
 </head>
 <body>
     <main>
-        <form action="${ pageContext.request.contextPath }/member/memberSignUpPro" name="f" method="post">
-            <div class="input_image_wrap">
-                <div class="input_image">
-                    <input type="hidden" name="memberFile" value="" />
-                    <div class="image_btn">
-                        <a href="javascript:win_upload()">사진 넣기</a>
-                    </div>
-                </div>
-            </div>
-
+        <form action="${ pageContext.request.contextPath }/member/memberSignUpPro" name="f" method="post" onsubmit="return inputCheck(this)">
             <div class="product_form">
                 <ul>
                     <li>
@@ -33,6 +24,9 @@
                                 id="member_id"
                                 class="memberId"
                                 type="text"
+                                placeholder="4자리 이상의 아이디를 입력해주세요."
+                                minlength="4"
+                                required
                         />
                     </li>
                     <li>
@@ -42,6 +36,7 @@
                                 id="member_name"
                                 class="memberName"
                                 type="text"
+                                required
                         />
                     </li>
                     <li>
@@ -51,6 +46,7 @@
                                 id="member_company_name"
                                 class="memberCompanyName"
                                 type="text"
+                                required
                         />
                     </li>
                     <li>
@@ -60,6 +56,8 @@
                                 id="member_password"
                                 class="memberPassword"
                                 type="password"
+                                placeholder="8자리 이상의 비밀번호를 입력해 주세요"
+                                required
                         />
                     </li>
                     <li>
@@ -69,6 +67,8 @@
                                 id="member_password_check"
                                 class="memberPasswordCheck"
                                 type="password"
+                                placeholder="8자리 이상의 비밀번호를 입력해 주세요"
+                                required
                         />
                     </li>
                     <li>
@@ -78,6 +78,10 @@
                                 id="member_tel"
                                 class="memberTel"
                                 type="text"
+                                maxlength="11"
+                                placeholder="예) 01012345678"
+                                oninput="maxLengthCheck(this)"
+                                required
                         />
                     </li>
                     <li>
@@ -87,6 +91,7 @@
                                 id="member_address"
                                 class="memberAddress"
                                 type="text"
+                                required
                         />
                     </li>
                     <li>
@@ -96,6 +101,7 @@
                                 id="member_delivery_address"
                                 class="memberDeliveryAddress"
                                 type="text"
+                                required
                         />
                     </li>
                     <li>
@@ -105,6 +111,22 @@
                                 id="member_email"
                                 class="memberEmail"
                                 type="text"
+                                required
+                        />
+                    </li>
+                    <li>
+                        <label for="file"></label>
+                        <div class="image_btn">
+                            <a href="javascript:win_upload()">사진 넣기</a>
+                        </div>
+                        <input
+                                name="memberFile"
+                                id="file"
+                                class="memberFile"
+                                type="text"
+                                value=""
+                                readonly
+                                required
                         />
                     </li>
                     <li>
@@ -114,6 +136,7 @@
                                 id="member_fran_code"
                                 class="memberFranCode"
                                 type="text"
+                                required
                         />
                     </li>
                 </ul>
@@ -123,6 +146,33 @@
             </div>
         </form>
     </main>
+
+    <script type="text/javascript">
+        const inputCheck = (form) => {
+            if(form.memberPassword.value == "") {
+                alert("비밀번호를 입력하세요.");
+                form.memberPassword.focus();
+                return false;
+            } else if (form.memberPassword.value != form.memberPasswordCheck.value) {
+                alert("비밀번호 와 재입력 비밀번호가 일치하지 않습니다.");
+                form.memberPasswordCheck.value = "";
+                form.memberPasswordCheck.focus();
+                return false;
+            } else if (form.memberPassword.value.length < 8 || form.memberId.value.length < 6) {
+                alert("아이디 또는 비밀번호의 자리수를 확인해주세요.");
+                form.memberId.focus();
+                return false;
+            }
+            return true;
+        }
+
+        function maxLengthCheck(object){
+            if (object.value.length > object.maxLength){
+                object.value = object.value.slice(0, object.maxLength);
+            }
+        }
+    </script>
+
 </body>
 </html>
 
