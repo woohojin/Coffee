@@ -8,24 +8,29 @@
     <main>
       <div class="product_wrap">
         <h1>블렌드 커피</h1>
+        <p>${ productCount }</p>
         <div class="product">
           <ul>
-            <c:if test="${ productCount == 0 }">
-                <h2 class="center">아직 게시물이 작성되지 않았습니다.</h2>
-            </c:if>
-            <c:if test="${ productCount > 0 }">
+            <c:choose>
+              <c:when test="${requestScope.memberTier == '0'}">
+                <p>게시물을 열람 할 권한이 부족합니다.</p>
+                <p>회원가입을 하시거나 회원가입 이후 문제가 발생했다면</p>
+                <p>xxx로 연락주십시오.</p>
+              </c:when>
+              <c:when test="${requestScope.memberTier == '1' || requestScope.memberTier == '2'}">
                 <c:forEach var="p" items="${ list }" varStatus="status">
-                    <li>
-                      <a href="${ pageContext.request.contextPath }/board/product?productCode=${ p.productCode }">
-                        <img src="${ pageContext.request.contextPath }/view/image/1.jpg" alt="" />
-                      </a>
-                      <div>
-                        <p>${ p.productName }</p>
-                        <p>${ p.productPrice }원</p>
-                      </div>
-                    </li>
+                  <li>
+                    <a href="${ pageContext.request.contextPath }/board/product?productCode=${ p.productCode }">
+                      <img src="${ pageContext.request.contextPath }/view/image/1.jpg" alt="" />
+                    </a>
+                    <div>
+                      <p>${ p.productName }</p>
+                      <p>${ p.productPrice }원</p>
+                    </div>
+                  </li>
                 </c:forEach>
-            </c:if>
+              </c:when>
+            </c:choose>
           </ul>
         </div>
       </div>

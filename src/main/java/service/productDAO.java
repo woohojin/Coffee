@@ -28,6 +28,11 @@ public class productDAO {
         return num;
     }
 
+    public int productLeaseCount() {
+        int num = session.selectOne(NS + "productLeaseCount");
+        return num;
+    }
+
     public void productSet() {
         session.selectOne(NS + "productSet");
     }

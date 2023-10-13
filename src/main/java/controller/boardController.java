@@ -64,7 +64,13 @@ public class boardController {
     @RequestMapping("product")
     public String product() throws Exception {
 
-        request.setAttribute("pageNum", "1");
+        String memberId = (String)session.getAttribute("memberId");
+        int memberTier = 0;
+
+        if(memberId != null && memberId.length() != 0) {
+            Member mem = memberDao.memberSelectOne(memberId);
+            memberTier = mem.getMemberTier();
+        }
 
         String pageNum = (String) request.getParameter("pageNum");
         if (pageNum == null) {
@@ -72,9 +78,15 @@ public class boardController {
         }
 
         int pageInt = Integer.parseInt(pageNum);
-        int productCount = productDao.productCount();
+        int productCount = 0;
 
-        int limit = 12; // 한 page당 게시물 개수
+        if (memberTier == 1) {
+            productCount = productDao.productLeaseCount();
+        } else if (memberTier == 2) {
+            productCount = productDao.productCount();
+        }
+
+        int limit = 4; // 한 page당 게시물 개수
         int bottomLine = 100; // pagination 개수
 
         int start = (pageInt - 1) / bottomLine * bottomLine + 1;
@@ -86,26 +98,20 @@ public class boardController {
 
         int boardNum = productCount - (pageInt - 1) * limit;
 
-        String memberId = (String)session.getAttribute("memberId");
-        int memberTier = 0;
-
-        if(memberId != null && memberId.length() != 0) {
-            Member mem = memberDao.memberSelectOne(memberId);
-            memberTier = mem.getMemberTier();
-        }
-
         if(memberTier == 1) {
-            productDao.productSet();
-            List<Product> list = productDao.productList(pageInt, limit);
-            request.setAttribute("list", list);
-        } else if(memberTier == 2) {
             productDao.productSet();
             List<Product> list = productDao.productLeaseList(pageInt, limit);
             request.setAttribute("list", list);
+        } else if(memberTier == 2) {
+            productDao.productSet();
+            List<Product> list = productDao.productList(pageInt, limit);
+            request.setAttribute("list", list);
         }
 
+        request.setAttribute("memberTier", memberTier);
         request.setAttribute("productCount", productCount);
         request.setAttribute("boardNum", boardNum);
+        request.setAttribute("pageNum", "1");
         request.setAttribute("start", start);
         request.setAttribute("end", end);
         request.setAttribute("bottomLine", bottomLine);
