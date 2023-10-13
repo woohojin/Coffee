@@ -17,7 +17,7 @@
 
     <insert id="productInsert" parameterType="product">
         insert into product values (#{productCode}, #{productType}, #{productName}, #{productPrice}, #{productUnit}, #{productCountry},
-                                    #{productSpecies}, #{productCompany}, 0, #{productFile}, 1)
+                                    #{productSpecies}, #{productCompany}, 0, #{productFile})
     </insert>
 
     <select id="productLeaseCount" parameterType="map" resultType="int">
