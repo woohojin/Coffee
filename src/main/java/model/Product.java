@@ -10,7 +10,7 @@ public class Product {
     String productSpecies;
     String productCompany;
     int productTier;
-    String productImage;
+    String productFile;
     int productVisible;
 
     public String getProductCode() {
@@ -85,12 +85,12 @@ public class Product {
         this.productTier = productTier;
     }
 
-    public String getProductImage() {
-        return productImage;
+    public String getProductFile() {
+        return productFile;
     }
 
-    public void setProductImage(String productImage) {
-        this.productImage = productImage;
+    public void setProductFile(String productFile) {
+        this.productFile = productFile;
     }
 
     public int getProductVisible() {

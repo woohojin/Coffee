@@ -17,7 +17,7 @@
       <form action="${ pageContext.request.contextPath }/board/productBoardPro" name="f" method="post">
         <div class="input_image_wrap">
           <div class="input_image">
-            <input type="hidden" name="file" value="" />
+            <input type="hidden" name="productFile" id="file" value="" />
             <div class="input_image_wrap">
               <img src="${ pageContext.request.contextPath }/view/image/video_cover_pattern.png" alt="img" id="pic" />
             </div>

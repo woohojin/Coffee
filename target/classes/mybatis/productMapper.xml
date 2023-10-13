@@ -11,17 +11,17 @@
         <id column="product_country" property="productCountry" />
         <id column="product_species" property="productSpecies" />
         <id column="product_company" property="productCompany" />
-        <id column="product_image" property="productImage" />
+        <id column="product_file" property="productFile" />
         <id column="product_visible" property="productVisible" />
     </resultMap>
 
     <insert id="productInsert" parameterType="product">
         insert into product values (#{productCode}, #{productType}, #{productName}, #{productPrice}, #{productUnit}, #{productCountry},
-                                    #{productSpecies}, #{productCompany}, 0, NULL, 0)
+                                    #{productSpecies}, #{productCompany}, 0, #{productFile}, 1)
     </insert>
 
     <select id="productCount" parameterType="map" resultType="int">
-        select count(*) from product where product_visible = 0
+        select count(*) from product where product_visible = 1
     </select>
 
     <select id="productSet" parameterType="int" resultType="int">
@@ -32,7 +32,7 @@
         select * from (
         select @rownum := @rownum + 1 as rownum,
         a.* from product a, (select @rownum := 0) tmp
-        where product_tier = "0" order by product_code ) b
+        where product_tier = "0" and product_visible = "1" order by product_code ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -40,7 +40,7 @@
         select * from (
         select @rownum := @rownum + 1 as rownum,
         a.* from product a, (select @rownum := 0) tmp
-        where product_tier = "1" order by product_code ) b
+        where product_tier = "1" and product_visible = "1" order by product_code ) b
         where b.rownum between #{start} and #{end};
     </select>
 

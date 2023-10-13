@@ -11,7 +11,7 @@
     <div class="input_image_form_wrap">
       <form action="${ pageContext.request.contextPath }/board/fileUploadPro" method="post" enctype="multipart/form-data">
         <input type="file" name="file" value="" />
-        <input class="submit_btn" type="submit" value="파일등록" />
+        <input class="submit_btn" type="submit" value="파일 등록" />
       </form>
     </div>
   </body>

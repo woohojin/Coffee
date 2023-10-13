@@ -17,7 +17,7 @@
         <form action="${ pageContext.request.contextPath }/member/memberSignUpPro" name="f" method="post">
             <div class="input_image_wrap">
                 <div class="input_image">
-                    <input type="hidden" name="productImg" value="" />
+                    <input type="hidden" name="memberFile" value="" />
                     <div class="image_btn">
                         <a href="javascript:win_upload()">사진 넣기</a>
                     </div>
@@ -105,15 +105,6 @@
                                 id="member_email"
                                 class="memberEmail"
                                 type="text"
-                        />
-                    </li>
-                    <li>
-                        <label for="member_file">파일</label>
-                        <input
-                                name="memberFile"
-                                id="member_file"
-                                class="memberFile"
-                                type="file"
                         />
                     </li>
                     <li>
