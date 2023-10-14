@@ -6,10 +6,11 @@ public class Member {
     String memberCompanyName;
     String memberPassword;
     int memberTel;
-
     int memberCompanyTel;
     String memberAddress;
+    String memberDetailAddress;
     String memberDeliveryAddress;
+    String memberDetailDeliveryAddress;
     String memberEmail;
     String memberFile;
     String memberFranCode;
@@ -71,12 +72,28 @@ public class Member {
         this.memberAddress = memberAddress;
     }
 
+    public String getMemberDetailAddress() {
+        return memberDetailAddress;
+    }
+
+    public void setMemberDetailAddress(String memberDetailAddress) {
+        this.memberDetailAddress = memberDetailAddress;
+    }
+
     public String getMemberDeliveryAddress() {
         return memberDeliveryAddress;
     }
 
     public void setMemberDeliveryAddress(String memberDeliveryAddress) {
         this.memberDeliveryAddress = memberDeliveryAddress;
+    }
+
+    public String getMemberDetailDeliveryAddress() {
+        return memberDetailDeliveryAddress;
+    }
+
+    public void setMemberDetailDeliveryAddress(String memberDetailDeliveryAddress) {
+        this.memberDetailDeliveryAddress = memberDetailDeliveryAddress;
     }
 
     public String getMemberEmail() {
