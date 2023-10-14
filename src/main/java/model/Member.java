@@ -6,6 +6,8 @@ public class Member {
     String memberCompanyName;
     String memberPassword;
     int memberTel;
+
+    int memberCompanyTel;
     String memberAddress;
     String memberDeliveryAddress;
     String memberEmail;
@@ -51,6 +53,14 @@ public class Member {
 
     public void setMemberTel(int memberTel) {
         this.memberTel = memberTel;
+    }
+
+    public int getMemberCompanyTel() {
+        return memberCompanyTel;
+    }
+
+    public void setMemberCompanyTel(int memberCompanyTel) {
+        this.memberCompanyTel = memberCompanyTel;
     }
 
     public String getMemberAddress() {

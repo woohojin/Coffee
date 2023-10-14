@@ -8,6 +8,7 @@
         <id column="member_company_name" property="memberCompanyName" />
         <id column="member_password" property="memberPassword" />
         <id column="member_tel" property="memberTel" />
+        <id column="member_company_tel" property="memberCompanyTel" />
         <id column="member_address" property="memberAddress" />
         <id column="member_delivery_address" property="memberDeliveryAddress" />
         <id column="member_email" property="memberEmail" />
@@ -17,8 +18,8 @@
     </resultMap>
 
     <insert id="memberInsert" parameterType="member">
-        insert into member values (#{memberId}, #{memberName}, #{memberCompanyName}, #{memberPassword}, #{memberTel},
-                                   #{memberAddress}, #{memberDeliveryAddress}, #{memberEmail}, #{memberFile}, #{memberFranCode}, 0)
+        insert into member values (#{memberId}, #{memberName}, #{memberCompanyName}, #{memberPassword}, #{memberTel}, #{memberCompanyTel},
+                                   #{memberAddress}, #{memberDeliveryAddress}, #{memberEmail}, #{memberFile}, #{memberFranCode}, 0, NOW())
     </insert>
 
     <select id="memberList" parameterType="map" resultMap="memberMap">
