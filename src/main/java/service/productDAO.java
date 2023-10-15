@@ -34,7 +34,7 @@ public class productDAO {
         map.clear();
         map.put("memberTier", memberTier);
         map.put("searchText", searchText);
-        int num = session.selectOne(NS + "productCount", map);
+        int num = session.selectOne(NS + "productSearchCount", map);
         return num;
     }
 

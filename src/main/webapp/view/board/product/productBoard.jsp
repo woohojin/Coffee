@@ -17,17 +17,24 @@
                 <p>xxx로 연락주십시오.</p>
               </c:when>
               <c:when test="${requestScope.memberTier != 0}">
-                <c:forEach var="p" items="${ list }" varStatus="status">
-                  <li>
-                    <a href="${ pageContext.request.contextPath }/board/product?productCode=${ p.productCode }">
-                      <img src="${ pageContext.request.contextPath }/view/image/1.jpg" alt="" />
-                    </a>
-                    <div>
-                      <p>${ p.productName }</p>
-                      <p>${ p.productPrice }원</p>
-                    </div>
-                  </li>
-                </c:forEach>
+                <c:if test="${requestScope.productSearchCount != 0}">
+                  <c:forEach var="p" items="${ list }" varStatus="status">
+                    <li>
+                      <a href="${ pageContext.request.contextPath }/board/product?productCode=${ p.productCode }">
+                        <img src="${ pageContext.request.contextPath }/view/image/1.jpg" alt="" />
+                      </a>
+                      <div>
+                        <p>${ p.productName }</p>
+                        <p>${ p.productPrice }원</p>
+                      </div>
+                    </li>
+                  </c:forEach>
+                </c:if>
+
+                <c:if test="${ requestScope.productSearchCount == 0 }">
+                  <p>검색결과를 찾을 수 없습니다.</p>
+                </c:if>
+
               </c:when>
             </c:choose>
           </ul>
@@ -36,21 +43,38 @@
 
       <div class="">
           <div class="">
-            <c:if test="${ start >= 3}" >
-              <a href="${ pageContext.request.contextPath }/board/product?pageNum=${start - 3}">&laquo;</a>
-            </c:if>
-            <c:forEach var="p" begin="${ start }" end="${ end }">
+            <c:if test="${ pageNum >= 3}" >
               <c:choose>
                 <c:when test="${requestScope.searchText == null}">
-                  <a href="${ pageContext.request.contextPath }/board/product?pageNum=${p}">${p}</a>
+                  <a href="${ pageContext.request.contextPath }/board/product?pageNum=${pageNum - 3}">&laquo;</a>
                 </c:when>
                 <c:when test="${requestScope.searchText != null}">
-                  <a href="${ pageContext.request.contextPath }/board/productSearch?pageNum=${p}&&searchText=${requestScope.searchText}">${p}</a>
+                  <a href="${ pageContext.request.contextPath }/board/productSearch?pageNum=${pageNum - 3}&&searchText=${requestScope.searchText}">&laquo;</a>
                 </c:when>
               </c:choose>
-            </c:forEach>
-            <c:if test="${ end < maxPage }">
-              <a href="${ pageContext.request.contextPath }/board/product?pageNum=${end + 3}">&raquo;</a>
+            </c:if>
+            <c:if test="${ productSearchCount != 0 }">
+              <c:forEach var="p" begin="${ start }" end="${ end }">
+                <c:choose>
+                  <c:when test="${requestScope.searchText == null}">
+                    <a href="${ pageContext.request.contextPath }/board/product?pageNum=${p}">${p}</a>
+                  </c:when>
+                  <c:when test="${requestScope.searchText != null}">
+                    <a href="${ pageContext.request.contextPath }/board/productSearch?pageNum=${p}&&searchText=${requestScope.searchText}">${p}</a>
+                  </c:when>
+                </c:choose>
+              </c:forEach>
+            </c:if>
+
+            <c:if test="${ pageNum < end - 3 }">
+              <c:choose>
+                <c:when test="${requestScope.searchText == null}">
+                    <a href="${ pageContext.request.contextPath }/board/product?pageNum=${pageNum + 3}">&raquo;</a>
+                </c:when>
+                <c:when test="${requestScope.searchText != null}">
+                    <a href="${ pageContext.request.contextPath }/board/productSearch?pageNum=${pageNum + 3}&&searchText=${requestScope.searchText}">&raquo;</a>
+                </c:when>
+              </c:choose>
             </c:if>
           </div>
       </div>

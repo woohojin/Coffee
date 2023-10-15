@@ -97,6 +97,9 @@ public class boardController {
         if (end > maxPage) {
             end = maxPage;
         }
+        if (end > productCount) {
+            end = productCount;
+        }
 
         request.setAttribute("memberTier", memberTier);
         request.setAttribute("productCount", productCount);
@@ -143,11 +146,15 @@ public class boardController {
 
         int start = 1;
         int end = 1;
+        int bottomLine = 100; // pagination 개수
 
-        if (productSearchCount > 1) {
+        if(productSearchCount < 1) {
+            start = 0;
+            end = 0;
+        } else if (productSearchCount > 1) {
             // 페이지 번호를 표시하는 로직
-            start = (pageInt - 1) * limit + 1;
-            end = start + limit - 1;
+            start = (pageInt - 1) / bottomLine * bottomLine + 1;
+            end = (productSearchCount / limit) + (productSearchCount % limit == 0 ? 0 : 1);
             if (end > productSearchCount) {
                 end = productSearchCount;
             }
@@ -159,7 +166,6 @@ public class boardController {
         request.setAttribute("pageNum", pageNum);
         request.setAttribute("start", start);
         request.setAttribute("end", end);
-        request.setAttribute("pageInt", pageInt);
 
         return "board/product/productBoard";
     }
