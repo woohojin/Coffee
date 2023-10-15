@@ -17,7 +17,7 @@
                 <p>회원가입을 하시거나 회원가입 이후 문제가 발생했다면</p>
                 <p>xxx로 연락주십시오.</p>
               </c:when>
-              <c:when test="${requestScope.memberTier == '1' || requestScope.memberTier == '2'}">
+              <c:when test="${requestScope.memberTier != 0}">
                 <c:forEach var="p" items="${ list }" varStatus="status">
                   <li>
                     <a href="${ pageContext.request.contextPath }/board/product?productCode=${ p.productCode }">

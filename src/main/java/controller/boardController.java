@@ -78,12 +78,11 @@ public class boardController {
         }
 
         int pageInt = Integer.parseInt(pageNum);
+
         int productCount = 0;
 
-        if (memberTier == 1) {
-            productCount = productDao.productLeaseCount();
-        } else if (memberTier == 2) {
-            productCount = productDao.productCount();
+        if(memberTier != 0) {
+            productCount = productDao.productCount(memberTier);
         }
 
         int limit = 4; // 한 page당 게시물 개수
@@ -98,16 +97,10 @@ public class boardController {
 
         int boardNum = productCount - (pageInt - 1) * limit;
 
-        if(memberTier == 1) {
-            productDao.productSet();
-            List<Product> list = productDao.productLeaseList(pageInt, limit);
-            request.setAttribute("list", list);
-        } else if(memberTier == 2) {
-            productDao.productSet();
-            List<Product> list = productDao.productList(pageInt, limit);
-            request.setAttribute("list", list);
-        }
+        productDao.productSet();
+        List<Product> list = productDao.productList(pageInt, limit, memberTier);
 
+        request.setAttribute("list", list);
         request.setAttribute("memberTier", memberTier);
         request.setAttribute("productCount", productCount);
         request.setAttribute("boardNum", boardNum);

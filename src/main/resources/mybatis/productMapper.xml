@@ -20,31 +20,19 @@
                                     #{productSpecies}, #{productCompany}, 0, #{productFile})
     </insert>
 
-    <select id="productLeaseCount" parameterType="map" resultType="int">
-        select count(*) from product where product_tier = 1
-    </select>
-
     <select id="productCount" parameterType="map" resultType="int">
-        select count(*) from product where product_tier = 2
+        select count(*) from product where product_tier = #{memberTier}
     </select>
 
     <select id="productSet" parameterType="int" resultType="int">
         set @rownum := 0
     </select>
 
-    <select id="productLeaseList" parameterType="map" resultMap="productMap">
-        select * from (
-        select @rownum := @rownum + 1 as rownum,
-        a.* from product a, (select @rownum := 0) tmp
-        where product_tier = "1" order by product_code ) b
-        where b.rownum between #{start} and #{end};
-    </select>
-
     <select id="productList" parameterType="map" resultMap="productMap">
         select * from (
         select @rownum := @rownum + 1 as rownum,
         a.* from product a, (select @rownum := 0) tmp
-        where product_tier = "2" order by product_code ) b
+        where product_tier = #{memberTier} order by product_code ) b
         where b.rownum between #{start} and #{end};
     </select>
 
