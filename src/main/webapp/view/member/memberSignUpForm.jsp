@@ -73,7 +73,7 @@
                         <input
                                 name="memberTel"
                                 id="member_tel"
-                                type="text"
+                                type="tel"
                                 maxlength="11"
                                 placeholder="예) 01012345678"
                                 oninput="maxLengthCheck(this)"
@@ -85,7 +85,7 @@
                         <input
                                 name="memberCompanyTel"
                                 id="member_company_tel"
-                                type="text"
+                                type="tel"
                                 maxlength="11"
                                 placeholder="예) 01012345678"
                                 oninput="maxLengthCheck(this)"
@@ -99,6 +99,7 @@
                                 id="member_address"
                                 type="text"
                                 placeholder="도로명주소"
+                                readonly
                                 required
                         />
                         <div class="member_address_button">
@@ -126,6 +127,7 @@
                                 id="member_delivery_address"
                                 type="text"
                                 placeholder="도로명주소"
+                                readonly
                                 required
                         />
                         <div class="member_delivery_address_button">
@@ -212,6 +214,42 @@
                 object.value = object.value.slice(0, object.maxLength);
             }
         }
+    </script>
+
+    <script>
+        const memberIdInput = document.getElementById('member_id');
+        const memberNameInput = document.getElementById('member_name');
+        const memberTelInput = document.getElementById('member_tel');
+        const memberCompanyTelInput = document.getElementById('member_company_tel');
+
+        memberIdInput.addEventListener('input', function() {
+            const inputText = this.value;
+            const idInputCheck = inputText.replace(/[^a-zA-Z0-9]/g, '');
+            this.value = idInputCheck;
+            if (inputText !== idInputCheck) {
+                alert('영어로 입력해주세요.');
+            }
+        });
+
+        memberNameInput.addEventListener('input', function() {
+            const inputText = this.value;
+            const nameInputCheck = inputText.replace(/[^가-힣ㄱ-ㅎㅏ-ㅣ]/g, '');
+            this.value = nameInputCheck;
+            if (inputText !== nameInputCheck) {
+                alert('한국어로 입력해주세요.');
+            }
+        });
+
+        memberTelInput.addEventListener('input', function() {
+            const inputText = this.value;
+            const numberInputCheck = inputText.replace(/[^0-9]/g, '');
+            this.value = numberInputCheck;
+        });
+        memberCompanyTelInput.addEventListener('input', function() {
+            const inputText = this.value;
+            const numberInputCheck = inputText.replace(/[^0-9]/g, '');
+            this.value = numberInputCheck;
+        })
     </script>
 
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

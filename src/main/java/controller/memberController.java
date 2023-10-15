@@ -47,7 +47,7 @@ public class memberController {
     @RequestMapping("memberSignUpPro")
     public String memberSignUpPro(String memberId, Member member) throws Exception {
         String msg = "이미 있는 아이디 입니다.";
-        String url = "/member/memberSignIn";
+        String url = "/member/memberSignUp";
 
         Member mem = memberDao.memberSelectOne(memberId);
 
