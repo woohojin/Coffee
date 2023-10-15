@@ -30,6 +30,14 @@ public class productDAO {
         return num;
     }
 
+    public int productSearchCount(int memberTier, String searchText) {
+        map.clear();
+        map.put("memberTier", memberTier);
+        map.put("searchText", searchText);
+        int num = session.selectOne(NS + "productCount", map);
+        return num;
+    }
+
     public void productSet() {
         session.selectOne(NS + "productSet");
     }
@@ -40,6 +48,16 @@ public class productDAO {
         map.put("end", (pageInt * limit));
         map.put("memberTier", memberTier);
         List<Product> list = session.selectList(NS + "productList", map);
+        return list;
+    }
+
+    public List<Product> productSearchList(int pageInt, int limit, int memberTier, String searchText) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        map.put("memberTier", memberTier);
+        map.put("searchText", searchText);
+        List<Product> list = session.selectList(NS + "productSearchList", map);
         return list;
     }
 

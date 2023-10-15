@@ -72,21 +72,24 @@ public class boardController {
             memberTier = mem.getMemberTier();
         }
 
-        String pageNum = (String) request.getParameter("pageNum");
+        String pageNum = request.getParameter("pageNum");
         if (pageNum == null) {
             pageNum = "1";
         }
 
         int pageInt = Integer.parseInt(pageNum);
 
+        int limit = 4; // 한 page당 게시물 개수
+        int bottomLine = 100; // pagination 개수
+
         int productCount = 0;
 
         if(memberTier != 0) {
+            productDao.productSet();
+            List<Product> list = productDao.productList(pageInt, limit, memberTier);
             productCount = productDao.productCount(memberTier);
+            request.setAttribute("list", list);
         }
-
-        int limit = 4; // 한 page당 게시물 개수
-        int bottomLine = 100; // pagination 개수
 
         int start = (pageInt - 1) / bottomLine * bottomLine + 1;
         int end = start + bottomLine - 1;
@@ -95,20 +98,67 @@ public class boardController {
             end = maxPage;
         }
 
-        int boardNum = productCount - (pageInt - 1) * limit;
-
-        productDao.productSet();
-        List<Product> list = productDao.productList(pageInt, limit, memberTier);
-
-        request.setAttribute("list", list);
         request.setAttribute("memberTier", memberTier);
         request.setAttribute("productCount", productCount);
-        request.setAttribute("boardNum", boardNum);
-        request.setAttribute("pageNum", "1");
+        request.setAttribute("pageNum", pageNum);
         request.setAttribute("start", start);
         request.setAttribute("end", end);
         request.setAttribute("bottomLine", bottomLine);
         request.setAttribute("maxPage", maxPage);
+        request.setAttribute("pageInt", pageInt);
+
+        return "board/product/productBoard";
+    }
+
+    @RequestMapping("productSearch")
+    public String productSearch() throws Exception {
+
+        String memberId = (String)session.getAttribute("memberId");
+        int memberTier = 0;
+
+        if(memberId != null && !memberId.isEmpty()) {
+            Member mem = memberDao.memberSelectOne(memberId);
+            memberTier = mem.getMemberTier();
+        }
+
+        String pageNum = request.getParameter("pageNum");
+        if (pageNum == null) {
+            pageNum = "1";
+        }
+
+        int pageInt = Integer.parseInt(pageNum);
+
+        int limit = 4; // 한 page당 게시물 개수
+
+        String searchText = request.getParameter("searchText");
+
+        int productSearchCount = 0;
+
+        if(memberTier != 0) {
+            productDao.productSet();
+            List<Product> list = productDao.productSearchList(pageInt, limit, memberTier, searchText);
+            productSearchCount = productDao.productSearchCount(memberTier, searchText);
+            request.setAttribute("list", list);
+        }
+
+        int start = 1;
+        int end = 1;
+
+        if (productSearchCount > 1) {
+            // 페이지 번호를 표시하는 로직
+            start = (pageInt - 1) * limit + 1;
+            end = start + limit - 1;
+            if (end > productSearchCount) {
+                end = productSearchCount;
+            }
+        }
+
+        request.setAttribute("searchText", searchText);
+        request.setAttribute("memberTier", memberTier);
+        request.setAttribute("productSearchCount", productSearchCount);
+        request.setAttribute("pageNum", pageNum);
+        request.setAttribute("start", start);
+        request.setAttribute("end", end);
         request.setAttribute("pageInt", pageInt);
 
         return "board/product/productBoard";

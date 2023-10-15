@@ -5,12 +5,7 @@
 
 <html lang="en">
 <head>
-    <script type="text/javascript">
-        function win_upload() {
-            const op = "width=500, height=150, left=50, top=150";
-            open("${pageContext.request.contextPath}/board/fileUploadForm", "", op);
-        }
-    </script>
+
 </head>
 <body>
     <main>
@@ -190,7 +185,14 @@
         </form>
     </main>
 
-    <script type="text/javascript">
+    <script>
+        function win_upload() {
+            const op = "width=500, height=150, left=50, top=150";
+            open("${pageContext.request.contextPath}/board/fileUploadForm", "", op);
+        }
+    </script>
+
+    <script>
         const inputCheck = (form) => {
             if(form.memberPassword.value == "") {
                 alert("비밀번호를 입력하세요.");

@@ -17,10 +17,14 @@
               </div>
 
               <div class="hd_search">
-                <form action="../">
-                  <input type="text" />
+                <form action="${ pageContext.request.contextPath }/board/productSearch" id="search_form" method="post">
+                  <input
+                          name="searchText"
+                          id="search_text"
+                          type="text"
+                  />
                 </form>
-                <a href="" class="search_icon">
+                <a href="" class="search_icon" onclick="return searchSubmit()">
                   <img src="${ pageContext.request.contextPath }/view/image/search.png" alt="" />
                 </a>
               </div>
@@ -136,6 +140,16 @@
             </div>
           </div>
         </header>
+
+    <script>
+      function searchSubmit() {
+        if(document.getElementById("search_text").value="") {
+          alert("검색어를 입력해주세요.");
+          return false;
+        }
+        document.getElementById("search_form").submit();
+      }
+    </script>
 
   </body>
 </html>
