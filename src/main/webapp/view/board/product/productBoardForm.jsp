@@ -5,7 +5,7 @@
 
 <html lang="en">
 <head>
-<script type="text/javascript">
+<script>
 		function win_upload() {
 			const op = "width=500, height=150, left=50, top=150";
 			open("${pageContext.request.contextPath}/board/fileUploadForm", "", op);

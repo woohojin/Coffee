@@ -5,11 +5,15 @@ import service.memberDAO;
 import model.Product;
 import model.Member;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.io.File;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
 import javax.inject.Inject;
@@ -25,7 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/board/")
-public class boardController {
+public class mainController {
 
     @Inject
     private DataSource ds;
@@ -38,7 +42,6 @@ public class boardController {
     HttpServletRequest request;
     Model m;
     HttpSession session;
-    ServletContext application;
 
     @ModelAttribute
     void init(HttpServletRequest request, Model m) {
@@ -216,5 +219,36 @@ public class boardController {
         return "board/fileUploadPro";
     }
 
+    @RequestMapping("fileDownload")
+    public void fileDownload(HttpServletResponse response) {
+        try {
+            String filePath = request.getServletContext().getRealPath("/") + "view/board/files/"; // 다운로드할 파일 경로
+            String fileName = request.getParameter("fileName");
+            filePath = filePath + fileName;
+
+            File file = new File(filePath);
+
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment; filename=" + file.getName());
+            response.setContentLength((int) file.length());
+
+            InputStream inputStream = new FileInputStream(file);
+            OutputStream outputStream = response.getOutputStream();
+
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+
+            inputStream.close();
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
+
+
 

@@ -8,7 +8,6 @@
     <main>
       <div class="product_wrap">
         <h1>블렌드 커피</h1>
-        <p>${ productCount }</p>
         <div class="product">
           <ul>
             <c:choose>
@@ -17,18 +16,25 @@
                 <p>회원가입을 하시거나 회원가입 이후 문제가 발생했다면</p>
                 <p>xxx로 연락주십시오.</p>
               </c:when>
-              <c:when test="${requestScope.memberTier == '1' || requestScope.memberTier == '2'}">
-                <c:forEach var="p" items="${ list }" varStatus="status">
-                  <li>
-                    <a href="${ pageContext.request.contextPath }/board/product?productCode=${ p.productCode }">
-                      <img src="${ pageContext.request.contextPath }/view/image/1.jpg" alt="" />
-                    </a>
-                    <div>
-                      <p>${ p.productName }</p>
-                      <p>${ p.productPrice }원</p>
-                    </div>
-                  </li>
-                </c:forEach>
+              <c:when test="${requestScope.memberTier != 0}">
+                <c:if test="${requestScope.productSearchCount != 0}">
+                  <c:forEach var="p" items="${ list }">
+                    <li>
+                      <a href="${ pageContext.request.contextPath }/board/product?productCode=${ p.productCode }">
+                        <img src="${ pageContext.request.contextPath }/view/image/1.jpg" alt="" />
+                      </a>
+                      <div>
+                        <a onclick="fileDownload('${p.productFile}', '${p.productName}')">${p.productName}</a>
+                        <p>${ p.productPrice }원</p>
+                      </div>
+                    </li>
+                  </c:forEach>
+                </c:if>
+
+                <c:if test="${ requestScope.productSearchCount == 0 }">
+                  <p>검색결과를 찾을 수 없습니다.</p>
+                </c:if>
+
               </c:when>
             </c:choose>
           </ul>
@@ -37,14 +43,66 @@
 
       <div class="">
           <div class="">
-            <a <c:if test="${ start >= 3}" >href="${ pageContext.request.contextPath }/board/product?pageNum=${start-3}"</c:if>>&laquo;</a>
-            <c:forEach var="p" begin="${ start }" end="${ end }">
-            <a class="active" href="${ pageContext.request.contextPath }/board/product?pageNum=${p}">${ p }</a>
-            </c:forEach>
-            <a <c:if test="${ end < maxPage }">href="${ pageContext.request.contextPath }/board/product?pageNum=${end + 3}"</c:if>>&raquo;</a>
+            <c:if test="${ pageNum >= 3}" >
+              <c:choose>
+                <c:when test="${requestScope.searchText == null}">
+                  <a href="${ pageContext.request.contextPath }/board/product?pageNum=${pageNum - 3}">&laquo;</a>
+                </c:when>
+                <c:when test="${requestScope.searchText != null}">
+                  <a href="${ pageContext.request.contextPath }/board/productSearch?pageNum=${pageNum - 3}&&searchText=${requestScope.searchText}">&laquo;</a>
+                </c:when>
+              </c:choose>
+            </c:if>
+            <c:if test="${ productSearchCount != 0 }">
+              <c:forEach var="p" begin="${ start }" end="${ end }">
+                <c:choose>
+                  <c:when test="${requestScope.searchText == null}">
+                    <a href="${ pageContext.request.contextPath }/board/product?pageNum=${p}">${p}</a>
+                  </c:when>
+                  <c:when test="${requestScope.searchText != null}">
+                    <a href="${ pageContext.request.contextPath }/board/productSearch?pageNum=${p}&&searchText=${requestScope.searchText}">${p}</a>
+                  </c:when>
+                </c:choose>
+              </c:forEach>
+            </c:if>
+
+            <c:if test="${ pageNum < end - 3 }">
+              <c:choose>
+                <c:when test="${requestScope.searchText == null}">
+                    <a href="${ pageContext.request.contextPath }/board/product?pageNum=${pageNum + 3}">&raquo;</a>
+                </c:when>
+                <c:when test="${requestScope.searchText != null}">
+                    <a href="${ pageContext.request.contextPath }/board/productSearch?pageNum=${pageNum + 3}&&searchText=${requestScope.searchText}">&raquo;</a>
+                </c:when>
+              </c:choose>
+            </c:if>
           </div>
       </div>
-
     </main>
+    <script type="text/javascript">
+      function fileDownload(productFile, productName) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '${pageContext.request.contextPath}/board/fileDownload?fileName=' + productFile, true);
+        xhr.responseType = 'blob';
+
+        xhr.onload = function() {
+          if (xhr.status === 200) {
+            var blob = new Blob([xhr.response], { type: xhr.getResponseHeader('Content-Type') });
+            var url = window.URL.createObjectURL(blob);
+
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = productName + ".jpg"; // 다운로드될 파일명
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+          } else {
+            alert('파일을 다운로드하는 중에 오류가 발생했습니다.');
+          }
+        };
+
+        xhr.send();
+      }
+    </script>
   </body>
 </html>
