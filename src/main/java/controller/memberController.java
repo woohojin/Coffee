@@ -1,5 +1,9 @@
 package controller;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import service.memberDAO;
@@ -21,11 +25,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/member/")
 public class memberController {
 
-    @Inject
+    @Autowired
     private DataSource ds;
 
     @Autowired
     memberDAO memberDao;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     HttpServletRequest request;
     Model m;
@@ -45,13 +55,15 @@ public class memberController {
     }
 
     @RequestMapping("memberSignUpPro")
-    public String memberSignUpPro(String memberId, Member member) throws Exception {
+    public String memberSignUpPro(Member member) throws Exception {
         String msg = "이미 있는 아이디 입니다.";
         String url = "/member/memberSignUp";
 
-        Member mem = memberDao.memberSelectOne(memberId);
+        String memberId = member.getMemberId();
 
-        if(mem == null) {
+        UserDetails userInfo = userDetailsService.loadUserByUsername(memberId);
+
+        if(userInfo == null) {
             int num = memberDao.memberInsert(member);
             if (num > 0) {
                 msg = memberId + "님의 가입이 완료되었습니다.";
@@ -76,24 +88,28 @@ public class memberController {
     @RequestMapping("memberSignInPro")
     public String memberSignInPro(String memberId, String memberPassword) throws Exception {
 
-        String msg = "유효하지 않은 회원입니다.";
+        String msg = "존재하지 않는 회원입니다.";
         String url = "/member/memberSignIn";
 
-        Member mem = memberDao.memberSelectOne(memberId);
+        UserDetails userInfo = userDetailsService.loadUserByUsername(memberId);
 
-        if(mem != null) {
-           int memberTier = mem.getMemberTier();
-            if (memberPassword.equals(mem.getMemberPassword())) {
+        if (userInfo != null) {
+            if (passwordEncoder.matches(memberPassword, userInfo.getPassword())) {
                 session.setAttribute("memberId", memberId);
-                session.setAttribute("memberTier", memberTier);
-
-                msg = mem.getMemberId() + "님이 로그인 하였습니다.";
-                url = "/board/main";
+                // 사용자 권한에 따라 페이지를 리디렉션할 수 있습니다.
+                if (userInfo.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+                    url = "/admin/dashboard";
+                } else {
+                    url = "/board/main";
+                }
+                msg = memberId + "님이 로그인 하였습니다.";
             } else {
                 msg = "비밀번호가 틀립니다.";
+                url = "/member/memberSignIn";
             }
         } else {
-            msg = "유효하지 않은 회원입니다.";
+            msg = "존재하지 않는 회원입니다.";
+            url = "/member/memberSignIn";
         }
 
         request.setAttribute("msg", msg);
