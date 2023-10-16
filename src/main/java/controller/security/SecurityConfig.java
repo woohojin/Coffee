@@ -11,42 +11,33 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-public class securityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
-
-    public securityConfig(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new  BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();
+    }
+
+    public SecurityConfig(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
+                .antMatchers("/admin/**").hasRole("ADMIN") // 어드민만 접근 가능
+                .antMatchers("/member/**").permitAll() // 인증 없이 접근 가능
                 .antMatchers("/board/**").permitAll()
-                .antMatchers("/member/**").permitAll()
-                .antMatchers("/admin/**").authenticated()
+                .anyRequest().authenticated() // 그 외 모든 요청은 인증 필요
                 .and()
             .formLogin()
-                .loginPage("/member/memberSignIn")
-                .permitAll()
-                .defaultSuccessUrl("/board/main") // 로그인 성공 후 이동할 페이지
-                .failureUrl("/member/memberSignIn") // 로그인 실패 후 이동할 페이지
+                .loginPage("/member/memberSignIn") // 로그인 페이지 URL 설정
+                .defaultSuccessUrl("/board/main") // 로그인 성공 후 이동할 URL
                 .and()
             .logout()
-                .logoutSuccessUrl("/board/main")
-                .permitAll()
-                .and()
-            .sessionManagement()
-                .sessionFixation()
-                .newSession()
-                .maximumSessions(1) // 동시 로그인 세션 수 제한
-                .expiredUrl("/board/main"); // 세션 만료 시 이동할 페이지
+                .logoutUrl("/member/memberLogout") // 로그아웃 URL 설정
+                .logoutSuccessUrl("/board/main"); // 로그아웃 후 이동할 URL
     }
-
 }

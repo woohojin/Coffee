@@ -60,10 +60,10 @@ public class memberController {
         String url = "/member/memberSignUp";
 
         String memberId = member.getMemberId();
+        Member mem = memberDao.memberSelectOne(memberId);
 
-        UserDetails userInfo = userDetailsService.loadUserByUsername(memberId);
-
-        if(userInfo == null) {
+        if(mem == null) {
+            member.setMemberPassword(passwordEncoder.encode(member.getMemberPassword()));
             int num = memberDao.memberInsert(member);
             if (num > 0) {
                 msg = memberId + "님의 가입이 완료되었습니다.";
@@ -120,16 +120,7 @@ public class memberController {
 
     @RequestMapping("memberLogout")
     public String memberLogout() throws Exception {
-
-        String memberId = (String) session.getAttribute("memberId");
-        Member mem = memberDao.memberSelectOne(memberId);
-
-        session.invalidate();
-
-        request.setAttribute("msg", memberId + "님이 로그아웃 되었습니다.");
-        request.setAttribute("url", "/board/main");
-
-        return "alert";
+        return "redirect:/logout";
     }
 
 }
