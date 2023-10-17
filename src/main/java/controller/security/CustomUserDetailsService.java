@@ -26,15 +26,16 @@ public class CustomUserDetailsService implements UserDetailsService {
         if ("admin".equals(username)) {
             // 하드 코딩된 관리자 계정
             return User.withUsername("admin")
-                    .password(member.getMemberPassword()) // 비밀번호를 암호화하지 않음
+                    .password(member.getMemberPassword())
                     .roles("ADMIN")
                     .build();
         } else {
             return User.withUsername(member.getMemberId())
-                    .password(member.getMemberPassword()) // 비밀번호를 암호화하지 않음
+                    .password(member.getMemberPassword())
                     .disabled(false)
                     .roles("USER")
                     .build();
         }
+
     }
 }

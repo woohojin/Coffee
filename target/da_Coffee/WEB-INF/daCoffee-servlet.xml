@@ -18,7 +18,7 @@
     <!-- css,js,html 웹에서 제공되는 파일의 기본 기능 제외 -->
     <mvc:default-servlet-handler/>
 
-    <mvc:view-controller path="/index" view-name="index"/>
+    <mvc:view-controller path="/index"/>
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/view/" />
         <property name="suffix" value=".jsp" />
@@ -53,6 +53,14 @@
     </bean>
     <bean class="org.mybatis.spring.SqlSessionTemplate">
         <constructor-arg ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:application.properties" />
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:log4j.properties" />
     </bean>
 
 </beans>

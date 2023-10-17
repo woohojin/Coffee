@@ -91,17 +91,14 @@ public class memberController {
         String msg = "존재하지 않는 회원입니다.";
         String url = "/member/memberSignIn";
 
-        UserDetails userInfo = userDetailsService.loadUserByUsername(memberId);
+        Member mem = memberDao.memberSelectOne(memberId);
 
-        if (userInfo != null) {
-            if (passwordEncoder.matches(memberPassword, userInfo.getPassword())) {
+
+        if (mem != null) {
+            if (passwordEncoder.matches(memberPassword, mem.getMemberPassword())) {
                 session.setAttribute("memberId", memberId);
                 // 사용자 권한에 따라 페이지를 리디렉션할 수 있습니다.
-                if (userInfo.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
-                    url = "/admin/dashboard";
-                } else {
                     url = "/board/main";
-                }
                 msg = memberId + "님이 로그인 하였습니다.";
             } else {
                 msg = "비밀번호가 틀립니다.";
@@ -120,7 +117,8 @@ public class memberController {
 
     @RequestMapping("memberLogout")
     public String memberLogout() throws Exception {
-        return "redirect:/logout";
+        session.invalidate(); // 세션 무효화
+        return "redirect:/board/main"; // 로그아웃 후 이동할 URL
     }
 
 }
