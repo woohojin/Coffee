@@ -42,7 +42,7 @@
 
                     <c:when test="${ sessionScope.memberId != null }">
                       <li>
-                        <a href="${ pageContext.request.contextPath }/member/memberLogout">로그아웃</a>
+                        <a href="${ pageContext.request.contextPath }/member/memberLogout" id="logout_button" onClick="checkLogout()">로그아웃</a>
                       </li>
                       <li>
                         <a href="${ pageContext.request.contextPath }/member/memberProfile">마이페이지</a>
@@ -150,6 +150,18 @@
         document.getElementById("search_form").submit();
       }
     </script>
+
+  <script>
+    const logoutButton = document.getElementById("logout_button");
+
+    function checkLogout() {
+      if(confirm("로그아웃 하시겠습니까?") == true) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  </script>
 
   </body>
 </html>
