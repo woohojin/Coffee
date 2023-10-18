@@ -1,5 +1,6 @@
 package controller;
 
+import model.CookieDTO;
 import service.cookieDAO;
 import service.memberDAO;
 import model.Member;
@@ -114,7 +115,7 @@ public class memberController {
     }
 
     @RequestMapping("memberSignInPro")
-    public String memberSignInPro(String memberId, String memberPassword) throws Exception {
+    public String memberSignInPro(String memberId, String memberPassword, String autoLogin) throws Exception {
 
         //Context 생성
         ConfigurableApplicationContext context = new GenericXmlApplicationContext();
@@ -141,30 +142,30 @@ public class memberController {
                 url = "/board/main";
                 msg = memberId + "님이 로그인 하였습니다.";
 
-                String encryptKey = mem.getMemberId() + keyString;
+                if(autoLogin != null) {
+                    String encryptKey = mem.getMemberId() + keyString;
 
-                String token = sha256.encrypt(encryptKey);
+                    String token = sha256.encrypt(encryptKey);
 
-                int num = cookieDao.cookieInsert(memberId, token);
+                    int num = cookieDao.cookieInsert(memberId, token);
 
-                if(num > 0) {
-                    Cookie cookieId = new Cookie("memberId", memberId);
-                    Cookie cookieToken = new Cookie("token", token);
-                    cookieId.setMaxAge(1209600); // 1209600초 = 14일
-                    cookieId.setPath("/");
-                    cookieToken.setMaxAge(1209600);
-                    cookieToken.setPath("/");
-                    response.addCookie(cookieId);
-                    response.addCookie(cookieToken);
-                } else {
-                    System.out.println("Failed to Save Cookie for AutoLogin");
+                    if(num > 0) {
+                        Cookie cookieId = new Cookie("memberId", memberId);
+                        Cookie cookieToken = new Cookie("token", token);
+                        cookieId.setMaxAge(60 * 60 * 24 * 30); // 60 * 60 * 24 * 30 == 30days
+                        cookieId.setPath("/");
+                        cookieToken.setMaxAge(60 * 60 * 24 * 30);
+                        cookieToken.setPath("/");
+                        response.addCookie(cookieId);
+                        response.addCookie(cookieToken);
+                    }
                 }
             } else {
                 msg = "비밀번호가 틀립니다.";
                 url = "/member/memberSignIn";
             }
         } else {
-            msg = "존재하지 않는 회원입니다.";
+            msg = "존재하지 않는 아이디입니다.";
             url = "/member/memberSignIn";
         }
 
@@ -176,16 +177,21 @@ public class memberController {
 
     @RequestMapping("memberLogout")
     public String memberLogout() throws Exception {
+        String memberId = (String) session.getAttribute("memberId");
         session.invalidate();
 
         Cookie cookieId = new Cookie("memberId", null);
         Cookie cookieToken = new Cookie("token", null);
         cookieId.setMaxAge(0); // 0초 = 쿠키 삭제
+        cookieId.setPath("/");
         cookieToken.setMaxAge(0);
+        cookieToken.setPath("/");
         response.addCookie(cookieId);
         response.addCookie(cookieToken);
 
-        String msg = "회원 로그아웃 되었습니다.";
+        int num = cookieDao.cookieDelete(memberId);
+
+        String msg = "로그아웃 되었습니다.";
         String url = "/board/main";
 
         request.setAttribute("msg", msg);

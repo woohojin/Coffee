@@ -30,4 +30,9 @@ public class cookieDAO {
         return cookie;
     }
 
+    public int cookieDelete(String memberId) {
+        int num = session.delete(NS + "cookieDelete", memberId);
+        return num;
+    }
+
 }

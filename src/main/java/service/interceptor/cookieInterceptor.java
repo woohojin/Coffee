@@ -40,7 +40,6 @@ public class cookieInterceptor implements HandlerInterceptor {
         for(Cookie cookie: cookies) {
             if(cookie.getName().equals("memberId")) {
                 memberCookieId = cookie.getValue();
-                System.out.println(memberCookieId);
                 member = memberDao.memberSelectOne(memberCookieId);
                 if(member != null) {
                     memberId = member.getMemberId();

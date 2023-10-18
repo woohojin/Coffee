@@ -28,8 +28,8 @@
                     />
                 </li>
                 <li>
-                    <label for="remember_me">Remember Me:</label>
-                    <input type="checkbox" id="remember_me" name="remember_me" />
+                    <label for="auto_login">자동 로그인</label>
+                    <input type="checkbox" id="auto_login" name="autoLogin" value="0" />
                 </li>
             </ul>
         </div>
