@@ -8,6 +8,7 @@
 
         <typeAlias type="model.Product" alias="product" />
         <typeAlias type="model.Member" alias="member" />
+        <typeAlias type="model.CookieDTO" alias="cookie" />
 
     </typeAliases>
 
@@ -15,6 +16,7 @@
 
         <mapper resource="mybatis/ProductMapper.xml"/>
         <mapper resource="mybatis/MemberMapper.xml"/>
+        <mapper resource="mybatis/CookieMapper.xml"/>
 
     </mappers>
 

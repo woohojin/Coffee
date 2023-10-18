@@ -56,11 +56,19 @@
     </bean>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:application.properties" />
-    </bean>
-
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="classpath:log4j.properties" />
     </bean>
+
+    <mvc:interceptors>
+
+        <mvc:interceptor>
+
+            <mvc:mapping path="/**" />
+
+            <bean class="service.interceptor.cookieInterceptor" />
+
+        </mvc:interceptor>
+
+    </mvc:interceptors>
 
 </beans>

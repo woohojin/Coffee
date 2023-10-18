@@ -1,25 +1,30 @@
 package controller;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
+import service.cookieDAO;
 import service.memberDAO;
 import model.Member;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.servlet.ServletContext;
-import javax.inject.Inject;
-import javax.sql.DataSource;
-
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.MutablePropertySources;
+import org.springframework.core.io.support.ResourcePropertySource;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 @Controller
 @RequestMapping("/member/")
@@ -32,21 +37,44 @@ public class memberController {
     memberDAO memberDao;
 
     @Autowired
+    cookieDAO cookieDao;
+
+    @Autowired
     private UserDetailsService userDetailsService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     HttpServletRequest request;
+    HttpServletResponse response;
     Model m;
     HttpSession session;
-    ServletContext application;
 
     @ModelAttribute
-    void init(HttpServletRequest request, Model m) {
+    void init(HttpServletRequest request, Model m, HttpServletResponse response) {
         this.request = request;
         this.m = m;
         this.session = request.getSession();
+        this.response = response;
+    }
+
+    public static class SHA256 {
+
+        public String encrypt(String text) throws NoSuchAlgorithmException {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(text.getBytes());
+
+            return bytesToHex(md.digest());
+        }
+
+        private String bytesToHex(byte[] bytes) {
+            StringBuilder builder = new StringBuilder();
+            for (byte b : bytes) {
+                builder.append(String.format("%02x", b));
+            }
+            return builder.toString();
+        }
+
     }
 
     @RequestMapping("memberSignUp")
@@ -88,18 +116,49 @@ public class memberController {
     @RequestMapping("memberSignInPro")
     public String memberSignInPro(String memberId, String memberPassword) throws Exception {
 
+        //Context 생성
+        ConfigurableApplicationContext context = new GenericXmlApplicationContext();
+        //Environment 생성
+        ConfigurableEnvironment environment = context.getEnvironment();
+        //PropertySource 다 가져오기
+        MutablePropertySources propertySources = environment.getPropertySources();
+
+        propertySources.addLast(new ResourcePropertySource("classpath:application.properties"));
+
+        String keyString = environment.getProperty("CookieLogin");
+
+        SHA256 sha256 = new SHA256();
+
         String msg = "존재하지 않는 회원입니다.";
         String url = "/member/memberSignIn";
 
         Member mem = memberDao.memberSelectOne(memberId);
 
-
         if (mem != null) {
             if (passwordEncoder.matches(memberPassword, mem.getMemberPassword())) {
                 session.setAttribute("memberId", memberId);
-                // 사용자 권한에 따라 페이지를 리디렉션할 수 있습니다.
-                    url = "/board/main";
+
+                url = "/board/main";
                 msg = memberId + "님이 로그인 하였습니다.";
+
+                String encryptKey = mem.getMemberId() + keyString;
+
+                String token = sha256.encrypt(encryptKey);
+
+                int num = cookieDao.cookieInsert(memberId, token);
+
+                if(num > 0) {
+                    Cookie cookieId = new Cookie("memberId", memberId);
+                    Cookie cookieToken = new Cookie("token", token);
+                    cookieId.setMaxAge(1209600); // 1209600초 = 14일
+                    cookieId.setPath("/");
+                    cookieToken.setMaxAge(1209600);
+                    cookieToken.setPath("/");
+                    response.addCookie(cookieId);
+                    response.addCookie(cookieToken);
+                } else {
+                    System.out.println("Failed to Save Cookie for AutoLogin");
+                }
             } else {
                 msg = "비밀번호가 틀립니다.";
                 url = "/member/memberSignIn";
@@ -117,8 +176,22 @@ public class memberController {
 
     @RequestMapping("memberLogout")
     public String memberLogout() throws Exception {
-        session.invalidate(); // 세션 무효화
-        return "redirect:/board/main"; // 로그아웃 후 이동할 URL
+        session.invalidate();
+
+        Cookie cookieId = new Cookie("memberId", null);
+        Cookie cookieToken = new Cookie("token", null);
+        cookieId.setMaxAge(0); // 0초 = 쿠키 삭제
+        cookieToken.setMaxAge(0);
+        response.addCookie(cookieId);
+        response.addCookie(cookieToken);
+
+        String msg = "회원 로그아웃 되었습니다.";
+        String url = "/board/main";
+
+        request.setAttribute("msg", msg);
+        request.setAttribute("url", url);
+
+        return "alert";
     }
 
 }

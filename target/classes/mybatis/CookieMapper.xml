@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cookie">
+    <resultMap type="cookie" id="cookieMap">
+        <id column="member_id" property="memberId" />
+        <id column="cookie_token" property="cookieToken" />
+    </resultMap>
+
+    <insert id="cookieInsert" parameterType="cookie">
+        insert into cookie values (#{memberId}, #{token})
+    </insert>
+
+    <select id="cookieSelectOne" parameterType="String" resultMap="cookieMap">
+        select * from cookie where member_id = #{memberId}
+    </select>
+
+    <delete id="cookieDelete" parameterType="String">
+        delete from cookie where member_id = #{memberId}
+    </delete>
+
+
+</mapper>

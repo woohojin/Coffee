@@ -23,19 +23,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Member member = sqlSession.selectOne("member.memberSelectOne", username);
 
-        if ("admin".equals(username)) {
-            // 하드 코딩된 관리자 계정
-            return User.withUsername("admin")
-                    .password(member.getMemberPassword())
-                    .roles("ADMIN")
-                    .build();
-        } else {
-            return User.withUsername(member.getMemberId())
-                    .password(member.getMemberPassword())
-                    .disabled(false)
-                    .roles("USER")
-                    .build();
-        }
-
+        return User.withUsername(member.getMemberId())
+                .password(member.getMemberPassword())
+                .disabled(false)
+                .roles("USER")
+                .build();
     }
 }
