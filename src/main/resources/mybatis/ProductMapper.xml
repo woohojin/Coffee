@@ -49,4 +49,8 @@
 
     </select>
 
+    <select id="productSelectOne" parameterType="String" resultMap="productMap">
+        select * from product where product_code =  #{productCode}
+    </select>
+
 </mapper>

@@ -116,6 +116,14 @@ public class mainController {
         return "board/product/productBoard";
     }
 
+    @RequestMapping("productDetail")
+    public String productDetail(String productCode) throws Exception {
+        Product product = productDao.productSelectOne(productCode);
+        request.setAttribute("product", product);
+
+        return "/board/product/productDetailBoard";
+    }
+
     @RequestMapping("productSearch")
     public String productSearch() throws Exception {
 

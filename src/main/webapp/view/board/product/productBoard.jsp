@@ -20,7 +20,7 @@
                 <c:if test="${requestScope.productSearchCount != 0}">
                   <c:forEach var="p" items="${ list }">
                     <li>
-                      <a href="${ pageContext.request.contextPath }/board/product?productCode=${ p.productCode }">
+                      <a href="${ pageContext.request.contextPath }/board/productDetail?productCode=${ p.productCode }">
                         <img src="${ pageContext.request.contextPath }/view/image/1.jpg" alt="" />
                       </a>
                       <div>

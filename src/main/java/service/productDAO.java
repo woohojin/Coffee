@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
+import model.Member;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -59,6 +60,11 @@ public class productDAO {
         map.put("searchText", searchText);
         List<Product> list = session.selectList(NS + "productSearchList", map);
         return list;
+    }
+
+    public Product productSelectOne(String productCode) {
+        Product product = session.selectOne(NS + "productSelectOne", productCode);
+        return product;
     }
 
 }
