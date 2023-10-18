@@ -6,9 +6,8 @@
 <html lang="en">
   <body>
     <main>
-      <div class="product_wrap">
-        <div class="product">
-          <ul>
+      <div class="product_detail_wrap">
+        <div class="product_detail">
             <c:choose>
               <c:when test="${requestScope.memberTier == '0'}">
                 <p>제품을 열람 할 권한이 부족합니다.</p>
@@ -19,12 +18,10 @@
                 <div>
                     <img src="${ pageContext.request.contextPath }/view/image/1.jpg" alt="" />
                 </div>
+                <h1>${ product.productName }</h1>
                 <ul>
                   <li>
-                    <p>${ product.productName }</p>
-                  </li>
-                  <li>
-                      <p>${ product.productPrice }원</p>
+                    <p>${ product.productPrice }원</p>
                   </li>
                   <li>
                     <p>${ product.productCountry }</p>
@@ -34,11 +31,10 @@
                   </li>
                   <li>
                     <p>${ product.productCompany }</p>
-                  </li
+                  </li>
                 </ul>
               </c:when>
             </c:choose>
-          </ul>
         </div>
       </div>
     </main>

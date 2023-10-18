@@ -28,3 +28,13 @@
   width: 100%;
   height: 200px;
 }
+
+.product_detail_wrap {
+  width: 100vw;
+}
+.product_detail {
+  display: flex;
+}
+.product_detail ul li {
+  float: none;
+}

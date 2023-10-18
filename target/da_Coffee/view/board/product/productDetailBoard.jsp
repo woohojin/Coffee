@@ -6,9 +6,8 @@
 <html lang="en">
   <body>
     <main>
-      <div class="product_wrap">
-        <div class="product">
-          <ul>
+      <div class="product_detail_wrap">
+        <div class="product_detail">
             <c:choose>
               <c:when test="${requestScope.memberTier == '0'}">
                 <p>제품을 열람 할 권한이 부족합니다.</p>
@@ -34,11 +33,10 @@
                   </li>
                   <li>
                     <p>${ product.productCompany }</p>
-                  </li
+                  </li>
                 </ul>
               </c:when>
             </c:choose>
-          </ul>
         </div>
       </div>
     </main>
