@@ -5,34 +5,21 @@
 <head>
     <meta charset="UTF-8" />
     <title>DaCOFFEE <sitemesh:write property='title'/></title>
-    <link
-      rel="stylesheet"
-      href="${ pageContext.request.contextPath }/view/css/style.css"
-    />
-    <link
-      rel="stylesheet"
-      href="${ pageContext.request.contextPath }/view/css/board.css"
-    />
-    <link
-      rel="stylesheet"
-      href="${ pageContext.request.contextPath }/view/css/header.css"
-    />
-    <link
-      rel="stylesheet"
-      href="${ pageContext.request.contextPath }/view/css/form.css"
-    />
-    <link
-      rel="stylesheet"
-      href="${ pageContext.request.contextPath }/view/css/reset.css"
-    />
-    <link
-      rel="stylesheet"
-      href="${ pageContext.request.contextPath }/view/css/font.css"
-    />
-    <%@ include file="/common/head.jsp" %>
-    <sitemesh:write property="head" />
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/reset.css" />
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/font.css" />
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/style.css" />
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/header.css" />
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/board.css" />
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/form.css" />
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="${ pageContext.request.contextPath }/view/js/daumAddress.js"></script>
+    <script src="${ pageContext.request.contextPath }/view/js/searchSubmit.js"></script>
+    <script src="${ pageContext.request.contextPath }/view/js/slider.js"></script>
+    <script src="${ pageContext.request.contextPath }/view/js/imageUpload.js"></script>
+    <script src="${ pageContext.request.contextPath }/view/js/signUpFormRequirement.js"></script>
 </head>
 <body>
+<%@ include file="/common/head.jsp" %>
 <sitemesh:write property="body" />
 
 <%@ include file="/common/footer.jsp" %>

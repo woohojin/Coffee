@@ -15,22 +15,22 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri =
         <div class="product_form">
           <ul>
             <li>
-              <label for="member_id">¾ÆÀÌµğ</label>
+              <label for="member_id">ì•„ì´ë””</label>
               <input
                 name="memberId"
                 id="member_id"
                 type="text"
-                placeholder="4ÀÚ¸® ÀÌ»óÀÇ ¾ÆÀÌµğ¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä."
+                placeholder="4ìë¦¬ ì´ìƒì˜ ì•„ì´ë””ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”."
                 minlength="4"
                 required
               />
             </li>
             <li>
-              <label for="member_name">ÀÌ¸§</label>
+              <label for="member_name">ì´ë¦„</label>
               <input name="memberName" id="member_name" type="text" required />
             </li>
             <li>
-              <label for="member_company_name">È¸»ç¸í</label>
+              <label for="member_company_name">íšŒì‚¬ëª…</label>
               <input
                 name="memberCompanyName"
                 id="member_company_name"
@@ -39,58 +39,58 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri =
               />
             </li>
             <li>
-              <label for="member_password">ºñ¹Ğ¹øÈ£</label>
+              <label for="member_password">ë¹„ë°€ë²ˆí˜¸</label>
               <input
                 name="memberPassword"
                 id="member_password"
                 type="password"
-                placeholder="8ÀÚ¸® ÀÌ»óÀÇ ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØ ÁÖ¼¼¿ä"
+                placeholder="8ìë¦¬ ì´ìƒì˜ ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ ì£¼ì„¸ìš”"
                 minlength="8"
                 required
               />
             </li>
             <li>
-              <label for="member_password_check">ºñ¹Ğ¹øÈ£ È®ÀÎ</label>
+              <label for="member_password_check">ë¹„ë°€ë²ˆí˜¸ í™•ì¸</label>
               <input
                 name="memberPasswordCheck"
                 id="member_password_check"
                 type="password"
-                placeholder="8ÀÚ¸® ÀÌ»óÀÇ ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØ ÁÖ¼¼¿ä"
+                placeholder="8ìë¦¬ ì´ìƒì˜ ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ ì£¼ì„¸ìš”"
                 minlength="8"
                 required
               />
             </li>
             <li>
-              <label for="member_tel">¿¬¶ôÃ³</label>
+              <label for="member_tel">ì—°ë½ì²˜</label>
               <input
                 name="memberTel"
                 id="member_tel"
                 type="tel"
                 maxlength="11"
-                placeholder="¿¹) 01012345678"
+                placeholder="ì˜ˆ) 01012345678"
                 oninput="maxLengthCheck(this)"
                 required
               />
             </li>
             <li>
-              <label for="member_company_tel">È¸»ç ¿¬¶ôÃ³</label>
+              <label for="member_company_tel">íšŒì‚¬ ì—°ë½ì²˜</label>
               <input
                 name="memberCompanyTel"
                 id="member_company_tel"
                 type="tel"
                 maxlength="11"
-                placeholder="¿¹) 01012345678"
+                placeholder="ì˜ˆ) 01012345678"
                 oninput="maxLengthCheck(this)"
                 required
               />
             </li>
             <li class="member_address_wrap">
-              <label for="member_address">ÁÖ¼Ò</label>
+              <label for="member_address">ì£¼ì†Œ</label>
               <input
                 name="memberAddress"
                 id="member_address"
                 type="text"
-                placeholder="µµ·Î¸íÁÖ¼Ò"
+                placeholder="ë„ë¡œëª…ì£¼ì†Œ"
                 readonly
                 required
               />
@@ -98,7 +98,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri =
                 <input
                   class="address_btn"
                   type="button"
-                  value="ÁÖ¼Ò Ã£±â"
+                  value="ì£¼ì†Œ ì°¾ê¸°"
                   onclick="execAddress()"
                 />
               </div>
@@ -108,17 +108,17 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri =
                 name="memberDetailAddress"
                 id="member_detail_address"
                 type="text"
-                placeholder="»ó¼¼ÁÖ¼Ò"
+                placeholder="ìƒì„¸ì£¼ì†Œ"
                 required
               />
             </li>
             <li class="member_delivery_address_wrap">
-              <label for="member_delivery_address">¹è¼ÛÁö</label>
+              <label for="member_delivery_address">ë°°ì†¡ì§€</label>
               <input
                 name="memberDeliveryAddress"
                 id="member_delivery_address"
                 type="text"
-                placeholder="µµ·Î¸íÁÖ¼Ò"
+                placeholder="ë„ë¡œëª…ì£¼ì†Œ"
                 readonly
                 required
               />
@@ -126,7 +126,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri =
                 <input
                   class="address_btn"
                   type="button"
-                  value="ÁÖ¼Ò Ã£±â"
+                  value="ì£¼ì†Œ ì°¾ê¸°"
                   onclick="execDeliveryAddress()"
                 />
               </div>
@@ -136,12 +136,12 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri =
                 name="memberDetailDeliveryAddress"
                 id="member_detail_delivery_address"
                 type="text"
-                placeholder="»ó¼¼ÁÖ¼Ò"
+                placeholder="ìƒì„¸ì£¼ì†Œ"
                 required
               />
             </li>
             <li>
-              <label for="member_email">ÀÌ¸ŞÀÏ</label>
+              <label for="member_email">ì´ë©”ì¼</label>
               <input
                 name="memberEmail"
                 id="member_email"
@@ -151,7 +151,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri =
             </li>
             <li>
               <div class="file_input_wrap">
-                <label for="file">»ç¾÷ÀÚµî·ÏÁõ »çº»</label>
+                <label for="file">ì‚¬ì—…ìë“±ë¡ì¦ ì‚¬ë³¸</label>
                 <input
                   name="memberFile"
                   id="file"
@@ -161,12 +161,12 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri =
                   required
                 />
                 <div class="input_btn">
-                  <a href="javascript:win_upload()">»çÁø ³Ö±â</a>
+                  <a href="" onclick="imageUpload()">ì‚¬ì§„ ë„£ê¸°</a>
                 </div>
               </div>
             </li>
             <li>
-              <label for="member_fran_code">°¡¸ÍÁ¡ÄÚµå</label>
+              <label for="member_fran_code">ê°€ë§¹ì ì½”ë“œ</label>
               <input
                 name="memberFranCode"
                 id="member_fran_code"
@@ -177,7 +177,12 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri =
           </ul>
         </div>
         <div class="submit">
-          <input type="submit" value="È¸¿ø°¡ÀÔ" class="submit_btn" />
+          <input
+            type="submit"
+            value="íšŒì›ê°€ì…"
+            class="submit_btn"
+            onclick="return inputCheck()"
+          />
         </div>
       </form>
     </main>
@@ -190,24 +195,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri =
     </script>
 
     <script>
-      const inputCheck = (form) => {
-        if (form.memberPassword.value == "") {
-          alert("ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
-          form.memberPassword.focus();
-          return false;
-        } else if (
-          form.memberPassword.value != form.memberPasswordCheck.value
-        ) {
-          alert("ºñ¹Ğ¹øÈ£ ¿Í ÀçÀÔ·Â ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù.");
+      const checkPassword = (form) => {
+        if (form.memberPassword.value != form.memberPasswordCheck.value) {
+          alert("ë¹„ë°€ë²ˆí˜¸ì™€ ì¬ì…ë ¥ ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
           form.memberPasswordCheck.value = "";
           form.memberPasswordCheck.focus();
-          return false;
-        } else if (
-          form.memberPassword.value.length < 8 ||
-          form.memberId.value.length < 4
-        ) {
-          alert("¾ÆÀÌµğ ¶Ç´Â ºñ¹Ğ¹øÈ£ÀÇ ÀÚ¸®¼ö¸¦ È®ÀÎÇØÁÖ¼¼¿ä.");
-          form.memberId.focus();
           return false;
         }
         return true;
@@ -217,76 +209,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri =
         if (object.value.length > object.maxLength) {
           object.value = object.value.slice(0, object.maxLength);
         }
-      }
-    </script>
-
-    <script>
-      const memberIdInput = document.getElementById("member_id");
-      const memberNameInput = document.getElementById("member_name");
-      const memberTelInput = document.getElementById("member_tel");
-      const memberCompanyTelInput =
-        document.getElementById("member_company_tel");
-
-      memberIdInput.addEventListener("input", function () {
-        const inputText = this.value;
-        const idInputCheck = inputText.replace(/[^a-zA-Z0-9]/g, "");
-        this.value = idInputCheck;
-        if (inputText !== idInputCheck) {
-          alert("¿µ¾î·Î ÀÔ·ÂÇØÁÖ¼¼¿ä.");
-        }
-      });
-
-      memberNameInput.addEventListener("input", function () {
-        const inputText = this.value;
-        const nameInputCheck = inputText.replace(/[^°¡-ÆR¤¡-¤¾¤¿-¤Ó]/g, "");
-        this.value = nameInputCheck;
-        if (inputText !== nameInputCheck) {
-          alert("ÇÑ±¹¾î·Î ÀÔ·ÂÇØÁÖ¼¼¿ä.");
-        }
-      });
-
-      memberTelInput.addEventListener("input", function () {
-        const inputText = this.value;
-        const numberInputCheck = inputText.replace(/[^0-9]/g, "");
-        this.value = numberInputCheck;
-      });
-      memberCompanyTelInput.addEventListener("input", function () {
-        const inputText = this.value;
-        const numberInputCheck = inputText.replace(/[^0-9]/g, "");
-        this.value = numberInputCheck;
-      });
-    </script>
-
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script>
-      //º» ¿¹Á¦¿¡¼­´Â µµ·Î¸í ÁÖ¼Ò Ç¥±â ¹æ½Ä¿¡ ´ëÇÑ ¹ı·É¿¡ µû¶ó, ³»·Á¿À´Â µ¥ÀÌÅÍ¸¦ Á¶ÇÕÇÏ¿© ¿Ã¹Ù¸¥ ÁÖ¼Ò¸¦ ±¸¼ºÇÏ´Â ¹æ¹ıÀ» ¼³¸íÇÕ´Ï´Ù.
-      function execAddress() {
-        new daum.Postcode({
-          oncomplete: function (data) {
-            // ÆË¾÷¿¡¼­ °Ë»ö°á°ú Ç×¸ñÀ» Å¬¸¯ÇßÀ»¶§ ½ÇÇàÇÒ ÄÚµå¸¦ ÀÛ¼ºÇÏ´Â ºÎºĞ.
-
-            // µµ·Î¸í ÁÖ¼ÒÀÇ ³ëÃâ ±ÔÄ¢¿¡ µû¶ó ÁÖ¼Ò¸¦ Ç¥½ÃÇÑ´Ù.
-            // ³»·Á¿À´Â º¯¼ö°¡ °ªÀÌ ¾ø´Â °æ¿ì¿£ °ø¹é('')°ªÀ» °¡Áö¹Ç·Î, ÀÌ¸¦ Âü°íÇÏ¿© ºĞ±â ÇÑ´Ù.
-            var roadAddr = data.roadAddress; // µµ·Î¸í ÁÖ¼Ò º¯¼ö
-
-            // ¿ìÆí¹øÈ£¿Í ÁÖ¼Ò Á¤º¸¸¦ ÇØ´ç ÇÊµå¿¡ ³Ö´Â´Ù.
-            document.getElementById("member_address").value = roadAddr;
-          },
-        }).open();
-      }
-      function execDeliveryAddress() {
-        new daum.Postcode({
-          oncomplete: function (data) {
-            // ÆË¾÷¿¡¼­ °Ë»ö°á°ú Ç×¸ñÀ» Å¬¸¯ÇßÀ»¶§ ½ÇÇàÇÒ ÄÚµå¸¦ ÀÛ¼ºÇÏ´Â ºÎºĞ.
-
-            // µµ·Î¸í ÁÖ¼ÒÀÇ ³ëÃâ ±ÔÄ¢¿¡ µû¶ó ÁÖ¼Ò¸¦ Ç¥½ÃÇÑ´Ù.
-            // ³»·Á¿À´Â º¯¼ö°¡ °ªÀÌ ¾ø´Â °æ¿ì¿£ °ø¹é('')°ªÀ» °¡Áö¹Ç·Î, ÀÌ¸¦ Âü°íÇÏ¿© ºĞ±â ÇÑ´Ù.
-            var roadAddr = data.roadAddress; // µµ·Î¸í ÁÖ¼Ò º¯¼ö
-
-            // ¿ìÆí¹øÈ£¿Í ÁÖ¼Ò Á¤º¸¸¦ ÇØ´ç ÇÊµå¿¡ ³Ö´Â´Ù.
-            document.getElementById("member_delivery_address").value = roadAddr;
-          },
-        }).open();
       }
     </script>
   </body>

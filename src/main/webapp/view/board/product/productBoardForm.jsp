@@ -2,15 +2,6 @@
          pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri =
   "http://java.sun.com/jsp/jstl/core" %>
 
-<html lang="en">
-<head>
-  <script>
-    function win_upload() {
-      const op = "width=500, height=150, left=50, top=150";
-      open("${pageContext.request.contextPath}/board/fileUploadForm", "", op);
-    }
-  </script>
-</head>
 <body>
 <main>
   <form
@@ -29,7 +20,7 @@
           />
         </div>
         <div class="input_btn">
-          <a href="javascript:win_upload()">사진 넣기</a>
+          <a href="" onclick="imageUpload()">사진 넣기</a>
         </div>
       </div>
     </div>

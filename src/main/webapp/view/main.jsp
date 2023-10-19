@@ -113,8 +113,6 @@
           </ul>
         </div>
       </div>
-      
-      <script src="${ pageContext.request.contextPath }/view/js/slider.js"></script>
     </main>
   </body>
 </html>

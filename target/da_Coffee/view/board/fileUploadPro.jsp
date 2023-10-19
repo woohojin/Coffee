@@ -7,7 +7,7 @@
 	<title>Insert title here</title>
 </head>
 <body>
-<script defer>
+<script>
 	img = opener.document.getElementById("pic");
 	file = opener.document.getElementById("file");
 	if (img != null) {
