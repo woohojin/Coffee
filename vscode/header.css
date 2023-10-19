@@ -1,7 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
 @import "variables.css";
 
-*,
 .hd_gnb_menu li a,
 .hd_lnb li a {
   font-family: "Noto Sans KR", sans-serif;
@@ -26,6 +25,7 @@ header {
 }
 .hd_gnb {
   position: relative;
+  width: 100vw;
   height: 80px;
   align-items: center;
   justify-content: flex-end;
@@ -80,6 +80,7 @@ header {
 .hd_gnb_menu ul {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
 }
 .hd_gnb_menu ul li {
   margin-right: 15px;

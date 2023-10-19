@@ -48,35 +48,40 @@ input::file-selector-button {
 }
 .submit {
   display: inline-flex;
-  width: 282px;
+  width: 318px;
   justify-content: flex-end;
 }
 
 .btn,
 .submit_btn,
-.image_btn a {
+.address_btn,
+.input_btn a {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50px;
+  width: 80px;
   height: 35px;
   border: none;
   border-radius: 25px;
   background-color: var(--mainColor);
   color: white;
   font-size: 14px;
+  cursor: pointer;
 }
-.image_btn {
+.btn {
+  width: 80px;
+  margin-left: 10px;
+}
+.input_btn {
   display: flex;
   justify-content: center;
   width: 100%;
 }
-.image_btn a {
+.input_btn a {
   width: 80px;
 }
 .submit_btn {
   width: 90px;
-  margin-right: 10px;
   cursor: pointer;
 }
 .btn a {
@@ -89,4 +94,25 @@ input::file-selector-button {
 }
 .input_image_form_wrap form input:first-child {
   margin-bottom: 60px;
+}
+
+.file_input_wrap {
+  position: relative;
+}
+
+.file_input_wrap .input_btn {
+  position: absolute;
+  left: 210px;
+  top: -5px;
+}
+
+.member_address_wrap,
+.member_delivery_address_wrap {
+  position: relative;
+}
+.member_address_button,
+.member_delivery_address_button {
+  position: absolute;
+  right: -91px;
+  top: -5px;
 }
