@@ -50,7 +50,7 @@ header {
   display: flex;
   align-items: center;
   border-radius: 25px;
-  background-color: rgba(111, 111, 111, 0.2);
+  background-color: rgba(51, 144, 255, 0.1);
   height: 50px;
   width: 300px;
 }
