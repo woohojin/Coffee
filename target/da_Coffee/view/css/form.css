@@ -46,12 +46,16 @@ input::file-selector-button {
   margin-bottom: 20px;
   float: none;
 }
-.submit {
-  display: inline-flex;
-  width: 318px;
+.signup {
+  display: flex;
+  width: 100%;
+  margin-top: 10px;
   justify-content: flex-end;
 }
-
+.signin {
+  display: flex;
+  justify-content: flex-end;
+}
 .btn,
 .submit_btn,
 .address_btn,
@@ -60,11 +64,10 @@ input::file-selector-button {
   justify-content: center;
   align-items: center;
   width: 80px;
-  height: 35px;
-  border: none;
-  border-radius: 25px;
-  background-color: var(--mainColor);
-  color: white;
+  height: 40px;
+  border: 2px solid var(--mainColor);
+  background-color: initial;
+  color: black;
   font-size: 14px;
   cursor: pointer;
 }
@@ -82,7 +85,8 @@ input::file-selector-button {
 }
 .submit_btn {
   width: 90px;
-  cursor: pointer;
+  background-color: var(--mainColor);
+  color: white;
 }
 .btn a {
   color: white;
@@ -101,9 +105,9 @@ input::file-selector-button {
 }
 
 .file_input_wrap .input_btn {
-  position:absolute;
-  left:210px;
-  top: -5px;
+  position: absolute;
+  left: 226px;
+  top: 0px;
 }
 
 .member_address_wrap,
@@ -114,15 +118,73 @@ input::file-selector-button {
 .member_delivery_address_button {
   position: absolute;
   right: -91px;
-  top: -5px;
+  top: 20px;
 }
-.member_signup_form_wrap {
+.member_address_button {
+  top: 21px;
+}
+.member_signup_form_wrap,
+.member_signin_form_wrap {
   display: flex;
   justify-content: center;
 }
-.member_signup_form {
-  width: 600px;
-  padding: 30px 95px 30px 0;
-  border-radius: 25px;
-  background-color: rgba(51, 144, 255, 0.1);
+/*.member_signup_form,*/
+/*.member_signin_form {*/
+/*  padding: 30px 135px 30px 70px;*/
+/*  border-radius: 25px;*/
+/*  background-color: rgba(51, 144, 255, 0.1);*/
+/*}*/
+.member_signup_form_info,
+.member_signup_form_personal_info{
+  border-top: 2px solid var(--mainColor);
+  padding-top: 20px;
 }
+
+.member_signup_form > p {
+  text-align: left;
+  margin-bottom: 15px;
+  font-weight: bold;
+  font-size: 20px;
+}
+.member_signup_form > p {
+  margin-top: 20px;
+}
+.member_signup_form th,
+.member_signup_form td {
+  padding-bottom: 20px;
+}
+.member_signup_form tr th,
+.member_signup_form tr td {
+  padding-top: 20px;
+}
+.member_signup_form tr {
+  border-bottom: 1px solid rgba(51, 144, 255, 0.5);
+}
+.member_signup_form th {
+  width: 181px;
+  text-align: left;
+  vertical-align: middle;
+  padding-left: 30px;
+  padding-right: 30px;
+  background-color: rgba(250, 250, 250, 1);
+}
+.member_signup_form td {
+  padding-left: 30px;
+}
+.member_signup_form_personal_info tr:first-child td,
+.member_signup_form_personal_info tr:nth-child(2) td {
+  display: flex;
+}
+.member_signup_form_personal_info ul li {
+  float: none;
+  margin-bottom: 10px;
+}
+.member_signup_form input[type="text"],
+.member_signup_form input[type="tel"],
+.member_signup_form input[type="email"],
+.member_signup_form input[type="password"] {
+  width: 350px;
+  height: 40px;
+}
+
+.member_signup_form
