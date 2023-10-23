@@ -50,8 +50,14 @@ body::-webkit-scrollbar-thumb {
 }
 
 main {
-  margin-top: 155px;
+  height: 700px;
+  margin: 200px 0 100px 0;
 }
+#index_page,
+#member_signup_page{
+  height: auto;
+}
+
 .main_slider_wrap {
   height: 648px;
   margin-bottom: 115px;

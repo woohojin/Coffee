@@ -11,38 +11,46 @@
           method="post"
           class="member_signin_form"
         >
-            <div class="product_form">
-                <ul>
-                    <li>
-                        <label for="member_id">아이디</label>
-                        <input
-                          name="memberId"
-                          id="member_id"
-                          class="memberId"
-                          type="text"
-                          required
-                        />
-                    </li>
-                    <li>
-                        <label for="member_password">비밀번호</label>
-                        <input
-                          name="memberPassword"
-                          id="member_password"
-                          class="memberPassword"
-                          type="password"
-                          required
-                        />
-                    </li>
-                    <li>
-                        <label for="auto_login">자동 로그인</label>
-                        <input
-                          type="checkbox"
-                          id="auto_login"
-                          name="autoLogin"
-                          value="0"
-                        />
-                    </li>
-                </ul>
+            <table>
+                <tbody>
+                    <tr>
+                        <th>
+                            <label for="member_id">아이디</label>
+                        </th>
+                        <td>
+                            <input
+                              name="memberId"
+                              id="member_id"
+                              class="memberId"
+                              type="text"
+                              required
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label for="member_password">비밀번호</label>
+                        </th>
+                        <td>
+                            <input
+                              name="memberPassword"
+                              id="member_password"
+                              class="memberPassword"
+                              type="password"
+                              required
+                            />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="autologin_checkbox">
+                <label for="auto_login">자동 로그인</label>
+                <input
+                  type="checkbox"
+                  id="auto_login"
+                  name="autoLogin"
+                  value="0"
+                />
             </div>
             <div class="signin">
                 <input type="submit" value="로그인" class="submit_btn" />

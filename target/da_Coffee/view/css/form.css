@@ -7,9 +7,7 @@
 a {
   text-decoration: none;
 }
-main {
-  margin: 200px 0 100px 0;
-}
+
 form,
 .input_image_form_wrap {
   text-align: center;
@@ -151,11 +149,8 @@ input::file-selector-button {
 }
 .member_signup_form th,
 .member_signup_form td {
-  padding-bottom: 20px;
-}
-.member_signup_form tr th,
-.member_signup_form tr td {
   padding-top: 20px;
+  padding-bottom: 20px;
 }
 .member_signup_form tr {
   border-bottom: 1px solid rgba(51, 144, 255, 0.5);
@@ -185,6 +180,31 @@ input::file-selector-button {
 .member_signup_form input[type="password"] {
   width: 350px;
   height: 40px;
+  border: 1px solid var(--mainColor);
+  border-radius: 5px;
+  padding-left: 10px;
 }
 
-.member_signup_form
+.member_signin_form input[type="text"],
+.member_signin_form input[type="password"] {
+  width: 200px;
+  height: 40px;
+  border: 1px solid var(--mainColor);
+  border-radius: 5px;
+  padding-left: 10px;
+}
+
+.member_signin_form th,
+.member_signin_form td {
+  padding-top: 20px;
+}
+.member_signin_form th {
+  text-align: left;
+  padding-right: 20px;
+}
+
+.autologin_checkbox {
+  display: flex;
+  justify-content: flex-end;
+  margin: 15px 0;
+}

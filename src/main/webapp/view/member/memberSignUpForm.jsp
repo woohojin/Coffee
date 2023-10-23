@@ -5,7 +5,7 @@
 <html lang="en">
 <head> </head>
 <body>
-<main>
+<main id="member_signup_page">
     <div class="member_signup_form_wrap">
         <form
                 action="${ pageContext.request.contextPath }/member/memberSignUpPro"
@@ -41,7 +41,7 @@
                               name="memberName"
                               id="member_name"
                               type="text"
-                              placeholder="한국어만"
+                              placeholder="한국어만 입력 가능합니다."
                               required
                             />
                         </td>

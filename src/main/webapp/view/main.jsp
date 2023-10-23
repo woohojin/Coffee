@@ -2,7 +2,7 @@
          pageEncoding="UTF-8"%>
 <html>
   <body>
-    <main>
+    <main id="index_page">
       <div class="main_slider_wrap">
         <div class="main_slider">
           <ul class="slider">

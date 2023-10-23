@@ -15,7 +15,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.ServletContext;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 
@@ -183,7 +182,7 @@ public class mainController {
 
     @RequestMapping("productBoardForm")
     public String productBoardForm() {
-        return "board/product/productBoardForm";
+        return "productUploadForm";
     }
 
     @RequestMapping("productBoardPro")
