@@ -1,10 +1,4 @@
-<head>
-  <link rel="stylesheet" href="reset.css" />
-  <link rel="stylesheet" href="board.css" />
-  <link rel="stylesheet" href="font.css" />
-  <link rel="stylesheet" href="variables.css" />
-</head>
-<html lang="en">
+
 <body>
 <main>
   <div class="product_detail_wrap">
@@ -299,4 +293,4 @@
   </ul>
 </main>
 </body>
-</html>
+

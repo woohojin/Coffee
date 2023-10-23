@@ -2,35 +2,6 @@
 @import "./animations/keyframes.css";
 @import "variables.css";
 
-* {
-  box-sizing: border-box;
-}
-*,
-.main_product h1,
-footer p {
-  font-family: "Noto Sans KR", sans-serif;
-}
-body {
-  overflow-x: hidden;
-}
-a {
-  color: #666;
-  text-decoration: none;
-}
-li {
-  float: left;
-}
-input:focus {
-  outline: none;
-}
-
-body::-webkit-scrollbar {
-  width: 12px;
-}
-body::-webkit-scrollbar-thumb {
-  background: var(--mainColor);
-  border-radius: 25px;
-}
 .fade_in {
   animation: fadeIn 0.5s linear forwards;
 }
@@ -41,14 +12,27 @@ body::-webkit-scrollbar-thumb {
   background-color: rgba(131, 131, 131, 100);
 }
 
-.main_slider,
-.slider,
-.main_premium_product,
-.da_footer {
-  display: flex;
-  width: 100%;
+* {
+  box-sizing: border-box;
+  font-family: "Noto Sans KR", sans-serif;
 }
-
+body {
+  overflow-x: hidden;
+}
+body::-webkit-scrollbar {
+  width: 12px;
+}
+body::-webkit-scrollbar-thumb {
+  background: var(--mainColor);
+  border-radius: 25px;
+}
+a {
+  color: #666;
+  text-decoration: none;
+}
+li {
+  float: left;
+}
 main {
   height: 700px;
   margin: 200px 0 100px 0;
@@ -56,6 +40,17 @@ main {
 #index_page,
 #member_signup_page{
   height: auto;
+}
+input:focus {
+  outline: none;
+}
+
+.main_slider,
+.slider,
+.main_premium_product,
+.da_footer {
+  display: flex;
+  width: 100%;
 }
 
 .main_slider_wrap {
@@ -111,21 +106,4 @@ main {
   display: block;
   font-size: 20px;
   margin-bottom: 15px;
-}
-footer {
-  background-color: var(--mainColor);
-  height: 200px;
-}
-footer div {
-  height: 100%;
-  align-items: center;
-}
-footer li {
-  float: none;
-  margin-bottom: 10px;
-}
-footer p {
-  font-size: 13px;
-  color: white;
-  margin-left: 20px;
 }

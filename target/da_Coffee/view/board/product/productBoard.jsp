@@ -2,7 +2,6 @@
          pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri =
   "http://java.sun.com/jsp/jstl/core" %>
 
-<html lang="en">
 <body>
 <main>
   <div class="product_wrap">
@@ -136,4 +135,4 @@
   }
 </script>
 </body>
-</html>
+

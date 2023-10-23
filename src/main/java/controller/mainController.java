@@ -180,16 +180,16 @@ public class mainController {
         return "board/product/productBoard";
     }
 
-    @RequestMapping("productBoardForm")
-    public String productBoardForm() {
-        return "productUploadForm";
+    @RequestMapping("productUploadForm")
+    public String productUploadForm() {
+        return "/board/product/productUploadForm";
     }
 
-    @RequestMapping("productBoardPro")
-    public String productBoardPro(Product product) throws Exception {
+    @RequestMapping("productUploadPro")
+    public String productUploadPro(Product product) throws Exception {
 
         String msg = "게시물 등록 실패";
-        String url = "/board/product/productBoardForm";
+        String url = "/board/product/productUploadForm";
 
         int num = productDao.productInsert(product);
 

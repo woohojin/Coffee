@@ -3,7 +3,7 @@
     <%@ taglib prefix="c" uri = "http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
   <body>
     <header>
           <div id="hd_wrap">
@@ -133,7 +133,7 @@
                     >
                   </li>
                   <li>
-                    <a href="${ pageContext.request.contextPath }/board/productBoardForm">이미지 테스트</a>
+                    <a href="${ pageContext.request.contextPath }/board/productUploadForm">이미지 테스트</a>
                   </li>
                 </ul>
               </div>

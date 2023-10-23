@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
-<html>
+
   <body>
     <main id="index_page">
       <div class="main_slider_wrap">
@@ -115,4 +115,3 @@
       </div>
     </main>
   </body>
-</html>

@@ -2,8 +2,6 @@
          pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri =
   "http://java.sun.com/jsp/jstl/core" %>
 
-<html lang="en">
-<head> </head>
 <body>
 <main id="member_signup_page">
     <div class="member_signup_form_wrap">
@@ -98,7 +96,7 @@
                                 />
                             </li>
                             <div class="member_address_button">
-                                <button class="address_btn" type="button" onclick="execAddress()">
+                                <button class="input_btn" type="button" onclick="execAddress()">
                                     주소 찾기
                                 </button>
                             </div>
@@ -131,7 +129,7 @@
                                 />
                             </li>
                             <div class="member_delivery_address_button">
-                                <button class="address_btn" type="button" onclick="execDeliveryAddress()">
+                                <button class="input_btn" type="button" onclick="execDeliveryAddress()">
                                     주소 찾기
                                 </button>
                                 
@@ -309,4 +307,3 @@
     });
 </script>
 </body>
-</html>

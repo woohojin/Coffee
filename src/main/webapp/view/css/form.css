@@ -1,13 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
 @import "variables.css";
 
-* {
-  font-family: "Noto Sans KR", sans-serif;
-}
-a {
-  text-decoration: none;
-}
-
 form,
 .input_image_form_wrap {
   text-align: center;
@@ -33,10 +26,18 @@ input::file-selector-button {
 }
 .input_image {
   position: relative;
-  width: 100%;
 }
 .input_image img {
   width: 282px;
+}
+.image_wrap {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.image_wrap .input_btn {
+  margin-top: 20px;
 }
 
 .product_form ul li {
@@ -44,20 +45,9 @@ input::file-selector-button {
   margin-bottom: 20px;
   float: none;
 }
-.signup {
-  display: flex;
-  width: 100%;
-  margin-top: 10px;
-  justify-content: flex-end;
-}
-.signin {
-  display: flex;
-  justify-content: flex-end;
-}
 .btn,
 .submit_btn,
-.address_btn,
-.input_btn a {
+.input_btn {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -69,26 +59,31 @@ input::file-selector-button {
   font-size: 14px;
   cursor: pointer;
 }
-.btn {
-  width: 80px;
-  margin-left: 10px;
-}
-.input_btn {
+.signin,
+.signup,
+.submit {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
+}
+.signup {
   width: 100%;
+  margin-top: 10px;
 }
-.input_btn a {
-  width: 80px;
-}
-.submit_btn {
-  width: 90px;
+.submit_btn,
+.btn {
   background-color: var(--mainColor);
   color: white;
+}
+.btn {
+  margin-left: 10px;
 }
 .btn a {
   color: white;
 }
+.input_btn a {
+  width: 80px;
+}
+
 .input_image_form_wrap form {
   display: inline-flex;
   flex-direction: column;
@@ -101,10 +96,9 @@ input::file-selector-button {
 .file_input_wrap{
   position: relative;
 }
-
 .file_input_wrap .input_btn {
   position: absolute;
-  left: 226px;
+  right: -90px;
   top: 0px;
 }
 
@@ -126,37 +120,48 @@ input::file-selector-button {
   display: flex;
   justify-content: center;
 }
-/*.member_signup_form,*/
-/*.member_signin_form {*/
-/*  padding: 30px 135px 30px 70px;*/
-/*  border-radius: 25px;*/
-/*  background-color: rgba(51, 144, 255, 0.1);*/
-/*}*/
+.member_signup_form input[type="text"],
+.member_signup_form input[type="tel"],
+.member_signup_form input[type="email"],
+.member_signup_form input[type="password"],
+.member_signin_form input[type="text"],
+.member_signin_form input[type="password"] {
+  width: 350px;
+  height: 40px;
+  border: 1px solid var(--mainColor);
+  border-radius: 5px;
+  padding-left: 10px;
+}
+.member_signin_form input[type="text"],
+.member_signin_form input[type="password"] {
+  width: 200px;
+}
 .member_signup_form_info,
 .member_signup_form_personal_info{
   border-top: 2px solid var(--mainColor);
   padding-top: 20px;
 }
-
 .member_signup_form > p {
   text-align: left;
   margin-bottom: 15px;
   font-weight: bold;
   font-size: 20px;
-}
-.member_signup_form > p {
-  margin-top: 20px;
+  margin-top: 30px;
 }
 .member_signup_form th,
 .member_signup_form td {
   padding-top: 20px;
   padding-bottom: 20px;
 }
+.member_signin_form th,
+.member_signin_form td {
+  padding-top: 20px;
+}
 .member_signup_form tr {
   border-bottom: 1px solid rgba(51, 144, 255, 0.5);
 }
 .member_signup_form th {
-  width: 181px;
+  width: 185px;
   text-align: left;
   vertical-align: middle;
   padding-left: 30px;
@@ -174,35 +179,10 @@ input::file-selector-button {
   float: none;
   margin-bottom: 10px;
 }
-.member_signup_form input[type="text"],
-.member_signup_form input[type="tel"],
-.member_signup_form input[type="email"],
-.member_signup_form input[type="password"] {
-  width: 350px;
-  height: 40px;
-  border: 1px solid var(--mainColor);
-  border-radius: 5px;
-  padding-left: 10px;
-}
-
-.member_signin_form input[type="text"],
-.member_signin_form input[type="password"] {
-  width: 200px;
-  height: 40px;
-  border: 1px solid var(--mainColor);
-  border-radius: 5px;
-  padding-left: 10px;
-}
-
-.member_signin_form th,
-.member_signin_form td {
-  padding-top: 20px;
-}
 .member_signin_form th {
   text-align: left;
   padding-right: 20px;
 }
-
 .autologin_checkbox {
   display: flex;
   justify-content: flex-end;

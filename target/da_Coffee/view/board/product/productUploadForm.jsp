@@ -12,15 +12,15 @@
     <div class="input_image_wrap">
       <div class="input_image">
         <input type="hidden" name="productFile" id="file" value="" />
-        <div class="input_image_wrap">
+        <div class="image_wrap">
           <img
             src="${ pageContext.request.contextPath }/view/image/video_cover_pattern.png"
             alt="img"
             id="pic"
           />
-        </div>
-        <div class="input_btn">
-          <a href="" onclick="imageUpload()">사진 넣기</a>
+          <div class="input_btn">
+            <a href="" onclick="imageUpload()">사진 넣기</a>
+          </div>
         </div>
       </div>
     </div>
@@ -99,15 +99,17 @@
             type="text"
           />
         </li>
+        <li>
+          <div class="submit">
+            <input type="submit" value="게시물 작성" class="submit_btn" />
+            <div class="btn">
+              <a href="">목록</a>
+            </div>
+          </div>
+        </li>
       </ul>
     </div>
-    <div class="submit">
-      <input type="submit" value="게시물 작성" class="submit_btn" />
-      <div class="btn">
-        <a href="">목록</a>
-      </div>
-    </div>
+    
   </form>
 </main>
 </body>
-</html>

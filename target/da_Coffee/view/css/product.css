@@ -1,15 +1,8 @@
 @import "./variables.css";
 
-* {
-  box-sizing: border-box;
-}
 .product {
   display: flex;
   width: 100%;
-}
-.product_wrap {
-  height: 1000px;
-  margin-top: 100px;
 }
 .product_wrap h1 {
   display: flex;
