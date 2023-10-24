@@ -15,7 +15,7 @@
       method="post"
       enctype="multipart/form-data"
     >
-        <input type="file" name="file" value="" />
+        <input type="file" name="files" multiple="multiple" />
         <input class="submit_btn" type="submit" value="파일 등록" />
     </form>
 </div>

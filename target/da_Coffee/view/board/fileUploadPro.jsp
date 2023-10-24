@@ -9,13 +9,13 @@
 <body>
 <script>
 	img = opener.document.getElementById("pic");
-	file = opener.document.getElementById("file");
+	files = opener.document.getElementById("files");
 	if (img != null) {
 		img.src =
 			"${ pageContext.request.contextPath }/view/board/files/${filename}"; // 업로드 된 이미지 회원가입 화면에 출력
 	}
-	if (file != null) {
-		file.value = "${filename}";
+	if (files != null) {
+		files.value = "${filename}";
 	}
 	const WinClose = (() => {
 		window.open("", "_self").close();

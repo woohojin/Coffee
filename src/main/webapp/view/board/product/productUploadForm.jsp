@@ -5,13 +5,13 @@
 <body>
 <main>
   <form
-    action="${ pageContext.request.contextPath }/board/productBoardPro"
+    action="${ pageContext.request.contextPath }/board/productUploadPro"
     name="f"
     method="post"
   >
     <div class="input_image_wrap">
       <div class="input_image">
-        <input type="hidden" name="productFile" id="file" value="" />
+        <input type="hidden" multiple="multiple" name="productFile" id="files" value="" />
         <div class="image_wrap">
           <img
             src="${ pageContext.request.contextPath }/view/image/video_cover_pattern.png"
@@ -19,7 +19,7 @@
             id="pic"
           />
           <div class="input_btn">
-            <a href="" onclick="imageUpload()">사진 넣기</a>
+            <a href="javascript:void(window.open('../board/fileUploadForm', '_blank','width=500, height=150, left=50, top=150'))">사진 넣기</a>
           </div>
         </div>
       </div>
@@ -112,11 +112,4 @@
     
   </form>
 </main>
-<script>
-  function imageUpload() {
-    const op = "width=500, height=150, left=50, top=150";
-    open("../board/fileUploadForm", "", op);
-  }
-
-</script>
 </body>

@@ -1,16 +1,15 @@
 package controller;
 
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import service.productDAO;
 import service.memberDAO;
 import model.Product;
 import model.Member;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.sql.Connection;
-import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -188,8 +187,8 @@ public class mainController {
     @RequestMapping("productUploadPro")
     public String productUploadPro(Product product) throws Exception {
 
-        String msg = "게시물 등록 실패";
-        String url = "/board/product/productUploadForm";
+        String msg;
+        String url;
 
         int num = productDao.productInsert(product);
 
@@ -197,6 +196,9 @@ public class mainController {
             msg = "게시물을 등록하였습니다.";
             url = "/board/main";
         }
+
+        msg = "게시물 등록 실패";
+        url = "/board/product/productUploadForm";
 
         request.setAttribute("msg", msg);
         request.setAttribute("url", url);
@@ -210,16 +212,28 @@ public class mainController {
     }
 
     @RequestMapping("fileUploadPro")
-    public String fileUploadPro(@RequestParam("file") MultipartFile multipartFile) throws Exception {
+    public String fileUploadPro(MultipartHttpServletRequest files) throws Exception {
 
         String path = request.getServletContext().getRealPath("/") + "view/board/files/";
         String filename = null;
 
-        if (!multipartFile.isEmpty()) {
-            File file = new File(path, multipartFile.getOriginalFilename());
-            multipartFile.transferTo(file);
-            filename = multipartFile.getOriginalFilename();
-            System.out.println(file);
+        List<MultipartFile> fileList = files.getFiles("files");
+
+        if (fileList.size() > 0) {
+            for(int i = 0; i < fileList.size(); i++) {
+                filename = fileList.get(i).getOriginalFilename();
+                File file = new File(path, filename);
+                try {
+                    fileList.get(i).transferTo(file);
+                } catch (IllegalStateException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            System.out.println("Failed to upload file");
+            System.out.println(fileList.size() + " / "  + fileList);
         }
 
         request.setAttribute("filename", filename);
