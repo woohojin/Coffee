@@ -10,7 +10,7 @@
                 name="f"
                 method="post"
                 class="member_signup_form"
-                onsubmit="return inputCheck(this)"
+                onsubmit="return passwordInputCheck(this)"
         >
             <p>회원 정보</p>
             <table class="member_signup_form_info">
@@ -26,6 +26,8 @@
                               type="text"
                               placeholder="영문 소문자만 가능, 4자리 이상"
                               minlength="4"
+                              oninput="idInputCheck(this)"
+                              spellcheck="false"
                               required
                             />
                         </td>
@@ -40,6 +42,8 @@
                               id="member_name"
                               type="text"
                               placeholder="한국어만 입력 가능합니다."
+                              oninput="nameInputCheck(this)"
+                              spellcheck="false"
                               required
                             />
                         </td>
@@ -55,6 +59,7 @@
                               type="password"
                               placeholder="영문 / 특수문자 / 숫자 중 2가지 이상 조합, 8자 이상"
                               minlength="8"
+                              spellcheck="false"
                               required
                             />
                         </td>
@@ -70,6 +75,7 @@
                               type="password"
                               placeholder="영문 / 특수문자 / 숫자 중 2가지 이상 조합, 8자 이상"
                               minlength="8"
+                              spellcheck="false"
                               required
                             />
                         </td>
@@ -92,6 +98,7 @@
                                   type="text"
                                   placeholder="주소 찾기 버튼을 이용해 주세요"
                                   readonly
+                                  spellcheck="false"
                                   required
                                 />
                             </li>
@@ -106,6 +113,7 @@
                                   id="member_detail_address"
                                   type="text"
                                   placeholder="상세주소를 입력해주세요"
+                                  spellcheck="false"
                                   required
                                 />
                             </li>
@@ -125,6 +133,7 @@
                                   type="text"
                                   placeholder="주소 찾기 버튼을 이용해 주세요"
                                   readonly
+                                  spellcheck="false"
                                   required
                                 />
                             </li>
@@ -140,6 +149,7 @@
                                   id="member_detail_delivery_address"
                                   type="text"
                                   placeholder="상세주소를 입력해주세요"
+                                  spellcheck="false"
                                   required
                                 />
                             </li>
@@ -157,7 +167,8 @@
                               type="tel"
                               maxlength="11"
                               placeholder="예) 01012345678"
-                              oninput="maxLengthCheck(this)"
+                              oninput="maxLengthCheck(this), numberInputCheck(this)"
+                              spellcheck="false"
                               required
                             />
                         </td>
@@ -172,6 +183,7 @@
                               name="memberCompanyName"
                               id="member_company_name"
                               type="text"
+                              spellcheck="false"
                               required
                             />
                         </td>
@@ -187,7 +199,8 @@
                               type="tel"
                               maxlength="11"
                               placeholder="예) 01012345678"
-                              oninput="maxLengthCheck(this)"
+                              oninput="maxLengthCheck(this), numberInputCheck(this)"
+                              spellcheck="false"
                               required
                             />
                         </td>
@@ -201,6 +214,7 @@
                               name="memberEmail"
                               id="member_email"
                               type="email"
+                              spellcheck="false"
                               required
                             />
                         </td>
@@ -218,6 +232,7 @@
                                   value=""
                                   placeholder="사진 넣기 버튼을 이용해주세요"
                                   readonly
+                                  spellcheck="false"
                                   required
                                 />
                                 <div class="input_btn">
@@ -235,6 +250,7 @@
                               name="memberFranCode"
                               id="member_fran_code"
                               type="text"
+                              spellcheck="false"
                               required
                             />
                         </td>
@@ -252,58 +268,4 @@
         </form>
     </div>
 </main>
-
-<script>
-    const checkPassword = (form) => {
-        if (form.memberPassword.value != form.memberPasswordCheck.value) {
-            alert("비밀번호와 재입력 비밀번호가 일치하지 않습니다.");
-            form.memberPasswordCheck.value = "";
-            form.memberPasswordCheck.focus();
-            return false;
-        }
-        return true;
-    };
-    
-    function maxLengthCheck(object) {
-        if (object.value.length > object.maxLength) {
-            object.value = object.value.slice(0, object.maxLength);
-        }
-    }
-</script>
-
-<script>
-    const memberIdInput = document.getElementById("member_id");
-    const memberNameInput = document.getElementById("member_name");
-    const memberTelInput = document.getElementById("member_tel");
-    const memberCompanyTelInput = document.getElementById("member_company_tel");
-    
-    memberIdInput.addEventListener("input", function () {
-        const inputText = this.value;
-        const idInputCheck = inputText.replace(/[^a-zA-Z0-9]/g, "");
-        this.value = idInputCheck;
-        if (inputText !== idInputCheck) {
-            alert("영어로 입력해주세요.");
-        }
-    });
-    
-    memberNameInput.addEventListener("input", function () {
-        const inputText = this.value;
-        const nameInputCheck = inputText.replace(/[^가-힣ㄱ-ㅎㅏ-ㅣ]/g, "");
-        this.value = nameInputCheck;
-        if (inputText !== nameInputCheck) {
-            alert("한국어로 입력해주세요.");
-        }
-    });
-    
-    memberTelInput.addEventListener("input", function () {
-        const inputText = this.value;
-        const numberInputCheck = inputText.replace(/[^0-9]/g, "");
-        this.value = numberInputCheck;
-    });
-    memberCompanyTelInput.addEventListener("input", function () {
-        const inputText = this.value;
-        const numberInputCheck = inputText.replace(/[^0-9]/g, "");
-        this.value = numberInputCheck;
-    });
-</script>
 </body>

@@ -28,7 +28,7 @@
                   </a>
                   <div>
                     <a
-                      onclick="fileDownload('${p.productFile}', '${p.productName}')"
+                      onclick="return fileDownload('${p.productFile}', '${p.productName}')"
                     >${p.productName}</a
                     >
                     <p>${ p.productPrice }원</p>
@@ -104,34 +104,39 @@
 </main>
 <script type="text/javascript">
   function fileDownload(productFile, productName) {
-    var xhr = new XMLHttpRequest();
-    xhr.open(
-      "GET",
-      "${pageContext.request.contextPath}/board/fileDownload?fileName=" +
-      productFile,
-      true
-    );
-    xhr.responseType = "blob";
+    if(confirm("파일을 다운로드 하시겠습니까?") === true) {
+      var xhr = new XMLHttpRequest();
+      xhr.open(
+        "GET",
+        "${pageContext.request.contextPath}/board/fileDownload?fileName=" +
+        productFile,
+        true
+      );
+      xhr.responseType = "blob";
 
-    xhr.onload = function () {
-      if (xhr.status === 200) {
-        var blob = new Blob([xhr.response], {
-          type: xhr.getResponseHeader("Content-Type"),
-        });
-        var url = window.URL.createObjectURL(blob);
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          var blob = new Blob([xhr.response], {
+            type: xhr.getResponseHeader("Content-Type"),
+          });
+          var url = window.URL.createObjectURL(blob);
 
-        var a = document.createElement("a");
-        a.href = url;
-        a.download = productName + ".jpg"; // 다운로드될 파일명
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-      } else {
-        alert("파일을 다운로드하는 중에 오류가 발생했습니다.");
-      }
-    };
+          var a = document.createElement("a");
+          a.href = url;
+          a.download = productName + ".jpg"; // 다운로드될 파일명
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+        } else {
+          alert("파일을 다운로드하는 중에 오류가 발생했습니다.");
+        }
+      };
 
-    xhr.send();
+      xhr.send();
+    } else {
+      return false;
+    }
+    
   }
 </script>
 </body>

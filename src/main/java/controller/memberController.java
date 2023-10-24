@@ -1,6 +1,5 @@
 package controller;
 
-import model.CookieDTO;
 import service.cookieDAO;
 import service.memberDAO;
 import model.Member;
@@ -10,7 +9,6 @@ import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.io.support.ResourcePropertySource;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,9 +39,6 @@ public class memberController {
     cookieDAO cookieDao;
 
     @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     HttpServletRequest request;
@@ -58,7 +53,7 @@ public class memberController {
         this.session = request.getSession();
         this.response = response;
     }
-
+    //암호화 SHA256
     public static class SHA256 {
 
         public String encrypt(String text) throws NoSuchAlgorithmException {
@@ -130,8 +125,8 @@ public class memberController {
 
         SHA256 sha256 = new SHA256();
 
-        String msg = "존재하지 않는 회원입니다.";
-        String url = "/member/memberSignIn";
+        String msg;
+        String url;
 
         Member mem = memberDao.memberSelectOne(memberId);
 
@@ -140,7 +135,6 @@ public class memberController {
                 session.setAttribute("memberId", memberId);
 
                 url = "/board/main";
-                msg = memberId + "님이 로그인 하였습니다.";
 
                 if(autoLogin != null) {
                     String encryptKey = mem.getMemberId() + keyString;
@@ -160,6 +154,7 @@ public class memberController {
                         response.addCookie(cookieToken);
                     }
                 }
+                return "anchor";
             } else {
                 msg = "비밀번호가 틀립니다.";
                 url = "/member/memberSignIn";

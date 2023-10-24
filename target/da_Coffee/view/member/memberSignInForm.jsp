@@ -23,6 +23,7 @@
                               id="member_id"
                               class="memberId"
                               type="text"
+                              spellcheck="false"
                               required
                             />
                         </td>
@@ -37,6 +38,7 @@
                               id="member_password"
                               class="memberPassword"
                               type="password"
+                              spellcheck="false"
                               required
                             />
                         </td>
