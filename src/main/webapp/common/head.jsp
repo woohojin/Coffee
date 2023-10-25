@@ -74,10 +74,10 @@
             <div class="hd_lnb">
               <div class="hd_lnb_menu">
                 <div class="hd_lnb_dropdown_wrap">
-                  <div class="hd_lnb_dropdown_icon">
+                  <a class="hd_lnb_dropdown_icon">
                     <img src="${ pageContext.request.contextPath }/view/image/menu.png" alt="" />
-                  </div>
-                  <div class="hd_lnb_dropdown">
+                  </a>
+                  <div class="hd_lnb_dropdown" style="height: 0;">
                     <ul>
                       <li>
                         <a href="">Menu Name</a>
@@ -150,6 +150,19 @@
         return false;
       }
     }
+  </script>
+  <script>
+    const hoverObject = document.querySelector(".hd_lnb_dropdown_wrap");
+    const toggle = document.querySelector(".hd_lnb_dropdown");
+
+    hoverObject.addEventListener("mouseover", () => {
+      toggle.style.height = "150px";
+      toggle.style.borderTop = "1px solid rgba(51, 144, 255, 0.5)";
+    });
+    hoverObject.addEventListener("mouseout", () => {
+      toggle.style.height = "0";
+      toggle.style.borderTop = "inherit";
+    });
   </script>
   </body>
 </html>
