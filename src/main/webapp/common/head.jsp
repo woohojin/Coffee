@@ -157,7 +157,7 @@
 
     hoverObject.addEventListener("mouseover", () => {
       toggle.style.height = "150px";
-      toggle.style.borderTop = "1px solid rgba(51, 144, 255, 0.5)";
+      toggle.style.borderTop = "1px solid rgba(200, 200, 200, 1)";
     });
     hoverObject.addEventListener("mouseout", () => {
       toggle.style.height = "0";
