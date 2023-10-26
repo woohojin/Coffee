@@ -10,34 +10,15 @@
     method="post"
   >
     <div class="product_form">
-      <ul>
-        <li>
-          
-          <input
-            name="productCode"
-            id="product_code"
-            class="productCode"
-            type="text"
-          />
-        </li>
-        <li>
-          
-          <input
-            name="productType"
-            id="product_type"
-            class="productType"
-            type="text"
-          />
-        </li>
-        <li>
-          <div class="submit">
-            <input type="submit" value="게시물 작성" class="submit_btn" />
-            <div class="btn">
-              <a href="">목록</a>
-            </div>
-          </div>
-        </li>
-      </ul>
+      <c:forEach var="c" items="${ list }">
+        <ul>
+          <li>
+            <p>${ c.productName }</p>
+            <p>${ c.productPrice } 원</p>
+            <p>${ c.quantity } 개</p>
+          </li>
+        </ul>
+      </c:forEach>
     </div>
   
   </form>
