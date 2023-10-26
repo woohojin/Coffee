@@ -65,9 +65,9 @@
             <p>레브 프리미엄 200g</p>
             <div class="product_quantity_input">
               <input type="text" id="product_quantity" value="1" />
-              <div class="product_quantity_button">
-                <button type="button" class="left_button">-</button>
-                <button type="button" class="right_button">+</button>
+              <div class="product_quantity_btn">
+                <button type="button" class="left_btn">-</button>
+                <button type="button" class="right_btn">+</button>
               </div>
               <div class="product_quantity_price">
                 <span>23100</span>

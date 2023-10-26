@@ -7,7 +7,8 @@
     <title>DaCOFFEE <sitemesh:write property='title'/></title>
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/reset.css" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/font.css" />
-    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/style.css" />
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/main.css" />
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/common.css" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/header.css" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/board.css" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/form.css" />

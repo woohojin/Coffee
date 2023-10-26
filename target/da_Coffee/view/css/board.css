@@ -71,34 +71,22 @@
   padding-bottom: 20px;
   border-bottom: 1px solid black;
 }
-.product_quantity_input input,
-.product_quantity_button button {
-  height: 34px;
-  border: none;
-}
 .product_quantity_input {
   display: flex;
   justify-content: space-between;
   position: relative;
   margin-left: 39px;
 }
-.product_quantity_button {
-  position: absolute;
-}
-.product_quantity_input input {
+.product_quantity_input input[type="text"] {
   width: 44px;
+  height: 35px;
+  border-radius: 3px;
   text-align: center;
+  box-sizing: border-box;
+  border: 1px solid rgba(200, 200, 200, 1);
 }
-.product_quantity_button button {
+.product_quantity_btn {
   position: absolute;
-  width: 40px;
-  cursor: pointer;
-}
-.product_quantity_button .left_button {
-  left: -39px;
-}
-.product_quantity_button .right_button {
-  left: 43px;
 }
 .product_quantity_price {
   display: flex;
@@ -120,9 +108,6 @@
   justify-content: center;
   margin-bottom: 50px;
 }
-.product_Detail_list ul {
-  border-bottom: 1px solid gainsboro;
-}
 .product_detail_list ul li.active {
   border-bottom: 2px solid var(--mainColor);
 }
@@ -133,7 +118,7 @@
   float: left;
   justify-content: center;
   align-items: center;
-  border-right: 1px solid gainsboro;
+  border-right: 2px solid var(--grayLine);
 }
 .product_detail_list ul li a {
   text-decoration: none;
@@ -160,8 +145,12 @@
   margin-bottom: 7px;
 }
 
-input[type="number"] {
-  width: 40px;
+.member_cart input[type="text"] {
+  width: 30px;
+  height: 32px;
+  border-radius: 3px;
+  border: 1px solid var(--grayLine);
+  text-align: center;
 }
 .member_cart_wrap {
   display: flex;
@@ -171,7 +160,7 @@ input[type="number"] {
 
 }
 .member_cart thead {
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--grayLine);
 }
 .member_cart th,
 .member_cart td {
@@ -180,5 +169,17 @@ input[type="number"] {
   vertical-align: middle;
 }
 .member_cart tbody td {
-  padding-top: 10px;
+  padding: 15px 0;
+  vertical-align: middle;
+}
+.member_cart tbody tr {
+  border-bottom: 1px solid var(--grayLine);
+}
+.member_cart_quantity {
+  position: relative;
+}
+.member_cart_quantity_btn {
+  position: absolute;
+  top: 22px;
+  right: 14px;
 }

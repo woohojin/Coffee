@@ -24,13 +24,17 @@
           <c:forEach var="c" items="${ list }">
             <tr>
               <td class="member_cart_image">
-              
+                <img src="${ pageContext.request.contextPath }/board/files/바나나.jpg" alt=""/>
               </td>
               <td class="member_cart_info">
                 <p>${ c.productName }</p>
               </td>
-              <td>
-                <input type="number" value="${ c.quantity }" required />
+              <td class="member_cart_quantity">
+                <input type="text" value="${ c.quantity }" required />
+                <div class="member_cart_quantity_btn">
+                  <button type="button" class="up_btn">+</button>
+                  <button type="button" class="down_btn">-</button>
+                </div>
               </td>
               <td class="member_cart_price">
                 <p>${ c.productPrice }원</p>

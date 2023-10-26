@@ -45,44 +45,6 @@ input::file-selector-button {
   margin-bottom: 20px;
   float: none;
 }
-.btn,
-.submit_btn,
-.input_btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 80px;
-  height: 40px;
-  border: 2px solid var(--mainColor);
-  background-color: initial;
-  color: black;
-  font-size: 14px;
-  cursor: pointer;
-}
-.signin,
-.signup,
-.submit {
-  display: flex;
-  justify-content: flex-end;
-}
-.signup {
-  width: 100%;
-  margin-top: 10px;
-}
-.submit_btn,
-.btn {
-  background-color: var(--mainColor);
-  color: white;
-}
-.btn {
-  margin-left: 10px;
-}
-.btn a {
-  color: white;
-}
-.input_btn a {
-  width: 80px;
-}
 
 .input_image_form_wrap form {
   display: inline-flex;
