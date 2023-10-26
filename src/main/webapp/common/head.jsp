@@ -60,7 +60,7 @@
                     <span> | </span>
                   </li>
                   <li>
-                    <a href="" class="cart">
+                    <a href="${ pageContext.request.contextPath }/member/memberCart" class="cart">
                       <div>
                         <span>1</span>
                       </div>

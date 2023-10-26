@@ -1,6 +1,6 @@
 
 <body>
-<main>
+<main id="product_detail_page">
   <div class="product_detail_wrap">
     <div class="product_detail">
       <div class="product_detail_img">

@@ -38,7 +38,8 @@ main {
   margin: 200px 0 100px 0;
 }
 #index_page,
-#member_signup_page{
+#member_signup_page,
+#product_detail_page {
   height: auto;
 }
 input:focus {

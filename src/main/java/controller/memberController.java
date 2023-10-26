@@ -1,5 +1,8 @@
 package controller;
 
+import model.Cart;
+import model.Product;
+import service.cartDAO;
 import service.cookieDAO;
 import service.memberDAO;
 import model.Member;
@@ -24,6 +27,7 @@ import javax.sql.DataSource;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/member/")
@@ -34,6 +38,9 @@ public class memberController {
 
     @Autowired
     memberDAO memberDao;
+
+    @Autowired
+    cartDAO cartDao;
 
     @Autowired
     cookieDAO cookieDao;
@@ -193,6 +200,18 @@ public class memberController {
         request.setAttribute("url", url);
 
         return "alert";
+    }
+
+    @RequestMapping("memberCart")
+    public String memberCart() throws Exception {
+
+        String memberId = (String) session.getAttribute("memberId");
+
+        List<Cart> list = cartDao.cartSelectMember(memberId);
+
+        request.setAttribute("list", list);
+
+        return "member/memberCart";
     }
 
 }

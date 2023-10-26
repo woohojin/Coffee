@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cart">
+    <resultMap type="cart" id="cartMap">
+        <id column="member_id" property="memberId" />
+        <id column="product_code" property="productCode" />
+        <id column="product_name" property="productName" />
+        <id column="product_price" property="productPrice" />
+        <id column="quantity" property="quantity" />
+    </resultMap>
+
+    <insert id="cartInsert" parameterType="cart">
+        insert into cart values (#{memberId}, #{productCode}, #{productName}, #{productPrice}, #{quantity})
+    </insert>
+
+    <select id="cartList" parameterType="map" resultMap="cartMap">
+        select * from cart
+    </select>
+
+    <select id="cartSelectMember" parameterType="map" resultMap="cartMap">
+        select * from cart where member_id =  #{memberId}
+    </select>
+
+</mapper>
