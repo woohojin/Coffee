@@ -11,39 +11,38 @@
   >
     <div class="member_cart_wrap">
       <table class="member_cart">
-        <c:forEach var="c" items="${ list }">
-          <thead>
-          <tr>
-            <th>이미지</th>
-            <th>상품정보</th>
-            <th>수량</th>
-            <th>금액</th>
-            <th>배송비</th>
-          </tr>
-          </thead>
-          <tbody>
+        <thead>
+        <tr>
+          <th class="member_cart_image">이미지</th>
+          <th class="member_cart_info">상품정보</th>
+          <th>수량</th>
+          <th class="member_cart_price">금액</th>
+          <th>배송비</th>
+        </tr>
+        </thead>
+        <tbody>
+          <c:forEach var="c" items="${ list }">
             <tr>
-              <td>
+              <td class="member_cart_image">
               
               </td>
-              <td>
+              <td class="member_cart_info">
                 <p>${ c.productName }</p>
               </td>
               <td>
-                <p>${ c.quantity } 개</p>
+                <input type="text" value="${ c.quantity }" required />
               </td>
-              <td>
+              <td class="member_cart_price">
                 <p>${ c.productPrice }원</p>
               </td>
               <td>
-                <p>배송비 : 3000원</p>
+                <p>3000원</p>
               </td>
             </tr>
-          </tbody>
-          <tfoot>
-          
-          </tfoot>
-        </c:forEach>
+          </c:forEach>
+        </tbody>
+        <tfoot>
+        </tfoot>
       </table>
     </div>
   </form>
