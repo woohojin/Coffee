@@ -24,7 +24,7 @@
           <c:forEach var="c" items="${ list }">
             <tr>
               <td class="member_cart_image">
-                <img src="${ pageContext.request.contextPath }/board/files/바나나.jpg" alt=""/>
+                <img src="${ pageContext.request.contextPath }/board/files/${ c.productFile }" alt=""/>
               </td>
               <td class="member_cart_info">
                 <p>${ c.productName }</p>

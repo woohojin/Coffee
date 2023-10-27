@@ -7,7 +7,7 @@
         <img src="${ pageContext.request.contextPath }/view/image/1.jpg" alt="" />
       </div>
       <div class="product_info">
-        <h1>레브 프리미엄 200g</h1>
+        <h1>${ product.productName } ${ product.productUnit } </h1>
         <table>
           <tbody>
           <tr>
@@ -15,7 +15,7 @@
               <span>원산지</span>
             </th>
             <td>
-              <span>인도</span>
+              <span>${ product.productCountry }</span>
             </td>
           </tr>
           <tr>
@@ -23,7 +23,7 @@
               <span>품종</span>
             </th>
             <td>
-              <span>아라비카</span>
+              <span>${ product.productSpecies}</span>
             </td>
           </tr>
           <tr>
@@ -31,7 +31,7 @@
               <span>제조사</span>
             </th>
             <td>
-              <span>다올커피</span>
+              <span>${ product.productCompany }</span>
             </td>
           </tr>
           <tr>
@@ -39,7 +39,7 @@
               <span>용량</span>
             </th>
             <td>
-              <span>200g</span>
+              <span>${ product.productUnit }</span>
             </td>
           </tr>
           <tr>
@@ -55,24 +55,34 @@
               <span>가격</span>
             </th>
             <td>
-              <span>23100원</span>
+              <span>${ product.productPrice } 원</span>
             </td>
           </tr>
           </tbody>
         </table>
         <div>
-          <form class="product_quantity_form">
-            <p>레브 프리미엄 200g</p>
+          <form class="product_quantity_form"
+                action="${ pageContext.request.contextPath }/board/productDetailPro"
+                method="post"
+          >
+            <p>${ product.productName } ${ product.productUnit }</p>
             <div class="product_quantity_input">
-              <input type="text" id="product_quantity" value="1" />
+              <input type="text" id="product_quantity" value="1" name="quantity" />
               <div class="product_quantity_btn">
                 <button type="button" class="left_btn">-</button>
                 <button type="button" class="right_btn">+</button>
               </div>
               <div class="product_quantity_price">
-                <span>23100</span>
+                <span>${ product.productPrice }</span>
                 <span>원</span>
               </div>
+            </div>
+            <div class="product_quantity_submit">
+              <input type="hidden" value="${ product.productCode }" name="productCode">
+              <input type="hidden" value="${ product.productName }" name="productName">
+              <input type="hidden" value="${ product.productPrice }" name="productPrice">
+              <input type="hidden" value="${ product.productFile }" name="productFile">
+              <input type="submit" value="장바구니에 담기" class="submit_btn" />
             </div>
           </form>
         </div>

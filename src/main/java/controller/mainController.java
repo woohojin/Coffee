@@ -1,15 +1,16 @@
 package controller;
 
+import model.Cart;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import service.productDAO;
 import service.memberDAO;
+import service.cartDAO;
 import model.Product;
 import model.Member;
 
 import java.io.*;
 import java.sql.Connection;
 import java.util.List;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +23,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -34,8 +34,12 @@ public class mainController {
 
     @Autowired
     productDAO productDao;
+
     @Autowired
     memberDAO memberDao;
+
+    @Autowired
+    cartDAO cartDao;
 
     HttpServletRequest request;
     Model m;
@@ -120,6 +124,22 @@ public class mainController {
         request.setAttribute("product", product);
 
         return "/board/product/productDetailBoard";
+    }
+
+    @RequestMapping("productDetailPro")
+    public String memberDetailPro(Cart cart) throws Exception {
+
+        String msg;
+        String url;
+
+        int num = cartDao.cartInsert(cart);
+
+        if (num > 0) {
+            msg = "게시물을 등록하였습니다.";
+            url = "/board/main";
+        }
+
+        return "member/memberCart";
     }
 
     @RequestMapping("productSearch")

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import service.productDAO;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +36,9 @@ public class memberController {
 
     @Autowired
     private DataSource ds;
+
+    @Autowired
+    productDAO productDao;
 
     @Autowired
     memberDAO memberDao;
@@ -206,7 +210,6 @@ public class memberController {
     public String memberCart() throws Exception {
 
         String memberId = (String) session.getAttribute("memberId");
-
         List<Cart> list = cartDao.cartSelectMember(memberId);
 
         request.setAttribute("list", list);

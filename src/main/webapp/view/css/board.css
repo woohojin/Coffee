@@ -68,14 +68,15 @@
   margin-bottom: 20px;
 }
 .product_quantity_form {
-  padding-bottom: 20px;
-  border-bottom: 1px solid black;
+
 }
 .product_quantity_input {
   display: flex;
   justify-content: space-between;
   position: relative;
-  margin-left: 39px;
+  padding-left: 39px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid black;
 }
 .product_quantity_input input[type="text"] {
   width: 44px;
@@ -98,6 +99,15 @@
   font-weight: bold;
   font-size: 18px;
   padding-bottom: 2px;
+}
+.product_quantity_submit {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+.product_quantity_submit .submit_btn {
+  width: 110px;
+  height: 45px;
 }
 .product_detail_main > li {
   margin-bottom: 50px;
