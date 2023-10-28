@@ -4,6 +4,7 @@ public class Cart {
   String memberId;
   String productCode;
   String productName;
+  String productFile;
   int productPrice;
   int quantity;
 
@@ -29,6 +30,14 @@ public class Cart {
 
   public void setProductName(String productName) {
     this.productName = productName;
+  }
+
+  public String getProductFile() {
+    return productFile;
+  }
+
+  public void setProductFile(String productFile) {
+    this.productFile = productFile;
   }
 
   public int getProductPrice() {

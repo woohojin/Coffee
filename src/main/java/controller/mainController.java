@@ -1,6 +1,7 @@
 package controller;
 
 import model.Cart;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import service.productDAO;
 import service.memberDAO;
@@ -10,7 +11,9 @@ import model.Member;
 
 import java.io.*;
 import java.sql.Connection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,8 +24,6 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -126,20 +127,25 @@ public class mainController {
         return "/board/product/productDetailBoard";
     }
 
-    @RequestMapping("productDetailPro")
-    public String memberDetailPro(Cart cart) throws Exception {
+    @PostMapping("productDetailPro")
+    @ResponseBody
+    public Map<String, Object> productDetailPro(Cart cart) throws Exception {
+        request.setCharacterEncoding("utf-8");
 
-        String msg;
-        String url;
+        Map<String, Object> map = new HashMap<>();
+        String msg = "상품을 장바구니에 추가하는데 실패했습니다.";
 
         int num = cartDao.cartInsert(cart);
 
-        if (num > 0) {
-            msg = "게시물을 등록하였습니다.";
-            url = "/board/main";
+        if(num > 0) {
+            msg = "상품을 장바구니에 추가했습니다.";
+        } else {
+            System.out.println("Failed");
         }
 
-        return "member/memberCart";
+        map.put("msg", msg);
+
+        return map;
     }
 
     @RequestMapping("productSearch")
