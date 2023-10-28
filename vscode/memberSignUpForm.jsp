@@ -161,7 +161,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri =
                   required
                 />
                 <div class="input_btn">
-                  <a href="" onclick="imageUpload()">사진 넣기</a>
+                  <a href="" onclick="fileUpload()">사진 넣기</a>
                 </div>
               </div>
             </li>

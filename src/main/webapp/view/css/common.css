@@ -11,10 +11,6 @@
 .sold_out {
   background-color: rgba(131, 131, 131, 100);
 }
-
-* {
-  font-family: "Noto Sans KR", sans-serif;
-}
 body {
   overflow-x: hidden;
 }
