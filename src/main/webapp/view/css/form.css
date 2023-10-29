@@ -61,7 +61,7 @@ input::file-selector-button {
 .file_input_wrap .input_btn {
   position: absolute;
   right: -90px;
-  top: 0px;
+  top: 0;
 }
 
 .member_address_wrap,

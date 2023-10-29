@@ -13,10 +13,10 @@ header,
 
 header {
   position: fixed;
-  top: 0px;
+  top: 0;
   z-index: 1;
   background-color: white;
-  box-shadow: 0px 1px 8px #949494;
+  box-shadow: 0 1px 8px #949494;
 }
 .hd_gnb {
   position: relative;
@@ -24,7 +24,7 @@ header {
   height: 80px;
   align-items: center;
   justify-content: flex-end;
-  margin: 15px 0px 10px 0px;
+  margin: 15px 0 10px 0;
 }
 .hd_logo_wrap {
   position: absolute;
@@ -189,13 +189,13 @@ header {
   justify-content: center;
   background-color: white;
   transition: all 0.3s ease;
-  left: 0px;
+  left: 0;
   top: 155px;
   width: 100vw;
 }
 
 .hd_lnb_dropdown ul {
-  margin: 10px 0px 0px 40px;
+  margin: 10px 0 0 40px;
 }
 .hd_lnb_dropdown ul li {
   clear: both;
