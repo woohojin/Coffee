@@ -62,11 +62,12 @@
                   <li class="hd_gnb_member_cart_wrap">
                     <a href="${ pageContext.request.contextPath }/member/memberCart" class="cart">
                       <div>
-                        <span class="cart_count">${sessionScope.cartCount}</span>
+                        <span class="cart_count">${ sessionScope.cartCount }</span>
                       </div>
                       <img src="${ pageContext.request.contextPath }/view/image/cart.png" alt="" />
                     </a>
-                    <div class="hd_gnb_member_cart" style="max-height: 0; border: none;">
+                    <div class="background-fadeout" style="display: none; background-color: inherit;"></div>
+                    <div class="hd_gnb_member_cart" style="max-height: 0;">
                       <div class="hd_gnb_member_cart_status">
                         <div>
                           <p>장바구니에 추가 완료</p>
@@ -83,16 +84,16 @@
                         </a>
                         <div class="hd_gnb_member_cart_text">
                           <a>
-                            <p class="cart_product_name">레브 로얄</p>
+                            <p class="cart_product_name">Empty</p>
                           </a>
-                          <p class="cart_product_unit">200g</p>
-                          <p class="cart_quantity">1개</p>
-                          <p class="cart_product_price">10,000 원</p>
+                          <p class="cart_product_unit">Empty</p>
+                          <p class="cart_quantity">Empty</p>
+                          <p class="cart_product_price">Empty</p>
                         </div>
                       </div>
                       <div class="hd_gnb_member_cart_btn">
                         <div class="btn">
-                          <a href="${ pageContext.request.contextPath }/member/memberCart">장바구니 (2)</a>
+                          <a href="${ pageContext.request.contextPath }/member/memberCart">장바구니 (${ sessionScope.cartCount + 1})</a>
                         </div>
                         <div class="btn">
                           <a>결제하기</a>

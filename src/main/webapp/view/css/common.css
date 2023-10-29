@@ -35,7 +35,8 @@ main {
 }
 #index_page,
 #member_signup_page,
-#product_detail_page {
+#product_detail_page,
+#member_cart_page {
   height: auto;
 }
 input:focus {
@@ -117,12 +118,16 @@ input:focus {
   background-color: white;
   cursor: pointer;
 }
-
-.up_btn {
-
-}
 .down_btn {
   border-top: none;
+}
+
+.background-fadeout {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
 }
 
 .main_slider,

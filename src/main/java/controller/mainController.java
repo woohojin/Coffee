@@ -129,14 +129,25 @@ public class mainController {
 
     @PostMapping("productDetailPro")
     @ResponseBody
-    public void productDetailPro(Cart cart) throws Exception {
-        request.setCharacterEncoding("utf-8");
+    public Map<String, Object> productDetailPro(Cart cart) throws Exception {
+        Map<String, Object> map = new HashMap<>();
 
         int num = cartDao.cartInsert(cart);
 
+        String msg = "장바구니 추가 실패";
+
         if(num > 0) {
-            session.setAttribute("cart", cart);
+            msg = "장바구니 추가 성공";
+            map.put("productCode", cart.getProductCode());
+            map.put("productName", cart.getProductName());
+            map.put("productUnit", cart.getProductUnit());
+            map.put("quantity", cart.getQuantity());
+            map.put("productPrice", cart.getProductPrice());
+            map.put("productFile", cart.getProductFile());
         }
+
+        map.put("cartStatus", msg);
+        return map;
     }
 
     @RequestMapping("productSearch")

@@ -37,7 +37,7 @@
                 </div>
               </td>
               <td class="member_cart_price">
-                <p>${ c.productPrice }원</p>
+                <p>${ c.productPrice * c.quantity }원</p>
               </td>
               <td>
                 <p>3000원</p>
