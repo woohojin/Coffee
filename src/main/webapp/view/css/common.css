@@ -24,6 +24,7 @@ body::-webkit-scrollbar-thumb {
 a {
   color: #666;
   text-decoration: none;
+  cursor: pointer;
 }
 li {
   float: left;
@@ -65,6 +66,7 @@ input:focus {
   color: black;
   font-size: 14px;
   cursor: pointer;
+  box-sizing: border-box;
 }
 .submit_btn,
 .btn {

@@ -309,7 +309,6 @@
       $(".product_quantity_form").submit(function(event) {
         event.preventDefault();
 
-        // FormData 객체를 생성하여 초기화
         var formData = new FormData($(this)[0]);
 
         $.ajax({

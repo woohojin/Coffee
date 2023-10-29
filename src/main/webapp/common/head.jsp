@@ -59,13 +59,51 @@
                   <li>
                     <span> | </span>
                   </li>
-                  <li>
+                  <li class="hd_gnb_member_cart_wrap">
                     <a href="${ pageContext.request.contextPath }/member/memberCart" class="cart">
                       <div>
                         <span>1</span>
                       </div>
                       <img src="${ pageContext.request.contextPath }/view/image/cart.png" alt="" />
                     </a>
+                    <div class="hd_gnb_member_cart">
+                      <div class="hd_gnb_member_cart_status">
+                        <div>
+                          <p>장바구니에 추가 완료</p>
+                        </div>
+                        <div>
+                          <a>
+                            <img src="${ pageContext.request.contextPath }/view/image/close.png"  alt=""/>
+                          </a>
+                        </div>
+                      </div>
+                      <div class="hd_gnb_member_cart_info">
+                        <img src="${ pageContext.request.contextPath }/view/image/1.jpg"  alt=""/>
+                        <div class="hd_gnb_member_cart_text">
+                          <p id="cart_product_name">레브 로얄</p>
+                          <p id="cart_product_unit">200g</p>
+                          <p id="cart_quantity">1개</p>
+                          <p id="cart_product_price">10,000 원</p>
+                        </div>
+                      </div>
+                      <div class="hd_gnb_member_cart_info">
+                        <img src="${ pageContext.request.contextPath }/view/image/1.jpg"  alt=""/>
+                        <div class="hd_gnb_member_cart_text">
+                          <p id="cart_product_name">레브 로얄</p>
+                          <p id="cart_product_unit">200g</p>
+                          <p id="cart_quantity">1개</p>
+                          <p id="cart_product_price">10,000 원</p>
+                        </div>
+                      </div>
+                      <div class="hd_gnb_member_cart_btn">
+                        <div class="btn">
+                          <a>장바구니 (1)</a>
+                        </div>
+                        <div class="btn">
+                          <a>결제하기</a>
+                        </div>
+                      </div>
+                    </div>
                   </li>
                 </ul>
               </div>
@@ -133,7 +171,7 @@
                     >
                   </li>
                   <li>
-                    <a href="${ pageContext.request.contextPath }/board/productUploadForm">이미지 테스트</a>
+                    <a href="${ pageContext.request.contextPath }/board/productUploadForm">제품 업로드</a>
                   </li>
                 </ul>
               </div>

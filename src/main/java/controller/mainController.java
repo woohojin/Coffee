@@ -139,8 +139,7 @@ public class mainController {
 
         if(num > 0) {
             msg = "상품을 장바구니에 추가했습니다.";
-        } else {
-            System.out.println("Failed");
+            session.setAttribute("cart", cart);
         }
 
         map.put("msg", msg);
