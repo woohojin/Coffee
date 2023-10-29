@@ -4,11 +4,7 @@
 
 <body>
 <main id="member_cart_page">
-  <form
-    action="${ pageContext.request.contextPath }/board/productUploadPro"
-    name="f"
-    method="post"
-  >
+
     <div class="member_cart_wrap">
       <table class="member_cart">
         <thead>
@@ -21,7 +17,7 @@
         </tr>
         </thead>
         <tbody>
-          <c:forEach var="c" items="${ list }">
+          <c:forEach var="c" items="${ list }" varStatus="status">
             <tr>
               <td class="member_cart_image">
                 <img src="${ pageContext.request.contextPath }/board/files/${ c.productFile }" alt=""/>
@@ -30,10 +26,18 @@
                 <p>${ c.productName }</p>
               </td>
               <td class="member_cart_quantity">
-                <input type="text" value="${ c.quantity }" required />
+                <form
+                        action="${ pageContext.request.contextPath }/member/memberCartPro"
+                        class="member_cart_form form${ status.index }"
+                        method="post"
+                >
+                  <input type="hidden" name="productCode" value="${ c.productCode }"/>
+                  <input type="hidden" name="status" class="status${ status.index }" value="" />
+                  <input type="text" name="quantity" class="member_cart_quantity_input input${ status.index }" value="${ c.quantity }" required />
+                </form>
                 <div class="member_cart_quantity_btn">
-                  <button type="button" class="up_btn">+</button>
-                  <button type="button" class="down_btn">-</button>
+                  <button type="button" class="up_btn" onclick="increaseCartQuantity(${ status.index })">+</button>
+                  <button type="button" class="down_btn" onclick="decreaseCartQuantity(${ status.index })">-</button>
                 </div>
               </td>
               <td class="member_cart_price">
@@ -49,6 +53,5 @@
         </tfoot>
       </table>
     </div>
-  </form>
 </main>
 </body>

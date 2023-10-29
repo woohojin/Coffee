@@ -217,5 +217,29 @@ public class memberController {
         return "member/memberCart";
     }
 
+    @RequestMapping("memberCartPro")
+    public String memberCartPro() throws Exception {
+        int status = Integer.parseInt(request.getParameter("status"));
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        String productCode = request.getParameter("productCode");
+        String memberId = (String) session.getAttribute("memberId");
+
+        if(quantity < 1) {
+            quantity = 1;
+        }
+
+        if(status == 0) {
+            cartDao.cartDelete(memberId, productCode);
+        } else if (status == 1) {
+            cartDao.cartQuantityUpdate(memberId, productCode, quantity);
+        }
+
+        List<Cart> list = cartDao.cartSelectMember(memberId);
+
+        request.setAttribute("list", list);
+
+        return "member/memberCart";
+    }
+
 }
 

@@ -70,7 +70,7 @@
 .product_quantity_form {
 
 }
-.product_quantity_input {
+.product_quantity {
   display: flex;
   justify-content: space-between;
   position: relative;
@@ -78,7 +78,7 @@
   padding-bottom: 20px;
   border-bottom: 1px solid black;
 }
-.product_quantity_input input[type="text"] {
+.product_quantity input[type="text"] {
   width: 44px;
   height: 35px;
   border-radius: 3px;
@@ -93,8 +93,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.product_quantity_price span {
   margin-right: 3px;
   font-weight: bold;
   font-size: 18px;
@@ -167,7 +165,7 @@
   justify-content: center;
 }
 .member_cart {
-
+  text-align: center;
 }
 .member_cart thead {
   border-bottom: 1px solid var(--grayLine);
@@ -180,7 +178,6 @@
 }
 .member_cart tbody td {
   padding: 15px 0;
-  vertical-align: middle;
 }
 .member_cart tbody tr {
   border-bottom: 1px solid var(--grayLine);

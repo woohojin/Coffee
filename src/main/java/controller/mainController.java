@@ -132,6 +132,13 @@ public class mainController {
     public Map<String, Object> productDetailPro(Cart cart) throws Exception {
         Map<String, Object> map = new HashMap<>();
 
+        int quantity = cart.getQuantity();
+
+        if(quantity < 1) {
+            quantity = 1;
+            cart.setQuantity(quantity);
+        }
+
         int num = cartDao.cartInsert(cart);
 
         String msg = "장바구니 추가 실패";

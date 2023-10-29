@@ -54,7 +54,7 @@
                 <span>가격</span>
               </th>
               <td>
-                <span>${ product.productPrice } 원</span>
+                <span class="product_default_price">${ product.productPrice } 원</span>
               </td>
             </tr>
             </tbody>
@@ -66,15 +66,14 @@
                   accept-charset = "UTF-8"
             >
               <p>${ product.productName } ${ product.productUnit }</p>
-              <div class="product_quantity_input">
-                <input type="text" id="product_quantity" value="1" name="quantity" />
+              <div class="product_quantity">
+                <input type="text" class="product_quantity_input" value="1" name="quantity" readonly />
                 <div class="product_quantity_btn">
-                  <button type="button" class="left_btn">-</button>
-                  <button type="button" class="right_btn">+</button>
+                  <button type="button" class="left_btn" onclick="decreaseProductQuantity()">-</button>
+                  <button type="button" class="right_btn" onclick="increaseProductQuantity()">+</button>
                 </div>
                 <div class="product_quantity_price">
-                  <span>${ product.productPrice }</span>
-                  <span>원</span>
+                  ${ product.productPrice } 원
                 </div>
               </div>
               <div class="product_quantity_submit">

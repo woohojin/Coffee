@@ -27,4 +27,12 @@
         select * from cart where member_id =  #{memberId}
     </select>
 
+    <delete id="cartDelete" parameterType="int">
+        delete from cart where member_id = #{memberId} and product_code = #{productCode}
+    </delete>
+
+    <update id="cartQuantityUpdate" parameterType="map">
+        update cart set quantity = #{quantity} where member_id = #{memberId} and product_code = #{productCode}
+    </update>
+
 </mapper>

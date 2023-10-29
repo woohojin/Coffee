@@ -25,9 +25,7 @@ public class productDAO {
     }
 
     public int productCount(int memberTier) {
-        map.clear();
-        map.put("memberTier", memberTier);
-        int num = session.selectOne(NS + "productCount", map);
+        int num = session.selectOne(NS + "productCount", memberTier);
         return num;
     }
 

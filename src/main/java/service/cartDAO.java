@@ -24,9 +24,7 @@ public class cartDAO {
   }
 
   public int cartCount(String memberId) {
-    map.clear();
-    map.put("memberId", memberId);
-    int num = session.selectOne(NS + "cartCount", map);
+    int num = session.selectOne(NS + "cartCount", memberId);
     return num;
   }
 
@@ -38,6 +36,22 @@ public class cartDAO {
   public List<Cart> cartSelectMember(String memberId) {
     List<Cart> list = session.selectList(NS + "cartSelectMember", memberId);
     return list;
+  }
+
+  public int cartDelete(String memberId, String productCode) {
+    map.clear();
+    map.put("memberId", memberId);
+    map.put("productCode", productCode);
+    int num = session.insert(NS + "boardDelete", map);
+    return num;
+  }
+
+  public void cartQuantityUpdate(String memberId, String productCode, int quantity) {
+    map.clear();
+    map.put("memberId", memberId);
+    map.put("productCode", productCode);
+    map.put("quantity", quantity);
+    session.update(NS + "cartQuantityUpdate", map);
   }
 
 }

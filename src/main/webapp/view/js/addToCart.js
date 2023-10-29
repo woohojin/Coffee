@@ -41,7 +41,7 @@ $(document).ready(function() {
                     setTimeout(() => {
                         background.css("display", "none").css("background-color", "inherit");
                     }, 1000)
-                }, 5000);
+                }, 4000);
             },
             error: function(xhr, status, error) {
                 console.error("ERROR:" + error);
