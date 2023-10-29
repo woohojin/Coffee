@@ -21,6 +21,7 @@
     <script src="${ pageContext.request.contextPath }/view/js/fileUpload.js"></script>
     <script src="${ pageContext.request.contextPath }/view/js/fileDownload.js"></script>
     <script src="${ pageContext.request.contextPath }/view/js/signUpFormRequirement.js"></script>
+    <script src="${ pageContext.request.contextPath }/view/js/changeQuantity.js"></script>
 </head>
 <body>
 <%@ include file="/common/head.jsp" %>

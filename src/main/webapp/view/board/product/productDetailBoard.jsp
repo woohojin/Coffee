@@ -317,10 +317,15 @@
           data: formData,
           processData: false,
           contentType: false,
+          async: false,
           success: function(data) {
-            const cartCount = $(".hd_gnb_member_cart_wrap a div span");
+            const cart = $(".hd_gnb_member_cart");
+            const cartCount = $(".cart_count");
+
             let num = Number(cartCount.text());
             num += 1;
+
+            cart.css("max-height", "1000px").css("border", "1px solid var(--grayLine)");
             cartCount.text(num);
           },
           error: function(xhr, status, error) {
@@ -329,6 +334,13 @@
         });
       });
     });
+
+    hoverObject.addEventListener("mouseover", () => {
+      toggle.css
+      toggle.style.height = "auto";
+      toggle.style.borderTop = "1px solid rgba(200, 200, 200, 1)";
+    });
   </script>
+
   </body>
 

@@ -62,11 +62,11 @@
                   <li class="hd_gnb_member_cart_wrap">
                     <a href="${ pageContext.request.contextPath }/member/memberCart" class="cart">
                       <div>
-                        <span>${sessionScope.cartCount}</span>
+                        <span class="cart_count">${sessionScope.cartCount}</span>
                       </div>
                       <img src="${ pageContext.request.contextPath }/view/image/cart.png" alt="" />
                     </a>
-                    <div class="hd_gnb_member_cart">
+                    <div class="hd_gnb_member_cart" style="max-height: 0; border: none;">
                       <div class="hd_gnb_member_cart_status">
                         <div>
                           <p>장바구니에 추가 완료</p>
@@ -78,18 +78,13 @@
                         </div>
                       </div>
                       <div class="hd_gnb_member_cart_info">
-                        <img src="${ pageContext.request.contextPath }/view/image/1.jpg"  alt=""/>
+                        <a href="${ pageContext.request.contextPath }/board/productDetail?productCode=${ cart.productCode }">
+                          <img src="${ pageContext.request.contextPath }/view/image/1.jpg"  alt=""/>
+                        </a>
                         <div class="hd_gnb_member_cart_text">
-                          <p class="cart_product_name">레브 로얄</p>
-                          <p class="cart_product_unit">200g</p>
-                          <p class="cart_quantity">1개</p>
-                          <p class="cart_product_price">10,000 원</p>
-                        </div>
-                      </div>
-                      <div class="hd_gnb_member_cart_info">
-                        <img src="${ pageContext.request.contextPath }/view/image/1.jpg"  alt=""/>
-                        <div class="hd_gnb_member_cart_text">
-                          <p class="cart_product_name">레브 로얄</p>
+                          <a>
+                            <p class="cart_product_name">레브 로얄</p>
+                          </a>
                           <p class="cart_product_unit">200g</p>
                           <p class="cart_quantity">1개</p>
                           <p class="cart_product_price">10,000 원</p>
@@ -191,15 +186,15 @@
   </script>
   <script>
     const hoverObject = document.querySelector(".hd_lnb_dropdown_wrap");
-    const toggle = document.querySelector(".hd_lnb_dropdown");
+    const dropdown = document.querySelector(".hd_lnb_dropdown");
 
     hoverObject.addEventListener("mouseover", () => {
-      toggle.style.height = "150px";
-      toggle.style.borderTop = "1px solid rgba(200, 200, 200, 1)";
+      dropdown.style.height = "150px";
+      dropdown.style.borderTop = "1px solid rgba(200, 200, 200, 1)";
     });
     hoverObject.addEventListener("mouseout", () => {
-      toggle.style.height = "0";
-      toggle.style.borderTop = "inherit";
+      dropdown.style.height = "0";
+      dropdown.style.borderTop = "inherit";
     });
   </script>
   </body>

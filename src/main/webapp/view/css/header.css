@@ -114,13 +114,14 @@ header {
 .hd_gnb_member_cart {
   position: absolute;
   background-color: white;
+  overflow: hidden;
+  transition: max-height 1s ease;
   width: 400px;
   left: -300px;
-  border: 1px solid var(--grayLine);
   z-index: 5;
 }
 .hd_gnb_member_cart img {
-  width: 100px;
+  width: 115px;
   height: auto;
   margin: 0 32px;
 }
@@ -149,8 +150,9 @@ header {
   justify-content: center;
   text-align: left;
 }
-.hd_gnb_member_cart_text > p {
-  margin-bottom: 10px;
+.hd_gnb_member_cart_text p {
+  margin-bottom: 8px;
+  color: black;
 }
 .hd_gnb_member_cart_btn {
   display: flex;
