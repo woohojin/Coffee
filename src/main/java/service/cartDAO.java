@@ -22,6 +22,14 @@ public class cartDAO {
     int num = session.insert(NS+"cartInsert", cart);
     return num;
   }
+
+  public int cartCount(String memberId) {
+    map.clear();
+    map.put("memberId", memberId);
+    int num = session.selectOne(NS + "cartCount", map);
+    return num;
+  }
+
   public List<Cart> cartList() {
     List<Cart> list = session.selectList(NS + "cartList");
     return list;

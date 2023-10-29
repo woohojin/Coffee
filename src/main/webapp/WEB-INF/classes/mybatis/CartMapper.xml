@@ -6,13 +6,18 @@
         <id column="member_id" property="memberId" />
         <id column="product_code" property="productCode" />
         <id column="product_name" property="productName" />
+        <id column="product_unit" property="productUnit" />
         <id column="product_price" property="productPrice" />
         <id column="quantity" property="quantity" />
     </resultMap>
 
     <insert id="cartInsert" parameterType="cart">
-        insert into cart values (#{memberId}, #{productCode}, #{productName}, #{productPrice}, #{quantity}, #{productFile})
+        insert into cart values (#{memberId}, #{productCode}, #{productName}, #{productPrice}, #{productUnit}, #{productFile}, #{quantity})
     </insert>
+
+    <select id="cartCount" parameterType="map" resultType="int">
+        select count(*) from cart where member_id = #{memberId}
+    </select>
 
     <select id="cartList" parameterType="map" resultMap="cartMap">
         select * from cart

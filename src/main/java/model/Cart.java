@@ -5,6 +5,7 @@ public class Cart {
   String productCode;
   String productName;
   String productFile;
+  String productUnit;
   int productPrice;
   int quantity;
 
@@ -38,6 +39,14 @@ public class Cart {
 
   public void setProductFile(String productFile) {
     this.productFile = productFile;
+  }
+
+  public String getProductUnit() {
+    return productUnit;
+  }
+
+  public void setProductUnit(String productUnit) {
+    this.productUnit = productUnit;
   }
 
   public int getProductPrice() {

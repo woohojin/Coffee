@@ -73,7 +73,7 @@ public class mainController {
         String memberId = (String)session.getAttribute("memberId");
         int memberTier = 0;
 
-        if(memberId != null && memberId.length() != 0) {
+        if(memberId != null && !memberId.isEmpty()) {
             Member mem = memberDao.memberSelectOne(memberId);
             memberTier = mem.getMemberTier();
         }
@@ -129,22 +129,14 @@ public class mainController {
 
     @PostMapping("productDetailPro")
     @ResponseBody
-    public Map<String, Object> productDetailPro(Cart cart) throws Exception {
+    public void productDetailPro(Cart cart) throws Exception {
         request.setCharacterEncoding("utf-8");
-
-        Map<String, Object> map = new HashMap<>();
-        String msg = "상품을 장바구니에 추가하는데 실패했습니다.";
 
         int num = cartDao.cartInsert(cart);
 
         if(num > 0) {
-            msg = "상품을 장바구니에 추가했습니다.";
             session.setAttribute("cart", cart);
         }
-
-        map.put("msg", msg);
-
-        return map;
     }
 
     @RequestMapping("productSearch")

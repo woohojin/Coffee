@@ -1,4 +1,3 @@
-
   <body>
   <main id="product_detail_page">
     <div class="product_detail_wrap">
@@ -83,6 +82,7 @@
                 <input type="hidden" value="${ product.productCode }" name="productCode">
                 <input type="hidden" value="${ product.productName }" name="productName">
                 <input type="hidden" value="${ product.productPrice }" name="productPrice">
+                <input type="hidden" value="${ product.productUnit }" name="productUnit">
                 <input type="hidden" value="${ product.productFile }" name="productFile">
                 <input type="submit" value="장바구니에 담기" class="submit_btn" />
               </div>
@@ -315,18 +315,16 @@
           type: "POST",
           url: $(this).attr("action"),
           data: formData,
-          async: true,
-          cache: false,
           processData: false,
           contentType: false,
           success: function(data) {
-            // 서버로부터 받은 응답 처리
-            var msg = data.msg;
-            var msgElement = $("<div>").text(msg);
-            $(".product_quantity_form").append(msgElement);
+            const cartCount = $(".hd_gnb_member_cart_wrap a div span");
+            let num = Number(cartCount.text());
+            num += 1;
+            cartCount.text(num);
           },
           error: function(xhr, status, error) {
-            console.error("오류: " + error);
+            console.error("ERROR:" + error);
           }
         });
       });

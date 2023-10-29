@@ -65,7 +65,7 @@
 
             <mvc:mapping path="/**" />
 
-            <bean class="service.interceptor.cookieInterceptor" />
+            <bean class="service.interceptor.memberInterceptor" />
 
         </mvc:interceptor>
 
