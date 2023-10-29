@@ -77,6 +77,11 @@ input:focus {
   margin-left: 10px;
 }
 .btn a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
   color: white;
 }
 .input_btn a {
