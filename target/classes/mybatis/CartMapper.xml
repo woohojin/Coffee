@@ -27,7 +27,15 @@
         select * from cart where member_id =  #{memberId}
     </select>
 
-    <delete id="cartDelete" parameterType="int">
+    <select id="cartSelectOne" parameterType="String" resultMap="cartMap">
+        select * from cart where member_id =  #{memberId} and product_code = #{productCode}
+    </select>
+
+    <select id="cartSumPrice" parameterType="String" resultType="int">
+        select sum(product_price * quantity) from cart where member_id =  #{memberId}
+    </select>
+
+    <delete id="cartDelete" parameterType="map">
         delete from cart where member_id = #{memberId} and product_code = #{productCode}
     </delete>
 

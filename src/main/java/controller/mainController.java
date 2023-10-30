@@ -132,6 +132,10 @@ public class mainController {
     public Map<String, Object> productDetailPro(Cart cart) throws Exception {
         Map<String, Object> map = new HashMap<>();
 
+        String msg = "장바구니 추가 실패";
+        String memberId = (String) session.getAttribute("memberId");
+        String productCode = cart.getProductCode();
+
         int quantity = cart.getQuantity();
 
         if(quantity < 1) {
@@ -139,11 +143,23 @@ public class mainController {
             cart.setQuantity(quantity);
         }
 
-        int num = cartDao.cartInsert(cart);
+        Cart cartCheck = cartDao.cartSelectOne(memberId, productCode);
 
-        String msg = "장바구니 추가 실패";
+        if(cartCheck == null) {
+            int num = cartDao.cartInsert(cart);
 
-        if(num > 0) {
+            if(num > 0) {
+                msg = "장바구니 추가 성공";
+                map.put("productCode", cart.getProductCode());
+                map.put("productName", cart.getProductName());
+                map.put("productUnit", cart.getProductUnit());
+                map.put("quantity", cart.getQuantity());
+                map.put("productPrice", cart.getProductPrice());
+                map.put("productFile", cart.getProductFile());
+            }
+        } else {
+            quantity = quantity + cartCheck.getQuantity();
+            cartDao.cartQuantityUpdate(memberId, productCode, quantity);
             msg = "장바구니 추가 성공";
             map.put("productCode", cart.getProductCode());
             map.put("productName", cart.getProductName());

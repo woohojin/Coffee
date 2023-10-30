@@ -38,11 +38,26 @@ public class cartDAO {
     return list;
   }
 
+  public Cart cartSelectOne(String memberId, String productCode) {
+    map.clear();
+    map.put("memberId", memberId);
+    map.put("productCode", productCode);
+    Cart cart = session.selectOne(NS + "cartSelectOne", map);
+
+    return cart;
+  }
+
+  public int cartSumPrice(String memberId) {
+    int sumPrice = session.selectOne(NS + "cartSumPrice", memberId);
+
+    return sumPrice;
+  }
+
   public int cartDelete(String memberId, String productCode) {
     map.clear();
     map.put("memberId", memberId);
     map.put("productCode", productCode);
-    int num = session.insert(NS + "boardDelete", map);
+    int num = session.insert(NS + "cartDelete", map);
     return num;
   }
 

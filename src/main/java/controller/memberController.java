@@ -208,10 +208,23 @@ public class memberController {
 
     @RequestMapping("memberCart")
     public String memberCart() throws Exception {
-
         String memberId = (String) session.getAttribute("memberId");
-        List<Cart> list = cartDao.cartSelectMember(memberId);
 
+        List<Cart> list = cartDao.cartSelectMember(memberId);
+        int sumPrice = cartDao.cartSumPrice(memberId);
+
+        int deliveryFee = 3000;
+        int minimumPrice = 30000;
+
+        if(sumPrice > minimumPrice) {
+            deliveryFee = 0;
+        }
+
+        int totalPrice = deliveryFee + sumPrice;
+
+        request.setAttribute("totalPrice", totalPrice);
+        request.setAttribute("sumPrice", sumPrice);
+        request.setAttribute("deliveryFee", deliveryFee);
         request.setAttribute("list", list);
 
         return "member/memberCart";
@@ -235,7 +248,20 @@ public class memberController {
         }
 
         List<Cart> list = cartDao.cartSelectMember(memberId);
+        int sumPrice = cartDao.cartSumPrice(memberId);
 
+        int deliveryFee = 3000;
+        int minimumPrice = 30000;
+
+        if(sumPrice > minimumPrice) {
+            deliveryFee = 0;
+        }
+
+        int totalPrice = deliveryFee + sumPrice;
+
+        request.setAttribute("totalPrice", totalPrice);
+        request.setAttribute("sumPrice", sumPrice);
+        request.setAttribute("deliveryFee", deliveryFee);
         request.setAttribute("list", list);
 
         return "member/memberCart";

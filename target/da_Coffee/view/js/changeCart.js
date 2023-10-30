@@ -63,3 +63,16 @@ function decreaseCartQuantity(num) {
 
     form.submit();
 }
+
+function deleteProduct(num) {
+    const form = document.querySelector(".form" + num);
+    const status = document.querySelector(".status" + num);
+    const button = document.querySelector(".member_cart_delete");
+
+    if(confirm("장바구니에서 상품을 삭제하시겠습니까?") === true) {
+        status.value = 0;
+        form.submit();
+    } else {
+        return false;
+    }
+}
