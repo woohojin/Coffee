@@ -271,5 +271,11 @@ public class memberController {
         return "member/memberCart";
     }
 
+    @RequestMapping("memberMyPage")
+    public String memberMyPage() throws Exception {
+
+        return "member/memberMyPage";
+    }
+
 }
 

@@ -7,7 +7,9 @@
 <body>
 <main>
   <div class="product_wrap">
-    <h1>블렌드 커피</h1>
+    <div class="page_head">
+      <h1>블렌드 커피</h1>
+    </div>
     <div class="product">
       <ul>
         <c:choose>

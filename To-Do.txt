@@ -4,7 +4,6 @@
 장바구니 제품 이미지 안나옴?
 주문기록
 마이페이지
-위시리스트
 어드민
 카테고리
 로그인 인터셉터
@@ -14,6 +13,7 @@ footer
 컨트롤러 세분화
 https 활성화 = ssl 인증서 발급
 jstl foreach map으로도 받아올 수 있어서 테이블 수정 및 컨트롤러 수정이 필요함
+UI 통일감 만들기
 
 모바일 반응형 웹
 매퍼 등 보안 유지를 위해 전부 환경변수로
@@ -29,6 +29,8 @@ jstl foreach map으로도 받아올 수 있어서 테이블 수정 및 컨트롤
 텍스트에디터
 장바구니 수량 추가 동일 상품시 count는 그대로인데 장바구니 숫자가 늘어남 js
 헤더 fixed 로고 빼고 가져오기
+위시리스트
 
 https://www.privacy.go.kr/front/contents/cntntsView.do?contsNo=81
 https://www.erdcloud.com/d/ifkt7zHppbaMgXAyF
+통신판매업 신고?
