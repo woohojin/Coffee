@@ -30,17 +30,19 @@ li {
   float: left;
 }
 main {
-  height: 700px;
-  margin: 200px 0 100px 0;
+  min-height: 100vh;
+  margin-top: 155px;
 }
-#index_page,
-#member_signup_page,
-#product_detail_page,
-#member_cart_page {
-  height: auto;
-}
+
 input:focus {
   outline: none;
+}
+.page_head {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  margin: 40px 0;
 }
 
 .signin,

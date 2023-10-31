@@ -47,9 +47,11 @@ public class cartDAO {
     return cart;
   }
 
-  public int cartSumPrice(String memberId) {
-    int sumPrice = session.selectOne(NS + "cartSumPrice", memberId);
-
+  public String cartSumPrice(String memberId) {
+    String sumPrice = session.selectOne(NS + "cartSumPrice", memberId);
+    if(sumPrice == null) {
+      sumPrice = "0";
+    }
     return sumPrice;
   }
 

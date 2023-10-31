@@ -211,7 +211,8 @@ public class memberController {
         String memberId = (String) session.getAttribute("memberId");
 
         List<Cart> list = cartDao.cartSelectMember(memberId);
-        int sumPrice = cartDao.cartSumPrice(memberId);
+        int sumPrice = Integer.parseInt(cartDao.cartSumPrice(memberId));
+        int cartCount = cartDao.cartCount(memberId);
 
         int deliveryFee = 3000;
         int minimumPrice = 30000;
@@ -225,6 +226,7 @@ public class memberController {
         request.setAttribute("totalPrice", totalPrice);
         request.setAttribute("sumPrice", sumPrice);
         request.setAttribute("deliveryFee", deliveryFee);
+        request.setAttribute("cartCount", cartCount);
         request.setAttribute("list", list);
 
         return "member/memberCart";
@@ -237,6 +239,10 @@ public class memberController {
         String productCode = request.getParameter("productCode");
         String memberId = (String) session.getAttribute("memberId");
 
+        List<Cart> list = cartDao.cartSelectMember(memberId);
+        int sumPrice = Integer.parseInt(cartDao.cartSumPrice(memberId));
+        int cartCount = cartDao.cartCount(memberId);
+
         if(quantity < 1) {
             quantity = 1;
         }
@@ -246,9 +252,6 @@ public class memberController {
         } else if (status == 1) {
             cartDao.cartQuantityUpdate(memberId, productCode, quantity);
         }
-
-        List<Cart> list = cartDao.cartSelectMember(memberId);
-        int sumPrice = cartDao.cartSumPrice(memberId);
 
         int deliveryFee = 3000;
         int minimumPrice = 30000;
@@ -262,6 +265,7 @@ public class memberController {
         request.setAttribute("totalPrice", totalPrice);
         request.setAttribute("sumPrice", sumPrice);
         request.setAttribute("deliveryFee", deliveryFee);
+        request.setAttribute("cartCount", cartCount);
         request.setAttribute("list", list);
 
         return "member/memberCart";

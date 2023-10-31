@@ -31,7 +31,7 @@
         select * from cart where member_id =  #{memberId} and product_code = #{productCode}
     </select>
 
-    <select id="cartSumPrice" parameterType="String" resultType="int">
+    <select id="cartSumPrice" parameterType="String" resultType="String">
         select sum(product_price * quantity) from cart where member_id =  #{memberId}
     </select>
 
