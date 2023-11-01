@@ -14,6 +14,9 @@ footer
 https 활성화 = ssl 인증서 발급
 jstl foreach map으로도 받아올 수 있어서 테이블 수정 및 컨트롤러 수정이 필요함
 UI 통일감 만들기
+데이터 EXCEL로
+카트 수량변경 이상함
+마우스 우클릭 못하게
 
 모바일 반응형 웹
 매퍼 등 보안 유지를 위해 전부 환경변수로
@@ -30,6 +33,7 @@ UI 통일감 만들기
 장바구니 수량 추가 동일 상품시 count는 그대로인데 장바구니 숫자가 늘어남 js
 헤더 fixed 로고 빼고 가져오기
 위시리스트
+국세청 전자세금계산서 api확인
 
 https://www.privacy.go.kr/front/contents/cntntsView.do?contsNo=81
 https://www.erdcloud.com/d/ifkt7zHppbaMgXAyF
