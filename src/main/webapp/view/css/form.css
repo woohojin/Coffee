@@ -157,3 +157,7 @@ input::file-selector-button {
   justify-content: flex-end;
   margin: 15px 0;
 }
+
+#member_profile_page input:read-only {
+  border: 1px solid var(--grayLine);
+}

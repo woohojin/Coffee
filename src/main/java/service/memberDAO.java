@@ -32,4 +32,11 @@ public class memberDAO {
         return mem;
     }
 
+    public void memberTierUpdate(String memberId, int memberTier) {
+        map.clear();
+        map.put("memberId", memberId);
+        map.put("memberTier", memberTier);
+        session.update(NS + "memberTierUpdate", map);
+    }
+
 }

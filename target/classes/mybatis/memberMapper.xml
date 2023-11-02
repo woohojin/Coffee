@@ -32,4 +32,8 @@
         select * from member where member_id =  #{memberId}
     </select>
 
+    <update id="memberTierUpdate" parameterType="map">
+        update member set member_tier = #{memberTier} where member_id = #{memberId}
+    </update>
+
 </mapper>

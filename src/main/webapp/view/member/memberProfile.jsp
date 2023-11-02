@@ -50,7 +50,6 @@
               oninput="nameInputCheck(this)"
               spellcheck="false"
               value="${ member.memberName }"
-              readonly
               required
             />
           </td>
@@ -178,7 +177,7 @@
                 type="tel"
                 maxlength="11"
                 placeholder="예) 01012345678"
-                value="${ member.memberTel }"
+                value="0${ member.memberTel }"
                 oninput="maxLengthCheck(this), numberInputCheck(this)"
                 spellcheck="false"
                 required
@@ -212,7 +211,7 @@
                 type="tel"
                 maxlength="11"
                 placeholder="예) 01012345678"
-                value="${ member.memberCompanyTel }"
+                value="0${ member.memberCompanyTel }"
                 oninput="maxLengthCheck(this), numberInputCheck(this)"
                 spellcheck="false"
                 required
@@ -262,7 +261,7 @@
       <div class="signup">
         <input
           type="submit"
-          value="회원가입"
+          value="수정"
           class="submit_btn"
           onclick="return checkPassword()"
         />

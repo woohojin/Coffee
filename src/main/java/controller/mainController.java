@@ -124,7 +124,7 @@ public class mainController {
         Product product = productDao.productSelectOne(productCode);
         request.setAttribute("product", product);
 
-        return "/board/product/productDetailBoard";
+        return "board/product/productDetailBoard";
     }
 
     @PostMapping("productDetailPro")
@@ -232,7 +232,7 @@ public class mainController {
 
     @RequestMapping("productUploadForm")
     public String productUploadForm() {
-        return "/board/product/productUploadForm";
+        return "board/product/productUploadForm";
     }
 
     @RequestMapping("productUploadPro")

@@ -171,6 +171,9 @@
                   <li>
                     <a href="${ pageContext.request.contextPath }/board/productUploadForm">제품 업로드</a>
                   </li>
+                  <li>
+                    <a href="${ pageContext.request.contextPath }/admin/memberTierUpdate">권한 주입</a>
+                  </li>
                 </ul>
               </div>
             </div>
