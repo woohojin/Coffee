@@ -5,7 +5,7 @@
 
 
 <body>
-<main>
+<main id="product_page">
   <div class="product_wrap">
     <div class="page_head">
       <h1>블렌드 커피</h1>

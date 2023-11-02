@@ -82,6 +82,9 @@ input::file-selector-button {
   display: flex;
   justify-content: center;
 }
+.member_signup_form_wrap {
+  margin-bottom: 100px;
+}
 .member_signup_form input[type="text"],
 .member_signup_form input[type="tel"],
 .member_signup_form input[type="email"],
@@ -140,6 +143,10 @@ input::file-selector-button {
 .member_signup_form_personal_info ul li {
   float: none;
   margin-bottom: 10px;
+}
+.signup .submit_btn {
+  width: 110px;
+  height: 50px;
 }
 .member_signin_form th {
   text-align: left;

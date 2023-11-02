@@ -1,3 +1,6 @@
+회원가입 개인회원 사업자회원 나누기
+회원가입 사진넣기 버튼 누르면 input 초기화됨
+파일등록 버튼 css
 아이디 / 비밀번호 찾기
 회원가입시 개인정보처리동의서
 제품 수량 증가 버튼 이미지로 변경
@@ -8,21 +11,19 @@
 카테고리
 로그인 인터셉터
 productDetail 클릭시 해당 스크롤 위치로
-lnb dropdown border-bottom 추가
 footer
 컨트롤러 세분화
 https 활성화 = ssl 인증서 발급
 jstl foreach map으로도 받아올 수 있어서 테이블 수정 및 컨트롤러 수정이 필요함
 UI 통일감 만들기
 데이터 EXCEL로
-카트 수량변경 이상함
-마우스 우클릭 못하게
 
 모바일 반응형 웹
 매퍼 등 보안 유지를 위해 전부 환경변수로
 
 로그 저장
 전체적인 보안
+본인인증?
 
 예외처리
 1. int nullPointException = String으로 받아서 필요하면 parseInt로 전환
@@ -38,3 +39,8 @@ UI 통일감 만들기
 https://www.privacy.go.kr/front/contents/cntntsView.do?contsNo=81
 https://www.erdcloud.com/d/ifkt7zHppbaMgXAyF
 통신판매업 신고?
+
+
+전체적으로 봐주기
+회원가입 아이디 -> 이름 한글 자동으로
+페이지의 완성도? 뭔가 부족해보임

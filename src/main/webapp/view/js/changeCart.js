@@ -52,7 +52,7 @@ function decreaseCartQuantity(num) {
     const status = document.querySelector(".status" + num);
     let quantity = Number(cartQuantity.value);
 
-    if(quantity !== 1) {
+    if(quantity > 1) {
         quantity -= 1;
     } else {
         alert("상품 수량이 1보다 작을 수 없습니다.");

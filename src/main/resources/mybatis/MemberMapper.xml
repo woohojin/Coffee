@@ -21,7 +21,7 @@
 
     <insert id="memberInsert" parameterType="member">
         insert into member values (#{memberId}, #{memberName}, #{memberCompanyName}, #{memberPassword}, #{memberTel}, #{memberCompanyTel},
-                                   #{memberAddress}, #{memberDetailAddress}, #{memberDeliveryAddress}, #{memberDetailDeliveryAddress}, #{memberEmail}, #{memberFile}, #{memberFranCode}, 0, NOW())
+                                   #{memberAddress}, #{memberDetailAddress}, #{memberDeliveryAddress}, #{memberDetailDeliveryAddress}, #{memberEmail}, #{memberFile}, 0000, 0, NOW())
     </insert>
 
     <select id="memberList" parameterType="map" resultMap="memberMap">

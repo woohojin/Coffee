@@ -37,6 +37,10 @@ main {
 input:focus {
   outline: none;
 }
+#member_profile_page .page_head,
+#product_page .page_head {
+  margin-top: 200px;
+}
 .page_head {
   display: flex;
   justify-content: center;

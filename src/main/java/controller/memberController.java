@@ -210,7 +210,6 @@ public class memberController {
     public String memberCart() throws Exception {
         String memberId = (String) session.getAttribute("memberId");
 
-        List<Cart> list = cartDao.cartSelectMember(memberId);
         int sumPrice = Integer.parseInt(cartDao.cartSumPrice(memberId));
         int cartCount = cartDao.cartCount(memberId);
 
@@ -222,6 +221,8 @@ public class memberController {
         }
 
         int totalPrice = deliveryFee + sumPrice;
+
+        List<Cart> list = cartDao.cartSelectMember(memberId);
 
         request.setAttribute("totalPrice", totalPrice);
         request.setAttribute("sumPrice", sumPrice);
@@ -239,7 +240,6 @@ public class memberController {
         String productCode = request.getParameter("productCode");
         String memberId = (String) session.getAttribute("memberId");
 
-        List<Cart> list = cartDao.cartSelectMember(memberId);
         int sumPrice = Integer.parseInt(cartDao.cartSumPrice(memberId));
         int cartCount = cartDao.cartCount(memberId);
 
@@ -262,6 +262,8 @@ public class memberController {
 
         int totalPrice = deliveryFee + sumPrice;
 
+        List<Cart> list = cartDao.cartSelectMember(memberId);
+
         request.setAttribute("totalPrice", totalPrice);
         request.setAttribute("sumPrice", sumPrice);
         request.setAttribute("deliveryFee", deliveryFee);
@@ -275,6 +277,28 @@ public class memberController {
     public String memberMyPage() throws Exception {
 
         return "member/memberMyPage";
+    }
+
+    @RequestMapping("memberProfile")
+    public String memberProfile() throws Exception {
+        String memberId = (String) session.getAttribute("memberId");
+
+        Member member = memberDao.memberSelectOne(memberId);
+
+        request.setAttribute("member", member);
+
+        return "member/memberProfile";
+    }
+
+    @RequestMapping("memberProfilePro")
+    public String memberProfilePro() throws Exception {
+        String memberId = (String) session.getAttribute("memberId");
+
+        Member member = memberDao.memberSelectOne(memberId);
+
+        request.setAttribute("member", member);
+
+        return "member/memberProfile";
     }
 
 }

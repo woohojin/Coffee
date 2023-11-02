@@ -241,20 +241,6 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                        <th>
-                            <label for="member_fran_code">가맹점코드</label>
-                        </th>
-                        <td>
-                            <input
-                              name="memberFranCode"
-                              id="member_fran_code"
-                              type="text"
-                              spellcheck="false"
-                              required
-                            />
-                        </td>
-                    </tr>
                 </tbody>
             </table>
             <div class="signup">

@@ -1,7 +1,7 @@
 const englishRegex = /[^A-Za-z]/g;
 const koreanRegex = /[^가-힣ㄱ-ㅎㅏ-ㅣ]/g;
 const numberRegex = /[^0-9]/g;
-const passwordRegex = /^(?=(.*[A-Za-z]){2,})(?=(.*\d){1,})(?=(.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]){1,}).{8,}$/;
+const passwordRegex = /^(?=(.*[A-Za-z]){0,}(.*\d){0,}(.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]){0,}).{8,}$/;
 
 function passwordInputCheck(object) {
   const memberPassword = object.memberPassword.value;
