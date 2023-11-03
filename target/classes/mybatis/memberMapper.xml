@@ -29,7 +29,7 @@
     </select>
 
     <select id="memberSelectOne" parameterType="String" resultMap="memberMap">
-        select * from member where member_id =  #{memberId}
+        select * from member where member_id = #{memberId}
     </select>
 
     <update id="memberTierUpdate" parameterType="map">

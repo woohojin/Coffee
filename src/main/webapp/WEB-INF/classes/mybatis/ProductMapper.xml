@@ -44,9 +44,9 @@
         select * from (
         select @rownum := @rownum + 1 as rownum,
         a.* from product a, (select @rownum := 0) tmp
-        where product_tier = #{memberTier} and product_name LIKE CONCAT('%',#{searchText},'%') order by product_code) b
+        where product_tier = #{memberTier} and product_name
+        LIKE CONCAT('%',#{searchText},'%') order by product_code) b
         where b.rownum between #{start} and #{end};
-
     </select>
 
     <select id="productSelectOne" parameterType="String" resultMap="productMap">

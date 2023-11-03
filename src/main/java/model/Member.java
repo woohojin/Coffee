@@ -5,8 +5,8 @@ public class Member {
     String memberName;
     String memberCompanyName;
     String memberPassword;
-    int memberTel;
-    int memberCompanyTel;
+    String memberTel;
+    String memberCompanyTel;
     String memberAddress;
     String memberDetailAddress;
     String memberDeliveryAddress;
@@ -48,19 +48,19 @@ public class Member {
         this.memberPassword = memberPassword;
     }
 
-    public int getMemberTel() {
+    public String getMemberTel() {
         return memberTel;
     }
 
-    public void setMemberTel(int memberTel) {
+    public void setMemberTel(String memberTel) {
         this.memberTel = memberTel;
     }
 
-    public int getMemberCompanyTel() {
+    public String getMemberCompanyTel() {
         return memberCompanyTel;
     }
 
-    public void setMemberCompanyTel(int memberCompanyTel) {
+    public void setMemberCompanyTel(String memberCompanyTel) {
         this.memberCompanyTel = memberCompanyTel;
     }
 

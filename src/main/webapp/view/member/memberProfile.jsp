@@ -177,7 +177,7 @@
                 type="tel"
                 maxlength="11"
                 placeholder="예) 01012345678"
-                value="0${ member.memberTel }"
+                value="${ member.memberTel }"
                 oninput="maxLengthCheck(this), numberInputCheck(this)"
                 spellcheck="false"
                 required
@@ -211,7 +211,7 @@
                 type="tel"
                 maxlength="11"
                 placeholder="예) 01012345678"
-                value="0${ member.memberCompanyTel }"
+                value="${ member.memberCompanyTel }"
                 oninput="maxLengthCheck(this), numberInputCheck(this)"
                 spellcheck="false"
                 required

@@ -12,7 +12,7 @@
 	files = opener.document.getElementById("files");
 	if (img != null) {
 		img.src =
-			"${ pageContext.request.contextPath }/view/board/files/${filename}"; // 업로드 된 이미지 회원가입 화면에 출력
+			"${ pageContext.request.contextPath }/view/board/files/${filename}"; // 제품 사진 출력
 	}
 	if (files != null) {
 		files.value = "${filename}";

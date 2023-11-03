@@ -18,8 +18,8 @@ public class memberDAO {
     private final static String NS = "member.";
     private static Map map = new HashMap<>();
 
-    public int memberInsert(Member mem) {
-        int num = session.insert(NS+"memberInsert", mem);
+    public int memberInsert(Member member) {
+        int num = session.insert(NS+"memberInsert", member);
         return num;
     }
     public List<Member> memberList() {
