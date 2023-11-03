@@ -157,9 +157,7 @@
   display: flex;
   position: relative;
 }
-.member_cart_page_wrap {
-  width: 100%;
-}
+
 .member_cart input[type="text"] {
   width: 30px;
   height: 32px;
@@ -243,4 +241,22 @@
   width: 130px;
   border: 1px solid var(--grayLine);
   border-radius: 15px;
+}
+
+.member_mypage_wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.member_mypage_wrap td {
+  border: 1px solid var(--mainColor);
+  width: 250px;
+  height: 110px;
+}
+.member_mypage_wrap td > a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }

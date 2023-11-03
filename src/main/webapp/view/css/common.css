@@ -37,7 +37,13 @@ main {
 input:focus {
   outline: none;
 }
+
+.member_cart_page_wrap,
+.member_profile_page_wrap {
+  width: 100%;
+}
 #member_profile_page .page_head,
+#member_mypage_page .page_head,
 #product_page .page_head {
   margin-top: 200px;
 }
