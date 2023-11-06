@@ -11,6 +11,7 @@
 .sold_out {
   background-color: rgba(131, 131, 131, 100);
 }
+
 body {
   overflow-x: hidden;
 }
@@ -86,9 +87,6 @@ input:focus {
   background-color: var(--mainColor);
   color: white;
 }
-.btn {
-  margin-left: 10px;
-}
 .btn a {
   display: flex;
   justify-content: center;
@@ -98,7 +96,11 @@ input:focus {
   color: white;
 }
 .input_btn a {
-  width: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
 }
 .left_btn,
 .right_btn {

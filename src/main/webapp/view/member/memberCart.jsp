@@ -9,7 +9,7 @@
     <div class="page_head">
       <h1>장바구니</h1>
     </div>
-    <div class="member_cart_wrap center">
+    <div class="member_cart_wrap">
       <c:if test="${ cartCount < 1 }">
         장바구니에 담은 상품이 없습니다.
       </c:if>

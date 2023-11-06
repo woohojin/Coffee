@@ -9,7 +9,7 @@
   </div>
   <div class="member_signup_form_wrap">
     <form
-      action="${ pageContext.request.contextPath }/member/memberSignUpPro"
+      action="${ pageContext.request.contextPath }/member/memberProfilePro"
       name="f"
       method="post"
       class="member_signup_form"
