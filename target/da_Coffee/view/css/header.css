@@ -1,0 +1,226 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
+@import "variables.css";
+
+header,
+.hd_top,
+.hd_gnb,
+.hd_gnb figure,
+.hd_gnb_menu .cart,
+.hd_lnb {
+  display: flex;
+  width: 100%;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  background-color: white;
+  box-shadow: 0 1px 8px #949494;
+}
+.hd_gnb {
+  position: relative;
+  width: 100vw;
+  height: 80px;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 15px 0 10px 0;
+}
+.hd_logo_wrap {
+  position: absolute;
+  width: 100%;
+}
+.hd_gnb figure {
+  justify-content: center;
+}
+.hd_gnb figure a img {
+  width: 140px;
+}
+.hd_search {
+  display: flex;
+  align-items: center;
+  margin-right: 50px;
+}
+.hd_search form {
+  display: flex;
+  align-items: center;
+  border-radius: 25px;
+  background-color: rgba(51, 144, 255, 0.1);
+  height: 50px;
+  width: 300px;
+}
+.hd_search input[type="text"] {
+  width: 250px;
+  border: none;
+  background: none;
+  z-index: 2;
+  padding-left: 10px;
+}
+.search_icon {
+  display: flex;
+  position: relative;
+  align-items: center;
+}
+.search_icon img {
+  position: absolute;
+  right: 15px;
+  width: 25px;
+  filter: invert(45%) sepia(70%) saturate(1629%) hue-rotate(194deg)
+  brightness(99%) contrast(104%);
+}
+.hd_gnb_menu {
+  margin-right: 80px;
+  z-index: 2;
+}
+.hd_gnb_menu > ul {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.hd_gnb_menu > ul > li {
+  margin-right: 15px;
+}
+.hd_gnb_menu > ul > li > a {
+  font-size: 15px;
+}
+.hd_gnb_menu > ul > li > a > img {
+  width: 37px;
+}
+.hd_gnb_menu > ul > li > span {
+  user-select: none;
+}
+.hd_gnb_menu .cart {
+  position: relative;
+}
+.hd_gnb_menu .cart div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 25px;
+  top: -5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--mainColor);
+  color: white;
+}
+.hd_gnb_menu .cart span {
+  font-size: 13px;
+}
+.hd_gnb_member_cart_wrap {
+  position:relative;
+}
+.hd_gnb_member_cart {
+  position: absolute;
+  background-color: white;
+  overflow: hidden;
+  transition: max-height 0.7s ease;
+  border: none;
+  width: 400px;
+  right: -9px;
+  top: 50px;
+  z-index: 5;
+}
+.hd_gnb_member_cart img {
+  width: 115px;
+  height: auto;
+  margin: 0 32px;
+}
+.hd_gnb_member_cart > div {
+  margin: 20px 0;
+}
+.hd_gnb_member_cart_status {
+  display: flex;
+}
+.hd_gnb_member_cart_status > div {
+  width: 100%;
+  text-align: right;
+}
+.hd_gnb_member_cart_status > div:nth-child(2) {
+  width: 50%;
+}
+.hd_gnb_member_cart_status > div > a > img {
+  width: 15px;
+}
+.hd_gnb_member_cart_info {
+  display: flex;
+}
+.hd_gnb_member_cart_text {
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+}
+.hd_gnb_member_cart_text p {
+  margin-bottom: 8px;
+  color: black;
+}
+.hd_gnb_member_cart_text p:first-child {
+  font-weight: bold;
+}
+.hd_gnb_member_cart_btn {
+  display: flex;
+  justify-content: space-evenly;
+}
+.hd_gnb_member_cart_btn > .btn {
+  height: 55px;
+  width: 150px;
+  margin: 0;
+}
+.hd_lnb {
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+}
+.hd_lnb_menu {
+  margin-right: 40px;
+  height: 100%;
+  cursor: pointer;
+}
+.hd_lnb_dropdown_wrap {
+  height: 100%;
+}
+.hd_lnb_dropdown_icon {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.hd_lnb_dropdown_icon img {
+  width: 40px;
+}
+.hd_lnb_dropdown {
+  display: flex;
+  position: absolute;
+  overflow: hidden;
+  justify-content: center;
+  background-color: white;
+  transition: height 0.3s ease;
+  left: 0;
+  top: 155px;
+  width: 100vw;
+  border-bottom: 1px solid var(--grayLine);
+}
+
+.hd_lnb_dropdown ul {
+  margin: 10px 0 0 40px;
+}
+.hd_lnb_dropdown ul li {
+  clear: both;
+  margin-bottom: 7px;
+}
+.hd_lnb_dropdown ul li:first-child {
+  font-size: 20px;
+  margin-bottom: 14px;
+}
+.hd_lnb_list {
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+.hd_lnb_list ul li {
+  margin-right: 30px;
+}
+.hd_lnb_list ul li a {
+  font-size: 15px;
+}

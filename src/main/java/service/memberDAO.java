@@ -43,4 +43,8 @@ public class memberDAO {
         session.update(NS + "memberUpdate", member);
     }
 
+    public void memberUpdateNotPassword(Member member) {
+        session.update(NS + "memberUpdateNotPassword", member);
+    }
+
 }

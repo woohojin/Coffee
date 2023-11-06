@@ -293,27 +293,28 @@ public class memberController {
     public String memberProfilePro(Member member, String memberExistingPassword) throws Exception {
         String memberId = (String) session.getAttribute("memberId");
 
-        Member existingMember = memberDao.memberSelectOne(memberId);
+        Member existingMember = memberDao.memberSelectOne(memberId); //기존 회원 정보
         member.setMemberId(memberId); // 사용자가 임의로 변경하는 것을 막기 위함
 
         String url = "/member/memberProfile";
         String msg = "회원 정보가 수정되었습니다.";
 
         if(memberExistingPassword != null) {
-            if(passwordEncoder.matches(memberExistingPassword, existingMember.getMemberPassword())) { // 기존 비밀번호와 db의 비밀번호가 일치 할 때 변경
-                member.setMemberPassword(passwordEncoder.encode(member.getMemberPassword()));
+            if(passwordEncoder.matches(memberExistingPassword, existingMember.getMemberPassword())) { // 입력한 기존 비밀번호와 db의 비밀번호가 일치 할 때 변경
+                if(member.getMemberPassword() == null || member.getMemberPassword().isEmpty()) {
+                    memberDao.memberUpdateNotPassword(member);
+                } else {
+                    member.setMemberPassword(passwordEncoder.encode(member.getMemberPassword()));
+                    memberDao.memberUpdate(member);
+                }
             } else {
-                msg = "비밀번호가 다릅니다.";
+                msg = "기존 비밀번호가 틀렸습니다.";
             }
         }
 
-
-        memberDao.memberUpdate(member);
-
-
-
         request.setAttribute("url", url);
         request.setAttribute("msg", msg);
+
         return "alert";
     }
 
