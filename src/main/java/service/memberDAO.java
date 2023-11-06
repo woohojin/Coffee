@@ -39,4 +39,8 @@ public class memberDAO {
         session.update(NS + "memberTierUpdate", map);
     }
 
+    public void memberUpdate(Member member) {
+        session.update(NS + "memberUpdate", member);
+    }
+
 }

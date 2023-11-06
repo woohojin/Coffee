@@ -1,7 +1,6 @@
 package controller;
 
 import model.Cart;
-import model.Product;
 import service.cartDAO;
 import service.cookieDAO;
 import service.memberDAO;
@@ -139,16 +138,16 @@ public class memberController {
         String msg;
         String url;
 
-        Member mem = memberDao.memberSelectOne(memberId);
+        Member member = memberDao.memberSelectOne(memberId);
 
-        if (mem != null) {
-            if (passwordEncoder.matches(memberPassword, mem.getMemberPassword())) {
+        if (member != null) {
+            if (passwordEncoder.matches(memberPassword, member.getMemberPassword())) {
                 session.setAttribute("memberId", memberId);
 
                 url = "/board/main";
 
                 if(autoLogin != null) {
-                    String encryptKey = mem.getMemberId() + keyString;
+                    String encryptKey = member.getMemberId() + keyString;
 
                     String token = sha256.encrypt(encryptKey);
 
@@ -291,14 +290,31 @@ public class memberController {
     }
 
     @RequestMapping("memberProfilePro")
-    public String memberProfilePro() throws Exception {
+    public String memberProfilePro(Member member, String memberExistingPassword) throws Exception {
         String memberId = (String) session.getAttribute("memberId");
 
-        Member member = memberDao.memberSelectOne(memberId);
+        Member existingMember = memberDao.memberSelectOne(memberId);
+        member.setMemberId(memberId); // 사용자가 임의로 변경하는 것을 막기 위함
 
-        request.setAttribute("member", member);
+        String url = "/member/memberProfile";
+        String msg = "회원 정보가 수정되었습니다.";
 
-        return "member/memberProfile";
+        if(memberExistingPassword != null) {
+            if(passwordEncoder.matches(memberExistingPassword, existingMember.getMemberPassword())) { // 기존 비밀번호와 db의 비밀번호가 일치 할 때 변경
+                member.setMemberPassword(passwordEncoder.encode(member.getMemberPassword()));
+            } else {
+                msg = "비밀번호가 다릅니다.";
+            }
+        }
+
+
+        memberDao.memberUpdate(member);
+
+
+
+        request.setAttribute("url", url);
+        request.setAttribute("msg", msg);
+        return "alert";
     }
 
 }

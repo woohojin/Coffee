@@ -56,6 +56,21 @@
         </tr>
         <tr>
           <th>
+            <label for="member_existing_password">기존비밀번호</label>
+          </th>
+          <td>
+            <input
+              name="memberExistingPassword"
+              id="member_existing_password"
+              type="password"
+              minlength="8"
+              spellcheck="false"
+              required
+            />
+          </td>
+        </tr>
+        <tr>
+          <th>
             <label for="member_password">비밀번호</label>
           </th>
           <td>

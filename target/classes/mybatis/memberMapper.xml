@@ -36,4 +36,12 @@
         update member set member_tier = #{memberTier} where member_id = #{memberId}
     </update>
 
+    <update id="memberUpdate" parameterType="member">
+        update member set member_name = #{memberName}, member_company_name = #{memberCompanyName}, member_password = #{memberPassword},
+                          member_tel = #{memberTel}, member_company_tel = #{memberCompanyTel}, member_address = #{memberAddress},
+                          member_detail_address = #{memberDetailAddress}, member_delivery_address = #{memberDeliveryAddress},
+                          member_detail_delivery_address = #{memberDetailDeliveryAddress}, member_email = #{memberEmail}, member_file = #{memberFile}
+                      where member_id = #{memberId}
+    </update>
+
 </mapper>
