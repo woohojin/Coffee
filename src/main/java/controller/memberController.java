@@ -240,9 +240,6 @@ public class memberController {
         String productCode = request.getParameter("productCode");
         String memberId = (String) session.getAttribute("memberId");
 
-        int sumPrice = Integer.parseInt(cartDao.cartSumPrice(memberId));
-        int cartCount = cartDao.cartCount(memberId);
-
         if(quantity < 1) {
             quantity = 1;
         }
@@ -253,10 +250,13 @@ public class memberController {
             cartDao.cartQuantityUpdate(memberId, productCode, quantity);
         }
 
+        int sumPrice = Integer.parseInt(cartDao.cartSumPrice(memberId));
+        int cartCount = cartDao.cartCount(memberId);
+
         int deliveryFee = 3000;
         int minimumPrice = 30000;
 
-        if(sumPrice > minimumPrice) {
+        if(sumPrice > minimumPrice || sumPrice == 0) {
             deliveryFee = 0;
         }
 

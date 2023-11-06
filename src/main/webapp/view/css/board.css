@@ -270,3 +270,7 @@
   margin-top: 20px;
   color: #666;
 }
+
+#member_profile_page input:read-only {
+  border: 1px solid var(--grayLine);
+}
