@@ -8,7 +8,7 @@
     <div class="product_detail_wrap">
       <div class="product_detail">
         <div class="product_detail_img">
-          <img src="${ pageContext.request.contextPath }/view/image/1.jpg" alt="" />
+          <img src="${ pageContext.request.contextPath }/view/board/files/${ product.productFile }" alt="" />
         </div>
         <div class="product_info">
           <h1>${ product.productName } ${ product.productUnit } </h1>

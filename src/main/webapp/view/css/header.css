@@ -199,7 +199,6 @@ header {
   left: 0;
   top: 155px;
   width: 100vw;
-  border-bottom: 1px solid var(--grayLine);
 }
 
 .hd_lnb_dropdown ul {

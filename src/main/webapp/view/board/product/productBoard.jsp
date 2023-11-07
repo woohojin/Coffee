@@ -26,7 +26,7 @@
                     href="${ pageContext.request.contextPath }/board/productDetail?productCode=${ p.productCode }"
                   >
                     <img
-                      src="${ pageContext.request.contextPath }/view/image/1.jpg"
+                      src="${ pageContext.request.contextPath }/view/board/files/${ p.productFile }"
                       alt=""
                     />
                   </a>

@@ -8,31 +8,31 @@
         <id column="product_name" property="productName" />
         <id column="product_unit" property="productUnit" />
         <id column="product_price" property="productPrice" />
+        <id column="product_file" property="productFile" />
         <id column="quantity" property="quantity" />
     </resultMap>
 
     <insert id="cartInsert" parameterType="cart">
-        insert into cart values (#{memberId}, #{productCode}, #{productName}, #{productPrice}, #{productUnit}, #{productFile}, #{quantity})
+        insert into cart values (#{memberId}, #{productCode}, #{quantity})
     </insert>
 
     <select id="cartCount" parameterType="map" resultType="int">
         select count(*) from cart where member_id = #{memberId}
     </select>
 
-    <select id="cartList" parameterType="map" resultMap="cartMap">
-        select * from cart
-    </select>
-
-    <select id="cartSelectMember" parameterType="map" resultMap="cartMap">
-        select * from cart where member_id =  #{memberId}
+    <select id="cartSelectMember" parameterType="String" resultMap="cartMap">
+        select cart.member_id, cart.product_code, cart.quantity, product.product_name, product.product_unit, product.product_price, product.product_file
+        from cart inner join product on cart.product_code = product.product_code where cart.member_id = #{memberId};
     </select>
 
     <select id="cartSelectOne" parameterType="String" resultMap="cartMap">
-        select * from cart where member_id =  #{memberId} and product_code = #{productCode}
+        select cart.member_id, cart.product_code, cart.quantity, product.product_name, product.product_unit, product.product_price, product.product_file
+        from cart inner join product on cart.product_code = product.product_code where cart.member_id = #{memberId} and cart.product_code = #{productCode};
     </select>
 
     <select id="cartSumPrice" parameterType="String" resultType="String">
-        select sum(product_price * quantity) from cart where member_id =  #{memberId}
+        select sum(cart.quantity * product.product_price)
+        from cart inner join product on cart.product_code = product.product_code where cart.member_id = #{memberId};
     </select>
 
     <delete id="cartDelete" parameterType="map">

@@ -13,6 +13,7 @@ $(document).ready(function() {
             success: function(data) {
                 const cart = $(".hd_gnb_member_cart");
                 const text = $(".hd_gnb_member_cart_text");
+                const info = $(".hd_gnb_member_cart_info");
                 const cartCount = $(".cart_count");
                 const background = $(".background-fadeout");
                 const close = $(".cart_close_btn");
@@ -21,12 +22,14 @@ $(document).ready(function() {
                 const productUnit = data.productUnit;
                 const quantity = data.quantity;
                 const productPrice = data.productPrice;
+                const productFile = data.productFile;
 
                 // 장바구니 개수 올려주기
                 let num = Number(cartCount.text());
                 num += 1;
 
                 // 장바구니에 담긴 상품 정보 표시
+                // info.find("a img").src("");
                 text.find(".cart_product_name").text(productName);
                 text.find(".cart_product_unit").text(productUnit);
                 text.find(".cart_quantity").text(quantity + " 개");

@@ -92,4 +92,19 @@ public class Product {
         this.productFile = productFile;
     }
 
+    @Override
+    public String toString() {
+        return "Product{" +
+          "productCode='" + productCode + '\'' +
+          ", productType=" + productType +
+          ", productName='" + productName + '\'' +
+          ", productPrice=" + productPrice +
+          ", productUnit='" + productUnit + '\'' +
+          ", productCountry='" + productCountry + '\'' +
+          ", productSpecies='" + productSpecies + '\'' +
+          ", productCompany='" + productCompany + '\'' +
+          ", productTier=" + productTier +
+          ", productFile='" + productFile + '\'' +
+          '}';
+    }
 }

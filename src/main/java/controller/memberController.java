@@ -215,13 +215,15 @@ public class memberController {
         int deliveryFee = 3000;
         int minimumPrice = 30000;
 
-        if(sumPrice > minimumPrice) {
+        if(sumPrice > minimumPrice || sumPrice == 0) {
             deliveryFee = 0;
         }
 
         int totalPrice = deliveryFee + sumPrice;
 
         List<Cart> list = cartDao.cartSelectMember(memberId);
+
+        System.out.println(list);
 
         request.setAttribute("totalPrice", totalPrice);
         request.setAttribute("sumPrice", sumPrice);
@@ -262,6 +264,8 @@ public class memberController {
         int totalPrice = deliveryFee + sumPrice;
 
         List<Cart> list = cartDao.cartSelectMember(memberId);
+
+        System.out.println(list);
 
         request.setAttribute("totalPrice", totalPrice);
         request.setAttribute("sumPrice", sumPrice);

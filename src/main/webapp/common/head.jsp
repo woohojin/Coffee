@@ -64,7 +64,14 @@
                   <li class="hd_gnb_member_cart_wrap">
                     <a href="${ pageContext.request.contextPath }/member/memberCart" class="cart">
                       <div>
-                        <span class="cart_count">${ sessionScope.cartCount }</span>
+                        <span class="cart_count">
+                          <c:if test="${ sessionScope.cartCount == null }">
+                            0
+                          </c:if>
+                          <c:if test="${ sessionScope.cartCount != null }">
+                            ${ sessionScope.cartCount }
+                          </c:if>
+                        </span>
                       </div>
                       <img src="${ pageContext.request.contextPath }/view/image/cart.png" alt="" />
                     </a>
@@ -196,11 +203,13 @@
 
     hoverObject.addEventListener("mouseover", () => {
       dropdown.style.height = "150px";
-      dropdown.style.borderTop = "1px solid rgba(200, 200, 200, 1)";
+      dropdown.style.borderTop = "1px solid var(--grayLine)";
+      dropdown.style.borderBottom = "1px solid var(--grayLine)";
     });
     hoverObject.addEventListener("mouseout", () => {
       dropdown.style.height = "0";
-      dropdown.style.borderTop = "inherit";
+      dropdown.style.borderTop = "none";
+      dropdown.style.borderBottom = "none";
     });
   </script>
   </body>

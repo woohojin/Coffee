@@ -28,7 +28,6 @@
           <tr>
             <td class="member_cart_image">
               <img src="${ pageContext.request.contextPath }/view/board/files/${ c.productFile }" alt=""/>
-              <p>${ c.productFile }</p>
             </td>
             <td class="member_cart_info">
               <p>${ c.productName }</p>
