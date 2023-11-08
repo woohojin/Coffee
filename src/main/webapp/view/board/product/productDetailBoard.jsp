@@ -77,7 +77,7 @@
                   <button type="button" class="left_btn" onclick="decreaseProductQuantity()">-</button>
                   <button type="button" class="right_btn" onclick="increaseProductQuantity()">+</button>
                 </div>
-                <div class="product_quantity_price">
+                <div class="product_quantity_price center">
                   <fmt:formatNumber value="${ product.productPrice }" pattern="#,###" /> 원
                 </div>
               </div>

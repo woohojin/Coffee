@@ -13,17 +13,17 @@ header,
 
 header {
   position: fixed;
-  top: 0;
-  z-index: 1;
   background-color: white;
+  top: 0;
   box-shadow: 0 1px 8px #949494;
+  z-index: 1;
 }
 .hd_gnb {
   position: relative;
-  width: 100vw;
-  height: 80px;
   align-items: center;
   justify-content: flex-end;
+  width: 100vw;
+  height: 80px;
   margin: 15px 0 10px 0;
 }
 .hd_logo_wrap {
@@ -44,17 +44,17 @@ header {
 .hd_search form {
   display: flex;
   align-items: center;
-  border-radius: 25px;
   background-color: rgba(51, 144, 255, 0.1);
   height: 50px;
   width: 300px;
+  border-radius: 25px;
 }
 .hd_search input[type="text"] {
   width: 250px;
-  border: none;
   background: none;
-  z-index: 2;
   padding-left: 10px;
+  border: none;
+  z-index: 2;
 }
 .search_icon {
   display: flex;
@@ -97,13 +97,13 @@ header {
   align-items: center;
   justify-content: center;
   position: absolute;
+  background-color: var(--mainColor);
+  color: white;
   left: 25px;
   top: -5px;
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: var(--mainColor);
-  color: white;
 }
 .hd_gnb_menu .cart span {
   font-size: 13px;
@@ -116,10 +116,10 @@ header {
   background-color: white;
   overflow: hidden;
   transition: max-height 0.7s ease;
-  border: none;
   width: 400px;
   right: -9px;
   top: 50px;
+  border: none;
   z-index: 5;
 }
 .hd_gnb_member_cart img {
@@ -134,8 +134,8 @@ header {
   display: flex;
 }
 .hd_gnb_member_cart_status > div {
-  width: 100%;
   text-align: right;
+  width: 100%;
 }
 .hd_gnb_member_cart_status > div:nth-child(2) {
   width: 50%;
@@ -169,14 +169,14 @@ header {
   margin: 0;
 }
 .hd_lnb {
-  height: 50px;
   align-items: center;
   justify-content: center;
+  height: 50px;
 }
 .hd_lnb_menu {
+  cursor: pointer;
   margin-right: 40px;
   height: 100%;
-  cursor: pointer;
 }
 .hd_lnb_dropdown_wrap {
   height: 100%;
@@ -214,8 +214,8 @@ header {
 }
 .hd_lnb_list {
   display: flex;
-  height: 100%;
   align-items: center;
+  height: 100%;
 }
 .hd_lnb_list ul li {
   margin-right: 30px;
