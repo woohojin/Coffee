@@ -97,19 +97,19 @@
     </div>
     <ul class="product_detail_main">
       <li>
-        <div class="product_detail_list">
+        <div class="product_detail_list scroll1">
           <ul>
             <li class="active">
-              <a href="">상품상세정보</a>
+              <a class="scrollBtn1" href="">상품상세정보</a>
             </li>
             <li>
-              <a href="">배송안내</a>
+              <a class="scrollBtn2" href="">배송안내</a>
             </li>
             <li>
-              <a href="">교환 및 반품안내</a>
+              <a class="scrollBtn3" href="">교환 및 반품안내</a>
             </li>
             <li>
-              <a href="">상품문의</a>
+              <a class="scrollBtn4" href="">상품문의</a>
             </li>
           </ul>
         </div>
@@ -118,19 +118,19 @@
         </div>
       </li>
       <li>
-        <div class="product_detail_list">
+        <div class="product_detail_list scroll2">
           <ul>
             <li>
-              <a href="">상품상세정보</a>
+              <a class="scrollBtn1" href="">상품상세정보</a>
             </li>
             <li class="active">
-              <a href="">배송안내</a>
+              <a class="scrollBtn2" href="">배송안내</a>
             </li>
             <li>
-              <a href="">교환 및 반품안내</a>
+              <a class="scrollBtn3" href="">교환 및 반품안내</a>
             </li>
             <li>
-              <a href="">상품문의</a>
+              <a class="scrollBtn4" href="">상품문의</a>
             </li>
           </ul>
         </div>
@@ -181,19 +181,19 @@
         </div>
       </li>
       <li>
-        <div class="product_detail_list">
+        <div class="product_detail_list scroll3">
           <ul>
             <li>
-              <a href="">상품상세정보</a>
+              <a class="scrollBtn1" href="">상품상세정보</a>
             </li>
             <li>
-              <a href="">배송안내</a>
+              <a class="scrollBtn2" href="">배송안내</a>
             </li>
             <li class="active">
-              <a href="">교환 및 반품안내</a>
+              <a class="scrollBtn3" href="">교환 및 반품안내</a>
             </li>
             <li>
-              <a href="">상품문의</a>
+              <a class="scrollBtn4" href="">상품문의</a>
             </li>
           </ul>
         </div>
@@ -244,19 +244,19 @@
         </div>
       </li>
       <li>
-        <div class="product_detail_list">
+        <div class="product_detail_list scroll4">
           <ul>
             <li>
-              <a href="">상품상세정보</a>
+              <a class="scrollBtn1" href="">상품상세정보</a>
             </li>
             <li>
-              <a href="">배송안내</a>
+              <a class="scrollBtn2" href="">배송안내</a>
             </li>
             <li>
-              <a href="">교환 및 반품안내</a>
+              <a class="scrollBtn3" href="">교환 및 반품안내</a>
             </li>
             <li class="active">
-              <a href="">상품문의</a>
+              <a class="scrollBtn4" href="">상품문의</a>
             </li>
           </ul>
         </div>
@@ -309,5 +309,6 @@
     </ul>
   </main>
   <script src="${ pageContext.request.contextPath }/view/js/addToCart.js"></script>
+  <script src="${ pageContext.request.contextPath }/view/js/scrollMove.js"></script>
 </body>
 
