@@ -10,6 +10,7 @@
         <typeAlias type="model.Member" alias="member" />
         <typeAlias type="model.CookieDTO" alias="cookie" />
         <typeAlias type="model.Cart" alias="cart" />
+        <typeAlias type="model.History" alias="history" />
 
     </typeAliases>
 
@@ -19,6 +20,7 @@
         <mapper resource="mybatis/MemberMapper.xml"/>
         <mapper resource="mybatis/CookieMapper.xml"/>
         <mapper resource="mybatis/CartMapper.xml"/>
+        <mapper resource="mybatis/HistoryMapper.xml"/>
 
     </mappers>
 

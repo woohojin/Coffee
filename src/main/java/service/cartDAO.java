@@ -28,11 +28,6 @@ public class cartDAO {
     return num;
   }
 
-  public List<Cart> cartList() {
-    List<Cart> list = session.selectList(NS + "cartList");
-    return list;
-  }
-
   public List<Cart> cartSelectMember(String memberId) {
     List<Cart> list = session.selectList(NS + "cartSelectMember", memberId);
     return list;
