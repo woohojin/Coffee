@@ -5,6 +5,17 @@ form,
 .input_image_form_wrap {
   text-align: center;
 }
+.form_required {
+  position: absolute;
+  color: var(--mainColor);
+  top: 28px;
+  left: 20px;
+}
+.member_signup_form_personal_info tr:first-child .form_required,
+.member_signup_form_personal_info tr:nth-child(2) .form_required {
+  top: 58px;
+  left: 20px;
+}
 
 input::file-selector-button {
   color: white;
@@ -64,18 +75,25 @@ input::file-selector-button {
   top: 0;
 }
 
+.member_signup_form_wrap .input_btn {
+  height: 44px;
+}
 .member_address_wrap,
 .member_delivery_address_wrap {
   position: relative;
 }
 .member_address_button,
-.member_delivery_address_button {
+.member_delivery_address_button,
+.member_delivery_address_button2 {
   position: absolute;
   right: -91px;
   top: 20px;
 }
 .member_address_button {
   top: 21px;
+}
+.member_delivery_address_button2 {
+  top: 74px;
 }
 .member_signup_form_wrap,
 .member_signin_form_wrap {
@@ -84,6 +102,9 @@ input::file-selector-button {
 }
 .member_signup_form_wrap {
   margin-bottom: 100px;
+}
+.member_signup_form_wrap table th {
+  position: relative;
 }
 .member_signup_form input[type="text"],
 .member_signup_form input[type="tel"],

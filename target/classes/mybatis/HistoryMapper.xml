@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="history">
+    <resultMap type="history" id="historyMap">
+        <id column="history_code" property="historyCode" />
+        <id column="member_id" property="memberId" />
+        <id column="product_code" property="productCode" />
+        <id column="product_name" property="productName" />
+        <id column="product_price" property="productPrice" />
+        <id column="product_unit" property="productUnit" />
+        <id column="product_file" property="productFile" />
+        <id column="quantity" property="quantity" />
+        <id column="order_date" property="orderDate" />
+        <id column="delivery_address" property="deliveryAddress" />
+        <id column="detail_delivery_address" property="detailDeliveryAddress" />
+    </resultMap>
+
+    <insert id="historyInsert" parameterType="history">
+        insert into history values (#{memberId}, #{productCode}, #{quantity})
+    </insert>
+
+    <select id="historyCount" parameterType="map" resultType="int">
+        select count(*) from history where member_id = #{memberId}
+    </select>
+
+    <select id="historySelectMember" parameterType="String" resultMap="historyMap">
+        select history.*, product.product_name, product.product_unit, product.product_price, product.product_file
+        from history inner join product on history.product_code = product.product_code where history.member_id = #{memberId};
+    </select>
+
+    <select id="historySelectOne" parameterType="String" resultMap="historyMap">
+        select history.*, product.product_name, product.product_unit, product.product_price, product.product_file
+        from history inner join product on history.product_code = product.product_code where history.member_id = #{memberId} and history.history_code = #{historyCode};
+    </select>
+
+
+</mapper>

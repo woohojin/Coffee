@@ -21,12 +21,12 @@
     </select>
 
     <select id="cartSelectMember" parameterType="String" resultMap="cartMap">
-        select cart.member_id, cart.product_code, cart.quantity, product.product_name, product.product_unit, product.product_price, product.product_file
+        select cart.*, product.product_name, product.product_unit, product.product_price, product.product_file
         from cart inner join product on cart.product_code = product.product_code where cart.member_id = #{memberId};
     </select>
 
     <select id="cartSelectOne" parameterType="String" resultMap="cartMap">
-        select cart.member_id, cart.product_code, cart.quantity, product.product_name, product.product_unit, product.product_price, product.product_file
+        select cart.*, product.product_name, product.product_unit, product.product_price, product.product_file
         from cart inner join product on cart.product_code = product.product_code where cart.member_id = #{memberId} and cart.product_code = #{productCode};
     </select>
 

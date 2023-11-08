@@ -15,6 +15,7 @@ public class Member {
     String memberFile;
     String memberFranCode;
     int memberTier;
+    String member_date;
 
     public String getMemberId() {
         return memberId;
@@ -127,4 +128,34 @@ public class Member {
     public void setMemberTier(int memberTier) {
         this.memberTier = memberTier;
     }
+
+    public String getMember_date() {
+        return member_date;
+    }
+
+    public void setMember_date(String member_date) {
+        this.member_date = member_date;
+    }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+          "memberId='" + memberId + '\'' +
+          ", memberName='" + memberName + '\'' +
+          ", memberCompanyName='" + memberCompanyName + '\'' +
+          ", memberPassword='" + memberPassword + '\'' +
+          ", memberTel='" + memberTel + '\'' +
+          ", memberCompanyTel='" + memberCompanyTel + '\'' +
+          ", memberAddress='" + memberAddress + '\'' +
+          ", memberDetailAddress='" + memberDetailAddress + '\'' +
+          ", memberDeliveryAddress='" + memberDeliveryAddress + '\'' +
+          ", memberDetailDeliveryAddress='" + memberDetailDeliveryAddress + '\'' +
+          ", memberEmail='" + memberEmail + '\'' +
+          ", memberFile='" + memberFile + '\'' +
+          ", memberFranCode='" + memberFranCode + '\'' +
+          ", memberTier=" + memberTier +
+          ", member_date='" + member_date + '\'' +
+          '}';
+    }
 }
+
