@@ -28,6 +28,15 @@ public class historyDAO {
     return num;
   }
 
+  public int historyCountBetween(String memberId, String startDate, String endDate) {
+    map.clear();
+    map.put("memberId", memberId);
+    map.put("startDate", startDate);
+    map.put("endDate", endDate);
+    int num = session.selectOne(NS + "historyCountBetween", map);
+    return num;
+  }
+
   public List<History> historySelectMember(String memberId) {
     List<History> list = session.selectList(NS + "historySelectMember", memberId);
     return list;
@@ -40,6 +49,15 @@ public class historyDAO {
     History history = session.selectOne(NS + "historySelectOne", map);
 
     return history;
+  }
+
+  public List<History> historySelectBetween(String memberId, String startDate, String endDate) {
+    map.clear();
+    map.put("memberId", memberId);
+    map.put("startDate", startDate);
+    map.put("endDate", endDate);
+    List<History> list = session.selectList(NS + "historySelectBetween", map);
+    return list;
   }
 
 }

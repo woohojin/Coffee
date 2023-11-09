@@ -6,6 +6,7 @@
     <meta charset="UTF-8" />
     <title>DaCOFFEE <sitemesh:write property='title'/></title>
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/reset.css" />
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/datepicker.css" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/font.css" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/main.css" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/common.css" />
@@ -13,7 +14,8 @@
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/board.css" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/form.css" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/footer.css" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="${ pageContext.request.contextPath }/view/js/daumAddress.js"></script>
     <script src="${ pageContext.request.contextPath }/view/js/searchSubmit.js"></script>

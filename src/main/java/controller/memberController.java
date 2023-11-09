@@ -1,9 +1,8 @@
 package controller;
 
 import model.Cart;
-import service.cartDAO;
-import service.cookieDAO;
-import service.memberDAO;
+import model.History;
+import service.*;
 import model.Member;
 
 import org.springframework.context.ConfigurableApplicationContext;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import service.productDAO;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +25,7 @@ import javax.sql.DataSource;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -47,6 +46,9 @@ public class memberController {
 
     @Autowired
     cookieDAO cookieDao;
+
+    @Autowired
+    historyDAO historyDao;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -320,6 +322,55 @@ public class memberController {
         request.setAttribute("msg", msg);
 
         return "alert";
+    }
+
+    @RequestMapping("memberHistory")
+    public String memberHistory() throws Exception {
+        String memberId = (String) session.getAttribute("memberId");
+
+        LocalDate now = LocalDate.now();
+        int year = now.getYear();
+        int dayOfMonth = now.getDayOfMonth();
+        int monthValue = now.getMonthValue() - 3;
+        String month = "";
+        String day = "";
+
+        if(monthValue < 10 ) {
+            month = "0" + monthValue;
+        }
+        if(dayOfMonth < 10 ) {
+            day = "0" + dayOfMonth;
+        }
+
+        String startDate = year + "-" + month + "-" + day;
+        String endDate = String.valueOf(now);
+
+        List<History> list = historyDao.historySelectBetween(memberId, startDate, endDate);
+        int historyCount = historyDao.historyCountBetween(memberId, startDate, endDate);
+
+        request.setAttribute("startDate", startDate);
+        request.setAttribute("endDate", endDate);
+        request.setAttribute("historyCount", historyCount);
+        request.setAttribute("list", list);
+
+        return "member/memberHistory";
+    }
+
+    @RequestMapping("memberHistoryPro")
+    public String memberHistoryPro() throws Exception {
+        String memberId = (String) session.getAttribute("memberId");
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+
+        List<History> list = historyDao.historySelectBetween(memberId, startDate, endDate);
+        int historyCount = historyDao.historyCountBetween(memberId, startDate, endDate);
+
+        request.setAttribute("startDate", startDate);
+        request.setAttribute("endDate", endDate);
+        request.setAttribute("historyCount", historyCount);
+        request.setAttribute("list", list);
+
+        return "member/memberHistory";
     }
 
 }

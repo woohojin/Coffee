@@ -16,7 +16,7 @@
         insert into cart values (#{memberId}, #{productCode}, #{quantity})
     </insert>
 
-    <select id="cartCount" parameterType="map" resultType="int">
+    <select id="cartCount" parameterType="String" resultType="int">
         select count(*) from cart where member_id = #{memberId}
     </select>
 

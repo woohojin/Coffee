@@ -30,6 +30,15 @@
   justify-content: center;
   align-items: center;
 }
+.datepicker {
+  text-align: center;
+  caret-color: transparent;
+  width: 75px;
+  height: 20px;
+  border: 2px solid var(--mainColor);
+  border-radius: 4px;
+  line-height: 20px;
+}
 
 body {
   overflow-x: hidden;
@@ -67,6 +76,7 @@ input:focus {
 }
 #member_profile_page .page_head,
 #member_mypage_page .page_head,
+#member_history_page .page_head,
 #product_page .page_head {
   margin-top: 200px;
 }

@@ -17,22 +17,51 @@
     </resultMap>
 
     <insert id="historyInsert" parameterType="history">
-        insert into history values (#{memberId}, #{productCode}, #{quantity})
+        insert into order_history values (#{memberId}, #{productCode}, #{quantity})
     </insert>
 
-    <select id="historyCount" parameterType="map" resultType="int">
-        select count(*) from history where member_id = #{memberId}
+    <select id="historyCount" parameterType="String" resultType="int">
+        select count(*) from order_history where member_id = #{memberId}
+    </select>
+
+    <select id="historyCountBetween" parameterType="map" resultType="int">
+        select count(*) from order_history where member_id = #{memberId} and order_date between #{startDate} and #{endDate}
     </select>
 
     <select id="historySelectMember" parameterType="String" resultMap="historyMap">
-        select history.*, product.product_name, product.product_unit, product.product_price, product.product_file
-        from history inner join product on history.product_code = product.product_code where history.member_id = #{memberId};
+        select order_history.*, product.product_name, product.product_unit, product.product_price, product.product_file
+        from order_history inner join product on order_history.product_code = product.product_code
+        where order_history.member_id = #{memberId}
     </select>
 
     <select id="historySelectOne" parameterType="String" resultMap="historyMap">
-        select history.*, product.product_name, product.product_unit, product.product_price, product.product_file
-        from history inner join product on history.product_code = product.product_code where history.member_id = #{memberId} and history.history_code = #{historyCode};
+        select order_history.*, product.product_name, product.product_unit, product.product_price, product.product_file
+        from order_history inner join product on order_history.product_code = product.product_code
+        where order_history.member_id = #{memberId} and order_history.history_code = #{historyCode}
     </select>
 
+    <select id="historySelectDate" parameterType="String" resultMap="historyMap">
+        select order_history.*, product.product_name, product.product_unit, product.product_price, product.product_file
+        from order_history inner join product on order_history.product_code = product.product_code
+        where order_history.member_id = #{memberId} and order_history.order_date = #{date};
+    </select>
+
+    <select id="historySelectYear" parameterType="String" resultMap="historyMap">
+        select order_history.*, product.product_name, product.product_unit, product.product_price, product.product_file
+        from order_history inner join product on order_history.product_code = product.product_code
+        where order_history.member_id = #{memberId} and DATE_FORMAT(order_history.order_date,'%Y') = DATE_FORMAT(now(), #{date});
+    </select>
+
+    <select id="historySelectMonth" parameterType="String" resultMap="historyMap">
+        select order_history.*, product.product_name, product.product_unit, product.product_price, product.product_file
+        from order_history inner join product on order_history.product_code = product.product_code
+        where order_history.member_id = #{memberId} and DATE_FORMAT(order_history.order_date,'%Y-%m') = DATE_FORMAT(now(), #{date});
+    </select>
+
+    <select id="historySelectBetween" parameterType="map" resultMap="historyMap">
+        select order_history.*, product.product_name, product.product_unit, product.product_price, product.product_file
+        from order_history inner join product on order_history.product_code = product.product_code
+        where order_history.member_id = #{memberId} and order_history.order_date between #{startDate} and #{endDate}
+    </select>
 
 </mapper>

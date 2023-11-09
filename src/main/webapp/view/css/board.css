@@ -164,6 +164,7 @@
 .member_cart_wrap {
   display: flex;
   justify-content: center;
+  margin-top: 20px;
 }
 .member_cart {
   text-align: center;
@@ -269,4 +270,10 @@
 
 #member_profile_page input:read-only {
   border: 1px solid var(--grayLine);
+}
+.member_history_form .submit_btn {
+  width: 50px;
+  height: 26px;
+  margin-left: 10px;
+  font-size: 14px;
 }

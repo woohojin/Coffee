@@ -9,7 +9,7 @@ public class History {
   String productUnit;
   String productFile;
   String quantity;
-  String order_date;
+  String orderDate;
   String deliveryAddress;
   String detailDeliveryAddress;
 
@@ -77,12 +77,12 @@ public class History {
     this.quantity = quantity;
   }
 
-  public String getOrder_date() {
-    return order_date;
+  public String getOrderDate() {
+    return orderDate;
   }
 
-  public void setOrder_date(String order_date) {
-    this.order_date = order_date;
+  public void setOrderDate(String orderDate) {
+    this.orderDate = orderDate;
   }
 
   public String getDeliveryAddress() {
@@ -112,7 +112,7 @@ public class History {
       ", productUnit='" + productUnit + '\'' +
       ", productFile='" + productFile + '\'' +
       ", quantity='" + quantity + '\'' +
-      ", order_date='" + order_date + '\'' +
+      ", orderDate='" + orderDate + '\'' +
       ", deliveryAddress='" + deliveryAddress + '\'' +
       ", detailDeliveryAddress='" + detailDeliveryAddress + '\'' +
       '}';

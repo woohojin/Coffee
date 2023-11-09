@@ -33,7 +33,7 @@
                 </a>
             </td>
             <td>
-              <a>
+              <a href="${ pageContext.request.contextPath }/member/memberHistory">
                 주문기록 조회
                 <p>
                   고객님께서 주문했던 상품 정보를
