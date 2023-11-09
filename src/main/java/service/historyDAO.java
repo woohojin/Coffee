@@ -47,7 +47,6 @@ public class historyDAO {
     map.put("memberId", memberId);
     map.put("historyCode", historyCode);
     History history = session.selectOne(NS + "historySelectOne", map);
-
     return history;
   }
 
