@@ -53,6 +53,9 @@
 
                     <c:when test="${ sessionScope.memberId != null && sessionScope.memberId == 'admin' }">
                       <li>
+                        <a href="${ pageContext.request.contextPath }/member/memberLogout" id="logout_button" onClick="return checkLogout()">로그아웃</a>
+                      </li>
+                      <li>
                         <a href="${ pageContext.request.contextPath }/admin/dashboard">관리자페이지</a>
                       </li>
                     </c:when>
