@@ -1,4 +1,9 @@
-function fileDownload(productFile, productName) {
+function fileUpload() {
+    const op = "width=500, height=150, left=50, top=150";
+    window.open("../board/fileUploadForm", "", op);
+}
+
+function fileSystem(productFile, productName) {
     if(confirm("파일을 다운로드 하시겠습니까?") === true) {
         $.ajax({
             type: "GET",

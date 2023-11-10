@@ -6,5 +6,5 @@
 
     <mapping path="*/fileUploadForm" exclude="true" />
     <mapping path="*/fileUploadPro" exclude="true" />
-    <mapping path="*/fileDownload" exclude="true" />
+    <mapping path="*/fileSystem" exclude="true" />
 </sitemesh>

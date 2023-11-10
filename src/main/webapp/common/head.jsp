@@ -42,7 +42,7 @@
                       </li>
                     </c:when>
 
-                    <c:when test="${ sessionScope.memberId != null }">
+                    <c:when test="${ sessionScope.memberId != null && sessionScope.memberId != 'admin' }">
                       <li>
                         <a href="${ pageContext.request.contextPath }/member/memberLogout" id="logout_button" onClick="return checkLogout()">로그아웃</a>
                       </li>
@@ -51,9 +51,9 @@
                       </li>
                     </c:when>
 
-                    <c:when test="${ sessionScope.memberId == 'admin' }">
+                    <c:when test="${ sessionScope.memberId != null && sessionScope.memberId == 'admin' }">
                       <li>
-                        <a href="${ pageContext.request.contextPath }/member/Admin">관리자페이지</a>
+                        <a href="${ pageContext.request.contextPath }/admin/dashboard">관리자페이지</a>
                       </li>
                     </c:when>
 
@@ -196,21 +196,6 @@
         return false;
       }
     }
-  </script>
-  <script>
-    const hoverObject = document.querySelector(".hd_lnb_dropdown_wrap");
-    const dropdown = document.querySelector(".hd_lnb_dropdown");
-
-    hoverObject.addEventListener("mouseover", () => {
-      dropdown.style.height = "150px";
-      dropdown.style.borderTop = "1px solid var(--grayLine)";
-      dropdown.style.borderBottom = "1px solid var(--grayLine)";
-    });
-    hoverObject.addEventListener("mouseout", () => {
-      dropdown.style.height = "0";
-      dropdown.style.borderTop = "none";
-      dropdown.style.borderBottom = "none";
-    });
   </script>
   </body>
 </html>

@@ -31,7 +31,7 @@
                     />
                   </a>
                   <div>
-                    <a onclick="return fileDownload('${ p.productFile }', '${ p.productName }')">${ p.productName }</a>
+                    <a onclick="return fileSystem('${ p.productFile }', '${ p.productName }')">${ p.productName }</a>
                     <p><fmt:formatNumber value="${ p.productPrice }" pattern="#,###" /> 원</p>
                   </div>
                 </li>

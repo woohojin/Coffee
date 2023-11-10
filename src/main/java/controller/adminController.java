@@ -47,11 +47,18 @@ public class adminController {
     this.response = response;
   }
 
+  @RequestMapping("dashboard")
+  public String index() throws Exception {
+
+    return "admin/dashboard";
+  }
+
   @RequestMapping("memberTierUpdate")
   public String memberTierUpdate() throws Exception {
 
     return "admin/memberTierUpdate";
   }
+
   @RequestMapping("memberTierUpdatePro")
   public String memberTierUpdatePro(String memberId, int memberTier) throws Exception {
 

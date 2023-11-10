@@ -244,11 +244,11 @@ public class mainController {
         int num = productDao.productInsert(product);
 
         if (num > 0) {
-            msg = "게시물을 등록하였습니다.";
+            msg = "제품을 등록하였습니다.";
             url = "/board/main";
         }
 
-        msg = "게시물 등록 실패";
+        msg = "제품 등록 실패";
         url = "/board/product/productUploadForm";
 
         request.setAttribute("msg", msg);

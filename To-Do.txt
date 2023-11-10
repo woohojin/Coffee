@@ -6,6 +6,7 @@
 카테고리
 로그인 인터셉터
 footer
+pagination css 색상
 컨트롤러 세분화
 https 활성화 = ssl 인증서 발급
 UI 통일감 만들기
