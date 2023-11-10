@@ -85,7 +85,7 @@ public class mainController {
 
         int pageInt = Integer.parseInt(pageNum);
 
-        int limit = 4; // 한 page당 게시물 개수
+        int limit = 16; // 한 page당 게시물 개수
         int bottomLine = 100; // pagination 개수
 
         int productCount = 0;

@@ -15,7 +15,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 40px 0;
+  margin: 40px 0 50px 0;
   font-size: 30px;
 }
 .background-fadeout {
@@ -167,6 +167,13 @@ input:focus {
 .up_btn img,
 .down_btn img {
   width: 8px;
+}
+
+.pagination_wrap {
+  margin-top: 70px;
+}
+.pagination a {
+  font-size: 17px;
 }
 
 .main_slider,

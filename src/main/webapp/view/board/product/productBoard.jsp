@@ -11,7 +11,7 @@
       <h1>블렌드 커피</h1>
     </div>
     <div class="product">
-      <ul>
+      <ul class="center">
         <c:choose>
           <c:when test="${requestScope.memberTier == '0'}">
             <p>게시물을 열람 할 권한이 부족합니다.</p>
@@ -47,8 +47,8 @@
     </div>
   </div>
 
-  <div class="">
-    <div class="">
+  <div class="pagination_wrap center">
+    <div class="pagination">
       <c:if test="${ pageNum >= 3}">
         <c:choose>
           <c:when test="${requestScope.searchText == null}">
