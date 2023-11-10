@@ -21,6 +21,7 @@
         <tr>
           <th>
             <label for="member_id">아이디</label>
+            <div class="form_required">*</div>
           </th>
           <td>
             <input
@@ -40,6 +41,7 @@
         <tr>
           <th>
             <label for="member_name">이름</label>
+            <div class="form_required">*</div>
           </th>
           <td>
             <input
@@ -57,6 +59,7 @@
         <tr>
           <th>
             <label for="member_existing_password">기존비밀번호</label>
+            <div class="form_required">*</div>
           </th>
           <td>
             <input
@@ -71,7 +74,7 @@
         </tr>
         <tr>
           <th>
-            <label for="member_password">비밀번호</label>
+            <label for="member_password">새 비밀번호</label>
           </th>
           <td>
             <input
@@ -86,7 +89,7 @@
         </tr>
         <tr>
           <th>
-            <label for="member_password_check">비밀번호 확인</label>
+            <label for="member_password_check">새 비밀번호 확인</label>
           </th>
           <td>
             <input
@@ -107,6 +110,7 @@
           <tr class="member_address_wrap">
             <th>
               <label for="member_address">주소</label>
+              <div class="form_required">*</div>
             </th>
             <td>
               <ul>
@@ -144,6 +148,7 @@
           <tr class="member_delivery_address_wrap">
             <th>
               <label for="member_delivery_address">배송지</label>
+              <div class="form_required">*</div>
             </th>
             <td>
               <ul>
@@ -163,7 +168,6 @@
                   <button class="input_btn" type="button" onclick="execDeliveryAddress()">
                     주소 찾기
                   </button>
-                
                 </div>
                 <li>
                   <input
@@ -176,12 +180,18 @@
                     required
                   />
                 </li>
+                <div class="member_delivery_address_button2">
+                  <button class="input_btn" type="button" onclick="sameAddress()">
+                    주소와<br/>동일하게
+                  </button>
+                </div>
               </ul>
             </td>
           </tr>
           <tr>
             <th>
               <label for="member_tel">개인 연락처</label>
+              <div class="form_required">*</div>
             </th>
             <td>
               <input
@@ -209,7 +219,6 @@
                 type="text"
                 value="${ member.memberCompanyName }"
                 spellcheck="false"
-                required
               />
             </td>
           </tr>
@@ -227,13 +236,13 @@
                 value="${ member.memberCompanyTel }"
                 oninput="maxLengthCheck(this), numberInputCheck(this)"
                 spellcheck="false"
-                required
               />
             </td>
           </tr>
           <tr>
             <th>
               <label for="member_email">이메일</label>
+              <div class="form_required">*</div>
             </th>
             <td>
               <input
@@ -261,7 +270,6 @@
                   value=" ${ member.memberFile }"
                   readonly
                   spellcheck="false"
-                  required
                 />
                 <div class="input_btn">
                   <a href="" onclick="fileUpload()">사진 넣기</a>

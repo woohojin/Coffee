@@ -246,7 +246,6 @@
                                   placeholder="사진 넣기 버튼을 이용해주세요"
                                   readonly
                                   spellcheck="false"
-                                  required
                                 />
                                 <div class="input_btn">
                                     <a href="" onclick="fileUpload()">사진 넣기</a>
