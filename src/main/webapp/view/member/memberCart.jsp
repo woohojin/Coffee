@@ -42,8 +42,12 @@
                 <input type="hidden" name="status" class="status${ status.index }" value="" />
                 <input type="text" name="quantity" class="member_cart_quantity_input input${ status.index }" value="${ c.quantity }" required readonly />
                 <div class="member_cart_quantity_btn">
-                  <button type="button" class="up_btn" onclick="increaseCartQuantity(${ status.index })">+</button>
-                  <button type="button" class="down_btn" onclick="decreaseCartQuantity(${ status.index })">-</button>
+                  <button type="button" class="up_btn" onclick="increaseCartQuantity(${ status.index })">
+                    <img src="${ pageContext.request.contextPath }/view/image/caret-arrow-up.png" alt="" />
+                  </button>
+                  <button type="button" class="down_btn" onclick="decreaseCartQuantity(${ status.index })">
+                    <img src="${ pageContext.request.contextPath }/view/image/down-filled-triangular-arrow.png" alt="" />
+                  </button>
                 </div>
               </form>
             </td>
@@ -52,7 +56,7 @@
             </td>
             <td>
               <a class="member_cart_delete" onclick="deleteProduct(${ status.index })">
-                <img src="${ pageContext.request.contextPath }/view/image/close.png" alt=""/>
+                <img src="${ pageContext.request.contextPath }/view/image/close.png" alt="" />
               </a>
             </td>
           </tr>

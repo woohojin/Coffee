@@ -145,6 +145,10 @@ input:focus {
 .right_btn {
   left: 42px;
 }
+.left_btn img,
+.right_btn img {
+  width: 10px;
+}
 .up_btn,
 .down_btn {
   display: flex;
@@ -159,6 +163,10 @@ input:focus {
 }
 .down_btn {
   border-top: none;
+}
+.up_btn img,
+.down_btn img {
+  width: 8px;
 }
 
 .main_slider,
