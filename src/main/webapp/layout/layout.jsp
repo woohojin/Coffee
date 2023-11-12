@@ -19,10 +19,10 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="${ pageContext.request.contextPath }/view/js/daumAddress.js"></script>
     <script src="${ pageContext.request.contextPath }/view/js/searchSubmit.js"></script>
-    <script src="${ pageContext.request.contextPath }/view/js/fileUpload.js"></script>
-    <script src="${ pageContext.request.contextPath }/view/js/fileDownload.js"></script>
+    <script src="${ pageContext.request.contextPath }/view/js/fileSystem.js"></script>
     <script src="${ pageContext.request.contextPath }/view/js/signUpFormRequirement.js"></script>
     <script src="${ pageContext.request.contextPath }/view/js/changeCart.js"></script>
+
     <script src="${ pageContext.request.contextPath }/view/js/index.js"></script>
 </head>
 <body>

@@ -332,12 +332,13 @@ public class memberController {
         int year = now.getYear();
         int dayOfMonth = now.getDayOfMonth();
         int monthValue = now.getMonthValue() - 3;
-        String month = "";
-        String day = "";
+        String month = String.valueOf(monthValue);
+        String day = String.valueOf(dayOfMonth);
 
         if(monthValue < 10 ) {
             month = "0" + monthValue;
         }
+
         if(dayOfMonth < 10 ) {
             day = "0" + dayOfMonth;
         }

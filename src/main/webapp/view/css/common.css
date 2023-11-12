@@ -15,7 +15,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 40px 0;
+  margin: 40px 0 50px 0;
   font-size: 30px;
 }
 .background-fadeout {
@@ -145,6 +145,10 @@ input:focus {
 .right_btn {
   left: 42px;
 }
+.left_btn img,
+.right_btn img {
+  width: 10px;
+}
 .up_btn,
 .down_btn {
   display: flex;
@@ -159,6 +163,17 @@ input:focus {
 }
 .down_btn {
   border-top: none;
+}
+.up_btn img,
+.down_btn img {
+  width: 8px;
+}
+
+.pagination_wrap {
+  margin-top: 70px;
+}
+.pagination a {
+  font-size: 17px;
 }
 
 .main_slider,

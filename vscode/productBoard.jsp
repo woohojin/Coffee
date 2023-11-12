@@ -104,7 +104,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri =
       </div>
     </main>
     <script type="text/javascript">
-      function fileDownload(productFile, productName) {
+      function fileSystem(productFile, productName) {
         var xhr = new XMLHttpRequest();
         xhr.open(
           "GET",

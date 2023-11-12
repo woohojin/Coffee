@@ -74,8 +74,12 @@
               <div class="product_quantity">
                 <input type="text" class="product_quantity_input" value="1" name="quantity" readonly />
                 <div class="product_quantity_btn">
-                  <button type="button" class="left_btn" onclick="decreaseProductQuantity()">-</button>
-                  <button type="button" class="right_btn" onclick="increaseProductQuantity()">+</button>
+                  <button type="button" class="left_btn center" onclick="decreaseProductQuantity()">
+                    <img src="${ pageContext.request.contextPath }/view/image/minus.png" alt="" />
+                  </button>
+                  <button type="button" class="right_btn center" onclick="increaseProductQuantity()">
+                    <img src="${ pageContext.request.contextPath }/view/image/plus.png" alt="" />
+                  </button>
                 </div>
                 <div class="product_quantity_price center">
                   <fmt:formatNumber value="${ product.productPrice }" pattern="#,###" /> 원
