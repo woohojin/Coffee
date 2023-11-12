@@ -7,17 +7,22 @@
   <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/reset.css" />
   <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/font.css" />
   <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/common.css" />
-  <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/header.css" />
+  <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/admin.css" />
 </head>
 <body>
   <header>
-  <div id="hd_wrap">
+  <div id="hd_wrap" class="center">
     <div class="hd_lnb">
       <div class="hd_lnb_list">
         <ul>
           <li>
             <a href="${ pageContext.request.contextPath }/board/product"
-            >원두</a
+            >제품 리스트</a
+            >
+          </li>
+          <li>
+            <a href="${ pageContext.request.contextPath }/board/product"
+            >멤버 리스트</a
             >
           </li>
           <li>
