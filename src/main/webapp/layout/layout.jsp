@@ -22,7 +22,7 @@
     <script src="${ pageContext.request.contextPath }/view/js/fileSystem.js"></script>
     <script src="${ pageContext.request.contextPath }/view/js/signUpFormRequirement.js"></script>
     <script src="${ pageContext.request.contextPath }/view/js/changeCart.js"></script>
-    <script src="${ pageContext.request.contextPath }/view/js/dropdown.js"></script>
+
     <script src="${ pageContext.request.contextPath }/view/js/index.js"></script>
 </head>
 <body>

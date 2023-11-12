@@ -171,3 +171,4 @@ $RECYCLE.BIN/
 src/main/resources/application.properties
 target/da_Coffee/WEB-INF/classes/application.properties
 target/classes/application.properties
+src/main/webapp/WEB-INF/classes/application.properties
