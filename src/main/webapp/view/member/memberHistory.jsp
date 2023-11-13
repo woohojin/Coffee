@@ -65,8 +65,6 @@
             </tr>
           </c:forEach>
           </tbody>
-          <tfoot>
-          </tfoot>
         </table>
       </c:if>
     </div>

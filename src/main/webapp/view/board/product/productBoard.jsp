@@ -18,8 +18,11 @@
             <p>회원가입을 하시거나 회원가입 이후 문제가 발생했다면</p>
             <p>xxx로 연락주십시오.</p>
           </c:when>
+          <c:when test="${ requestScope.memberTier == '0' && requestScope.productCount == 0 }">
+            <p>제품이 찾을 수 없습니다.</p>
+          </c:when>
           <c:when test="${ requestScope.memberTier != 0 }">
-            <c:if test="${ requestScope.productSearchCount != 0 }">
+            <c:if test="${ requestScope.productSearchCount != 0 || requestScope.productCount != 0 }">
               <c:forEach var="p" items="${ list }">
                 <li>
                   <a

@@ -1,5 +1,7 @@
 package controller;
 
+import model.Member;
+import model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin/")
@@ -55,6 +58,53 @@ public class adminController {
 
   @RequestMapping("productList")
   public String productList() throws Exception {
+
+    String memberId = (String)session.getAttribute("memberId");
+    int memberTier = 0;
+
+    if(memberId != null && !memberId.isEmpty()) {
+      Member mem = memberDao.memberSelectOne(memberId);
+      memberTier = mem.getMemberTier();
+    }
+
+    String pageNum = request.getParameter("pageNum");
+    if (pageNum == null) {
+      pageNum = "1";
+    }
+
+    int pageInt = Integer.parseInt(pageNum);
+
+    int limit = 32; // 한 page당 게시물 개수
+    int bottomLine = 100; // pagination 개수
+
+    int productCount = 0;
+
+    if(memberTier != 0) {
+      productDao.productSet();
+      List<Product> list = productDao.productList(pageInt, limit);
+      productCount = productDao.productCount();
+      System.out.println(list);
+      request.setAttribute("list", list);
+    }
+
+    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
+    int end = start + bottomLine - 1;
+    int maxPage = (productCount / limit) + (productCount % limit == 0 ? 0 : 1);
+    if (end > maxPage) {
+      end = maxPage;
+    }
+    if (end > productCount) {
+      end = productCount;
+    }
+
+    request.setAttribute("memberTier", memberTier);
+    request.setAttribute("productCount", productCount);
+    request.setAttribute("pageNum", pageNum);
+    request.setAttribute("start", start);
+    request.setAttribute("end", end);
+    request.setAttribute("bottomLine", bottomLine);
+    request.setAttribute("maxPage", maxPage);
+    request.setAttribute("pageInt", pageInt);
 
     return "admin/productList";
   }

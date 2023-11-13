@@ -20,34 +20,66 @@
         <input type="submit" value="조회" class="submit_btn" />
       </form>
     </div>
-    <div class="product">
+    <div class="list">
       <ul class="center">
         <c:choose>
           <c:when test="${ requestScope.memberTier != '9' }">
             <p>게시물을 열람 할 권한이 부족합니다.</p>
-            <p>회원가입을 하시거나 회원가입 이후 문제가 발생했다면</p>
-            <p>xxx로 연락주십시오.</p>
+          </c:when>
+          <c:when test="${ requestScope.memberTier == '9' && requestScope.productCount == 0 }">
+            <p>제품을 찾을 수 없습니다.</p>
           </c:when>
           <c:when test="${ requestScope.memberTier == '9' }">
-            <c:if test="${ requestScope.productSearchCount != 0 }">
-              <c:forEach var="p" items="${ list }">
-                <li>
-                  <a
-                    href="${ pageContext.request.contextPath }/board/productDetail?productCode=${ p.productCode }"
-                  >
-                    <img
-                      src="${ pageContext.request.contextPath }/view/board/files/${ p.productFile }"
-                      alt=""
-                    />
-                  </a>
-                  <div>
-                    <a onclick="return fileSystem('${ p.productFile }', '${ p.productName }')">${ p.productName }</a>
-                    <p><fmt:formatNumber value="${ p.productPrice }" pattern="#,###" /> 원</p>
-                  </div>
-                </li>
-              </c:forEach>
+            <c:if test="${ requestScope.productSearchCount != 0 || requestScope.productCount != 0 }">
+              <table class="list">
+                <thead>
+                <tr>
+                  <th>제품타입</th>
+                  <th>제품코드</th>
+                  <th>제품이름</th>
+                  <th>용량</th>
+                  <th>금액</th>
+                  <th>원산지</th>
+                  <th>품종</th>
+                  <th>제조사</th>
+                  <th>등급</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach var="p" items="${ list }" varStatus="status">
+                  <tr>
+                    <td>
+                      <p>${ p.productType }</p>
+                    </td>
+                    <td>
+                      <p>${ p.productCode }</p>
+                    </td>
+                    <td>
+                      <p>${ p.productName }</p>
+                    </td>
+                    <td>
+                      <p>${ p.productUnit }</p>
+                    </td>
+                    <td>
+                      <p><fmt:formatNumber value="${ p.productPrice }" pattern="#,###" /> 원</p>
+                    </td>
+                    <td>
+                      <p>${ p.productCountry }</p>
+                    </td>
+                    <td>
+                      <p>${ p.productSpecies }</p>
+                    </td>
+                    <td>
+                      <p>${ p.productCompany }</p>
+                    </td>
+                    <td>
+                      <p>${ p.productTier }</p>
+                    </td>
+                  </tr>
+                </c:forEach>
+                </tbody>
+              </table>
             </c:if>
-            
             <c:if test="${ requestScope.productSearchCount == 0 }">
               <p>검색결과를 찾을 수 없습니다.</p>
             </c:if>

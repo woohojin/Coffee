@@ -64,7 +64,7 @@ function decreaseCartQuantity(num) {
     form.submit();
 }
 
-function deleteProduct(num) {
+function deleteCart(num) {
     const form = document.querySelector(".form" + num);
     const status = document.querySelector(".status" + num);
     const button = document.querySelector(".member_cart_delete");

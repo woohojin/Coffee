@@ -55,7 +55,7 @@
               <p><fmt:formatNumber value="${ c.productPrice * c.quantity }" pattern="#,###" /> 원</p>
             </td>
             <td>
-              <a class="member_cart_delete" onclick="deleteProduct(${ status.index })">
+              <a class="member_cart_delete" onclick="deleteCart(${ status.index })">
                 <img src="${ pageContext.request.contextPath }/view/image/close.png" alt="" />
               </a>
             </td>

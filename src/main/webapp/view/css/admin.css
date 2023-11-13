@@ -7,6 +7,9 @@ header{
     box-shadow: 0 1px 8px #949494;
     z-index: 1;
 }
+main {
+    margin-top: 90px;
+}
 
 #hd_wrap {
     width: 100%;
@@ -18,4 +21,21 @@ header{
 }
 .hd_lnb_list ul li::after {
     content: "|";
+}
+
+.list th,
+.list td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 15px;
+    font-size: 20px;
+}
+.list th {
+    border: 1px solid var(--grayLine);
+}
+.list td {
+    border: 1px solid var(--grayLine);
+}
+.list td > img {
+    width: 100px;
 }

@@ -16,7 +16,6 @@
   <script src="${ pageContext.request.contextPath }/view/js/daumAddress.js"></script>
   <script src="${ pageContext.request.contextPath }/view/js/searchSubmit.js"></script>
   <script src="${ pageContext.request.contextPath }/view/js/fileSystem.js"></script>
-  <script src="${ pageContext.request.contextPath }/view/js/signUpFormRequirement.js"></script>
   <script src="${ pageContext.request.contextPath }/view/js/changeCart.js"></script>
   <script src="${ pageContext.request.contextPath }/view/js/index.js"></script>
 </head>
