@@ -8,10 +8,10 @@
     <div class="page_head">
       <h1>주문기록</h1>
     </div>
-    <div class="member_history_form_wrap">
+    <div class="datepicker_form_wrap">
       <form
               action="${ pageContext.request.contextPath }/member/memberHistoryPro"
-              class="member_history_form center"
+              class="datepicker_form center"
               method="post"
       >
         <input type="text" name="startDate" id="datepickerStart" class="datepicker" value="${ requestScope.startDate }" />

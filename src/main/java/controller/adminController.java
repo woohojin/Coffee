@@ -53,6 +53,12 @@ public class adminController {
     return "admin/dashboard";
   }
 
+  @RequestMapping("productList")
+  public String productList() throws Exception {
+
+    return "admin/productList";
+  }
+
   @RequestMapping("memberTierUpdate")
   public String memberTierUpdate() throws Exception {
 

@@ -4,6 +4,8 @@
     <mapping path="/board/*" decorator="/layout/layout.jsp" />
     <mapping path="/member/*" decorator="/layout/layout.jsp" />
 
+    <mapping path="/admin/*" decorator="/layout/adminLayout.jsp" />
+
     <mapping path="*/fileUploadForm" exclude="true" />
     <mapping path="*/fileUploadPro" exclude="true" />
     <mapping path="*/fileSystem" exclude="true" />
