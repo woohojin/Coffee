@@ -48,6 +48,158 @@
         where b.rownum between #{start} and #{end};
     </select>
 
+    <select id="productListDesc" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_code desc ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListByProductCode" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_code ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListDescByProductCode" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+       order by product_code desc ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListByProductType" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_type ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListDescByProductType" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rowrownum := @rowrownum + 1 as rowrownum,
+        a.* from product a, (select @rowrownum := 0) tmp
+        order by product_type desc ) b
+        where b.rowrownum between #{start} and #{end};
+    </select>
+
+    <select id="productListByProductName" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_name ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListDescByProductName" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_name desc ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListByProductPrice" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_price ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListDescByProductPrice" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+         order by product_price desc ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListByProductUnit" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_unit ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListDescByProductUnit" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_unit desc ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListByProductCountry" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_country ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListDescByProductCountry" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_country desc ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListByProductSpecies" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_species ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListDescByProductSpecies" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_species desc ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListByProductCompany" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_company ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListDescByProductCompany" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_company desc ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListByProductTier" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_tier ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListDescByProductTier" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_tier desc ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
     <select id="productListByTier" parameterType="map" resultMap="productMap">
         select * from (
         select @rownum := @rownum + 1 as rownum,
@@ -56,12 +208,20 @@
         where b.rownum between #{start} and #{end};
     </select>
 
+    <select id="productSearchList" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_name LIKE CONCAT('%',#{searchText},'%') order by product_code) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
     <select id="productSearchListByTier" parameterType="map" resultMap="productMap">
         select * from (
         select @rownum := @rownum + 1 as rownum,
         a.* from product a, (select @rownum := 0) tmp
-        where product_tier = #{memberTier} and product_name
-        LIKE CONCAT('%',#{searchText},'%') order by product_code) b
+        where product_tier = #{memberTier}
+        and product_name LIKE CONCAT('%',#{searchText},'%') order by product_code) b
         where b.rownum between #{start} and #{end};
     </select>
 

@@ -8,18 +8,18 @@
     <div class="page_head">
       <h1>제품 리스트</h1>
     </div>
-    <div class="datepicker_form_wrap">
-      <form
-        action="${ pageContext.request.contextPath }/member/memberHistoryPro"
-        class="datepicker_form center"
-        method="post"
-      >
-        <input type="text" name="startDate" id="datepickerStart" class="datepicker" value="${ requestScope.startDate }" />
-        <span>&nbsp~&nbsp</span>
-        <input type="text" name="endDate" id="datepickerEnd" class="datepicker" value="${ requestScope.endDate }" />
-        <input type="submit" value="조회" class="submit_btn" />
-      </form>
-    </div>
+<%--    <div class="datepicker_form_wrap">--%>
+<%--      <form--%>
+<%--        action="${ pageContext.request.contextPath }/member/memberHistoryPro"--%>
+<%--        class="datepicker_form center"--%>
+<%--        method="post"--%>
+<%--      >--%>
+<%--        <input type="text" name="startDate" id="datepickerStart" class="datepicker" value="${ requestScope.startDate }" />--%>
+<%--        <span>&nbsp~&nbsp</span>--%>
+<%--        <input type="text" name="endDate" id="datepickerEnd" class="datepicker" value="${ requestScope.endDate }" />--%>
+<%--        <input type="submit" value="조회" class="submit_btn" />--%>
+<%--      </form>--%>
+<%--    </div>--%>
     <div class="list">
       <ul class="center">
         <c:choose>
@@ -34,15 +34,66 @@
               <table class="list">
                 <thead>
                 <tr>
-                  <th>제품타입</th>
-                  <th>제품코드</th>
-                  <th>제품이름</th>
-                  <th>용량</th>
-                  <th>금액</th>
-                  <th>원산지</th>
-                  <th>품종</th>
-                  <th>제조사</th>
-                  <th>등급</th>
+                  <th class="product_type" onclick="orderBy(this)">
+                    <form
+                      action="${ pageContext.request.contextPath }/admin/dashboard"
+                      method="post"
+                    >
+                      <input type="hidden" name="productType" value="asc"/>
+                    </form>
+                    <div>
+                      <span>제품타입</span>
+                      <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
+                    </div>
+                  </th>
+                  <th class="product_code">
+                    <div>
+                      <span>제품코드</span>
+                      <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
+                    </div>
+                  </th>
+                  <th class="product_name">
+                    <div>
+                      <span>제품이름</span>
+                      <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
+                    </div>
+                  </th>
+                  <th class="product_unit">
+                    <div>
+                      <span>용량</span>
+                      <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
+                    </div>
+                  </th>
+                  <th class="product_price">
+                    <div>
+                      <span>금액</span>
+                      <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
+                    </div>
+                  </th>
+                  <th class="product_country">
+                    <div>
+                      <span>원산지</span>
+                      <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
+                    </div>
+                  </th>
+                  <th class="product_species">
+                    <div>
+                      <span>품종</span>
+                      <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
+                    </div>
+                  </th>
+                  <th class="product_company">
+                    <div>
+                      <span>제조사</span>
+                      <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
+                    </div>
+                  </th>
+                  <th class="product_tier">
+                    <div>
+                      <span>등급</span>
+                      <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
+                    </div>
+                  </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -145,5 +196,12 @@
     </div>
   </div>
 </main>
-<script src="${ pageContext.request.contextPath }/view/js/datepicker.js"></script>
+<script>
+  function orderBy(object) {
+    const form = object.firstElementChild;
+    form.submit();
+  }
+</script>
+
+
 </body>
