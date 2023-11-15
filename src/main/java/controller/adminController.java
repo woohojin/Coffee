@@ -5,8 +5,7 @@ import model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import service.cartDAO;
 import service.cookieDAO;
 import service.memberDAO;
@@ -83,7 +82,6 @@ public class adminController {
       productDao.productSet();
       List<Product> list = productDao.productList(pageInt, limit);
       productCount = productDao.productCount();
-      System.out.println(list);
       request.setAttribute("list", list);
     }
 
@@ -107,6 +105,56 @@ public class adminController {
     request.setAttribute("pageInt", pageInt);
 
     return "admin/productList";
+  }
+
+  @PostMapping("productListPro")
+  @ResponseBody
+  public List<Product> productListPro(@RequestParam(name = "product", required = false) String product,
+                                      @RequestParam(name = "orderBy", required = false) String orderBy) throws Exception {
+    List<Product> list = null;
+
+    String pageNum = request.getParameter("pageNum");
+    if (pageNum == null) {
+      pageNum = "1";
+    }
+
+    int pageInt = Integer.parseInt(pageNum);
+
+    int limit = 32; // 한 page당 게시물 개수
+    int bottomLine = 100; // pagination 개수
+
+    int productCount = 0;
+
+    if ("asc".equals(orderBy)) {
+      System.out.println("test : asc");
+      list = productDao.productListAscByAll(product, pageInt, limit);
+    } else if ("desc".equals(orderBy)) {
+      System.out.println("test : desc");
+      list = productDao.productListDescByAll(product, pageInt, limit);
+    }
+
+    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
+    int end = start + bottomLine - 1;
+    int maxPage = (productCount / limit) + (productCount % limit == 0 ? 0 : 1);
+    if (end > maxPage) {
+      end = maxPage;
+    }
+    if (end > productCount) {
+      end = productCount;
+    }
+
+    request.setAttribute("pageNum", pageNum);
+    request.setAttribute("start", start);
+    request.setAttribute("end", end);
+    request.setAttribute("bottomLine", bottomLine);
+    request.setAttribute("maxPage", maxPage);
+    request.setAttribute("pageInt", pageInt);
+
+    System.out.println(list);
+    System.out.println(product);
+    System.out.println(orderBy);
+
+    return list;
   }
 
   @RequestMapping("memberTierUpdate")

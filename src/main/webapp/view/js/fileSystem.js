@@ -3,7 +3,7 @@ function fileUpload() {
     window.open("../board/fileUploadForm", "", op);
 }
 
-function fileSystem(productFile, productName) {
+function fileDownload(productFile, productName) {
     if(confirm("파일을 다운로드 하시겠습니까?") === true) {
         $.ajax({
             type: "GET",

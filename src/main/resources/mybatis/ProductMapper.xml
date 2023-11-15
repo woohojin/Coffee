@@ -229,4 +229,20 @@
         select * from product where product_code =  #{productCode}
     </select>
 
+    <select id="productListDescByAll" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by #{product} desc ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListAscByAll" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by #{product} ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
 </mapper>

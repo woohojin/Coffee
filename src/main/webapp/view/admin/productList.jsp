@@ -31,23 +31,25 @@
           </c:when>
           <c:when test="${ requestScope.memberTier == '9' }">
             <c:if test="${ requestScope.productSearchCount != 0 || requestScope.productCount != 0 }">
+              <form
+                action="${ pageContext.request.contextPath }/admin/dashboard"
+                method="post"
+                id="orderByForm"
+              >
+                <input type="hidden" name="product" value=""/>
+                <input type="hidden" name="orderBy" value=""/>
+              </form>
               <table class="list">
                 <thead>
                 <tr>
                   <th class="product_type" onclick="orderBy(this)">
-                    <form
-                      action="${ pageContext.request.contextPath }/admin/dashboard"
-                      method="post"
-                    >
-                      <input type="hidden" name="productType" value="asc"/>
-                    </form>
-                    <div>
+                    <div class="asc">
                       <span>제품타입</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="product_code">
-                    <div>
+                  <th class="productCode" onclick="orderBy(this)">
+                    <div class="asc">
                       <span>제품코드</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
@@ -144,15 +146,15 @@
     <div class="pagination">
       <c:if test="${ pageNum >= 3}">
         <c:choose>
-          <c:when test="${requestScope.searchText == null}">
+          <c:when test="${ requestScope.searchText == null }">
             <a
-              href="${ pageContext.request.contextPath }/board/product?pageNum=${pageNum - 3}"
+              href="${ pageContext.request.contextPath }/board/product?pageNum=${ pageNum - 3 }"
             >&laquo;</a
             >
           </c:when>
           <c:when test="${requestScope.searchText != null}">
             <a
-              href="${ pageContext.request.contextPath }/board/productSearch?pageNum=${pageNum - 3}&&searchText=${requestScope.searchText}"
+              href="${ pageContext.request.contextPath }/board/productSearch?pageNum=${ pageNum - 3 }&&searchText=${ requestScope.searchText }"
             >&laquo;</a
             >
           </c:when>
@@ -163,14 +165,14 @@
           <c:choose>
             <c:when test="${requestScope.searchText == null}">
               <a
-                href="${ pageContext.request.contextPath }/board/product?pageNum=${p}"
-              >${p}</a
+                href="${ pageContext.request.contextPath }/board/product?pageNum=${ p }"
+              >${ p }</a
               >
             </c:when>
             <c:when test="${requestScope.searchText != null}">
               <a
-                href="${ pageContext.request.contextPath }/board/productSearch?pageNum=${p}&&searchText=${requestScope.searchText}"
-              >${p}</a
+                href="${ pageContext.request.contextPath }/board/productSearch?pageNum=${ p }&&searchText=${ requestScope.searchText }"
+              >${ p }</a
               >
             </c:when>
           </c:choose>
@@ -179,15 +181,15 @@
       
       <c:if test="${ pageNum < end - 3 }">
         <c:choose>
-          <c:when test="${requestScope.searchText == null}">
+          <c:when test="${ requestScope.searchText == null}">
             <a
-              href="${ pageContext.request.contextPath }/board/product?pageNum=${pageNum + 3}"
+              href="${ pageContext.request.contextPath }/board/product?pageNum=${ pageNum + 3 }"
             >&raquo;</a
             >
           </c:when>
-          <c:when test="${requestScope.searchText != null}">
+          <c:when test="${ requestScope.searchText != null}">
             <a
-              href="${ pageContext.request.contextPath }/board/productSearch?pageNum=${pageNum + 3}&&searchText=${requestScope.searchText}"
+              href="${ pageContext.request.contextPath }/board/productSearch?pageNum=${ pageNum + 3 }&&searchText=${ requestScope.searchText }"
             >&raquo;</a
             >
           </c:when>
@@ -198,10 +200,44 @@
 </main>
 <script>
   function orderBy(object) {
-    const form = object.firstElementChild;
-    form.submit();
+    const columnName = object.className;
+    let currentOrderBy = object.firstElementChild.className;
+    let orderBy = (currentOrderBy === "asc") ? "desc" : "asc";
+    let form = document.getElementById("orderByForm");
+
+    form.querySelector('input[name="product"]').value = columnName;
+    form.querySelector('input[name="orderBy"]').value = orderBy;
+
+    // AJAX 요청
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "${pageContext.request.contextPath}/admin/productListPro", true);
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4) {
+        if (xhr.status == 200) {
+          try {
+            let response = JSON.parse(xhr.responseText);
+            updatePage(response);
+          } catch (e) {
+            console.error("Error parsing JSON:", e);
+          }
+        } else {
+          console.error("Error in request. Status:", xhr.status);
+        }
+      }
+    };
+
+    // FormData 객체를 사용하여 form 데이터를 전송
+    var formData = new FormData(form);
+    console.log(form);
+    formData.forEach(function(value, key){
+      console.log(key, value);
+    });
+    xhr.send(formData);
+  }
+  
+  function updatePage(object) {
+    console.log(object);
   }
 </script>
-
-
 </body>

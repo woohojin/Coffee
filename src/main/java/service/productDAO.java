@@ -78,6 +78,33 @@ public class productDAO {
         return list;
     }
 
+    public List<Product> productListByProductCode(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "productListByProductCode");
+        return list;
+    }
+
+    public List<Product> productListAscByAll(String product, int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        map.put("product", product);
+        List<Product> list = session.selectList(NS + "productListAscByAll", map);
+        return list;
+    }
+
+    public List<Product> productListDescByAll(String product, int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        map.put("product", product);
+        System.out.println("productDao : " + product);
+        List<Product> list = session.selectList(NS + "productListDescByAll", map);
+        return list;
+    }
+
     public Product productSelectOne(String productCode) {
         Product product = session.selectOne(NS + "productSelectOne", productCode);
         return product;
