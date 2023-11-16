@@ -32,7 +32,7 @@
           <c:when test="${ requestScope.memberTier == '9' }">
             <c:if test="${ requestScope.productSearchCount != 0 || requestScope.productCount != 0 }">
               <form
-                action="${ pageContext.request.contextPath }/admin/dashboard"
+                action="${ pageContext.request.contextPath }/admin/productListPro"
                 method="post"
                 id="orderByForm"
               >
@@ -208,36 +208,7 @@
     form.querySelector('input[name="product"]').value = columnName;
     form.querySelector('input[name="orderBy"]').value = orderBy;
 
-    // AJAX 요청
-    let xhr = new XMLHttpRequest();
-    xhr.open("POST", "${pageContext.request.contextPath}/admin/productListPro", true);
-
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState == 4) {
-        if (xhr.status == 200) {
-          try {
-            let response = JSON.parse(xhr.responseText);
-            updatePage(response);
-          } catch (e) {
-            console.error("Error parsing JSON:", e);
-          }
-        } else {
-          console.error("Error in request. Status:", xhr.status);
-        }
-      }
-    };
-
-    // FormData 객체를 사용하여 form 데이터를 전송
-    var formData = new FormData(form);
-    console.log(form);
-    formData.forEach(function(value, key){
-      console.log(key, value);
-    });
-    xhr.send(formData);
-  }
-  
-  function updatePage(object) {
-    console.log(object);
+    form.submit();
   }
 </script>
 </body>

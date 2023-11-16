@@ -78,7 +78,7 @@ public class adminController {
 
     int productCount = 0;
 
-    if(memberTier != 0) {
+    if(memberTier == 9) {
       productDao.productSet();
       List<Product> list = productDao.productList(pageInt, limit);
       productCount = productDao.productCount();
@@ -107,11 +107,21 @@ public class adminController {
     return "admin/productList";
   }
 
-  @PostMapping("productListPro")
-  @ResponseBody
-  public List<Product> productListPro(@RequestParam(name = "product", required = false) String product,
-                                      @RequestParam(name = "orderBy", required = false) String orderBy) throws Exception {
-    List<Product> list = null;
+  @RequestMapping("productListPro")
+  public String productListPro() throws Exception {
+    String product = request.getParameter("product");
+    String orderBy = request.getParameter("orderBy");
+
+    System.out.println("orderBy: " + orderBy);
+    System.out.println("product : " + product);
+
+    String memberId = (String)session.getAttribute("memberId");
+    int memberTier = 0;
+
+    if(memberId != null && !memberId.isEmpty()) {
+      Member mem = memberDao.memberSelectOne(memberId);
+      memberTier = mem.getMemberTier();
+    }
 
     String pageNum = request.getParameter("pageNum");
     if (pageNum == null) {
@@ -120,17 +130,22 @@ public class adminController {
 
     int pageInt = Integer.parseInt(pageNum);
 
-    int limit = 32; // 한 page당 게시물 개수
+    int limit = 30; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
 
     int productCount = 0;
 
-    if ("asc".equals(orderBy)) {
-      System.out.println("test : asc");
-      list = productDao.productListAscByAll(product, pageInt, limit);
-    } else if ("desc".equals(orderBy)) {
-      System.out.println("test : desc");
-      list = productDao.productListDescByAll(product, pageInt, limit);
+    if(memberTier == 9) {
+      productDao.productSet();
+      List<Product> list = null;
+      if ("asc".equals(orderBy)) {
+        list = productDao.productListAscByAll(product, pageInt, limit);
+      } else if ("desc".equals(orderBy)) {
+        list = productDao.productListDescByAll(product, pageInt, limit);
+      }
+      productCount = productDao.productCount();
+      request.setAttribute("list", list);
+      System.out.println(list);
     }
 
     int start = (pageInt - 1) / bottomLine * bottomLine + 1;
@@ -142,7 +157,8 @@ public class adminController {
     if (end > productCount) {
       end = productCount;
     }
-
+    request.setAttribute("memberTier", memberTier);
+    request.setAttribute("productCount", productCount);
     request.setAttribute("pageNum", pageNum);
     request.setAttribute("start", start);
     request.setAttribute("end", end);
@@ -150,11 +166,8 @@ public class adminController {
     request.setAttribute("maxPage", maxPage);
     request.setAttribute("pageInt", pageInt);
 
-    System.out.println(list);
-    System.out.println(product);
-    System.out.println(orderBy);
 
-    return list;
+    return "admin/productList";
   }
 
   @RequestMapping("memberTierUpdate")
