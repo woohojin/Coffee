@@ -69,13 +69,13 @@
 
         </mvc:interceptor>
 
-<!--        <mvc:interceptor>-->
+        <mvc:interceptor>
 
-<!--            <mvc:mapping path="/admin/**" />-->
+            <mvc:mapping path="/admin/**" />
 
-<!--            <bean class="service.interceptor.adminInterceptor" />-->
+            <bean class="service.interceptor.adminInterceptor" />
 
-<!--        </mvc:interceptor>-->
+        </mvc:interceptor>
 
     </mvc:interceptors>
 

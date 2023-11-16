@@ -2,6 +2,8 @@ package controller;
 
 import model.Member;
 import model.Product;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,15 +16,11 @@ import service.productDAO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
 import java.util.List;
 
 @Controller
 @RequestMapping("/admin/")
 public class adminController {
-
-  @Autowired
-  private DataSource ds;
 
   @Autowired
   productDAO productDao;
@@ -48,6 +46,8 @@ public class adminController {
     this.session = request.getSession();
     this.response = response;
   }
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(adminController.class);
 
   @RequestMapping("dashboard")
   public String index() throws Exception {
@@ -112,9 +112,6 @@ public class adminController {
     String product = request.getParameter("product");
     String orderBy = request.getParameter("orderBy");
 
-    System.out.println("orderBy: " + orderBy);
-    System.out.println("product : " + product);
-
     String memberId = (String)session.getAttribute("memberId");
     int memberTier = 0;
 
@@ -137,15 +134,52 @@ public class adminController {
 
     if(memberTier == 9) {
       productDao.productSet();
-      List<Product> list = null;
-      if ("asc".equals(orderBy)) {
-        list = productDao.productListAscByAll(product, pageInt, limit);
-      } else if ("desc".equals(orderBy)) {
-        list = productDao.productListDescByAll(product, pageInt, limit);
+      List<Product> list;
+
+      switch (product) {
+        case "product_type":
+          list = ("desc".equals(orderBy)) ? productDao.productListDescByProductType(pageInt, limit) :
+            productDao.productListByProductType(pageInt, limit);
+          break;
+        case "product_code":
+          list = ("desc".equals(orderBy)) ? productDao.productListDescByProductCode(pageInt, limit) :
+            productDao.productListByProductCode(pageInt, limit);
+          break;
+        case "product_name":
+          list = ("desc".equals(orderBy)) ? productDao.productListDescByProductName(pageInt, limit) :
+            productDao.productListByProductName(pageInt, limit);
+          break;
+        case "product_unit":
+          list = ("desc".equals(orderBy)) ? productDao.productListDescByProductUnit(pageInt, limit) :
+            productDao.productListByProductUnit(pageInt, limit);
+          break;
+        case "product_price":
+          list = ("desc".equals(orderBy)) ? productDao.productListDescByProductPrice(pageInt, limit) :
+            productDao.productListByProductPrice(pageInt, limit);
+          break;
+        case "product_country":
+          list = ("desc".equals(orderBy)) ? productDao.productListDescByProductCountry(pageInt, limit) :
+            productDao.productListByProductCountry(pageInt, limit);
+          break;
+        case "product_species":
+          list = ("desc".equals(orderBy)) ? productDao.productListDescByProductSpecies(pageInt, limit) :
+            productDao.productListByProductSpecies(pageInt, limit);
+          break;
+        case "product_company":
+          list = ("desc".equals(orderBy)) ? productDao.productListDescByProductCompany(pageInt, limit) :
+            productDao.productListByProductCompany(pageInt, limit);
+          break;
+        case "product_tier":
+          list = ("desc".equals(orderBy)) ? productDao.productListDescByProductTier(pageInt, limit) :
+            productDao.productListByProductTier(pageInt, limit);
+          break;
+        default:
+          list = productDao.productListByProductType(pageInt, limit);
+          break;
       }
+
       productCount = productDao.productCount();
       request.setAttribute("list", list);
-      System.out.println(list);
     }
 
     int start = (pageInt - 1) / bottomLine * bottomLine + 1;

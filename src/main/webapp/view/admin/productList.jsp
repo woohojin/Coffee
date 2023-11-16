@@ -48,50 +48,50 @@
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="productCode" onclick="orderBy(this)">
+                  <th class="product_code" onclick="orderBy(this)">
                     <div class="asc">
                       <span>제품코드</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="product_name">
-                    <div>
+                  <th class="product_name" onclick="orderBy(this)">
+                    <div class="asc">
                       <span>제품이름</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="product_unit">
-                    <div>
+                  <th class="product_unit" onclick="orderBy(this)">
+                    <div class="asc">
                       <span>용량</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="product_price">
-                    <div>
+                  <th class="product_price" onclick="orderBy(this)">
+                    <div class="asc">
                       <span>금액</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="product_country">
-                    <div>
+                  <th class="product_country" onclick="orderBy(this)">
+                    <div class="asc">
                       <span>원산지</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="product_species">
-                    <div>
+                  <th class="product_species" onclick="orderBy(this)">
+                    <div class="asc">
                       <span>품종</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="product_company">
-                    <div>
+                  <th class="product_company" onclick="orderBy(this)">
+                    <div class="asc">
                       <span>제조사</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="product_tier">
-                    <div>
+                  <th class="product_tier" onclick="orderBy(this)">
+                    <div class="asc">
                       <span>등급</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>

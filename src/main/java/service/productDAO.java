@@ -78,30 +78,147 @@ public class productDAO {
         return list;
     }
 
+    public List<Product> productListByProductType(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "productListByProductType", map);
+        return list;
+    }
+
+    public List<Product> productListDescByProductType(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "productListDescByProductType", map);
+        return list;
+    }
+
     public List<Product> productListByProductCode(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<Product> list = session.selectList(NS + "productListByProductCode");
+        List<Product> list = session.selectList(NS + "productListByProductCode", map);
         return list;
     }
 
-    public List<Product> productListAscByAll(String product, int pageInt, int limit) {
+    public List<Product> productListDescByProductCode(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        map.put("product", product);
-        List<Product> list = session.selectList(NS + "productListAscByAll", map);
+        List<Product> list = session.selectList(NS + "productListDescByProductCode", map);
         return list;
     }
 
-    public List<Product> productListDescByAll(String product, int pageInt, int limit) {
+    public List<Product> productListByProductName(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        map.put("product", product);
-        System.out.println("productDao : " + product);
-        List<Product> list = session.selectList(NS + "productListDescByAll", map);
+        List<Product> list = session.selectList(NS + "productListByProductName", map);
+        return list;
+    }
+
+    public List<Product> productListDescByProductName(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "productListDescByProductName", map);
+        return list;
+    }
+
+    public List<Product> productListByProductUnit(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "productListByProductUnit", map);
+        return list;
+    }
+
+    public List<Product> productListDescByProductUnit(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "productListDescByProductUnit", map);
+        return list;
+    }
+
+    public List<Product> productListByProductPrice(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "productListByProductPrice", map);
+        return list;
+    }
+
+    public List<Product> productListDescByProductPrice(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "productListDescByProductPrice", map);
+        return list;
+    }
+
+    public List<Product> productListByProductCountry(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "productListByProductCountry", map);
+        return list;
+    }
+
+    public List<Product> productListDescByProductCountry(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "productListDescByProductCountry", map);
+        return list;
+    }
+
+    public List<Product> productListByProductSpecies(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "productListByProductSpecies", map);
+        return list;
+    }
+
+    public List<Product> productListDescByProductSpecies(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "productListDescByProductSpecies", map);
+        return list;
+    }
+
+    public List<Product> productListByProductCompany(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "productListByProductCompany", map);
+        return list;
+    }
+
+    public List<Product> productListDescByProductCompany(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "productListDescByProductCompany", map);
+        return list;
+    }
+
+    public List<Product> productListByProductTier(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "productListByProductTier", map);
+        return list;
+    }
+
+    public List<Product> productListDescByProductTier(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "productListDescByProductTier", map);
         return list;
     }
 
