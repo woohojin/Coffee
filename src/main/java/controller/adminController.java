@@ -208,7 +208,6 @@ public class adminController {
     request.setAttribute("maxPage", maxPage);
     request.setAttribute("pageInt", pageInt);
 
-
     return "admin/productList";
   }
 

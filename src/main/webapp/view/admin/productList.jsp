@@ -6,20 +6,46 @@
 <main id="admin_page">
   <div class="admin_page_wrap">
     <div class="page_head">
-      <h1>제품 리스트</h1>
+      <a href="${ pageContext.request.contextPath }/admin/productList">
+        <h1>제품 리스트</h1>
+      </a>
     </div>
-<%--    <div class="datepicker_form_wrap">--%>
-<%--      <form--%>
-<%--        action="${ pageContext.request.contextPath }/member/memberHistoryPro"--%>
-<%--        class="datepicker_form center"--%>
-<%--        method="post"--%>
-<%--      >--%>
-<%--        <input type="text" name="startDate" id="datepickerStart" class="datepicker" value="${ requestScope.startDate }" />--%>
-<%--        <span>&nbsp~&nbsp</span>--%>
-<%--        <input type="text" name="endDate" id="datepickerEnd" class="datepicker" value="${ requestScope.endDate }" />--%>
-<%--        <input type="submit" value="조회" class="submit_btn" />--%>
-<%--      </form>--%>
-<%--    </div>--%>
+    <div class="search_form_wrap center">
+      <form class="search_form">
+        <div>
+          <label for="searchCode">제품 코드</label>
+          <input type="text" id="searchCode" name="searchCode" value="${requestScope.searchCode}">
+          <label for="searchName">제품 이름</label>
+          <input type="text" id="searchName" name="searchName" value="${requestScope.searchName}">
+        </div>
+        <div>
+          <label for="searchCode">제품 타입</label>
+          <input type="text" id="searchCode" name="searchCode" value="${requestScope.searchCode}">
+          <label for="searchName">용량</label>
+          <input type="text" id="searchName" name="searchName" value="${requestScope.searchName}">
+        </div>
+        <div>
+          <label for="searchCode">금액</label>
+          <input type="text" id="searchCode" name="searchCode" value="${requestScope.searchCode}">
+          <label for="searchName">원산지</label>
+          <input type="text" id="searchName" name="searchName" value="${requestScope.searchName}">
+        </div>
+        <div>
+          <label for="searchCode">품종</label>
+          <input type="text" id="searchCode" name="searchCode" value="${requestScope.searchCode}">
+          <label for="searchName">제조사</label>
+          <input type="text" id="searchName" name="searchName" value="${requestScope.searchName}">
+        </div>
+        <div>
+          <label for="searchCode">등급</label>
+          <input type="text" id="searchCode" name="searchCode" value="${requestScope.searchCode}">
+        </div>
+        
+        <div class="submit">
+          <input type="submit" class="submit_btn" value="검색">
+        </div>
+      </form>
+    </div>
     <div class="list">
       <ul class="center">
         <c:choose>
@@ -148,13 +174,13 @@
         <c:choose>
           <c:when test="${ requestScope.searchText == null }">
             <a
-              href="${ pageContext.request.contextPath }/board/product?pageNum=${ pageNum - 3 }"
+              href="${ pageContext.request.contextPath }/admin/productList?pageNum=${ pageNum - 3 }"
             >&laquo;</a
             >
           </c:when>
           <c:when test="${requestScope.searchText != null}">
             <a
-              href="${ pageContext.request.contextPath }/board/productSearch?pageNum=${ pageNum - 3 }&&searchText=${ requestScope.searchText }"
+              href="${ pageContext.request.contextPath }/admin/productListSearch?pageNum=${ pageNum - 3 }&&searchText=${ requestScope.searchText }"
             >&laquo;</a
             >
           </c:when>
@@ -165,13 +191,13 @@
           <c:choose>
             <c:when test="${requestScope.searchText == null}">
               <a
-                href="${ pageContext.request.contextPath }/board/product?pageNum=${ p }"
+                href="${ pageContext.request.contextPath }/admin/productList?pageNum=${ p }"
               >${ p }</a
               >
             </c:when>
             <c:when test="${requestScope.searchText != null}">
               <a
-                href="${ pageContext.request.contextPath }/board/productSearch?pageNum=${ p }&&searchText=${ requestScope.searchText }"
+                href="${ pageContext.request.contextPath }/admin/productListSearch?pageNum=${ p }&&searchText=${ requestScope.searchText }"
               >${ p }</a
               >
             </c:when>
@@ -183,13 +209,13 @@
         <c:choose>
           <c:when test="${ requestScope.searchText == null}">
             <a
-              href="${ pageContext.request.contextPath }/board/product?pageNum=${ pageNum + 3 }"
+              href="${ pageContext.request.contextPath }/admin/productList?pageNum=${ pageNum + 3 }"
             >&raquo;</a
             >
           </c:when>
           <c:when test="${ requestScope.searchText != null}">
             <a
-              href="${ pageContext.request.contextPath }/board/productSearch?pageNum=${ pageNum + 3 }&&searchText=${ requestScope.searchText }"
+              href="${ pageContext.request.contextPath }/admin/productListSearch?pageNum=${ pageNum + 3 }&&searchText=${ requestScope.searchText }"
             >&raquo;</a
             >
           </c:when>
