@@ -36,8 +36,8 @@
                 method="post"
                 id="orderByForm"
               >
-                <input type="hidden" name="product" value=""/>
-                <input type="hidden" name="orderBy" value=""/>
+                <input id="product" type="hidden" name="product" value="${requestScope.product}"/>
+                <input id="orderBy" type="hidden" name="orderBy" value="${requestScope.orderBy}"/>
               </form>
               <table class="list">
                 <thead>
@@ -201,14 +201,32 @@
 <script>
   function orderBy(object) {
     const columnName = object.className;
-    let currentOrderBy = object.firstElementChild.className;
-    let orderBy = (currentOrderBy === "asc") ? "desc" : "asc";
-    let form = document.getElementById("orderByForm");
+    const currentOrderBy = object.firstElementChild.className;
+    const orderBy = (currentOrderBy === "asc") ? "desc" : "asc";
+    const form = document.getElementById("orderByForm");
 
     form.querySelector('input[name="product"]').value = columnName;
     form.querySelector('input[name="orderBy"]').value = orderBy;
 
     form.submit();
   }
+  
+  const productInput = document.getElementById("product");
+  const orderByInput = document.getElementById("orderBy");
+  
+  const productInputValue = productInput.value;
+  const orderByInputValue = orderByInput.value;
+  
+  const productElement = document.querySelector("." + productInputValue).firstElementChild;
+  const imgElement = productElement.lastElementChild;
+  
+  if(orderByInputValue == "asc") {
+    productElement.className = "asc";
+    imgElement.src = "${ pageContext.request.contextPath }/view/image/down-arrow.png";
+  } else if(orderByInputValue == "desc") {
+    productElement.className = "desc";
+    imgElement.src = "${ pageContext.request.contextPath }/view/image/up-arrow.png";
+  }
+
 </script>
 </body>

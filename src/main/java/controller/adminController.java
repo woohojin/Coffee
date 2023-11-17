@@ -178,6 +178,12 @@ public class adminController {
           break;
       }
 
+      if(orderBy == "asc") {
+        orderBy = "desc";
+      } else if(orderBy == "desc") {
+        orderBy = "asc";
+      }
+
       productCount = productDao.productCount();
       request.setAttribute("list", list);
     }
@@ -193,6 +199,8 @@ public class adminController {
     }
     request.setAttribute("memberTier", memberTier);
     request.setAttribute("productCount", productCount);
+    request.setAttribute("product", product);
+    request.setAttribute("orderBy", orderBy);
     request.setAttribute("pageNum", pageNum);
     request.setAttribute("start", start);
     request.setAttribute("end", end);
