@@ -36,6 +36,10 @@
         select count(*) from product where product_name LIKE CONCAT('%',#{searchText},'%')
     </select>
 
+    <select id="productSearchCountByType" parameterType="String" resultType="int">
+        select count(*) from product where #{searchType} LIKE CONCAT('%',#{searchText},'%')
+    </select>
+
     <select id="productSet" parameterType="int" resultType="int">
         set @rownum := 0
     </select>
@@ -200,7 +204,7 @@
         where b.rownum between #{start} and #{end};
     </select>
 
-    <select id="productListByTier" parameterType="map" resultMap="productMap">
+    <select id="productListByMemberTier" parameterType="map" resultMap="productMap">
         select * from (
         select @rownum := @rownum + 1 as rownum,
         a.* from product a, (select @rownum := 0) tmp
@@ -216,7 +220,7 @@
         where b.rownum between #{start} and #{end};
     </select>
 
-    <select id="productSearchListByTier" parameterType="map" resultMap="productMap">
+    <select id="productSearchListByMemberTier" parameterType="map" resultMap="productMap">
         select * from (
         select @rownum := @rownum + 1 as rownum,
         a.* from product a, (select @rownum := 0) tmp
@@ -227,6 +231,14 @@
 
     <select id="productSelectOne" parameterType="String" resultMap="productMap">
         select * from product where product_code = #{productCode}
+    </select>
+
+    <select id="productSearchListByType" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where #{searchType} LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
     </select>
 
 </mapper>

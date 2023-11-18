@@ -92,7 +92,7 @@ public class mainController {
 
         if(memberTier != 0) {
             productDao.productSet();
-            List<Product> list = productDao.productListByTier(pageInt, limit, memberTier);
+            List<Product> list = productDao.productListByMemberTier(pageInt, limit, memberTier);
             productCount = productDao.productCountByTier(memberTier);
             request.setAttribute("list", list);
         }
@@ -199,7 +199,7 @@ public class mainController {
 
         if(memberTier != 0) {
             productDao.productSet();
-            List<Product> list = productDao.productSearchListByTier(pageInt, limit, memberTier, searchText);
+            List<Product> list = productDao.productSearchListByMemberTier(pageInt, limit, memberTier, searchText);
             productSearchCount = productDao.productSearchCountByTier(memberTier, searchText);
             request.setAttribute("list", list);
         }

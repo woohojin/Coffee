@@ -39,6 +39,14 @@ public class productDAO {
         return num;
     }
 
+    public int productSearchCountByType(String searchType, String searchText) {
+        map.clear();
+        map.put("searchType", searchType);
+        map.put("searchText", searchText);
+        int num = session.selectOne(NS + "productSearchCountByType", map);
+        return num;
+    }
+
     public int productSearchCountByTier(int memberTier, String searchText) {
         map.clear();
         map.put("memberTier", memberTier);
@@ -59,22 +67,31 @@ public class productDAO {
         return list;
     }
 
-    public List<Product> productListByTier(int pageInt, int limit, int memberTier) {
+    public List<Product> productListByMemberTier(int pageInt, int limit, int memberTier) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("memberTier", memberTier);
-        List<Product> list = session.selectList(NS + "productListByTier", map);
+        List<Product> list = session.selectList(NS + "productListByMemberTier", map);
         return list;
     }
 
-    public List<Product> productSearchListByTier(int pageInt, int limit, int memberTier, String searchText) {
+    public List<Product> productSearchListByMemberTier(int pageInt, int limit, int memberTier, String searchText) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("memberTier", memberTier);
         map.put("searchText", searchText);
-        List<Product> list = session.selectList(NS + "productSearchListByTier", map);
+        List<Product> list = session.selectList(NS + "productSearchListByMemberTier", map);
+        return list;
+    }
+
+    public List<Product> productSearchListByType(int pageInt, int limit, String searchType, String searchText) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        map.put("searchText", searchText);
+        List<Product> list = session.selectList(NS + "productSearchListByType", map);
         return list;
     }
 

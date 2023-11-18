@@ -13,8 +13,7 @@ main {
 
 .submit {
     position: absolute;
-}
-.submit_btn {
+    right: 0;
 }
 
 #hd_wrap {
@@ -30,7 +29,6 @@ main {
 .page_head a {
     color: black;
 }
-
 
 .list th,
 .list td {
@@ -60,19 +58,22 @@ main {
 }
 
 .search_form_wrap {
-    margin-bottom: 30px;
+    margin-bottom: 50px;
+}
+.search_form {
+    position: relative;
 }
 .search_form > div {
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
 }
-.search_form > div:last-child {
+.search_form > div:nth-child(5) {
     width: 223px;
 }
 .search_form label {
     flex: 1;
-    margin: 0 10px 10px 20px;
+    margin: 3px 10px 7px 20px;
 }
 .search_form input[type="text"] {
     width: 120px;

@@ -211,6 +211,63 @@ public class adminController {
     return "admin/productList";
   }
 
+  @RequestMapping("productSearch")
+  public String productSearch(Product product) throws Exception {
+    String memberId = (String)session.getAttribute("memberId");
+    int memberTier = 0;
+
+    if(memberId != null && !memberId.isEmpty()) {
+      Member mem = memberDao.memberSelectOne(memberId);
+      memberTier = mem.getMemberTier();
+    }
+
+    String pageNum = request.getParameter("pageNum");
+    if (pageNum == null) {
+      pageNum = "1";
+    }
+
+    int pageInt = Integer.parseInt(pageNum);
+
+    int limit = 32; // 한 page당 게시물 개수
+    int bottomLine = 100; // pagination 개수
+
+    int productCount = 0;
+    String searchText = "";
+    String searchType = "";
+
+    if(memberTier == 9) {
+      if(product.getProductCode() != null) {
+        searchType = "product_code";
+        searchText = product.getProductCode();
+      }
+      productDao.productSet();
+      List<Product> list = productDao.productSearchListByType(pageInt, limit, searchType, searchText);
+      productCount = productDao.productSearchCountByType(searchType, searchText);
+      request.setAttribute("list", list);
+    }
+
+    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
+    int end = start + bottomLine - 1;
+    int maxPage = (productCount / limit) + (productCount % limit == 0 ? 0 : 1);
+    if (end > maxPage) {
+      end = maxPage;
+    }
+    if (end > productCount) {
+      end = productCount;
+    }
+
+    request.setAttribute("memberTier", memberTier);
+    request.setAttribute("productCount", productCount);
+    request.setAttribute("pageNum", pageNum);
+    request.setAttribute("start", start);
+    request.setAttribute("end", end);
+    request.setAttribute("bottomLine", bottomLine);
+    request.setAttribute("maxPage", maxPage);
+    request.setAttribute("pageInt", pageInt);
+
+    return "admin/productList";
+  }
+
   @RequestMapping("memberTierUpdate")
   public String memberTierUpdate() throws Exception {
 

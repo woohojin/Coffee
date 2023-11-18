@@ -11,36 +11,39 @@
       </a>
     </div>
     <div class="search_form_wrap center">
-      <form class="search_form">
+      <form class="search_form"
+            action="${ pageContext.request.contextPath }/admin/productSearch"
+            method="post"
+            onsubmit="productSearch(this)"
+      >
         <div>
-          <label for="searchCode">제품 코드</label>
-          <input type="text" id="searchCode" name="searchCode" value="${requestScope.searchCode}">
-          <label for="searchName">제품 이름</label>
-          <input type="text" id="searchName" name="searchName" value="${requestScope.searchName}">
+          <label for="productCode">제품 코드</label>
+          <input type="text" id="productCode" name="productCode" value="${requestScope.productCode}">
+          <label for="productName">제품 이름</label>
+          <input type="text" id="productName" name="productName" value="${requestScope.productName}">
         </div>
         <div>
-          <label for="searchCode">제품 타입</label>
-          <input type="text" id="searchCode" name="searchCode" value="${requestScope.searchCode}">
-          <label for="searchName">용량</label>
-          <input type="text" id="searchName" name="searchName" value="${requestScope.searchName}">
+          <label for="productCode">제품 타입</label>
+          <input type="text" id="productType" name="productType" value="${requestScope.productType}">
+          <label for="productName">금액</label>
+          <input type="text" id="productPrice" name="productPrice" value="${requestScope.productPrice}">
         </div>
         <div>
-          <label for="searchCode">금액</label>
-          <input type="text" id="searchCode" name="searchCode" value="${requestScope.searchCode}">
-          <label for="searchName">원산지</label>
-          <input type="text" id="searchName" name="searchName" value="${requestScope.searchName}">
+          <label for="productCode">용량</label>
+          <input type="text" id="productUnit" name="productUnit" value="${requestScope.productUnit}">
+          <label for="productName">원산지</label>
+          <input type="text" id="productCountry" name="productCountry" value="${requestScope.productCountry}">
         </div>
         <div>
-          <label for="searchCode">품종</label>
-          <input type="text" id="searchCode" name="searchCode" value="${requestScope.searchCode}">
-          <label for="searchName">제조사</label>
-          <input type="text" id="searchName" name="searchName" value="${requestScope.searchName}">
+          <label for="productCode">품종</label>
+          <input type="text" id="productSpecies" name="productSpecies" value="${requestScope.productSpecies}">
+          <label for="productName">제조사</label>
+          <input type="text" id="productCompany" name="productCompany" value="${requestScope.productCompany}">
         </div>
         <div>
-          <label for="searchCode">등급</label>
-          <input type="text" id="searchCode" name="searchCode" value="${requestScope.searchCode}">
+          <label for="productCode">등급</label>
+          <input type="text" id="productTier" name="productTier" value="${requestScope.productTier}">
         </div>
-        
         <div class="submit">
           <input type="submit" class="submit_btn" value="검색">
         </div>
@@ -225,6 +228,25 @@
   </div>
 </main>
 <script>
+  window.onload = function() {
+    const productInput = document.getElementById("product");
+    const orderByInput = document.getElementById("orderBy");
+
+    const productInputValue = productInput.value;
+    const orderByInputValue = orderByInput.value;
+
+    const productElement = document.querySelector("." + productInputValue).firstElementChild;
+    const imgElement = productElement.lastElementChild;
+
+    if(orderByInputValue === "asc") {
+      productElement.className = "asc";
+      imgElement.src = "${ pageContext.request.contextPath }/view/image/down-arrow.png";
+    } else if(orderByInputValue === "desc") {
+      productElement.className = "desc";
+      imgElement.src = "${ pageContext.request.contextPath }/view/image/up-arrow.png";
+    }
+  }
+
   function orderBy(object) {
     const columnName = object.className;
     const currentOrderBy = object.firstElementChild.className;
@@ -236,23 +258,5 @@
 
     form.submit();
   }
-  
-  const productInput = document.getElementById("product");
-  const orderByInput = document.getElementById("orderBy");
-  
-  const productInputValue = productInput.value;
-  const orderByInputValue = orderByInput.value;
-  
-  const productElement = document.querySelector("." + productInputValue).firstElementChild;
-  const imgElement = productElement.lastElementChild;
-  
-  if(orderByInputValue == "asc") {
-    productElement.className = "asc";
-    imgElement.src = "${ pageContext.request.contextPath }/view/image/down-arrow.png";
-  } else if(orderByInputValue == "desc") {
-    productElement.className = "desc";
-    imgElement.src = "${ pageContext.request.contextPath }/view/image/up-arrow.png";
-  }
-
 </script>
 </body>
