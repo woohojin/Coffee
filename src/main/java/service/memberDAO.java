@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
+import model.Product;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,8 +23,21 @@ public class memberDAO {
         int num = session.insert(NS+"memberInsert", member);
         return num;
     }
-    public List<Member> memberList() {
-        List<Member> list = session.selectList(NS + "memberList");
+
+    public void memberSet() {
+        session.selectOne(NS + "memberSet");
+    }
+
+    public int memberCount() {
+        int num = session.selectOne(NS + "memberCount");
+        return num;
+    }
+
+    public List<Member> memberList(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Member> list = session.selectList(NS + "memberList", map);
         return list;
     }
 

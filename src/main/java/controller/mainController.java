@@ -230,33 +230,6 @@ public class mainController {
         return "board/product/productBoard";
     }
 
-    @RequestMapping("productUploadForm")
-    public String productUploadForm() {
-        return "board/product/productUploadForm";
-    }
-
-    @RequestMapping("productUploadPro")
-    public String productUploadPro(Product product) throws Exception {
-
-        String msg;
-        String url;
-
-        int num = productDao.productInsert(product);
-
-        if (num > 0) {
-            msg = "제품을 등록하였습니다.";
-            url = "/board/main";
-        }
-
-        msg = "제품 등록 실패";
-        url = "/board/product/productUploadForm";
-
-        request.setAttribute("msg", msg);
-        request.setAttribute("url", url);
-
-        return "alert";
-    }
-
     @RequestMapping("fileUploadForm")
     public String fileUploadForm() throws Exception {
         return "board/fileUploadForm";

@@ -10,10 +10,16 @@ header{
 main {
     margin-top: 90px;
 }
+body {
+    user-select: initial;
+}
 
 .submit {
     position: absolute;
     right: 0;
+}
+.pagination_wrap {
+    margin: 40px 0;
 }
 
 #hd_wrap {

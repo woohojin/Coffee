@@ -24,8 +24,20 @@
                                    #{memberAddress}, #{memberDetailAddress}, #{memberDeliveryAddress}, #{memberDetailDeliveryAddress}, #{memberEmail}, #{memberFile}, 0000, 0, NOW())
     </insert>
 
+    <select id="memberSet" parameterType="int" resultType="int">
+        set @rownum := 0
+    </select>
+
+    <select id="memberCount" parameterType="map" resultType="int">
+        select count(*) from member where NOT member_id = "admin"
+    </select>
+
     <select id="memberList" parameterType="map" resultMap="memberMap">
-        select * from member
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from member a, (select @rownum := 0) tmp
+        where NOT member_id = "admin" order by member_tier ) b
+        where b.rownum between #{start} and #{end};
     </select>
 
     <select id="memberSelectOne" parameterType="String" resultMap="memberMap">

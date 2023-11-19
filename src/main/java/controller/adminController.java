@@ -309,6 +309,59 @@ public class adminController {
     return "admin/productList";
   }
 
+  @RequestMapping("memberList")
+  public String memberList() throws Exception {
+
+    String memberId = (String)session.getAttribute("memberId");
+    int memberTier = 0;
+
+    if(memberId != null && !memberId.isEmpty()) {
+      Member mem = memberDao.memberSelectOne(memberId);
+      memberTier = mem.getMemberTier();
+    }
+
+    String pageNum = request.getParameter("pageNum");
+    if (pageNum == null) {
+      pageNum = "1";
+    }
+
+    int pageInt = Integer.parseInt(pageNum);
+
+    int limit = 32; // 한 page당 게시물 개수
+    int bottomLine = 100; // pagination 개수
+
+    int memberCount = 0;
+
+    if(memberTier == 9) {
+      memberDao.memberSet();
+      List<Member> list = memberDao.memberList(pageInt, limit);
+      memberCount = memberDao.memberCount();
+      request.setAttribute("list", list);
+      LOGGER.info(list.toString());
+    }
+
+    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
+    int end = start + bottomLine - 1;
+    int maxPage = (memberCount / limit) + (memberCount % limit == 0 ? 0 : 1);
+    if (end > maxPage) {
+      end = maxPage;
+    }
+    if (end > memberCount) {
+      end = memberCount;
+    }
+
+    request.setAttribute("memberTier", memberTier);
+    request.setAttribute("memberCount", memberCount);
+    request.setAttribute("pageNum", pageNum);
+    request.setAttribute("start", start);
+    request.setAttribute("end", end);
+    request.setAttribute("bottomLine", bottomLine);
+    request.setAttribute("maxPage", maxPage);
+    request.setAttribute("pageInt", pageInt);
+
+    return "admin/memberList";
+  }
+
   @RequestMapping("memberTierUpdate")
   public String memberTierUpdate() throws Exception {
 
@@ -325,4 +378,28 @@ public class adminController {
     request.setAttribute("url", url);
     return "anchor";
   }
+
+  @RequestMapping("productUpload")
+  public String productUpload() {
+    return "admin/productUpload";
+  }
+
+  @RequestMapping("productUploadPro")
+  public String productUploadPro(Product product) throws Exception {
+
+    String msg = "제품 등록 실패";
+    String url = "/admin/productUploadForm";
+
+    int num = productDao.productInsert(product);
+
+    if (num > 0) {
+      msg = "제품을 등록하였습니다.";
+    }
+
+    request.setAttribute("msg", msg);
+    request.setAttribute("url", url);
+
+    return "alert";
+  }
+
 }
