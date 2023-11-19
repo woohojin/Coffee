@@ -14,7 +14,6 @@
       <form class="search_form"
             action="${ pageContext.request.contextPath }/admin/productSearch"
             method="post"
-            onsubmit="productSearch(this)"
       >
         <div>
           <label for="productCode">제품 코드</label>

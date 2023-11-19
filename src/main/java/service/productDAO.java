@@ -39,14 +39,6 @@ public class productDAO {
         return num;
     }
 
-    public int productSearchCountByType(String searchType, String searchText) {
-        map.clear();
-        map.put("searchType", searchType);
-        map.put("searchText", searchText);
-        int num = session.selectOne(NS + "productSearchCountByType", map);
-        return num;
-    }
-
     public int productSearchCountByTier(int memberTier, String searchText) {
         map.clear();
         map.put("memberTier", memberTier);
@@ -86,12 +78,84 @@ public class productDAO {
         return list;
     }
 
-    public List<Product> productSearchListByType(int pageInt, int limit, String searchType, String searchText) {
+    public List<Product> productSearchListByProductCode(int pageInt, int limit, String searchText) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
-        List<Product> list = session.selectList(NS + "productSearchListByType", map);
+        List<Product> list = session.selectList(NS + "productSearchListByProductCode", map);
+        return list;
+    }
+
+    public List<Product> productSearchListByProductName(int pageInt, int limit, String searchText) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        map.put("searchText", searchText);
+        List<Product> list = session.selectList(NS + "productSearchListByProductName", map);
+        return list;
+    }
+
+    public List<Product> productSearchListByProductType(int pageInt, int limit, String searchText) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        map.put("searchText", searchText);
+        List<Product> list = session.selectList(NS + "productSearchListByProductType", map);
+        return list;
+    }
+
+    public List<Product> productSearchListByProductPrice(int pageInt, int limit, String searchText) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        map.put("searchText", searchText);
+        List<Product> list = session.selectList(NS + "productSearchListByProductPrice", map);
+        return list;
+    }
+
+    public List<Product> productSearchListByProductUnit(int pageInt, int limit, String searchText) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        map.put("searchText", searchText);
+        List<Product> list = session.selectList(NS + "productSearchListByProductUnit", map);
+        return list;
+    }
+
+    public List<Product> productSearchListByProductCountry(int pageInt, int limit, String searchText) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        map.put("searchText", searchText);
+        List<Product> list = session.selectList(NS + "productSearchListByProductCountry", map);
+        return list;
+    }
+
+    public List<Product> productSearchListByProductSpecies(int pageInt, int limit, String searchText) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        map.put("searchText", searchText);
+        List<Product> list = session.selectList(NS + "productSearchListByProductSpecies", map);
+        return list;
+    }
+
+    public List<Product> productSearchListByProductCompany(int pageInt, int limit, String searchText) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        map.put("searchText", searchText);
+        List<Product> list = session.selectList(NS + "productSearchListByProductCompany", map);
+        return list;
+    }
+
+    public List<Product> productSearchListByProductTier(int pageInt, int limit, String searchText) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        map.put("searchText", searchText);
+        List<Product> list = session.selectList(NS + "productSearchListByProductTier", map);
         return list;
     }
 

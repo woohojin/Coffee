@@ -212,7 +212,7 @@ public class adminController {
   }
 
   @RequestMapping("productSearch")
-  public String productSearch(Product product) throws Exception {
+  public String productSearch() throws Exception {
     String memberId = (String)session.getAttribute("memberId");
     int memberTier = 0;
 
@@ -233,17 +233,57 @@ public class adminController {
 
     int productCount = 0;
     String searchText = "";
-    String searchType = "";
+    List<Product> list = null;
 
     if(memberTier == 9) {
-      if(product.getProductCode() != null) {
-        searchType = "product_code";
-        searchText = product.getProductCode();
+      LOGGER.info(request.getParameter("productCode"));
+      if(!request.getParameter("productCode").isEmpty()) {
+        searchText = request.getParameter("productCode");
+        request.setAttribute("productCode", searchText);
+        productDao.productSet();
+        list = productDao.productSearchListByProductCode(pageInt, limit, searchText);
+      } else if (!request.getParameter("productName").isEmpty()) {
+        searchText = request.getParameter("productName");
+        request.setAttribute("productName", searchText);
+        productDao.productSet();
+        list = productDao.productSearchListByProductName(pageInt, limit, searchText);
+      } else if (!request.getParameter("productType").isEmpty()) {
+        searchText = request.getParameter("productType");
+        request.setAttribute("productType", searchText);
+        productDao.productSet();
+        list = productDao.productSearchListByProductType(pageInt, limit, searchText);
+      } else if (!request.getParameter("productPrice").isEmpty()) {
+        searchText = request.getParameter("productPrice");
+        request.setAttribute("productPrice", searchText);
+        productDao.productSet();
+        list = productDao.productSearchListByProductPrice(pageInt, limit, searchText);
+      } else if (!request.getParameter("productUnit").isEmpty()) {
+        searchText = request.getParameter("productUnit");
+        request.setAttribute("productUnit", searchText);
+        productDao.productSet();
+        list = productDao.productSearchListByProductUnit(pageInt, limit, searchText);
+      } else if (!request.getParameter("productCountry").isEmpty()) {
+        searchText = request.getParameter("productCountry");
+        request.setAttribute("productCountry", searchText);
+        productDao.productSet();
+        list = productDao.productSearchListByProductCountry(pageInt, limit, searchText);
+      } else if (!request.getParameter("productSpecies").isEmpty()) {
+        searchText = request.getParameter("productSpecies");
+        request.setAttribute("productSpecies", searchText);
+        productDao.productSet();
+        list = productDao.productSearchListByProductSpecies(pageInt, limit, searchText);
+      } else if (!request.getParameter("productCompany").isEmpty()) {
+        searchText = request.getParameter("productCompany");
+        request.setAttribute("productCompany", searchText);
+        productDao.productSet();
+        list = productDao.productSearchListByProductCompany(pageInt, limit, searchText);
+      } else if (!request.getParameter("productTier").isEmpty()) {
+        searchText = request.getParameter("productTier");
+        request.setAttribute("productTier", searchText);
+        productDao.productSet();
+        list = productDao.productSearchListByProductTier(pageInt, limit, searchText);
       }
-      productDao.productSet();
-      List<Product> list = productDao.productSearchListByType(pageInt, limit, searchType, searchText);
-      productCount = productDao.productSearchCountByType(searchType, searchText);
-      request.setAttribute("list", list);
+      productCount = productDao.productCount();
     }
 
     int start = (pageInt - 1) / bottomLine * bottomLine + 1;
@@ -258,6 +298,7 @@ public class adminController {
 
     request.setAttribute("memberTier", memberTier);
     request.setAttribute("productCount", productCount);
+    request.setAttribute("list", list);
     request.setAttribute("pageNum", pageNum);
     request.setAttribute("start", start);
     request.setAttribute("end", end);

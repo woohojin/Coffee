@@ -40,6 +40,107 @@
         set @rownum := 0
     </select>
 
+    <select id="productListByMemberTier" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_tier = #{memberTier} order by product_code ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchList" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_name LIKE CONCAT('%',#{searchText},'%') order by product_code) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchListByMemberTier" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_tier = #{memberTier}
+        and product_name LIKE CONCAT('%',#{searchText},'%') order by product_code) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchListByProductCode" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_code LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchListByProductName" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_name LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchListByProductType" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_type LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchListByProductPrice" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_price LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchListByProductUnit" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_unit LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchListByProductCountry" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_country LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchListByProductSpecies" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_species LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchListByProductCompany" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_company LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchListByProductTier" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_tier LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSelectOne" parameterType="String" resultMap="productMap">
+        select * from product where product_code = #{productCode}
+    </select>
+
     <select id="productList" parameterType="map" resultMap="productMap">
         select * from (
         select @rownum := @rownum + 1 as rownum,
@@ -198,35 +299,6 @@
         a.* from product a, (select @rownum := 0) tmp
         order by product_tier desc ) b
         where b.rownum between #{start} and #{end};
-    </select>
-
-    <select id="productListByTier" parameterType="map" resultMap="productMap">
-        select * from (
-        select @rownum := @rownum + 1 as rownum,
-        a.* from product a, (select @rownum := 0) tmp
-        where product_tier = #{memberTier} order by product_code ) b
-        where b.rownum between #{start} and #{end};
-    </select>
-
-    <select id="productSearchList" parameterType="map" resultMap="productMap">
-        select * from (
-        select @rownum := @rownum + 1 as rownum,
-        a.* from product a, (select @rownum := 0) tmp
-        where product_name LIKE CONCAT('%',#{searchText},'%') order by product_code) b
-        where b.rownum between #{start} and #{end};
-    </select>
-
-    <select id="productSearchListByTier" parameterType="map" resultMap="productMap">
-        select * from (
-        select @rownum := @rownum + 1 as rownum,
-        a.* from product a, (select @rownum := 0) tmp
-        where product_tier = #{memberTier}
-        and product_name LIKE CONCAT('%',#{searchText},'%') order by product_code) b
-        where b.rownum between #{start} and #{end};
-    </select>
-
-    <select id="productSelectOne" parameterType="String" resultMap="productMap">
-        select * from product where product_code = #{productCode}
     </select>
 
 </mapper>
