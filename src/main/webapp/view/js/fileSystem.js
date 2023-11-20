@@ -3,21 +3,20 @@ function fileUpload() {
     window.open("../board/fileUploadForm", "", op);
 }
 
-function fileDownload(productFile, productName) {
+function fileDownload(file, fileName) {
     if(confirm("파일을 다운로드 하시겠습니까?") === true) {
         $.ajax({
             type: "GET",
-            url: "./fileDownload?fileName=" + productFile,
+            url: "../board/fileDownload?fileName=" + file,
             xhrFields: {
                 responseType: "blob"
             },
             success: function(data, status, jqXHR) {
                 var blob = new Blob([data], {type: jqXHR.getResponseHeader("Content-Type")});
                 var url = window.URL.createObjectURL(blob);
-
                 var a = $("<a>")
                     .attr("href", url) //attribute
-                    .attr("download", productName + ".jpg")
+                    .attr("download", fileName + ".jpg")
                     .appendTo("body") //body에 담기
                 a[0].click();
                 setTimeout(function() {

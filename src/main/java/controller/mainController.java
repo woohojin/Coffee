@@ -267,7 +267,7 @@ public class mainController {
     @RequestMapping("fileDownload")
     public void fileDownload(HttpServletResponse response) {
         try {
-            String filePath = request.getServletContext().getRealPath("/") + "view/board/files/"; // 다운로드할 파일 경로
+            String filePath = request.getServletContext().getRealPath("/") + "view/files/"; // 다운로드할 파일 경로
             String fileName = request.getParameter("fileName");
             filePath = filePath + fileName;
 

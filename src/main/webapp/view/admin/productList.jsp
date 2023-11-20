@@ -24,25 +24,25 @@
             <input type="text" id="productName" name="productName" value="${requestScope.productName}">
           </div>
           <div>
-            <label for="productCode">제품 타입</label>
+            <label for="productType">제품 타입</label>
             <input type="text" id="productType" name="productType" value="${requestScope.productType}">
-            <label for="productName">금액</label>
+            <label for="productPrice">금액</label>
             <input type="text" id="productPrice" name="productPrice" value="${requestScope.productPrice}">
           </div>
           <div>
-            <label for="productCode">용량</label>
+            <label for="productUnit">용량</label>
             <input type="text" id="productUnit" name="productUnit" value="${requestScope.productUnit}">
-            <label for="productName">원산지</label>
+            <label for="productCountry">원산지</label>
             <input type="text" id="productCountry" name="productCountry" value="${requestScope.productCountry}">
           </div>
           <div>
-            <label for="productCode">품종</label>
+            <label for="productSpecies">품종</label>
             <input type="text" id="productSpecies" name="productSpecies" value="${requestScope.productSpecies}">
-            <label for="productName">제조사</label>
+            <label for="productCompany">제조사</label>
             <input type="text" id="productCompany" name="productCompany" value="${requestScope.productCompany}">
           </div>
           <div>
-            <label for="productCode">등급</label>
+            <label for="productTier">등급</label>
             <input type="text" id="productTier" name="productTier" value="${requestScope.productTier}">
           </div>
         </form>

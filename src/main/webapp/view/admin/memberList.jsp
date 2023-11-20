@@ -15,35 +15,35 @@
         <form class="search_form"
               action="${ pageContext.request.contextPath }/admin/memberSearch"
               method="post"
-              style="max-height: 35px;"
+              style="max-height: 70px;"
         >
           <div>
-            <label for="productCode">제품 코드</label>
-            <input type="text" id="productCode" name="productCode" value="${requestScope.productCode}">
-            <label for="productName">제품 이름</label>
-            <input type="text" id="productName" name="productName" value="${requestScope.productName}">
+            <label for=datepickerStart>시작일</label>
+            <input type="text" name="startDate" id="datepickerStart" class="datepicker" value="${ requestScope.startDate }" />
+            <label for="datepickerEnd">종료일</label>
+            <input type="text" name="endDate" id="datepickerEnd" class="datepicker" value="${ requestScope.endDate }" />
           </div>
           <div>
-            <label for="productCode">제품 타입</label>
-            <input type="text" id="productType" name="productType" value="${requestScope.productType}">
-            <label for="productName">금액</label>
-            <input type="text" id="productPrice" name="productPrice" value="${requestScope.productPrice}">
+            <label for="memberCompanyName">업체명</label>
+            <input type="text" id="memberCompanyName" name="memberCompanyName value="${requestScope.memberCompanyName}">
+            <label for="memberFranCode">가맹점코드</label>
+            <input type="text" id="memberFranCode" name="productName" value="${requestScope.memberFranCode}">
           </div>
           <div>
-            <label for="productCode">용량</label>
-            <input type="text" id="productUnit" name="productUnit" value="${requestScope.productUnit}">
-            <label for="productName">원산지</label>
-            <input type="text" id="productCountry" name="productCountry" value="${requestScope.productCountry}">
+            <label for="memberId">아이디</label>
+            <input type="text" id="memberId" name="memberId" value="${requestScope.memberId}">
+            <label for="memberName">이름</label>
+            <input type="text" id="memberName" name="memberName" value="${requestScope.memberName}">
           </div>
           <div>
-            <label for="productCode">품종</label>
-            <input type="text" id="productSpecies" name="productSpecies" value="${requestScope.productSpecies}">
-            <label for="productName">제조사</label>
-            <input type="text" id="productCompany" name="productCompany" value="${requestScope.productCompany}">
+            <label for="memberTel">전화번호</label>
+            <input type="text" id="memberTel" name="memberTel" value="${requestScope.memberTel}">
+            <label for="memberCompanyTel">회사번호</label>
+            <input type="text" id="memberCompanyTel" name="memberCompanyTel" value="${requestScope.memberCompanyTel}">
           </div>
           <div>
-            <label for="productCode">등급</label>
-            <input type="text" id="productTier" name="productTier" value="${requestScope.productTier}">
+            <label for="memberTier">등급</label>
+            <input type="text" id="memberTier" name="memberTier" value="${requestScope.memberTier}">
           </div>
         </form>
         <div class="collapse" onclick="expand(this)">
@@ -68,83 +68,83 @@
           <c:when test="${ requestScope.memberTier == '9' }">
             <c:if test="${ requestScope.productSearchCount != 0 || requestScope.productCount != 0 }">
               <form
-                action="${ pageContext.request.contextPath }/admin/productListPro"
+                action="${ pageContext.request.contextPath }/admin/memberListPro"
                 method="post"
                 id="orderByForm"
               >
-                <input id="product" type="hidden" name="product" value="${requestScope.product}"/>
+                <input id="member" type="hidden" name="member" value="${requestScope.member}"/>
                 <input id="orderBy" type="hidden" name="orderBy" value="${requestScope.orderBy}"/>
               </form>
               <table class="list">
                 <thead>
                 <tr>
-                  <th class="product_type" onclick="orderBy(this)">
+                  <th class="member_tier" onclick="orderBy(this)">
                     <div class="asc">
                       <span>등급</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="product_price" onclick="orderBy(this)">
+                  <th class="member_fran_code" onclick="orderBy(this)">
                     <div class="asc">
                       <span>가맹점코드</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="product_code" onclick="orderBy(this)">
+                  <th class="member_id" onclick="orderBy(this)">
                     <div class="asc">
                       <span>아이디</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="product_name" onclick="orderBy(this)">
+                  <th class="member_name" onclick="orderBy(this)">
                     <div class="asc">
                       <span>이름</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="product_unit" onclick="orderBy(this)">
+                  <th class="member_company_name" onclick="orderBy(this)">
                     <div class="asc">
                       <span>업체명</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="product_unit" onclick="orderBy(this)">
+                  <th class="member_tel" onclick="orderBy(this)">
                     <div class="asc">
                       <span>전화번호</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="product_unit" onclick="orderBy(this)">
+                  <th class="member_company_tel" onclick="orderBy(this)">
                     <div class="asc">
-                      <span>업체번호</span>
+                      <span>회사번호</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="product_country" onclick="orderBy(this)">
+                  <th class="member_address" onclick="orderBy(this)">
                     <div class="asc">
                       <span>주소</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="product_species" onclick="orderBy(this)">
+                  <th class="member_delivery_address" onclick="orderBy(this)">
                     <div class="asc">
                       <span>배송지</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="product_company" onclick="orderBy(this)">
+                  <th class="member_file" onclick="orderBy(this)">
                     <div class="asc">
                       <span>파일</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="product_tier" onclick="orderBy(this)">
+                  <th class="member_email" onclick="orderBy(this)">
                     <div class="asc">
                       <span>이메일</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="product_tier" onclick="orderBy(this)">
+                  <th class="member_date" onclick="orderBy(this)">
                     <div class="asc">
                       <span>가입일</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
@@ -185,7 +185,7 @@
                       <p>${ m.memberDetailDeliveryAddress }</p>
                     </td>
                     <td>
-                      <a>${ m.memberFile }</a>
+                      <a style="color: var(--mainColor);" onclick="fileDownload('${ m.memberFile }','${ m.memberId }')">${ m.memberFile }</a>
                     </td>
                     <td>
                       <p>${ m.memberEmail }</p>
@@ -306,7 +306,7 @@
       object.className = "expand";
       img.src = "${ pageContext.request.contextPath }/view/image/up-arrow.png";
     } else if(state === "expand") {
-      form.style.maxHeight = "35px";
+      form.style.maxHeight = "70px";
       object.className = "collapse";
       img.src = "${ pageContext.request.contextPath }/view/image/down-arrow.png";
     }
@@ -316,4 +316,5 @@
     form.submit();
   }
 </script>
+<script src="${ pageContext.request.contextPath }/view/js/datepicker.js"></script>
 </body>
