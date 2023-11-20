@@ -236,47 +236,54 @@ public class adminController {
     List<Product> list = null;
 
     if(memberTier == 9) {
-      LOGGER.info(request.getParameter("productCode"));
       if(!request.getParameter("productCode").isEmpty()) {
         searchText = request.getParameter("productCode");
         request.setAttribute("productCode", searchText);
         productDao.productSet();
         list = productDao.productSearchListByProductCode(pageInt, limit, searchText);
+
       } else if (!request.getParameter("productName").isEmpty()) {
         searchText = request.getParameter("productName");
         request.setAttribute("productName", searchText);
         productDao.productSet();
         list = productDao.productSearchListByProductName(pageInt, limit, searchText);
+
       } else if (!request.getParameter("productType").isEmpty()) {
         searchText = request.getParameter("productType");
         request.setAttribute("productType", searchText);
         productDao.productSet();
         list = productDao.productSearchListByProductType(pageInt, limit, searchText);
+
       } else if (!request.getParameter("productPrice").isEmpty()) {
         searchText = request.getParameter("productPrice");
         request.setAttribute("productPrice", searchText);
         productDao.productSet();
         list = productDao.productSearchListByProductPrice(pageInt, limit, searchText);
+
       } else if (!request.getParameter("productUnit").isEmpty()) {
         searchText = request.getParameter("productUnit");
         request.setAttribute("productUnit", searchText);
         productDao.productSet();
         list = productDao.productSearchListByProductUnit(pageInt, limit, searchText);
+
       } else if (!request.getParameter("productCountry").isEmpty()) {
         searchText = request.getParameter("productCountry");
         request.setAttribute("productCountry", searchText);
         productDao.productSet();
         list = productDao.productSearchListByProductCountry(pageInt, limit, searchText);
+
       } else if (!request.getParameter("productSpecies").isEmpty()) {
         searchText = request.getParameter("productSpecies");
         request.setAttribute("productSpecies", searchText);
         productDao.productSet();
         list = productDao.productSearchListByProductSpecies(pageInt, limit, searchText);
+
       } else if (!request.getParameter("productCompany").isEmpty()) {
         searchText = request.getParameter("productCompany");
         request.setAttribute("productCompany", searchText);
         productDao.productSet();
         list = productDao.productSearchListByProductCompany(pageInt, limit, searchText);
+
       } else if (!request.getParameter("productTier").isEmpty()) {
         searchText = request.getParameter("productTier");
         request.setAttribute("productTier", searchText);
@@ -352,6 +359,102 @@ public class adminController {
 
     request.setAttribute("memberTier", memberTier);
     request.setAttribute("memberCount", memberCount);
+    request.setAttribute("pageNum", pageNum);
+    request.setAttribute("start", start);
+    request.setAttribute("end", end);
+    request.setAttribute("bottomLine", bottomLine);
+    request.setAttribute("maxPage", maxPage);
+    request.setAttribute("pageInt", pageInt);
+
+    return "admin/memberList";
+  }
+
+  @RequestMapping("memberListPro")
+  public String memberListPro() throws Exception {
+    String member = request.getParameter("member");
+    String orderBy = request.getParameter("orderBy");
+
+    String memberId = (String)session.getAttribute("memberId");
+    int memberTier = 0;
+
+    if(memberId != null && !memberId.isEmpty()) {
+      Member mem = memberDao.memberSelectOne(memberId);
+      memberTier = mem.getMemberTier();
+    }
+
+    String pageNum = request.getParameter("pageNum");
+    if (pageNum == null) {
+      pageNum = "1";
+    }
+
+    int pageInt = Integer.parseInt(pageNum);
+
+    int limit = 30; // 한 page당 게시물 개수
+    int bottomLine = 100; // pagination 개수
+
+    int memberCount = 0;
+
+    if(memberTier == 9) {
+      memberDao.memberSet();
+      List<Product> list;
+
+      switch (member) {
+        case "member_company_name":
+          list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberCompanyName(pageInt, limit) :
+            memberDao.memberListByMemberCompanyName(pageInt, limit);
+          break;
+        case "member_fran_code":
+          list = ("desc".equals(orderBy)) ? memberDao.memberListByMemberFranCode(pageInt, limit) :
+            memberDao.memberListByMemberFranCode(pageInt, limit);
+          break;
+        case "member_id":
+          list = ("desc".equals(orderBy)) ? memberDao.memberListByMemberId(pageInt, limit) :
+            memberDao.memberListByMemberId(pageInt, limit);
+          break;
+        case "member_name":
+          list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberName(pageInt, limit) :
+            memberDao.memberListByMemberName(pageInt, limit);
+          break;
+        case "member_tel":
+          list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberTel(pageInt, limit) :
+            memberDao.memberListByMemberTel(pageInt, limit);
+          break;
+        case "member_company_tel":
+          list = ("desc".equals(orderBy)) ? memberDao.memberListByMemberCompanyTel(pageInt, limit) :
+            memberDao.memberListByMemberCompanyTel(pageInt, limit);
+          break;
+        case "member_tier":
+          list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberTier(pageInt, limit) :
+            memberDao.memberListByMemberTier(pageInt, limit);
+          break;
+        default:
+          list = memberDao.memberListByMemberTier(pageInt, limit);
+          break;
+      }
+
+      if(orderBy == "asc") {
+        orderBy = "desc";
+      } else if(orderBy == "desc") {
+        orderBy = "asc";
+      }
+
+      memberCount = memberDao.memberCount();
+      request.setAttribute("list", list);
+    }
+
+    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
+    int end = start + bottomLine - 1;
+    int maxPage = (memberCount / limit) + (memberCount % limit == 0 ? 0 : 1);
+    if (end > maxPage) {
+      end = maxPage;
+    }
+    if (end > memberCount) {
+      end = memberCount;
+    }
+    request.setAttribute("memberTier", memberTier);
+    request.setAttribute("memberCount", memberCount);
+    request.setAttribute("member", member);
+    request.setAttribute("orderBy", orderBy);
     request.setAttribute("pageNum", pageNum);
     request.setAttribute("start", start);
     request.setAttribute("end", end);

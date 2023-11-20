@@ -46,6 +46,118 @@ public class memberDAO {
         return mem;
     }
 
+    public List<Product> memberListByMemberCompanyName(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "memberListByMemberCompanyName", map);
+        return list;
+    }
+
+    public List<Product> memberListDescByMemberCompanyName(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "memberListDescByMemberCompanyName", map);
+        return list;
+    }
+
+    public List<Product> memberListByMemberFranCode(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "memberListByMemberFranCode", map);
+        return list;
+    }
+
+    public List<Product> memberListDescByMemberFranCode(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "memberListDescByMemberFranCode", map);
+        return list;
+    }
+
+    public List<Product> memberListByMemberId(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "memberListByMemberId", map);
+        return list;
+    }
+
+    public List<Product> memberListDescByMemberId(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "memberListDescByMemberId", map);
+        return list;
+    }
+
+    public List<Product> memberListByMemberName(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "memberListByMemberName", map);
+        return list;
+    }
+
+    public List<Product> memberListDescByMemberName(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "memberListDescByMemberName", map);
+        return list;
+    }
+
+    public List<Product> memberListByMemberTel(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "memberListByMemberTel", map);
+        return list;
+    }
+
+    public List<Product> memberListDescByMemberTel(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "memberListDescByMemberTel", map);
+        return list;
+    }
+
+    public List<Product> memberListByMemberCompanyTel(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "memberListByMembeCompanyrTel", map);
+        return list;
+    }
+
+    public List<Product> memberListDescByMemberCompanyTel(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "memberListDescByMemberCompanyTel", map);
+        return list;
+    }
+
+    public List<Product> memberListByMemberTier(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "memberListByMemberTier", map);
+        return list;
+    }
+
+    public List<Product> memberListDescByMemberTier(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "memberListDescByMemberTier", map);
+        return list;
+    }
+
     public void memberTierUpdate(String memberId, int memberTier) {
         map.clear();
         map.put("memberId", memberId);

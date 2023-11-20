@@ -6,7 +6,7 @@
 <main id="admin_page">
   <div class="admin_page_wrap">
     <div class="page_head">
-      <a href="${ pageContext.request.contextPath }/admin/productList">
+      <a href="${ pageContext.request.contextPath }/admin/memberList">
         <h1>멤버 리스트</h1>
       </a>
     </div>
@@ -27,7 +27,7 @@
             <label for="memberCompanyName">업체명</label>
             <input type="text" id="memberCompanyName" name="memberCompanyName value="${requestScope.memberCompanyName}">
             <label for="memberFranCode">가맹점코드</label>
-            <input type="text" id="memberFranCode" name="productName" value="${requestScope.memberFranCode}">
+            <input type="text" id="memberFranCode" name="memberFranCode" value="${requestScope.memberFranCode}">
           </div>
           <div>
             <label for="memberId">아이디</label>
@@ -62,11 +62,11 @@
           <c:when test="${ requestScope.memberTier != '9' }">
             <p>게시물을 열람 할 권한이 부족합니다.</p>
           </c:when>
-          <c:when test="${ requestScope.memberTier == '9' && requestScope.productCount == 0 }">
+          <c:when test="${ requestScope.memberTier == '9' && requestScope.memberCount == 0 }">
             <p>제품을 찾을 수 없습니다.</p>
           </c:when>
           <c:when test="${ requestScope.memberTier == '9' }">
-            <c:if test="${ requestScope.productSearchCount != 0 || requestScope.productCount != 0 }">
+            <c:if test="${ requestScope.memberSearchCount != 0 || requestScope.memberCount != 0 }">
               <form
                 action="${ pageContext.request.contextPath }/admin/memberListPro"
                 method="post"
@@ -213,30 +213,30 @@
         <c:choose>
           <c:when test="${ requestScope.searchText == null }">
             <a
-              href="${ pageContext.request.contextPath }/admin/productList?pageNum=${ pageNum - 3 }"
+              href="${ pageContext.request.contextPath }/admin/memberList?pageNum=${ pageNum - 3 }"
             >&laquo;</a
             >
           </c:when>
           <c:when test="${requestScope.searchText != null}">
             <a
-              href="${ pageContext.request.contextPath }/admin/productListSearch?pageNum=${ pageNum - 3 }&&searchText=${ requestScope.searchText }"
+              href="${ pageContext.request.contextPath }/admin/memberListSearch?pageNum=${ pageNum - 3 }&&searchText=${ requestScope.searchText }"
             >&laquo;</a
             >
           </c:when>
         </c:choose>
       </c:if>
-      <c:if test="${ productSearchCount != 0 }">
+      <c:if test="${ memberSearchCount != 0 }">
         <c:forEach var="p" begin="${ start }" end="${ end }">
           <c:choose>
             <c:when test="${requestScope.searchText == null}">
               <a
-                href="${ pageContext.request.contextPath }/admin/productList?pageNum=${ p }"
+                href="${ pageContext.request.contextPath }/admin/memberList?pageNum=${ p }"
               >${ p }</a
               >
             </c:when>
             <c:when test="${requestScope.searchText != null}">
               <a
-                href="${ pageContext.request.contextPath }/admin/productListSearch?pageNum=${ p }&&searchText=${ requestScope.searchText }"
+                href="${ pageContext.request.contextPath }/admin/memberListSearch?pageNum=${ p }&&searchText=${ requestScope.searchText }"
               >${ p }</a
               >
             </c:when>
@@ -248,13 +248,13 @@
         <c:choose>
           <c:when test="${ requestScope.searchText == null}">
             <a
-              href="${ pageContext.request.contextPath }/admin/productList?pageNum=${ pageNum + 3 }"
+              href="${ pageContext.request.contextPath }/admin/memberList?pageNum=${ pageNum + 3 }"
             >&raquo;</a
             >
           </c:when>
           <c:when test="${ requestScope.searchText != null}">
             <a
-              href="${ pageContext.request.contextPath }/admin/productListSearch?pageNum=${ pageNum + 3 }&&searchText=${ requestScope.searchText }"
+              href="${ pageContext.request.contextPath }/admin/memberListSearch?pageNum=${ pageNum + 3 }&&searchText=${ requestScope.searchText }"
             >&raquo;</a
             >
           </c:when>
@@ -265,20 +265,20 @@
 </main>
 <script>
   window.onload = function() {
-    const productInput = document.getElementById("product");
+    const memberInput = document.getElementById("member");
     const orderByInput = document.getElementById("orderBy");
 
-    const productInputValue = productInput.value;
+    const memberInputValue = memberInput.value;
     const orderByInputValue = orderByInput.value;
 
-    const productElement = document.querySelector("." + productInputValue).firstElementChild;
-    const imgElement = productElement.lastElementChild;
+    const memberElement = document.querySelector("." + memberInputValue).firstElementChild;
+    const imgElement = memberElement.lastElementChild;
 
     if(orderByInputValue === "asc") {
-      productElement.className = "asc";
+      memberElement.className = "asc";
       imgElement.src = "${ pageContext.request.contextPath }/view/image/down-arrow.png";
     } else if(orderByInputValue === "desc") {
-      productElement.className = "desc";
+      memberElement.className = "desc";
       imgElement.src = "${ pageContext.request.contextPath }/view/image/up-arrow.png";
     }
   }
@@ -289,7 +289,7 @@
     const orderBy = (currentOrderBy === "asc") ? "desc" : "asc";
     const form = document.getElementById("orderByForm");
 
-    form.querySelector('input[name="product"]').value = columnName;
+    form.querySelector('input[name="member"]').value = columnName;
     form.querySelector('input[name="orderBy"]').value = orderBy;
 
     form.submit();
