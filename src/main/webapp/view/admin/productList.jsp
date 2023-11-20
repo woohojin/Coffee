@@ -19,31 +19,31 @@
         >
           <div>
             <label for="productCode">제품 코드</label>
-            <input type="text" id="productCode" name="productCode" value="${requestScope.productCode}">
+            <input type="text" id="productCode" name="productCode" value="${ requestScope.productCode }">
             <label for="productName">제품 이름</label>
-            <input type="text" id="productName" name="productName" value="${requestScope.productName}">
+            <input type="text" id="productName" name="productName" value="${ requestScope.productName }">
           </div>
           <div>
             <label for="productType">제품 타입</label>
-            <input type="text" id="productType" name="productType" value="${requestScope.productType}">
+            <input type="text" id="productType" name="productType" value="${ requestScope.productType }">
             <label for="productPrice">금액</label>
-            <input type="text" id="productPrice" name="productPrice" value="${requestScope.productPrice}">
+            <input type="text" id="productPrice" name="productPrice" value="${ requestScope.productPrice }">
           </div>
           <div>
             <label for="productUnit">용량</label>
-            <input type="text" id="productUnit" name="productUnit" value="${requestScope.productUnit}">
+            <input type="text" id="productUnit" name="productUnit" value="${ requestScope.productUnit }">
             <label for="productCountry">원산지</label>
-            <input type="text" id="productCountry" name="productCountry" value="${requestScope.productCountry}">
+            <input type="text" id="productCountry" name="productCountry" value="${ requestScope.productCountry }">
           </div>
           <div>
             <label for="productSpecies">품종</label>
-            <input type="text" id="productSpecies" name="productSpecies" value="${requestScope.productSpecies}">
+            <input type="text" id="productSpecies" name="productSpecies" value="${ requestScope.productSpecies }">
             <label for="productCompany">제조사</label>
-            <input type="text" id="productCompany" name="productCompany" value="${requestScope.productCompany}">
+            <input type="text" id="productCompany" name="productCompany" value="${ requestScope.productCompany }">
           </div>
           <div>
             <label for="productTier">등급</label>
-            <input type="text" id="productTier" name="productTier" value="${requestScope.productTier}">
+            <input type="text" id="productTier" name="productTier" value="${ requestScope.productTier }">
           </div>
         </form>
         <div class="collapse" onclick="expand(this)">
@@ -72,8 +72,8 @@
                 method="post"
                 id="orderByForm"
               >
-                <input id="product" type="hidden" name="product" value="${requestScope.product}"/>
-                <input id="orderBy" type="hidden" name="orderBy" value="${requestScope.orderBy}"/>
+                <input id="product" type="hidden" name="product" value="${ requestScope.product }"/>
+                <input id="orderBy" type="hidden" name="orderBy" value="${ requestScope.orderBy }"/>
               </form>
               <table class="list">
                 <thead>
@@ -205,7 +205,7 @@
               >${ p }</a
               >
             </c:when>
-            <c:when test="${requestScope.searchText != null}">
+            <c:when test="${ requestScope.searchText != null }">
               <a
                 href="${ pageContext.request.contextPath }/admin/productListSearch?pageNum=${ p }&&searchText=${ requestScope.searchText }"
               >${ p }</a

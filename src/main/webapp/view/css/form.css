@@ -27,45 +27,6 @@ input::file-selector-button {
   border-radius: 25px;
 }
 
-.input_image_wrap {
-  margin-bottom: 25px;
-}
-.input_image,
-.product_form ul {
-  display: inline-block;
-  width: auto;
-}
-.input_image {
-  position: relative;
-}
-.input_image img {
-  width: 282px;
-}
-.image_wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  width: 100%;
-}
-.image_wrap .input_btn {
-  margin-top: 20px;
-}
-
-.product_form ul li {
-  text-align: right;
-  float: none;
-  margin-bottom: 20px;
-}
-
-.input_image_form_wrap form {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-}
-.input_image_form_wrap form input:first-child {
-  margin-bottom: 60px;
-}
-
 .file_input_wrap{
   position: relative;
 }

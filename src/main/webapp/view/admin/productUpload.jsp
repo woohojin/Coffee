@@ -9,7 +9,7 @@
     name="f"
     method="post"
   >
-    <div class="input_image_wrap">
+    <div class="input_image_wrap center">
       <div class="input_image">
         <input type="hidden" multiple="multiple" name="productFile" id="files" value="" />
         <div class="image_wrap">
@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <div class="product_form">
+    <div class="product_form center">
       <ul>
         <li>
           <label for="product_code">제품코드 : </label>

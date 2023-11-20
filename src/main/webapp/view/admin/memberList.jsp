@@ -72,8 +72,8 @@
                 method="post"
                 id="orderByForm"
               >
-                <input id="member" type="hidden" name="member" value="${requestScope.member}"/>
-                <input id="orderBy" type="hidden" name="orderBy" value="${requestScope.orderBy}"/>
+                <input id="member" type="hidden" name="member" value="${ requestScope.member }"/>
+                <input id="orderBy" type="hidden" name="orderBy" value="${ requestScope.orderBy }"/>
               </form>
               <table class="list">
                 <thead>
