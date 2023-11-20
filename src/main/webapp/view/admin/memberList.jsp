@@ -11,42 +11,50 @@
       </a>
     </div>
     <div class="search_form_wrap center">
-      <form class="search_form"
-            action="${ pageContext.request.contextPath }/admin/memberSearch"
-            method="post"
-      >
-        <div>
-          <label for="productCode">제품 코드</label>
-          <input type="text" id="productCode" name="productCode" value="${requestScope.productCode}">
-          <label for="productName">제품 이름</label>
-          <input type="text" id="productName" name="productName" value="${requestScope.productName}">
+      <div class="inline_wrap">
+        <form class="search_form"
+              action="${ pageContext.request.contextPath }/admin/memberSearch"
+              method="post"
+              style="max-height: 35px;"
+        >
+          <div>
+            <label for="productCode">제품 코드</label>
+            <input type="text" id="productCode" name="productCode" value="${requestScope.productCode}">
+            <label for="productName">제품 이름</label>
+            <input type="text" id="productName" name="productName" value="${requestScope.productName}">
+          </div>
+          <div>
+            <label for="productCode">제품 타입</label>
+            <input type="text" id="productType" name="productType" value="${requestScope.productType}">
+            <label for="productName">금액</label>
+            <input type="text" id="productPrice" name="productPrice" value="${requestScope.productPrice}">
+          </div>
+          <div>
+            <label for="productCode">용량</label>
+            <input type="text" id="productUnit" name="productUnit" value="${requestScope.productUnit}">
+            <label for="productName">원산지</label>
+            <input type="text" id="productCountry" name="productCountry" value="${requestScope.productCountry}">
+          </div>
+          <div>
+            <label for="productCode">품종</label>
+            <input type="text" id="productSpecies" name="productSpecies" value="${requestScope.productSpecies}">
+            <label for="productName">제조사</label>
+            <input type="text" id="productCompany" name="productCompany" value="${requestScope.productCompany}">
+          </div>
+          <div>
+            <label for="productCode">등급</label>
+            <input type="text" id="productTier" name="productTier" value="${requestScope.productTier}">
+          </div>
+        </form>
+        <div class="collapse" onclick="expand(this)">
+          <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
         </div>
-        <div>
-          <label for="productCode">제품 타입</label>
-          <input type="text" id="productType" name="productType" value="${requestScope.productType}">
-          <label for="productName">금액</label>
-          <input type="text" id="productPrice" name="productPrice" value="${requestScope.productPrice}">
-        </div>
-        <div>
-          <label for="productCode">용량</label>
-          <input type="text" id="productUnit" name="productUnit" value="${requestScope.productUnit}">
-          <label for="productName">원산지</label>
-          <input type="text" id="productCountry" name="productCountry" value="${requestScope.productCountry}">
-        </div>
-        <div>
-          <label for="productCode">품종</label>
-          <input type="text" id="productSpecies" name="productSpecies" value="${requestScope.productSpecies}">
-          <label for="productName">제조사</label>
-          <input type="text" id="productCompany" name="productCompany" value="${requestScope.productCompany}">
-        </div>
-        <div>
-          <label for="productCode">등급</label>
-          <input type="text" id="productTier" name="productTier" value="${requestScope.productTier}">
-        </div>
-        <div class="submit">
-          <input type="submit" class="submit_btn" value="검색">
-        </div>
-      </form>
+      </div>
+    </div>
+    <div class="btn_wrap center">
+      <div class="btn">
+        <a onclick="submit()">검색</a>
+      </div>
     </div>
     <div class="list">
       <ul class="center">
@@ -284,6 +292,27 @@
     form.querySelector('input[name="product"]').value = columnName;
     form.querySelector('input[name="orderBy"]').value = orderBy;
 
+    form.submit();
+  }
+</script>
+<script>
+  function expand(object) {
+    const form = document.querySelector(".search_form");
+    const img = object.firstElementChild;
+    const state = object.className;
+
+    if(state === "collapse") {
+      form.style.maxHeight = "200px";
+      object.className = "expand";
+      img.src = "${ pageContext.request.contextPath }/view/image/up-arrow.png";
+    } else if(state === "expand") {
+      form.style.maxHeight = "35px";
+      object.className = "collapse";
+      img.src = "${ pageContext.request.contextPath }/view/image/down-arrow.png";
+    }
+  }
+  function submit() {
+    const form = document.querySelector(".search_form");
     form.submit();
   }
 </script>
