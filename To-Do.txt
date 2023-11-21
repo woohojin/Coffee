@@ -24,7 +24,7 @@ order 테이블도 필요해보임 (현재 주문 상태, 주문번호 등)
 어드민 페이지 pagination
 pagination laquo raquo check
 
-일단  모든 테이블에 등록일 등록id 수정일 수정id 가 추가 되는것이 좋음 그래야 나중에 누가 등록했고 언제 수정했는지 알 수 있음 특히 제품테이블 같은 경우 제일 중요한 테이블이기때문에
+일단 모든 테이블에 등록일 등록id 수정일 수정id 가 추가 되는것이 좋음 그래야 나중에 누가 등록했고 언제 수정했는지 알 수 있음 특히 제품테이블 같은 경우 제일 중요한 테이블이기때문에
 필수로 보임
 
 board나 product 의 경우 삭제여부 가 추가되면 좋음
@@ -44,7 +44,7 @@ board나 product 의 경우 삭제여부 가 추가되면 좋음
 본인인증?
 
 예외처리
-1. int nullPointException = String으로 받아서 필요하면 parseInt로 전환
+1. int nullPointException = Integer 사용
 
 html formatting
 jquery 제거

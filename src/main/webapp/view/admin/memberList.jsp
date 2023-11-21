@@ -18,32 +18,26 @@
               style="max-height: 70px;"
         >
           <div>
-            <label for=datepickerStart>시작일</label>
-            <input type="text" name="startDate" id="datepickerStart" class="datepicker" value="${ requestScope.startDate }" />
-            <label for="datepickerEnd">종료일</label>
-            <input type="text" name="endDate" id="datepickerEnd" class="datepicker" value="${ requestScope.endDate }" />
-          </div>
-          <div>
             <label for="memberCompanyName">업체명</label>
-            <input type="text" id="memberCompanyName" name="memberCompanyName value="${requestScope.memberCompanyName}">
+            <input type="text" id="memberCompanyName" name="memberCompanyName" value="${ requestScope.memberCompanyName }">
             <label for="memberFranCode">가맹점코드</label>
-            <input type="text" id="memberFranCode" name="memberFranCode" value="${requestScope.memberFranCode}">
+            <input type="text" id="memberFranCode" name="memberFranCode" value="${ requestScope.memberFranCode }">
           </div>
           <div>
             <label for="memberId">아이디</label>
-            <input type="text" id="memberId" name="memberId" value="${requestScope.memberId}">
+            <input type="text" id="memberId" name="memberId" value="${ requestScope.memberId }">
             <label for="memberName">이름</label>
-            <input type="text" id="memberName" name="memberName" value="${requestScope.memberName}">
+            <input type="text" id="memberName" name="memberName" value="${ requestScope.memberName }">
           </div>
           <div>
             <label for="memberTel">전화번호</label>
-            <input type="text" id="memberTel" name="memberTel" value="${requestScope.memberTel}">
+            <input type="text" id="memberTel" name="memberTel" value="${ requestScope.memberTel }">
             <label for="memberCompanyTel">회사번호</label>
-            <input type="text" id="memberCompanyTel" name="memberCompanyTel" value="${requestScope.memberCompanyTel}">
+            <input type="text" id="memberCompanyTel" name="memberCompanyTel" value="${ requestScope.memberCompanyTel }">
           </div>
           <div>
             <label for="memberTier">등급</label>
-            <input type="text" id="memberTier" name="memberTier" value="${requestScope.memberTier}">
+            <input type="text" id="memberTier" name="memberTier" value="">
           </div>
         </form>
         <div class="collapse" onclick="expand(this)">
@@ -316,5 +310,4 @@
     form.submit();
   }
 </script>
-<script src="${ pageContext.request.contextPath }/view/js/datepicker.js"></script>
 </body>

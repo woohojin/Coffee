@@ -144,7 +144,9 @@ public class memberController {
 
         if (member != null) {
             if (passwordEncoder.matches(memberPassword, member.getMemberPassword())) {
+                Integer memberTier = member.getMemberTier();
                 session.setAttribute("memberId", memberId);
+                session.setAttribute("memberTier", memberTier);
 
                 url = "/board/main";
 

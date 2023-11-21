@@ -57,13 +57,9 @@ public class adminController {
 
   @RequestMapping("productList")
   public String productList() throws Exception {
-
-    String memberId = (String)session.getAttribute("memberId");
-    int memberTier = 0;
-
-    if(memberId != null && !memberId.isEmpty()) {
-      Member mem = memberDao.memberSelectOne(memberId);
-      memberTier = mem.getMemberTier();
+    Integer memberTier = (Integer) session.getAttribute("memberTier");
+    if(memberTier == null) {
+      memberTier = 0;
     }
 
     String pageNum = request.getParameter("pageNum");
@@ -112,12 +108,9 @@ public class adminController {
     String product = request.getParameter("product");
     String orderBy = request.getParameter("orderBy");
 
-    String memberId = (String)session.getAttribute("memberId");
-    int memberTier = 0;
-
-    if(memberId != null && !memberId.isEmpty()) {
-      Member mem = memberDao.memberSelectOne(memberId);
-      memberTier = mem.getMemberTier();
+    Integer memberTier = (Integer) session.getAttribute("memberTier");
+    if(memberTier == null) {
+      memberTier = 0;
     }
 
     String pageNum = request.getParameter("pageNum");
@@ -213,12 +206,9 @@ public class adminController {
 
   @RequestMapping("productSearch")
   public String productSearch() throws Exception {
-    String memberId = (String)session.getAttribute("memberId");
-    int memberTier = 0;
-
-    if(memberId != null && !memberId.isEmpty()) {
-      Member mem = memberDao.memberSelectOne(memberId);
-      memberTier = mem.getMemberTier();
+    Integer memberTier = (Integer) session.getAttribute("memberTier");
+    if(memberTier == null) {
+      memberTier = 0;
     }
 
     String pageNum = request.getParameter("pageNum");
@@ -234,61 +224,45 @@ public class adminController {
     int productCount = 0;
     String searchText = "";
     List<Product> list = null;
+    String[] array = {"productCode", "productName", "productType", "productPrice",
+                      "productUnit", "productCountry", "productSpecies", "productCompany", "productTier"};
 
     if(memberTier == 9) {
-      if(!request.getParameter("productCode").isEmpty()) {
-        searchText = request.getParameter("productCode");
-        request.setAttribute("productCode", searchText);
-        productDao.productSet();
-        list = productDao.productSearchListByProductCode(pageInt, limit, searchText);
-
-      } else if (!request.getParameter("productName").isEmpty()) {
-        searchText = request.getParameter("productName");
-        request.setAttribute("productName", searchText);
-        productDao.productSet();
-        list = productDao.productSearchListByProductName(pageInt, limit, searchText);
-
-      } else if (!request.getParameter("productType").isEmpty()) {
-        searchText = request.getParameter("productType");
-        request.setAttribute("productType", searchText);
-        productDao.productSet();
-        list = productDao.productSearchListByProductType(pageInt, limit, searchText);
-
-      } else if (!request.getParameter("productPrice").isEmpty()) {
-        searchText = request.getParameter("productPrice");
-        request.setAttribute("productPrice", searchText);
-        productDao.productSet();
-        list = productDao.productSearchListByProductPrice(pageInt, limit, searchText);
-
-      } else if (!request.getParameter("productUnit").isEmpty()) {
-        searchText = request.getParameter("productUnit");
-        request.setAttribute("productUnit", searchText);
-        productDao.productSet();
-        list = productDao.productSearchListByProductUnit(pageInt, limit, searchText);
-
-      } else if (!request.getParameter("productCountry").isEmpty()) {
-        searchText = request.getParameter("productCountry");
-        request.setAttribute("productCountry", searchText);
-        productDao.productSet();
-        list = productDao.productSearchListByProductCountry(pageInt, limit, searchText);
-
-      } else if (!request.getParameter("productSpecies").isEmpty()) {
-        searchText = request.getParameter("productSpecies");
-        request.setAttribute("productSpecies", searchText);
-        productDao.productSet();
-        list = productDao.productSearchListByProductSpecies(pageInt, limit, searchText);
-
-      } else if (!request.getParameter("productCompany").isEmpty()) {
-        searchText = request.getParameter("productCompany");
-        request.setAttribute("productCompany", searchText);
-        productDao.productSet();
-        list = productDao.productSearchListByProductCompany(pageInt, limit, searchText);
-
-      } else if (!request.getParameter("productTier").isEmpty()) {
-        searchText = request.getParameter("productTier");
-        request.setAttribute("productTier", searchText);
-        productDao.productSet();
-        list = productDao.productSearchListByProductTier(pageInt, limit, searchText);
+      for(String param : array) {
+        if(!request.getParameter(param).isEmpty()) {
+          searchText = request.getParameter(param);
+          request.setAttribute(param, searchText);
+          productDao.productSet();
+          switch(param) {
+            case "productCode":
+              list = productDao.productSearchListByProductCode(pageInt, limit, searchText);
+              break;
+            case "productName":
+              list = productDao.productSearchListByProductName(pageInt, limit, searchText);
+              break;
+            case "productType":
+              list = productDao.productSearchListByProductType(pageInt, limit, searchText);
+              break;
+            case "productPrice":
+              list = productDao.productSearchListByProductPrice(pageInt, limit, searchText);
+              break;
+            case "productUnit":
+              list = productDao.productSearchListByProductUnit(pageInt, limit, searchText);
+              break;
+            case "productCountry":
+              list = productDao.productSearchListByProductCountry(pageInt, limit, searchText);
+              break;
+            case "productSpecies":
+              list = productDao.productSearchListByProductSpecies(pageInt, limit, searchText);
+              break;
+            case "productCompany":
+              list = productDao.productSearchListByProductCompany(pageInt, limit, searchText);
+              break;
+            case "productTier":
+              list = productDao.productSearchListByProductTier(pageInt, limit, searchText);
+              break;
+          }
+        }
       }
       productCount = productDao.productCount();
     }
@@ -318,13 +292,9 @@ public class adminController {
 
   @RequestMapping("memberList")
   public String memberList() throws Exception {
-
-    String memberId = (String)session.getAttribute("memberId");
-    int memberTier = 0;
-
-    if(memberId != null && !memberId.isEmpty()) {
-      Member mem = memberDao.memberSelectOne(memberId);
-      memberTier = mem.getMemberTier();
+    Integer memberTier = (Integer) session.getAttribute("memberTier");
+    if(memberTier == null) {
+      memberTier = 0;
     }
 
     String pageNum = request.getParameter("pageNum");
@@ -374,12 +344,9 @@ public class adminController {
     String member = request.getParameter("member");
     String orderBy = request.getParameter("orderBy");
 
-    String memberId = (String)session.getAttribute("memberId");
-    int memberTier = 0;
-
-    if(memberId != null && !memberId.isEmpty()) {
-      Member mem = memberDao.memberSelectOne(memberId);
-      memberTier = mem.getMemberTier();
+    Integer memberTier = (Integer) session.getAttribute("memberTier");
+    if(memberTier == null) {
+      memberTier = 0;
     }
 
     String pageNum = request.getParameter("pageNum");
@@ -396,7 +363,7 @@ public class adminController {
 
     if(memberTier == 9) {
       memberDao.memberSet();
-      List<Product> list;
+      List<Member> list;
 
       switch (member) {
         case "member_company_name":
@@ -404,11 +371,11 @@ public class adminController {
             memberDao.memberListByMemberCompanyName(pageInt, limit);
           break;
         case "member_fran_code":
-          list = ("desc".equals(orderBy)) ? memberDao.memberListByMemberFranCode(pageInt, limit) :
+          list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberFranCode(pageInt, limit) :
             memberDao.memberListByMemberFranCode(pageInt, limit);
           break;
         case "member_id":
-          list = ("desc".equals(orderBy)) ? memberDao.memberListByMemberId(pageInt, limit) :
+          list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberId(pageInt, limit) :
             memberDao.memberListByMemberId(pageInt, limit);
           break;
         case "member_name":
@@ -420,7 +387,7 @@ public class adminController {
             memberDao.memberListByMemberTel(pageInt, limit);
           break;
         case "member_company_tel":
-          list = ("desc".equals(orderBy)) ? memberDao.memberListByMemberCompanyTel(pageInt, limit) :
+          list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberCompanyTel(pageInt, limit) :
             memberDao.memberListByMemberCompanyTel(pageInt, limit);
           break;
         case "member_tier":
@@ -455,6 +422,86 @@ public class adminController {
     request.setAttribute("memberCount", memberCount);
     request.setAttribute("member", member);
     request.setAttribute("orderBy", orderBy);
+    request.setAttribute("pageNum", pageNum);
+    request.setAttribute("start", start);
+    request.setAttribute("end", end);
+    request.setAttribute("bottomLine", bottomLine);
+    request.setAttribute("maxPage", maxPage);
+    request.setAttribute("pageInt", pageInt);
+
+    return "admin/memberList";
+  }
+
+  @RequestMapping("memberSearch")
+  public String memberSearch() throws Exception {
+    Integer memberTier = (Integer) session.getAttribute("memberTier");
+    if(memberTier == null) {
+      memberTier = 0;
+    }
+
+    String pageNum = request.getParameter("pageNum");
+    if (pageNum == null) {
+      pageNum = "1";
+    }
+
+    int pageInt = Integer.parseInt(pageNum);
+
+    int limit = 32; // 한 page당 게시물 개수
+    int bottomLine = 100; // pagination 개수
+
+    int memberCount = 0;
+    String searchText = "";
+    List<Member> list = null;
+    String[] array = {"memberCompanyName", "memberFranCode", "memberId", "memberName",
+      "memberTel", "memberCompanyTel", "memberTier"};
+
+    if(memberTier == 9) {
+      for(String param : array) {
+        if(!request.getParameter(param).isEmpty()) {
+          searchText = request.getParameter(param);
+          request.setAttribute(param, searchText);
+          memberDao.memberSet();
+          switch(param) {
+            case "memberCompanyName":
+              list = memberDao.memberSearchListByMemberCompanyName(pageInt, limit, searchText);
+              break;
+            case "memberFranCode":
+              list = memberDao.memberSearchListByMemberFranCode(pageInt, limit, searchText);
+              break;
+            case "memberId":
+              list = memberDao.memberSearchListByMemberId(pageInt, limit, searchText);
+              break;
+            case "memberName":
+              list = memberDao.memberSearchListByMemberName(pageInt, limit, searchText);
+              break;
+            case "memberTel":
+              list = memberDao.memberSearchListByMemberTel(pageInt, limit, searchText);
+              break;
+            case "memberCompanyTel":
+              list = memberDao.memberSearchListByMemberCompanyTel(pageInt, limit, searchText);
+              break;
+            case "memberTier":
+              list = memberDao.memberSearchListByMemberTier(pageInt, limit, searchText);
+              break;
+          }
+        }
+      }
+      memberCount = memberDao.memberCount();
+    }
+
+    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
+    int end = start + bottomLine - 1;
+    int maxPage = (memberCount / limit) + (memberCount % limit == 0 ? 0 : 1);
+    if (end > maxPage) {
+      end = maxPage;
+    }
+    if (end > memberCount) {
+      end = memberCount;
+    }
+
+    request.setAttribute("memberTier", memberTier);
+    request.setAttribute("memberCount", memberCount);
+    request.setAttribute("list", list);
     request.setAttribute("pageNum", pageNum);
     request.setAttribute("start", start);
     request.setAttribute("end", end);

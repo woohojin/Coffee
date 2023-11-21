@@ -156,6 +156,62 @@
         where b.rownum between #{start} and #{end};
     </select>
 
+    <select id="memberSearchListByMemberCompanyName" parameterType="map" resultMap="memberMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from member a, (select @rownum := 0) tmp
+        where member_company_name and NOT member_id = "admin" LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="memberSearchListByMemberFranCode" parameterType="map" resultMap="memberMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from member a, (select @rownum := 0) tmp
+        where member_fran_code and NOT member_id = "admin" LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="memberSearchListByMemberId" parameterType="map" resultMap="memberMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from member a, (select @rownum := 0) tmp
+        where member_id and NOT member_id = "admin" LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="memberSearchListByMemberName" parameterType="map" resultMap="memberMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from member a, (select @rownum := 0) tmp
+        where member_name and NOT member_id = "admin" LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="memberSearchListByMemberTel" parameterType="map" resultMap="memberMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from member a, (select @rownum := 0) tmp
+        where member_tel and NOT member_id = "admin" LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="memberSearchListByMemberCompanyTel" parameterType="map" resultMap="memberMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from member a, (select @rownum := 0) tmp
+        where member_company_tel and NOT member_id = "admin" LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="memberSearchListByMemberTier" parameterType="map" resultMap="memberMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from member a, (select @rownum := 0) tmp
+        where member_tier and NOT member_id = "admin" LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
     <update id="memberTierUpdate" parameterType="map">
         update member set member_tier = #{memberTier} where member_id = #{memberId}
     </update>

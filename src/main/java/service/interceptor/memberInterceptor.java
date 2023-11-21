@@ -31,6 +31,7 @@ public class memberInterceptor implements HandlerInterceptor {
     String memberCookieId; // 쿠키에서 가져온 멤버 아이디
     String memberSessionId; //세션에서 가져온 멤버 아이디
     String memberId; // 쿠키를 통해 DB에서 가져온 멤버 아이디
+    Integer memberTier; // 쿠키를 통해 DB에서 가져온 멤버 티어
     boolean checkValidate; // 각 저장소에서 가져온 토큰 비교
 
     @Override
@@ -44,6 +45,7 @@ public class memberInterceptor implements HandlerInterceptor {
                 member = memberDao.memberSelectOne(memberCookieId);
                 if(member != null) {
                     memberId = member.getMemberId();
+                    memberTier = member.getMemberTier();
                     cookieDTO = cookieDao.cookieSelectOne(memberId);
                     cookieDBToken = cookieDTO.getToken();
                 }
@@ -53,6 +55,7 @@ public class memberInterceptor implements HandlerInterceptor {
                 checkValidate = cookieDBToken.equals(cookieToken);
                 if(checkValidate == true) {
                     session.setAttribute("memberId", memberId);
+                    session.setAttribute("memberTier", memberTier);
                 }
             }
         }

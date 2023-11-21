@@ -69,13 +69,9 @@ public class mainController {
 
     @RequestMapping("product")
     public String product() throws Exception {
-
-        String memberId = (String)session.getAttribute("memberId");
-        int memberTier = 0;
-
-        if(memberId != null && !memberId.isEmpty()) {
-            Member mem = memberDao.memberSelectOne(memberId);
-            memberTier = mem.getMemberTier();
+        Integer memberTier = (Integer) session.getAttribute("memberTier");
+        if(memberTier == null) {
+            memberTier = 0;
         }
 
         String pageNum = request.getParameter("pageNum");
@@ -175,13 +171,9 @@ public class mainController {
 
     @RequestMapping("productSearch")
     public String productSearch() throws Exception {
-
-        String memberId = (String)session.getAttribute("memberId");
-        int memberTier = 0;
-
-        if(memberId != null && !memberId.isEmpty()) {
-            Member mem = memberDao.memberSelectOne(memberId);
-            memberTier = mem.getMemberTier();
+        Integer memberTier = (Integer) session.getAttribute("memberTier");
+        if(memberTier == null) {
+            memberTier = 0;
         }
 
         String pageNum = request.getParameter("pageNum");

@@ -14,7 +14,7 @@ public class Member {
     String memberEmail;
     String memberFile;
     String memberFranCode;
-    int memberTier;
+    Integer memberTier;
     String memberDate;
 
     public String getMemberId() {
@@ -121,11 +121,11 @@ public class Member {
         this.memberFranCode = memberFranCode;
     }
 
-    public int getMemberTier() {
+    public Integer getMemberTier() {
         return memberTier;
     }
 
-    public void setMemberTier(int memberTier) {
+    public void setMemberTier(Integer memberTier) {
         this.memberTier = memberTier;
     }
 
@@ -154,7 +154,7 @@ public class Member {
           ", memberFile='" + memberFile + '\'' +
           ", memberFranCode='" + memberFranCode + '\'' +
           ", memberTier=" + memberTier +
-          ", member_date='" + memberDate + '\'' +
+          ", memberDate='" + memberDate + '\'' +
           '}';
     }
 }
