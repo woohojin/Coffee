@@ -20,12 +20,154 @@
         insert into order_history values (#{memberId}, #{productCode}, #{quantity})
     </insert>
 
+    <select id="rownumSet" parameterType="int" resultType="int">
+        set @rownum := 0
+    </select>
+
     <select id="historyCount" parameterType="String" resultType="int">
-        select count(*) from order_history where member_id = #{memberId}
+        select count(*) from order_history
     </select>
 
     <select id="historyCountBetween" parameterType="map" resultType="int">
         select count(*) from order_history where member_id = #{memberId} and order_date between #{startDate} and #{endDate}
+    </select>
+
+    <select id="historyList" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c
+        where c.rownum between #{start} and #{end};
+    </select>
+
+    <select id="historyListByHistoryCode" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c
+        where c.rownum between #{start} and #{end} order by history_code;
+    </select>
+
+    <select id="historyListDescByHistoryCode" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c
+        where c.rownum between #{start} and #{end} order by history_code desc;
+    </select>
+
+    <select id="historyListByMemberId" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c
+        where c.rownum between #{start} and #{end} order by member_id;
+    </select>
+
+    <select id="historyListDescByMemberId" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c
+        where c.rownum between #{start} and #{end} order by member_id desc;
+    </select>
+
+    <select id="historyListByProductCode" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c
+        where c.rownum between #{start} and #{end} order by product_code;
+    </select>
+
+    <select id="historyListDescByProductCode" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c
+        where c.rownum between #{start} and #{end} order by product_code desc;
+    </select>
+
+    <select id="historyListByProductName" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c
+        where c.rownum between #{start} and #{end} order by product_name;
+    </select>
+
+    <select id="historyListDescByProductName" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c
+        where c.rownum between #{start} and #{end} order by product_name desc;
+    </select>
+
+    <select id="historyListByProductUnit" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c
+        where c.rownum between #{start} and #{end} order by product_unit;
+    </select>
+
+    <select id="historyListDescByProductUnit" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c
+        where c.rownum between #{start} and #{end} order by product_unit desc;
+    </select>
+
+    <select id="historyListByProductPrice" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c
+        where c.rownum between #{start} and #{end} order by product_price;
+    </select>
+
+    <select id="historyListDescByProductPrice" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c
+        where c.rownum between #{start} and #{end} order by product_price desc;
+    </select>
+
+    <select id="historyListByQuantity" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c
+        where c.rownum between #{start} and #{end} order by quantity;
+    </select>
+
+    <select id="historyListDescByQuantity" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c
+        where c.rownum between #{start} and #{end} order by quantity desc;
+    </select>
+
+    <select id="historyListByDeliveryAddress" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c
+        where c.rownum between #{start} and #{end} order by delivery_address;
+    </select>
+
+    <select id="historyListDescByDeliveryAddress" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c
+        where c.rownum between #{start} and #{end} order by delivery_address desc;
+    </select>
+
+    <select id="historyListByOrderDate" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c
+        where c.rownum between #{start} and #{end} order by order_date;
+    </select>
+
+    <select id="historyListDescByOrderDate" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c
+        where c.rownum between #{start} and #{end} order by order_date desc;
+    </select>
+
+    <select id="historySelectList" parameterType="String" resultMap="historyMap">
+        select order_history.*, product.product_name, product.product_unit, product.product_price
+        from order_history inner join product on order_history.product_code = product.product_code
     </select>
 
     <select id="historySelectMember" parameterType="String" resultMap="historyMap">

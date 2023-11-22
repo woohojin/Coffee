@@ -13,10 +13,13 @@
               <a href="${ pageContext.request.contextPath }/admin/productList">제품 리스트</a>
             </li>
             <li>
-              <a href="${ pageContext.request.contextPath }/admin/productUpload">제품 업로드</a>
+              <a href="${ pageContext.request.contextPath }/admin/memberList">멤버 리스트</a>
             </li>
             <li>
-              <a href="${ pageContext.request.contextPath }/admin/memberList">멤버 리스트</a>
+              <a href="${ pageContext.request.contextPath }/admin/orderHistory">주문 기록</a>
+            </li>
+            <li>
+              <a href="${ pageContext.request.contextPath }/admin/productUpload">제품 업로드</a>
             </li>
             <li>
               <a href="${ pageContext.request.contextPath }/admin/memberTierUpdate">권한 주입</a>

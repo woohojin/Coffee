@@ -24,7 +24,7 @@
                                    #{memberAddress}, #{memberDetailAddress}, #{memberDeliveryAddress}, #{memberDetailDeliveryAddress}, #{memberEmail}, #{memberFile}, 0000, 0, NOW())
     </insert>
 
-    <select id="memberSet" parameterType="int" resultType="int">
+    <select id="rownumSet" parameterType="int" resultType="int">
         set @rownum := 0
     </select>
 

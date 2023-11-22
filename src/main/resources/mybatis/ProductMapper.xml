@@ -36,7 +36,7 @@
         select count(*) from product where product_name LIKE CONCAT('%',#{searchText},'%')
     </select>
 
-    <select id="productSet" parameterType="int" resultType="int">
+    <select id="rownumSet" parameterType="int" resultType="int">
         set @rownum := 0
     </select>
 

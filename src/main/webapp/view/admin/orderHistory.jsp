@@ -7,7 +7,7 @@
   <div class="admin_page_wrap">
     <div class="page_head">
       <a href="${ pageContext.request.contextPath }/admin/memberList">
-        <h1>멤버 리스트</h1>
+        <h1>주문 기록</h1>
       </a>
     </div>
     <div class="search_form_wrap center">
@@ -18,26 +18,16 @@
               style="max-height: 70px;"
         >
           <div>
-            <label for="memberCompanyName">업체명</label>
+            <label for="datepickerStart">시작일</label>
+            <input type="text" name="startDate" id="datepickerStart" class="datepicker" value="${ requestScope.startDate }" />
+            <label for="datepickerEnd">종료일</label>
+            <input type="text" name="endDate" id="datepickerEnd" class="datepicker" value="${ requestScope.endDate }" />
+          </div>
+          <div>
+            <label for="memberCompanyName">주문번호</label>
             <input type="text" id="memberCompanyName" name="memberCompanyName" value="${ requestScope.memberCompanyName }">
-            <label for="memberFranCode">가맹점코드</label>
+            <label for="memberFranCode">아이디</label>
             <input type="text" id="memberFranCode" name="memberFranCode" value="${ requestScope.memberFranCode }">
-          </div>
-          <div>
-            <label for="memberId">아이디</label>
-            <input type="text" id="memberId" name="memberId" value="${ requestScope.memberId }">
-            <label for="memberName">이름</label>
-            <input type="text" id="memberName" name="memberName" value="${ requestScope.memberName }">
-          </div>
-          <div>
-            <label for="memberTel">전화번호</label>
-            <input type="text" id="memberTel" name="memberTel" value="${ requestScope.memberTel }">
-            <label for="memberCompanyTel">회사번호</label>
-            <input type="text" id="memberCompanyTel" name="memberCompanyTel" value="${ requestScope.memberCompanyTel }">
-          </div>
-          <div class="last">
-            <label for="memberTier">등급</label>
-            <input type="text" id="memberTier" name="memberTier" value="">
           </div>
         </form>
         <div class="collapse" onclick="expand(this)">
@@ -56,13 +46,13 @@
           <c:when test="${ requestScope.memberTier != '9' }">
             <p>권한이 부족합니다.</p>
           </c:when>
-          <c:when test="${ requestScope.memberTier == '9' && requestScope.memberCount == 0 }">
-            <p>회원을 찾을 수 없습니다.</p>
+          <c:when test="${ requestScope.memberTier == '9' && requestScope.historyCount == 0 }">
+            <p>기록을 찾을 수 없습니다.</p>
           </c:when>
           <c:when test="${ requestScope.memberTier == '9' }">
-            <c:if test="${ requestScope.memberSearchCount != 0 || requestScope.memberCount != 0 }">
+            <c:if test="${ requestScope.historySearchCount != 0 || requestScope.historyCount != 0 }">
               <form
-                action="${ pageContext.request.contextPath }/admin/memberListPro"
+                action="${ pageContext.request.contextPath }/admin/orderHistoryPro"
                 method="post"
                 id="orderByForm"
               >
@@ -72,15 +62,9 @@
               <table class="list">
                 <thead>
                 <tr>
-                  <th class="member_tier" onclick="orderBy(this)">
+                    <th class="history_code" onclick="orderBy(this)">
                     <div class="asc">
-                      <span>등급</span>
-                      <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
-                    </div>
-                  </th>
-                  <th class="member_fran_code" onclick="orderBy(this)">
-                    <div class="asc">
-                      <span>가맹점코드</span>
+                      <span>주문번호</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
@@ -90,109 +74,87 @@
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="member_name" onclick="orderBy(this)">
+                  <th class="product_code" onclick="orderBy(this)">
                     <div class="asc">
-                      <span>이름</span>
+                      <span>제품번호</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="member_company_name" onclick="orderBy(this)">
+                  <th class="product_name" onclick="orderBy(this)">
                     <div class="asc">
-                      <span>업체명</span>
+                      <span>제품이름</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="member_tel" onclick="orderBy(this)">
+                  <th class="product_unit" onclick="orderBy(this)">
                     <div class="asc">
-                      <span>전화번호</span>
+                      <span>용량</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="member_company_tel" onclick="orderBy(this)">
+                  <th class="product_price" onclick="orderBy(this)">
                     <div class="asc">
-                      <span>회사번호</span>
+                      <span>가격</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="member_address" onclick="orderBy(this)">
+                  <th class="quantity" onclick="orderBy(this)">
                     <div class="asc">
-                      <span>주소</span>
+                      <span>갯수</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="member_delivery_address" onclick="orderBy(this)">
+                  <th class="delivery_address" onclick="orderBy(this)">
                     <div class="asc">
                       <span>배송지</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="member_file" onclick="orderBy(this)">
+                  <th class="order_date" onclick="orderBy(this)">
                     <div class="asc">
-                      <span>파일</span>
-                      <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
-                    </div>
-                  </th>
-                  <th class="member_email" onclick="orderBy(this)">
-                    <div class="asc">
-                      <span>이메일</span>
-                      <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
-                    </div>
-                  </th>
-                  <th class="member_date" onclick="orderBy(this)">
-                    <div class="asc">
-                      <span>가입일</span>
+                      <span>주문날짜</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="m" items="${ list }" varStatus="status">
+                <c:forEach var="h" items="${ list }" varStatus="status">
                   <tr>
                     <td>
-                      <p>${ m.memberTier }</p>
+                      <p>${ h.historyCode }</p>
                     </td>
                     <td>
-                      <p>${ m.memberFranCode }</p>
+                      <p>${ h.memberId }</p>
                     </td>
                     <td>
-                      <p>${ m.memberId }</p>
+                      <p>${ h.productCode }</p>
                     </td>
                     <td>
-                      <p>${ m.memberName }</p>
+                      <p>${ h.productName }</p>
                     </td>
                     <td>
-                      <p>${ m.memberCompanyName }</p>
+                      <p>${ h.productUnit }</p>
                     </td>
                     <td>
-                      <p>${ m.memberTel }</p>
+                      <p>${ h.productPrice }</p>
                     </td>
                     <td>
-                      <p>${ m.memberCompanyTel }</p>
+                      <p>${ h.quantity }</p>
                     </td>
                     <td>
-                      <p>${ m.memberAddress }</p>
-                      <p>${ m.memberDetailAddress }</p>
+                      <p>${ h.deliveryAddress }</p>
+                      <p>${ h.detailDeliveryAddress }</p>
                     </td>
                     <td>
-                      <p>${ m.memberDeliveryAddress }</p>
-                      <p>${ m.memberDetailDeliveryAddress }</p>
-                    </td>
-                    <td>
-                      <a style="color: var(--mainColor);" onclick="fileDownload('${ m.memberFile }','${ m.memberId }')">${ m.memberFile }</a>
-                    </td>
-                    <td>
-                      <p>${ m.memberEmail }</p>
-                    </td>
-                    <td>
-                      <p>${ m.memberDate }</p>
+                      <p>${ h.orderDate }</p>
                     </td>
                   </tr>
                 </c:forEach>
                 </tbody>
               </table>
             </c:if>
-            <c:if test="${ requestScope.memberSearchCount == 0 }">
+            <c:if test="${ requestScope.historySearchCount == 0 }">
               <p>검색결과를 찾을 수 없습니다.</p>
             </c:if>
           </c:when>
@@ -200,55 +162,55 @@
       </ul>
     </div>
   </div>
-
+  
   <div class="pagination_wrap center">
     <div class="pagination">
       <c:if test="${ pageNum >= 3}">
         <c:choose>
           <c:when test="${ requestScope.searchText == null }">
             <a
-              href="${ pageContext.request.contextPath }/admin/memberList?pageNum=${ pageNum - 3 }"
+              href="${ pageContext.request.contextPath }/admin/historyList?pageNum=${ pageNum - 3 }"
             >&laquo;</a
             >
           </c:when>
           <c:when test="${requestScope.searchText != null}">
             <a
-              href="${ pageContext.request.contextPath }/admin/memberListSearch?pageNum=${ pageNum - 3 }&&searchText=${ requestScope.searchText }"
+              href="${ pageContext.request.contextPath }/admin/historyListSearch?pageNum=${ pageNum - 3 }&&searchText=${ requestScope.searchText }"
             >&laquo;</a
             >
           </c:when>
         </c:choose>
       </c:if>
-      <c:if test="${ memberSearchCount != 0 }">
+      <c:if test="${ historySearchCount != 0 }">
         <c:forEach var="p" begin="${ start }" end="${ end }">
           <c:choose>
             <c:when test="${requestScope.searchText == null}">
               <a
-                href="${ pageContext.request.contextPath }/admin/memberList?pageNum=${ p }"
+                href="${ pageContext.request.contextPath }/admin/historyList?pageNum=${ p }"
               >${ p }</a
               >
             </c:when>
             <c:when test="${requestScope.searchText != null}">
               <a
-                href="${ pageContext.request.contextPath }/admin/memberListSearch?pageNum=${ p }&&searchText=${ requestScope.searchText }"
+                href="${ pageContext.request.contextPath }/admin/historyListSearch?pageNum=${ p }&&searchText=${ requestScope.searchText }"
               >${ p }</a
               >
             </c:when>
           </c:choose>
         </c:forEach>
       </c:if>
-
+      
       <c:if test="${ pageNum < end - 3 }">
         <c:choose>
           <c:when test="${ requestScope.searchText == null}">
             <a
-              href="${ pageContext.request.contextPath }/admin/memberList?pageNum=${ pageNum + 3 }"
+              href="${ pageContext.request.contextPath }/admin/historyList?pageNum=${ pageNum + 3 }"
             >&raquo;</a
             >
           </c:when>
           <c:when test="${ requestScope.searchText != null}">
             <a
-              href="${ pageContext.request.contextPath }/admin/memberListSearch?pageNum=${ pageNum + 3 }&&searchText=${ requestScope.searchText }"
+              href="${ pageContext.request.contextPath }/admin/historyListSearch?pageNum=${ pageNum + 3 }&&searchText=${ requestScope.searchText }"
             >&raquo;</a
             >
           </c:when>
@@ -310,4 +272,5 @@
     form.submit();
   }
 </script>
+<script src="${ pageContext.request.contextPath }/view/js/datepicker.js"></script>
 </body>

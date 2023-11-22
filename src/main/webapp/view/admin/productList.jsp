@@ -41,7 +41,7 @@
             <label for="productCompany">제조사</label>
             <input type="text" id="productCompany" name="productCompany" value="${ requestScope.productCompany }">
           </div>
-          <div>
+          <div class="last">
             <label for="productTier">등급</label>
             <input type="text" id="productTier" name="productTier" value="${ requestScope.productTier }">
           </div>
@@ -60,7 +60,7 @@
       <ul class="center">
         <c:choose>
           <c:when test="${ requestScope.memberTier != '9' }">
-            <p>게시물을 열람 할 권한이 부족합니다.</p>
+            <p>권한이 부족합니다.</p>
           </c:when>
           <c:when test="${ requestScope.memberTier == '9' && requestScope.productCount == 0 }">
             <p>제품을 찾을 수 없습니다.</p>
@@ -72,7 +72,7 @@
                 method="post"
                 id="orderByForm"
               >
-                <input id="product" type="hidden" name="product" value="${ requestScope.product }"/>
+                <input id="columnName" type="hidden" name="columnName" value="${ requestScope.columnName }"/>
                 <input id="orderBy" type="hidden" name="orderBy" value="${ requestScope.orderBy }"/>
               </form>
               <table class="list">
@@ -86,7 +86,7 @@
                   </th>
                   <th class="product_code" onclick="orderBy(this)">
                     <div class="asc">
-                      <span>제품코드</span>
+                      <span>제품번호</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
@@ -236,20 +236,20 @@
 </main>
 <script>
   window.onload = function() {
-    const productInput = document.getElementById("product");
+    const columnNameInput = document.getElementById("columnName");
     const orderByInput = document.getElementById("orderBy");
 
-    const productInputValue = productInput.value;
+    const columnNameInputValue = columnNameInput.value;
     const orderByInputValue = orderByInput.value;
 
-    const productElement = document.querySelector("." + productInputValue).firstElementChild;
-    const imgElement = productElement.lastElementChild;
+    const columnNameElement = document.querySelector("." + columnNameInputValue).firstElementChild;
+    const imgElement = columnNameElement.lastElementChild;
 
     if(orderByInputValue === "asc") {
-      productElement.className = "asc";
+      columnNameElement.className = "asc";
       imgElement.src = "${ pageContext.request.contextPath }/view/image/down-arrow.png";
     } else if(orderByInputValue === "desc") {
-      productElement.className = "desc";
+      columnNameElement.className = "desc";
       imgElement.src = "${ pageContext.request.contextPath }/view/image/up-arrow.png";
     }
   }
@@ -260,7 +260,7 @@
     const orderBy = (currentOrderBy === "asc") ? "desc" : "asc";
     const form = document.getElementById("orderByForm");
 
-    form.querySelector('input[name="product"]').value = columnName;
+    form.querySelector('input[name="columnName"]').value = columnName;
     form.querySelector('input[name="orderBy"]').value = orderBy;
 
     form.submit();

@@ -47,8 +47,8 @@ public class productDAO {
         return num;
     }
 
-    public void productSet() {
-        session.selectOne(NS + "productSet");
+    public void rownumSet() {
+        session.selectOne(NS + "rownumSet");
     }
 
     public List<Product> productList(int pageInt, int limit) {

@@ -23,8 +23,8 @@ public class memberDAO {
         return num;
     }
 
-    public void memberSet() {
-        session.selectOne(NS + "memberSet");
+    public void rownumSet() {
+        session.selectOne(NS + "rownumSet");
     }
 
     public int memberCount() {
@@ -129,7 +129,7 @@ public class memberDAO {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<Member> list = session.selectList(NS + "memberListByMembeCompanyrTel", map);
+        List<Member> list = session.selectList(NS + "memberListByMemberCompanyTel", map);
         return list;
     }
 

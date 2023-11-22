@@ -2,16 +2,14 @@ package controller;
 
 import model.Member;
 import model.Product;
+import model.History;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import service.cartDAO;
-import service.cookieDAO;
-import service.memberDAO;
-import service.productDAO;
+import service.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +28,9 @@ public class adminController {
 
   @Autowired
   cartDAO cartDao;
+
+  @Autowired
+  historyDAO historyDao;
 
   @Autowired
   cookieDAO cookieDao;
@@ -75,7 +76,7 @@ public class adminController {
     int productCount = 0;
 
     if(memberTier == 9) {
-      productDao.productSet();
+      productDao.rownumSet();
       List<Product> list = productDao.productList(pageInt, limit);
       productCount = productDao.productCount();
       request.setAttribute("list", list);
@@ -105,7 +106,7 @@ public class adminController {
 
   @RequestMapping("productListPro")
   public String productListPro() throws Exception {
-    String product = request.getParameter("product");
+    String columnName = request.getParameter("columnName");
     String orderBy = request.getParameter("orderBy");
 
     Integer memberTier = (Integer) session.getAttribute("memberTier");
@@ -126,10 +127,10 @@ public class adminController {
     int productCount = 0;
 
     if(memberTier == 9) {
-      productDao.productSet();
+      productDao.rownumSet();
       List<Product> list;
 
-      switch (product) {
+      switch (columnName) {
         case "product_type":
           list = ("desc".equals(orderBy)) ? productDao.productListDescByProductType(pageInt, limit) :
             productDao.productListByProductType(pageInt, limit);
@@ -192,7 +193,7 @@ public class adminController {
     }
     request.setAttribute("memberTier", memberTier);
     request.setAttribute("productCount", productCount);
-    request.setAttribute("product", product);
+    request.setAttribute("columnName", columnName);
     request.setAttribute("orderBy", orderBy);
     request.setAttribute("pageNum", pageNum);
     request.setAttribute("start", start);
@@ -232,7 +233,7 @@ public class adminController {
         if(!request.getParameter(param).isEmpty()) {
           searchText = request.getParameter(param);
           request.setAttribute(param, searchText);
-          productDao.productSet();
+          productDao.rownumSet();
           switch(param) {
             case "productCode":
               list = productDao.productSearchListByProductCode(pageInt, limit, searchText);
@@ -310,7 +311,7 @@ public class adminController {
     int memberCount = 0;
 
     if(memberTier == 9) {
-      memberDao.memberSet();
+      memberDao.rownumSet();
       List<Member> list = memberDao.memberList(pageInt, limit);
       memberCount = memberDao.memberCount();
       request.setAttribute("list", list);
@@ -341,7 +342,7 @@ public class adminController {
 
   @RequestMapping("memberListPro")
   public String memberListPro() throws Exception {
-    String member = request.getParameter("member");
+    String columnName = request.getParameter("columnName");
     String orderBy = request.getParameter("orderBy");
 
     Integer memberTier = (Integer) session.getAttribute("memberTier");
@@ -362,10 +363,10 @@ public class adminController {
     int memberCount = 0;
 
     if(memberTier == 9) {
-      memberDao.memberSet();
+      memberDao.rownumSet();
       List<Member> list;
 
-      switch (member) {
+      switch (columnName) {
         case "member_company_name":
           list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberCompanyName(pageInt, limit) :
             memberDao.memberListByMemberCompanyName(pageInt, limit);
@@ -420,7 +421,7 @@ public class adminController {
     }
     request.setAttribute("memberTier", memberTier);
     request.setAttribute("memberCount", memberCount);
-    request.setAttribute("member", member);
+    request.setAttribute("columnName", columnName);
     request.setAttribute("orderBy", orderBy);
     request.setAttribute("pageNum", pageNum);
     request.setAttribute("start", start);
@@ -460,7 +461,7 @@ public class adminController {
         if(!request.getParameter(param).isEmpty()) {
           searchText = request.getParameter(param);
           request.setAttribute(param, searchText);
-          memberDao.memberSet();
+          memberDao.rownumSet();
           switch(param) {
             case "memberCompanyName":
               list = memberDao.memberSearchListByMemberCompanyName(pageInt, limit, searchText);
@@ -510,6 +511,155 @@ public class adminController {
     request.setAttribute("pageInt", pageInt);
 
     return "admin/memberList";
+  }
+
+  @RequestMapping("orderHistory")
+  public String orderHistory() throws Exception {
+    Integer memberTier = (Integer) session.getAttribute("memberTier");
+    if(memberTier == null) {
+      memberTier = 0;
+    }
+
+    String pageNum = request.getParameter("pageNum");
+    if (pageNum == null) {
+      pageNum = "1";
+    }
+
+    int pageInt = Integer.parseInt(pageNum);
+
+    int limit = 32; // 한 page당 게시물 개수
+    int bottomLine = 100; // pagination 개수
+
+    int historyCount = 0;
+
+    if(memberTier == 9) {
+      historyDao.rownumSet();
+      List<History> list = historyDao.historyList(pageInt, limit);
+      historyCount = historyDao.historyCount();
+      request.setAttribute("list", list);
+    }
+
+    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
+    int end = start + bottomLine - 1;
+    int maxPage = (historyCount / limit) + (historyCount % limit == 0 ? 0 : 1);
+    if (end > maxPage) {
+      end = maxPage;
+    }
+    if (end > historyCount) {
+      end = historyCount;
+    }
+
+    request.setAttribute("memberTier", memberTier);
+    request.setAttribute("historyCount", historyCount);
+    request.setAttribute("pageNum", pageNum);
+    request.setAttribute("start", start);
+    request.setAttribute("end", end);
+    request.setAttribute("bottomLine", bottomLine);
+    request.setAttribute("maxPage", maxPage);
+    request.setAttribute("pageInt", pageInt);
+
+    return "admin/orderHistory";
+  }
+
+  @RequestMapping("orderHistoryPro")
+  public String orderHistoryPro() throws Exception {
+    String columnName = request.getParameter("columnName");
+    String orderBy = request.getParameter("orderBy");
+
+    Integer memberTier = (Integer) session.getAttribute("memberTier");
+    if(memberTier == null) {
+      memberTier = 0;
+    }
+
+    String pageNum = request.getParameter("pageNum");
+    if (pageNum == null) {
+      pageNum = "1";
+    }
+
+    int pageInt = Integer.parseInt(pageNum);
+
+    int limit = 30; // 한 page당 게시물 개수
+    int bottomLine = 100; // pagination 개수
+
+    int historyCount = 0;
+
+    if(memberTier == 9) {
+      historyDao.rownumSet();
+      List<History> list;
+
+      switch (columnName) {
+        case "history_code":
+          list = ("desc".equals(orderBy)) ? historyDao.historyListDescByHistoryCode(pageInt, limit) :
+            historyDao.historyListByHistoryCode(pageInt, limit);
+          break;
+        case "member_id":
+          list = ("desc".equals(orderBy)) ? historyDao.historyListDescByMemberId(pageInt, limit) :
+            historyDao.historyListByMemberId(pageInt, limit);
+          break;
+        case "product_code":
+          list = ("desc".equals(orderBy)) ? historyDao.historyListDescByProductCode(pageInt, limit) :
+            historyDao.historyListByProductCode(pageInt, limit);
+          break;
+        case "product_name":
+          list = ("desc".equals(orderBy)) ? historyDao.historyListDescByProductName(pageInt, limit) :
+            historyDao.historyListByProductName(pageInt, limit);
+          break;
+        case "product_unit":
+          list = ("desc".equals(orderBy)) ? historyDao.historyListDescByProductUnit(pageInt, limit) :
+            historyDao.historyListByProductUnit(pageInt, limit);
+          break;
+        case "product_price":
+          list = ("desc".equals(orderBy)) ? historyDao.historyListDescByProductPrice(pageInt, limit) :
+            historyDao.historyListByProductPrice(pageInt, limit);
+          break;
+        case "quantity":
+          list = ("desc".equals(orderBy)) ? historyDao.historyListDescByQuantity(pageInt, limit) :
+            historyDao.historyListByQuantity(pageInt, limit);
+          break;
+        case "deliveryAddress":
+          list = ("desc".equals(orderBy)) ? historyDao.historyListDescByDeliveryAddress(pageInt, limit) :
+            historyDao.historyListByDeliveryAddress(pageInt, limit);
+          break;
+        case "order_date":
+          list = ("desc".equals(orderBy)) ? historyDao.historyListDescByOrderDate(pageInt, limit) :
+            historyDao.historyListByOrderDate(pageInt, limit);
+          break;
+        default:
+          list = historyDao.historyList(pageInt, limit);
+          break;
+      }
+
+      if(orderBy == "asc") {
+        orderBy = "desc";
+      } else if(orderBy == "desc") {
+        orderBy = "asc";
+      }
+
+      historyCount = historyDao.historyCount();
+      request.setAttribute("list", list);
+    }
+
+    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
+    int end = start + bottomLine - 1;
+    int maxPage = (historyCount / limit) + (historyCount % limit == 0 ? 0 : 1);
+    if (end > maxPage) {
+      end = maxPage;
+    }
+    if (end > historyCount) {
+      end = historyCount;
+    }
+    request.setAttribute("memberTier", memberTier);
+    request.setAttribute("historyCount", historyCount);
+    request.setAttribute("columnName", columnName);
+    request.setAttribute("orderBy", orderBy);
+    request.setAttribute("pageNum", pageNum);
+    request.setAttribute("start", start);
+    request.setAttribute("end", end);
+    request.setAttribute("bottomLine", bottomLine);
+    request.setAttribute("maxPage", maxPage);
+    request.setAttribute("pageInt", pageInt);
+
+    return "admin/orderHistory";
   }
 
   @RequestMapping("memberTierUpdate")
