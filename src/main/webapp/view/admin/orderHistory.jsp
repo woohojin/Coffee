@@ -6,14 +6,14 @@
 <main id="admin_page">
   <div class="admin_page_wrap">
     <div class="page_head">
-      <a href="${ pageContext.request.contextPath }/admin/memberList">
+      <a href="${ pageContext.request.contextPath }/admin/orderHistory">
         <h1>주문 기록</h1>
       </a>
     </div>
     <div class="search_form_wrap center">
       <div class="inline_wrap">
         <form class="search_form"
-              action="${ pageContext.request.contextPath }/admin/memberSearch"
+              action="${ pageContext.request.contextPath }/admin/historySearch"
               method="post"
               style="max-height: 70px;"
         >
@@ -24,10 +24,10 @@
             <input type="text" name="endDate" id="datepickerEnd" class="datepicker" value="${ requestScope.endDate }" />
           </div>
           <div>
-            <label for="memberCompanyName">주문번호</label>
-            <input type="text" id="memberCompanyName" name="memberCompanyName" value="${ requestScope.memberCompanyName }">
-            <label for="memberFranCode">아이디</label>
-            <input type="text" id="memberFranCode" name="memberFranCode" value="${ requestScope.memberFranCode }">
+            <label for="historyCode">주문번호</label>
+            <input type="text" id="historyCode" name="historyCode" value="${ requestScope.historyCode }">
+            <label for="memberId">아이디</label>
+            <input type="text" id="memberId" name="memberId" value="${ requestScope.memberId }">
           </div>
         </form>
         <div class="collapse" onclick="expand(this)">
@@ -269,7 +269,32 @@
   }
   function submit() {
     const form = document.querySelector(".search_form");
-    form.submit();
+    let $datepickerStart = $('#datepickerStart');
+    let $datepickerEnd = $('#datepickerEnd');
+
+    let startDate = $datepickerStart.val();
+    let endDate = $datepickerEnd.val();
+
+    if((startDate !== "" && endDate === "") || (endDate !== "" && startDate === "")) {
+      alert("날짜를 한쪽에만 입력 할 수 없습니다.");
+      return false;
+    } else if(startDate !== "" && endDate !== "") {
+      let startDateArr = startDate.split('-');
+      let endDateArr = endDate.split('-');
+
+      let startDateCompare = new Date(startDateArr[0], parseInt(startDateArr[1])-1, startDateArr[2]);
+      let endDateCompare = new Date(endDateArr[0], parseInt(endDateArr[1])-1, endDateArr[2]);
+      
+      if(startDateCompare.getTime() > endDateCompare.getTime()) {
+        alert("시작날짜가 종료날짜보다 앞설 수 없습니다.");
+        return false;
+      } else {
+        form.submit();
+        return true;
+      }
+    }
+      form.submit();
+      return true;
   }
 </script>
 <script src="${ pageContext.request.contextPath }/view/js/datepicker.js"></script>

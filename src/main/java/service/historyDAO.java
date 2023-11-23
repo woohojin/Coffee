@@ -194,6 +194,78 @@ public class historyDAO {
     return list;
   }
 
+  public List<History> historySearchListByOrderDate(int pageInt, int limit, String startDate, String endDate) {
+    map.clear();
+    map.put("start", (pageInt - 1) * limit + 1);
+    map.put("end", (pageInt * limit));
+    map.put("startDate", startDate);
+    map.put("endDate", endDate);
+    List<History> list = session.selectList(NS + "historySearchListByOrderDate", map);
+    return list;
+  }
+
+  public List<History> historySearchListByHistoryCode(int pageInt, int limit, String searchText) {
+    map.clear();
+    map.put("start", (pageInt - 1) * limit + 1);
+    map.put("end", (pageInt * limit));
+    map.put("searchText", searchText);
+    List<History> list = session.selectList(NS + "historySearchListByHistoryCode", map);
+    return list;
+  }
+
+  public List<History> historySearchListByMemberId(int pageInt, int limit, String searchText) {
+    map.clear();
+    map.put("start", (pageInt - 1) * limit + 1);
+    map.put("end", (pageInt * limit));
+    map.put("searchText", searchText);
+    List<History> list = session.selectList(NS + "historySearchListByMemberId", map);
+    return list;
+  }
+
+  public List<History> historySearchListByHistoryCodeAndMemberId(int pageInt, int limit, String searchText, String searchText1) {
+    map.clear();
+    map.put("start", (pageInt - 1) * limit + 1);
+    map.put("end", (pageInt * limit));
+    map.put("searchText", searchText);
+    map.put("searchText1", searchText1);
+    List<History> list = session.selectList(NS + "historySearchListByHistoryCodeAndMemberId", map);
+    return list;
+  }
+
+  public List<History> historySearchListByHistoryCodeWithOrderDate(int pageInt, int limit, String searchText, String startDate, String endDate) {
+    map.clear();
+    map.put("start", (pageInt - 1) * limit + 1);
+    map.put("end", (pageInt * limit));
+    map.put("searchText", searchText);
+    map.put("startDate", startDate);
+    map.put("endDate", endDate);
+    List<History> list = session.selectList(NS + "historySearchListByHistoryCodeWithOrderDate", map);
+    return list;
+  }
+
+  public List<History> historySearchListByMemberIdWithOrderDate(int pageInt, int limit, String searchText, String startDate, String endDate) {
+    map.clear();
+    map.put("start", (pageInt - 1) * limit + 1);
+    map.put("end", (pageInt * limit));
+    map.put("searchText", searchText);
+    map.put("startDate", startDate);
+    map.put("endDate", endDate);
+    List<History> list = session.selectList(NS + "historySearchListByMemberIdWithOrderDate", map);
+    return list;
+  }
+
+  public List<History> historySearchListByHistoryCodeAndMemberIdWithOrderDate(int pageInt, int limit, String searchText, String searchText1, String startDate, String endDate) {
+    map.clear();
+    map.put("start", (pageInt - 1) * limit + 1);
+    map.put("end", (pageInt * limit));
+    map.put("searchText", searchText);
+    map.put("searchText1", searchText1);
+    map.put("startDate", startDate);
+    map.put("endDate", endDate);
+    List<History> list = session.selectList(NS + "historySearchListByHistoryCodeAndMemberIdWithOrderDate", map);
+    return list;
+  }
+
 
   public List<History> historySelectMember(String memberId) {
     List<History> list = session.selectList(NS + "historySelectMember", memberId);

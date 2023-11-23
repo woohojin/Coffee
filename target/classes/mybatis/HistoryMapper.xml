@@ -165,6 +165,62 @@
         where c.rownum between #{start} and #{end} order by order_date desc;
     </select>
 
+    <select id="historySearchListByOrderDate" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp
+        where order_date between #{startDate} and #{endDate} ) c
+        where c.rownum between #{start} and #{end};
+    </select>
+
+    <select id="historySearchListByHistoryCode" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp
+        where history_code LIKE CONCAT('%',#{searchText},'%')) c
+        where c.rownum between #{start} and #{end};
+    </select>
+
+    <select id="historySearchListByMemberId" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp
+        where member_id LIKE CONCAT('%',#{searchText},'%')) c
+        where c.rownum between #{start} and #{end};
+    </select>
+
+    <select id="historySearchListByHistoryCodeAndMemberId" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp
+        where history_code LIKE CONCAT('%',#{searchText},'%') and member_id LIKE CONCAT('%',#{searchText1},'%')) c
+        where c.rownum between #{start} and #{end};
+    </select>
+
+    <select id="historySearchListByHistoryCodeWithOrderDate" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp
+        where history_code LIKE CONCAT('%',#{searchText},'%') and order_date between #{startDate} and #{endDate}) c
+        where c.rownum between #{start} and #{end};
+    </select>
+
+    <select id="historySearchListByMemberIdWithOrderDate" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp
+        where member_id LIKE CONCAT('%',#{searchText},'%') and order_date between #{startDate} and #{endDate}) c
+        where c.rownum between #{start} and #{end};
+    </select>
+
+    <select id="historySearchListByHistoryCodeAndMemberIdWithOrderDate" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp
+        where history_code LIKE CONCAT('%',#{searchText},'%') and member_id LIKE CONCAT('%',#{searchText1},'%') and order_date between #{startDate} and #{endDate}) c
+        where c.rownum between #{start} and #{end};
+    </select>
+
     <select id="historySelectList" parameterType="String" resultMap="historyMap">
         select order_history.*, product.product_name, product.product_unit, product.product_price
         from order_history inner join product on order_history.product_code = product.product_code

@@ -20,7 +20,6 @@ $(function() {
     let $datepickerEnd = $('#datepickerEnd');
 
     $('.member_history_form').on("submit", function() {
-
         let startDate = $datepickerStart.val();
         let startDateArr = startDate.split('-');
         let endDate = $datepickerEnd.val();

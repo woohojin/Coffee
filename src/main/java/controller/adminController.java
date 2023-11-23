@@ -14,6 +14,7 @@ import service.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -652,6 +653,109 @@ public class adminController {
     request.setAttribute("historyCount", historyCount);
     request.setAttribute("columnName", columnName);
     request.setAttribute("orderBy", orderBy);
+    request.setAttribute("pageNum", pageNum);
+    request.setAttribute("start", start);
+    request.setAttribute("end", end);
+    request.setAttribute("bottomLine", bottomLine);
+    request.setAttribute("maxPage", maxPage);
+    request.setAttribute("pageInt", pageInt);
+
+    return "admin/orderHistory";
+  }
+
+  @RequestMapping("historySearch")
+  public String historySearch() throws Exception {
+    Integer memberTier = (Integer) session.getAttribute("memberTier");
+    if(memberTier == null) {
+      memberTier = 0;
+    }
+
+    String pageNum = request.getParameter("pageNum");
+    if (pageNum == null) {
+      pageNum = "1";
+    }
+
+    int pageInt = Integer.parseInt(pageNum);
+
+    int limit = 32; // 한 page당 게시물 개수
+    int bottomLine = 100; // pagination 개수
+
+    int historyCount = 0;
+    List<History> list = null;
+    String searchText = "";
+    String searchText1 = "";
+    String[] array = {"historyCode", "memberId"};
+    List<String> arrayList = new ArrayList<String>();
+    String startDate = request.getParameter("startDate");
+    String endDate = request.getParameter("endDate");
+
+    if(memberTier == 9) {
+      historyDao.rownumSet();
+      historyCount = historyDao.historyCount();
+
+      for(String param : array) {
+        if(!request.getParameter(param).isEmpty()) {
+          arrayList.add(param);
+        }
+      }
+
+      if(arrayList.size() == 2) {
+        searchText = request.getParameter(arrayList.get(0));
+        searchText1 = request.getParameter(arrayList.get(1));
+        if(!startDate.isEmpty() && !endDate.isEmpty()) {
+          list = historyDao.historySearchListByHistoryCodeAndMemberIdWithOrderDate(pageInt, limit, searchText, searchText1 ,startDate, endDate);
+          request.setAttribute("startDate", startDate);
+          request.setAttribute("endDate", endDate);
+          request.setAttribute("historyCode", searchText);
+          request.setAttribute("memberId", searchText1);
+        } else {
+          list = historyDao.historySearchListByHistoryCodeAndMemberId(pageInt, limit, searchText, searchText1);
+          request.setAttribute("historyCode", searchText);
+          request.setAttribute("memberId", searchText1);
+        }
+      } else if (arrayList.size() == 1) {
+        searchText = request.getParameter(arrayList.get(0));
+        if(arrayList.get(0) == "historyCode") {
+          if(!startDate.isEmpty() && !endDate.isEmpty()) {
+            list = historyDao.historySearchListByHistoryCodeWithOrderDate(pageInt, limit, searchText, startDate, endDate);
+            request.setAttribute("startDate", startDate);
+            request.setAttribute("endDate", endDate);
+            request.setAttribute("historyCode", searchText);
+          } else {
+            list = historyDao.historySearchListByHistoryCode(pageInt, limit, searchText);
+            request.setAttribute("historyCode", searchText);
+          }
+        } else if(arrayList.get(0) == "memberId") {
+          if(!startDate.isEmpty() && !endDate.isEmpty()) {
+            list = historyDao.historySearchListByMemberIdWithOrderDate(pageInt, limit, searchText, startDate, endDate);
+            request.setAttribute("startDate", startDate);
+            request.setAttribute("endDate", endDate);
+            request.setAttribute("memberId", searchText);
+          } else {
+            list = historyDao.historySearchListByMemberId(pageInt, limit, searchText);
+            request.setAttribute("memberId", searchText);
+          }
+        }
+      } else if(!startDate.isEmpty() && !endDate.isEmpty()) {
+        list = historyDao.historySearchListByOrderDate(pageInt, limit, startDate, endDate);
+        request.setAttribute("startDate", startDate);
+        request.setAttribute("endDate", endDate);
+      }
+    }
+
+    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
+    int end = start + bottomLine - 1;
+    int maxPage = (historyCount / limit) + (historyCount % limit == 0 ? 0 : 1);
+    if (end > maxPage) {
+      end = maxPage;
+    }
+    if (end > historyCount) {
+      end = historyCount;
+    }
+
+    request.setAttribute("memberTier", memberTier);
+    request.setAttribute("historyCount", historyCount);
+    request.setAttribute("list", list);
     request.setAttribute("pageNum", pageNum);
     request.setAttribute("start", start);
     request.setAttribute("end", end);

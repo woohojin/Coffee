@@ -160,7 +160,7 @@
         select * from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
-        where member_company_name and NOT member_id = "admin" LIKE CONCAT('%',#{searchText},'%')) b
+        where NOT member_id = "admin" and member_company_name LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -168,7 +168,7 @@
         select * from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
-        where member_fran_code and NOT member_id = "admin" LIKE CONCAT('%',#{searchText},'%')) b
+        where NOT member_id = "admin" and member_fran_code LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -176,7 +176,7 @@
         select * from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
-        where member_id and NOT member_id = "admin" LIKE CONCAT('%',#{searchText},'%')) b
+        where NOT member_id = "admin" and member_id LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -184,7 +184,7 @@
         select * from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
-        where member_name and NOT member_id = "admin" LIKE CONCAT('%',#{searchText},'%')) b
+        where NOT member_id = "admin" and member_name LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -192,7 +192,7 @@
         select * from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
-        where member_tel and NOT member_id = "admin" LIKE CONCAT('%',#{searchText},'%')) b
+        where NOT member_id = "admin" and member_tel LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -200,7 +200,7 @@
         select * from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
-        where member_company_tel and NOT member_id = "admin" LIKE CONCAT('%',#{searchText},'%')) b
+        where NOT member_id = "admin" and member_company_tel LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -208,7 +208,7 @@
         select * from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
-        where member_tier and NOT member_id = "admin" LIKE CONCAT('%',#{searchText},'%')) b
+        where NOT member_id = "admin" and member_tier LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
     </select>
 
