@@ -10,6 +10,9 @@
         <h1>멤버 리스트</h1>
       </a>
     </div>
+    <div class="excel_download">
+      <a href="${ pageContext.request.contextPath }/admin/excelMemberDownload">멤버 엑셀 다운로드</a>
+    </div>
     <div class="search_form_wrap center">
       <div class="inline_wrap">
         <form class="search_form"

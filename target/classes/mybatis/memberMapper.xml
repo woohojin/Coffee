@@ -40,6 +40,13 @@
         where b.rownum between #{start} and #{end};
     </select>
 
+    <select id="memberListAll" parameterType="map" resultMap="memberMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from member a, (select @rownum := 0) tmp
+        where NOT member_id = "admin") b;
+    </select>
+
     <select id="memberSelectOne" parameterType="String" resultMap="memberMap">
         select * from member where member_id = #{memberId}
     </select>

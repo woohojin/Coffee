@@ -50,6 +50,11 @@ public class historyDAO {
     return list;
   }
 
+  public List<History> historyListAll() {
+    List<History> list = session.selectList(NS + "historyListAll");
+    return list;
+  }
+
   public List<History> historyListByHistoryCode(int pageInt, int limit) {
     map.clear();
     map.put("start", (pageInt - 1) * limit + 1);

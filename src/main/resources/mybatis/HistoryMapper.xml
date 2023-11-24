@@ -39,6 +39,12 @@
         where c.rownum between #{start} and #{end};
     </select>
 
+    <select id="historyListAll" parameterType="map" resultMap="historyMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
+        a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c;
+    </select>
+
     <select id="historyListByHistoryCode" parameterType="map" resultMap="historyMap">
         select * from (
         select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,

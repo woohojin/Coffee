@@ -3,6 +3,10 @@ package controller;
 import model.Member;
 import model.Product;
 import model.History;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +15,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import service.*;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -764,6 +770,144 @@ public class adminController {
     request.setAttribute("pageInt", pageInt);
 
     return "admin/orderHistory";
+  }
+
+  @RequestMapping("excelProductDownload")
+  public void excelProductDownload(HttpServletResponse response) throws IOException {
+    List<Product> productList = productDao.productListAll();
+
+    String excelFileName = "productList.xlsx";
+
+    response.setContentType("application/vnd.ms-excel");
+    response.setHeader("Content-Disposition", "attachment; filename=" + excelFileName);
+
+    Workbook workbook = new XSSFWorkbook();
+    Sheet sheet = workbook.createSheet("Product List");
+
+    Row headerRow = sheet.createRow(0);
+    headerRow.createCell(0).setCellValue("제품번호");
+    headerRow.createCell(1).setCellValue("제품이름");
+    headerRow.createCell(2).setCellValue("종류");
+    headerRow.createCell(3).setCellValue("가격");
+    headerRow.createCell(4).setCellValue("용량");
+    headerRow.createCell(5).setCellValue("원산지");
+    headerRow.createCell(6).setCellValue("품종");
+    headerRow.createCell(7).setCellValue("제조사");
+    headerRow.createCell(8).setCellValue("등급");
+
+    int rowNum = 1;
+    for (Product product : productList) {
+      Row row = sheet.createRow(rowNum++);
+      int colNum = 0;
+      row.createCell(colNum++).setCellValue(product.getProductCode());
+      row.createCell(colNum++).setCellValue(product.getProductName());
+      row.createCell(colNum++).setCellValue(product.getProductType());
+      row.createCell(colNum++).setCellValue(product.getProductPrice());
+      row.createCell(colNum++).setCellValue(product.getProductUnit());
+      row.createCell(colNum++).setCellValue(product.getProductCountry());
+      row.createCell(colNum++).setCellValue(product.getProductSpecies());
+      row.createCell(colNum++).setCellValue(product.getProductCompany());
+      row.createCell(colNum++).setCellValue(product.getProductTier());
+    }
+
+    ServletOutputStream outputStream = response.getOutputStream();
+    workbook.write(outputStream);
+    workbook.close();
+    outputStream.close();
+  }
+
+  @RequestMapping("excelMemberDownload")
+  public void excelMemberDownload(HttpServletResponse response) throws IOException {
+    List<Member> memberList = memberDao.memberListAll();
+
+    String excelFileName = "memberList.xlsx";
+
+    response.setContentType("application/vnd.ms-excel");
+    response.setHeader("Content-Disposition", "attachment; filename=" + excelFileName);
+
+    Workbook workbook = new XSSFWorkbook();
+    Sheet sheet = workbook.createSheet("Member List");
+
+    Row headerRow = sheet.createRow(0);
+    headerRow.createCell(0).setCellValue("등급");
+    headerRow.createCell(1).setCellValue("아이디");
+    headerRow.createCell(2).setCellValue("이름");
+    headerRow.createCell(3).setCellValue("회사명");
+    headerRow.createCell(4).setCellValue("비밀번호");
+    headerRow.createCell(5).setCellValue("전화번호");
+    headerRow.createCell(6).setCellValue("회사번호");
+    headerRow.createCell(7).setCellValue("주소");
+    headerRow.createCell(8).setCellValue("배송지");
+    headerRow.createCell(9).setCellValue("이메일");
+    headerRow.createCell(10).setCellValue("가맹점코드");
+    headerRow.createCell(11).setCellValue("가입일");
+
+    int rowNum = 1;
+    for (Member member : memberList) {
+      Row row = sheet.createRow(rowNum++);
+      int colNum = 0;
+      row.createCell(colNum++).setCellValue(member.getMemberTier());
+      row.createCell(colNum++).setCellValue(member.getMemberId());
+      row.createCell(colNum++).setCellValue(member.getMemberName());
+      row.createCell(colNum++).setCellValue(member.getMemberCompanyName());
+      row.createCell(colNum++).setCellValue(member.getMemberPassword());
+      row.createCell(colNum++).setCellValue(member.getMemberTel());
+      row.createCell(colNum++).setCellValue(member.getMemberCompanyTel());
+      row.createCell(colNum++).setCellValue(member.getMemberAddress() + " " + member.getMemberDetailAddress());
+      row.createCell(colNum++).setCellValue(member.getMemberDeliveryAddress() + " " + member.getMemberDetailDeliveryAddress());
+      row.createCell(colNum++).setCellValue(member.getMemberEmail());
+      row.createCell(colNum++).setCellValue(member.getMemberFranCode());
+      row.createCell(colNum++).setCellValue(member.getMemberDate());
+    }
+
+    ServletOutputStream outputStream = response.getOutputStream();
+    workbook.write(outputStream);
+    workbook.close();
+    outputStream.close();
+  }
+
+  @RequestMapping("excelHistoryDownload")
+  public void excelHistoryDownload(HttpServletResponse response) throws IOException {
+    List<History> historyList = historyDao.historyListAll();
+
+    String excelFileName = "historyList.xlsx";
+
+    response.setContentType("application/vnd.ms-excel");
+    response.setHeader("Content-Disposition", "attachment; filename=" + excelFileName);
+
+    Workbook workbook = new XSSFWorkbook();
+    Sheet sheet = workbook.createSheet("History List");
+
+    Row headerRow = sheet.createRow(0);
+    headerRow.createCell(0).setCellValue("주문번호");
+    headerRow.createCell(1).setCellValue("아이디");
+    headerRow.createCell(2).setCellValue("제품번호");
+    headerRow.createCell(3).setCellValue("제품이름");
+    headerRow.createCell(4).setCellValue("가격");
+    headerRow.createCell(5).setCellValue("용량");
+    headerRow.createCell(6).setCellValue("수량");
+    headerRow.createCell(7).setCellValue("주문일");
+    headerRow.createCell(8).setCellValue("배송지");
+
+    int rowNum = 1;
+    for (History history : historyList) {
+      Row row = sheet.createRow(rowNum++);
+      int colNum = 0;
+      row.createCell(colNum++).setCellValue(history.getHistoryCode());
+      row.createCell(colNum++).setCellValue(history.getMemberId());
+      row.createCell(colNum++).setCellValue(history.getProductCode());
+      row.createCell(colNum++).setCellValue(history.getProductName());
+      row.createCell(colNum++).setCellValue(history.getProductPrice());
+      row.createCell(colNum++).setCellValue(history.getProductUnit());
+      row.createCell(colNum++).setCellValue(history.getQuantity());
+      row.createCell(colNum++).setCellValue(history.getOrderDate());
+      row.createCell(colNum++).setCellValue(history.getDeliveryAddress() + " " + history.getDetailDeliveryAddress());
+    }
+
+    ServletOutputStream outputStream = response.getOutputStream();
+    workbook.write(outputStream);
+    workbook.close();
+    outputStream.close();
   }
 
   @RequestMapping("memberTierUpdate")

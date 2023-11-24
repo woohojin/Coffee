@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
+import model.History;
 import model.Member;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,11 @@ public class productDAO {
         map.put("searchText", searchText);
         int num = session.selectOne(NS + "productSearchCount", map);
         return num;
+    }
+
+    public List<Product> productListAll() {
+        List<Product> list = session.selectList(NS + "productListAll");
+        return list;
     }
 
     public void rownumSet() {

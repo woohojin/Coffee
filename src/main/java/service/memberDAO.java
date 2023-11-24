@@ -40,6 +40,11 @@ public class memberDAO {
         return list;
     }
 
+    public List<Member> memberListAll() {
+        List<Member> list = session.selectList(NS + "memberListAll");
+        return list;
+    }
+
     public Member memberSelectOne(String memberId) {
         Member mem = session.selectOne(NS + "memberSelectOne", memberId);
         return mem;
