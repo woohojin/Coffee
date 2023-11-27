@@ -22,7 +22,7 @@
               <a href="${ pageContext.request.contextPath }/admin/productUpload">제품 업로드</a>
             </li>
             <li>
-              <a href="${ pageContext.request.contextPath }/admin/memberTierUpdate">권한 주입</a>
+              <a href="${ pageContext.request.contextPath }/admin/memberTierUpdate">등급 수정</a>
             </li>
           </ul>
         </div>

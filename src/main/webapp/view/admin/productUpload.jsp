@@ -102,9 +102,6 @@
         <li>
           <div class="submit">
             <input type="submit" value="게시물 작성" class="submit_btn" />
-            <div class="btn">
-              <a href="">목록</a>
-            </div>
           </div>
         </li>
       </ul>

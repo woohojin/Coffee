@@ -5,7 +5,9 @@
 <body>
 <main id="member_profile_page">
   <div class="page_head">
-    <h1>회원정보 수정</h1>
+    <a>
+      <h1>회원정보 수정</h1>
+    </a>
   </div>
   <div class="member_signup_form_wrap">
     <form

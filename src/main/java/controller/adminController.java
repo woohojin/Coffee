@@ -772,6 +772,64 @@ public class adminController {
     return "admin/orderHistory";
   }
 
+  @RequestMapping("memberTierUpdate")
+  public String memberTierUpdate() throws Exception {
+    Integer memberTier = (Integer) session.getAttribute("memberTier");
+    if(memberTier == null) {
+      memberTier = 0;
+    }
+
+    List<Member> list = null;
+
+    if(memberTier == 9) {
+      list = memberDao.memberSearchListByMemberTier(1, 32, "0");
+      request.setAttribute("list", list);
+    }
+
+    request.setAttribute("memberTier", memberTier);
+    return "admin/memberTierUpdate";
+  }
+
+  @RequestMapping("memberTierUpdatePro")
+  public String memberTierUpdatePro(String memberId, int memberTier) throws Exception {
+
+    LOGGER.info(memberId, memberTier);
+
+    memberDao.memberTierUpdate(memberId, memberTier);
+
+    String url = "/admin/memberTierUpdate";
+
+    request.setAttribute("url", url);
+    return "anchor";
+  }
+
+  @RequestMapping("productUpload")
+  public String productUpload() {
+    return "admin/productUpload";
+  }
+
+  @RequestMapping("productUploadPro")
+  public String productUploadPro(Product product) throws Exception {
+    Integer memberTier = (Integer) session.getAttribute("memberTier");
+    if(memberTier == null) {
+      memberTier = 0;
+    }
+
+    String msg = "제품 등록 실패";
+    String url = "/admin/productUpload";
+
+    int num = productDao.productInsert(product);
+
+    if (num > 0) {
+      msg = "제품을 등록하였습니다.";
+    }
+
+    request.setAttribute("msg", msg);
+    request.setAttribute("url", url);
+
+    return "alert";
+  }
+
   @RequestMapping("excelProductDownload")
   public void excelProductDownload(HttpServletResponse response) throws IOException {
     List<Product> productList = productDao.productListAll();
@@ -782,7 +840,7 @@ public class adminController {
     response.setHeader("Content-Disposition", "attachment; filename=" + excelFileName);
 
     Workbook workbook = new XSSFWorkbook();
-    Sheet sheet = workbook.createSheet("Product List");
+    Sheet sheet = workbook.createSheet("제품 리스트");
 
     Row headerRow = sheet.createRow(0);
     headerRow.createCell(0).setCellValue("제품번호");
@@ -826,7 +884,7 @@ public class adminController {
     response.setHeader("Content-Disposition", "attachment; filename=" + excelFileName);
 
     Workbook workbook = new XSSFWorkbook();
-    Sheet sheet = workbook.createSheet("Member List");
+    Sheet sheet = workbook.createSheet("회원 리스트");
 
     Row headerRow = sheet.createRow(0);
     headerRow.createCell(0).setCellValue("등급");
@@ -876,7 +934,7 @@ public class adminController {
     response.setHeader("Content-Disposition", "attachment; filename=" + excelFileName);
 
     Workbook workbook = new XSSFWorkbook();
-    Sheet sheet = workbook.createSheet("History List");
+    Sheet sheet = workbook.createSheet("주문기록");
 
     Row headerRow = sheet.createRow(0);
     headerRow.createCell(0).setCellValue("주문번호");
@@ -908,46 +966,6 @@ public class adminController {
     workbook.write(outputStream);
     workbook.close();
     outputStream.close();
-  }
-
-  @RequestMapping("memberTierUpdate")
-  public String memberTierUpdate() throws Exception {
-
-    return "admin/memberTierUpdate";
-  }
-
-  @RequestMapping("memberTierUpdatePro")
-  public String memberTierUpdatePro(String memberId, int memberTier) throws Exception {
-
-    memberDao.memberTierUpdate(memberId, memberTier);
-
-    String url = "/board/main";
-
-    request.setAttribute("url", url);
-    return "anchor";
-  }
-
-  @RequestMapping("productUpload")
-  public String productUpload() {
-    return "admin/productUpload";
-  }
-
-  @RequestMapping("productUploadPro")
-  public String productUploadPro(Product product) throws Exception {
-
-    String msg = "제품 등록 실패";
-    String url = "/admin/productUploadForm";
-
-    int num = productDao.productInsert(product);
-
-    if (num > 0) {
-      msg = "제품을 등록하였습니다.";
-    }
-
-    request.setAttribute("msg", msg);
-    request.setAttribute("url", url);
-
-    return "alert";
   }
 
 }

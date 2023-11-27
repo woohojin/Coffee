@@ -7,7 +7,9 @@
 <main id="member_cart_page">
   <div class="member_cart_page_wrap">
     <div class="page_head">
-      <h1>장바구니</h1>
+      <a>
+        <h1>장바구니</h1>
+      </a>
     </div>
     <div class="member_cart_wrap">
       <c:if test="${ cartCount < 1 }">

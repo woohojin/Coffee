@@ -7,7 +7,9 @@
   <main id="member_mypage_page">
     <div class="member_mypage_page_wrap">
       <div class="page_head">
-        <h1>마이페이지</h1>
+        <a>
+          <h1>마이페이지</h1>
+        </a>
       </div>
       <table class="member_mypage_wrap center">
         <tbody>

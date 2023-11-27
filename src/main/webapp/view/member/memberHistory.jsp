@@ -6,7 +6,9 @@
 <main id="member_history_page">
   <div class="member_history_page_wrap">
     <div class="page_head">
-      <h1>주문기록</h1>
+      <a>
+        <h1>주문기록</h1>
+      </a>
     </div>
     <div class="datepicker_form_wrap">
       <form

@@ -8,7 +8,9 @@
 <main id="product_page">
   <div class="product_wrap">
     <div class="page_head">
-      <h1>블렌드 커피</h1>
+      <a>
+        <h1>블렌드 커피</h1>
+      </a>
     </div>
     <div class="product">
       <ul class="center">
