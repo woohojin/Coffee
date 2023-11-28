@@ -2,6 +2,11 @@ package controller;
 
 import model.Cart;
 import model.History;
+import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import service.*;
 import model.Member;
 
@@ -23,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
+import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
@@ -65,6 +71,9 @@ public class memberController {
         this.session = request.getSession();
         this.response = response;
     }
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(memberController.class);
+
     //암호화 SHA256
     public static class SHA256 {
 
@@ -91,16 +100,27 @@ public class memberController {
     }
 
     @RequestMapping("memberSignUpPro")
-    public String memberSignUpPro(Member member) throws Exception {
+    public String memberSignUpPro(@RequestParam("file") MultipartFile file, Member member) throws Exception {
         String msg = "이미 있는 아이디 입니다.";
         String url = "/member/memberSignUp";
 
         String memberId = member.getMemberId();
         Member mem = memberDao.memberSelectOne(memberId);
 
+        String filePath = request.getServletContext().getRealPath("/") + "view/files/";
+        String fileName = file.getOriginalFilename();
+        File uploadFile = new File(filePath, fileName);
+        File uploadPath = new File(filePath);
+
+        if (!uploadPath.exists()) {
+            uploadPath.mkdirs();
+        }
+
         if(mem == null) {
             member.setMemberPassword(passwordEncoder.encode(member.getMemberPassword()));
+            LOGGER.info(String.valueOf(member));
             int num = memberDao.memberInsert(member);
+            file.transferTo(uploadFile);
             if (num > 0) {
                 msg = memberId + "님의 가입이 완료되었습니다.";
                 url = "/member/memberSignIn";

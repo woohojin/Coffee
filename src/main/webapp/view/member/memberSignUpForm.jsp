@@ -9,6 +9,7 @@
                 action="${ pageContext.request.contextPath }/member/memberSignUpPro"
                 name="f"
                 method="post"
+                enctype="multipart/form-data"
                 class="member_signup_form"
                 onsubmit="return passwordInputCheck(this)"
         >
@@ -195,8 +196,8 @@
                               name="memberCompanyName"
                               id="member_company_name"
                               type="text"
+                              placeholder="사업자 회원의 경우 꼭 넣어주세요"
                               spellcheck="false"
-                              required
                             />
                         </td>
                     </tr>
@@ -210,10 +211,9 @@
                               id="member_company_tel"
                               type="tel"
                               maxlength="11"
-                              placeholder="예) 01012345678"
+                              placeholder="사업자 회원의 경우 꼭 넣어주세요"
                               oninput="maxLengthCheck(this), numberInputCheck(this)"
                               spellcheck="false"
-                              required
                             />
                         </td>
                     </tr>
@@ -239,17 +239,15 @@
                         <td>
                             <div class="file_input_wrap">
                                 <input
-                                  name="memberFile"
+                                  name="file"
                                   id="file"
-                                  type="text"
+                                  type="file"
                                   value=""
-                                  placeholder="사진 넣기 버튼을 이용해주세요"
-                                  readonly
+                                  placeholder="사업자 회원의 경우 꼭 넣어주세요"
                                   spellcheck="false"
+                                  onchange="inputFileName()"
                                 />
-                                <div class="input_btn">
-                                    <a href="" onclick="fileUpload()">사진 넣기</a>
-                                </div>
+                                <input type="hidden" id="memberFile" name="memberFile" value="">
                             </div>
                         </td>
                     </tr>
@@ -274,6 +272,16 @@
         
         memberDeliveryAddress.value = memberAddress.value;
         memberDetailDeliveryAddress.value = memberDetailAddress.value;
+    }
+    function inputFileName() {
+        const fileInput = document.getElementById("file");
+        const file = fileInput.files[0];
+        
+        if(file) {
+            const fileName = file.name;
+            const input = document.getElementById("memberFile");
+            input.value = fileName;
+        }
     }
 </script>
 </body>

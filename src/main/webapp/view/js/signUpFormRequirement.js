@@ -1,4 +1,4 @@
-const englishRegex = /[^A-Za-z]/g;
+const idRegex = /[^A-Za-z0-9]/g;
 const koreanRegex = /[^가-힣ㄱ-ㅎㅏ-ㅣ]/g;
 const numberRegex = /[^0-9]/g;
 const passwordRegex = /^(?=(.*[a-zA-Z]))(?=.*\d|.*\W).{8,}$/;
@@ -66,10 +66,10 @@ function nameInputCheck(object) {
 
 function idInputCheck(object) {
   const inputText = object.value;
-  const idInputCheck = inputText.replace(englishRegex, "");
+  const idInputCheck = inputText.replace(idRegex, "");
   object.value = idInputCheck.toLowerCase();
   if (inputText !== idInputCheck) {
-    alert("영어로 입력해주세요.");
+    alert("영어 및 숫자로 입력해주세요.");
   }
 }
 

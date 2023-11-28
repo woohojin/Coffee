@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import service.*;
 
 import javax.servlet.ServletOutputStream;
@@ -810,11 +811,6 @@ public class adminController {
 
   @RequestMapping("productUploadPro")
   public String productUploadPro(Product product) throws Exception {
-    Integer memberTier = (Integer) session.getAttribute("memberTier");
-    if(memberTier == null) {
-      memberTier = 0;
-    }
-
     String msg = "제품 등록 실패";
     String url = "/admin/productUpload";
 
