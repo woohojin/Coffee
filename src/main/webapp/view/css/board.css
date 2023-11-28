@@ -269,9 +269,9 @@
 #member_profile_page input:read-only {
   border: 1px solid var(--grayLine);
 }
-.member_history_form .submit_btn {
-  width: 50px;
-  height: 26px;
+#member_history_page .submit_btn {
+  width: 65px;
+  height: 35px;
   margin-left: 10px;
   font-size: 14px;
 }

@@ -21,7 +21,7 @@
             <p>xxx로 연락주십시오.</p>
           </c:when>
           <c:when test="${ requestScope.memberTier == '0' && requestScope.productCount == 0 }">
-            <p>제품이 찾을 수 없습니다.</p>
+            <p>제품을 찾을 수 없습니다.</p>
           </c:when>
           <c:when test="${ requestScope.memberTier != 0 }">
             <c:if test="${ requestScope.productSearchCount != 0 || requestScope.productCount != 0 }">
@@ -31,7 +31,7 @@
                     href="${ pageContext.request.contextPath }/board/productDetail?productCode=${ p.productCode }"
                   >
                     <img
-                      src="${ pageContext.request.contextPath }/view/board/files/${ p.productFile }"
+                      src="${ pageContext.request.contextPath }/view/files/${ p.productFile }"
                       alt=""
                     />
                   </a>

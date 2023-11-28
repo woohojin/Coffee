@@ -230,7 +230,7 @@ public class mainController {
     @RequestMapping("fileUploadPro")
     public String fileUploadPro(MultipartHttpServletRequest files) throws Exception {
 
-        String path = request.getServletContext().getRealPath("/") + "view/board/files/";
+        String path = request.getServletContext().getRealPath("/") + "view/files/";
         String filename = null;
 
         List<MultipartFile> fileList = files.getFiles("files");
