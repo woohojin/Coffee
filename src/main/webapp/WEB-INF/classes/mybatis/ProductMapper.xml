@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="product">
-    <resultMap  type="product" id="productMap">
+    <resultMap type="product" id="productMap">
         <id column="product_code" property="productCode" />
         <id column="product_type" property="productType" />
         <id column="product_name" property="productName" />
@@ -11,8 +12,8 @@
         <id column="product_country" property="productCountry" />
         <id column="product_species" property="productSpecies" />
         <id column="product_company" property="productCompany" />
-        <id column="product_file" property="productFile" />
         <id column="product_tier" property="productTier" />
+        <id column="product_file" property="productFile" />
     </resultMap>
 
     <insert id="productInsert" parameterType="product">
@@ -33,6 +34,10 @@
         select @rownum := @rownum + 1 as rownum,
         a.* from product a, (select @rownum := 0) tmp
         order by product_code ) b;
+    </select>
+
+    <select id="productSelectOne" parameterType="String" resultMap="productMap">
+        select * from product where product_code = #{productCode}
     </select>
 
     <select id="productSearchCountByTier" parameterType="map" resultType="int">
@@ -142,10 +147,6 @@
         a.* from product a, (select @rownum := 0) tmp
         where product_tier LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
-    </select>
-
-    <select id="productSelectOne" parameterType="String" resultMap="productMap">
-        select * from product where product_code = #{productCode}
     </select>
 
     <select id="productList" parameterType="map" resultMap="productMap">

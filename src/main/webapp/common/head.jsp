@@ -56,7 +56,7 @@
                         <a href="${ pageContext.request.contextPath }/member/memberLogout" id="logout_button" onClick="return checkLogout()">로그아웃</a>
                       </li>
                       <li>
-                        <a href="${ pageContext.request.contextPath }/admin/dashboard">관리자페이지</a>
+                        <a href="${ pageContext.request.contextPath }/admin/dashboard" target="_blank">관리자페이지</a>
                       </li>
                     </c:when>
 

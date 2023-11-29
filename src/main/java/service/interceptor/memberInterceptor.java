@@ -69,14 +69,8 @@ public class memberInterceptor implements HandlerInterceptor {
 
     memberSessionId = (String) session.getAttribute("memberId");
 
-    int count = 0; //장바구니에 담은 상품 개수
+    int count = cartDao.cartCount(memberSessionId);
 
-    if(memberId != null) {
-      count = cartDao.cartCount(memberId);
-
-    } else if(memberId == null) {
-      count = cartDao.cartCount(memberSessionId);
-    }
     session.setAttribute("cartCount", count);
   }
 

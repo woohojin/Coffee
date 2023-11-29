@@ -230,15 +230,20 @@ public class mainController {
     @RequestMapping("fileUploadPro")
     public String fileUploadPro(MultipartHttpServletRequest files) throws Exception {
 
-        String path = request.getServletContext().getRealPath("/") + "view/files/";
-        String filename = null;
+        String filePath = request.getServletContext().getRealPath("/") + "view/files/";
+        String fileName = null;
+        File uploadPath = new File(filePath);
+
+        if (!uploadPath.exists()) {
+            uploadPath.mkdirs(); // 경로가 없으면 생성
+        }
 
         List<MultipartFile> fileList = files.getFiles("files");
 
         if (fileList.size() > 0) {
             for(int i = 0; i < fileList.size(); i++) {
-                filename = fileList.get(i).getOriginalFilename();
-                File file = new File(path, filename);
+                fileName = fileList.get(i).getOriginalFilename();
+                File file = new File(filePath, fileName);
                 try {
                     fileList.get(i).transferTo(file);
                 } catch (IllegalStateException e) {
@@ -252,7 +257,7 @@ public class mainController {
             System.out.println(fileList.size() + " / "  + fileList);
         }
 
-        request.setAttribute("filename", filename);
+        request.setAttribute("fileName", fileName);
         return "board/fileUploadPro";
     }
 

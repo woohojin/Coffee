@@ -5,26 +5,10 @@
 <body>
 <main>
   <form
-    action="${ pageContext.request.contextPath }/board/productUploadPro"
-    name="f"
+    action="${ pageContext.request.contextPath }/admin/productUploadPro"
     method="post"
+    enctype="multipart/form-data"
   >
-    <div class="input_image_wrap center">
-      <div class="input_image">
-        <input type="hidden" multiple="multiple" name="productFile" id="files" value="" />
-        <div class="image_wrap">
-          <img
-            src="${ pageContext.request.contextPath }/view/image/video_cover_pattern.png"
-            alt="img"
-            id="pic"
-          />
-          <div class="input_btn">
-            <a href="javascript:void(window.open('../board/fileUploadForm', '_blank','width=500, height=150, left=50, top=150'))">사진 넣기</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div class="product_form center">
       <ul>
         <li>
@@ -97,6 +81,16 @@
             id="product_company"
             class="productCompany"
             type="text"
+          />
+        </li>
+        <li>
+          <label for="product_company">제품 파일 : </label>
+          <input
+            name="files"
+            id="file"
+            class="file"
+            type="file"
+            multiple="multiple"
           />
         </li>
         <li>

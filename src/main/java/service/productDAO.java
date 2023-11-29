@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.List;
 
 import model.History;
+import model.Image;
 import model.Member;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class productDAO {
     private static Map map = new HashMap<>();
 
     public int productInsert(Product product) {
-        int num = session.insert(NS+"productInsert", product);
+        int num = session.insert(NS + "productInsert", product);
         return num;
     }
 
@@ -46,6 +47,11 @@ public class productDAO {
         map.put("searchText", searchText);
         int num = session.selectOne(NS + "productSearchCount", map);
         return num;
+    }
+
+    public Product productSelectOne(String productCode) {
+        Product product = session.selectOne(NS + "productSelectOne", productCode);
+        return product;
     }
 
     public List<Product> productListAll() {
@@ -307,11 +313,6 @@ public class productDAO {
         map.put("end", (pageInt * limit));
         List<Product> list = session.selectList(NS + "productListDescByProductTier", map);
         return list;
-    }
-
-    public Product productSelectOne(String productCode) {
-        Product product = session.selectOne(NS + "productSelectOne", productCode);
-        return product;
     }
 
 }

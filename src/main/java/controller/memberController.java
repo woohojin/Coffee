@@ -113,7 +113,7 @@ public class memberController {
         File uploadPath = new File(filePath);
 
         if (!uploadPath.exists()) {
-            uploadPath.mkdirs();
+            uploadPath.mkdirs(); // 경로가 없으면 생성
         }
 
         if(mem == null) {

@@ -1,5 +1,6 @@
 package controller;
 
+import model.Image;
 import model.Member;
 import model.Product;
 import model.History;
@@ -14,12 +15,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import service.*;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +45,9 @@ public class adminController {
 
   @Autowired
   cookieDAO cookieDao;
+
+  @Autowired
+  imageDAO imageDao;
 
   HttpServletRequest request;
   HttpServletResponse response;
@@ -810,14 +816,49 @@ public class adminController {
   }
 
   @RequestMapping("productUploadPro")
-  public String productUploadPro(Product product) throws Exception {
-    String msg = "제품 등록 실패";
+  public String productUploadPro(MultipartHttpServletRequest files, Product product) throws Exception {
+    String msg = "제품 등록에 실패하였습니다.";
     String url = "/admin/productUpload";
 
-    int num = productDao.productInsert(product);
+    Image image = new Image();
+    String productCode = product.getProductCode();
 
-    if (num > 0) {
-      msg = "제품을 등록하였습니다.";
+    String filePath = request.getServletContext().getRealPath("/") + "view/files/";
+    String fileName = null;
+    File uploadPath = new File(filePath);
+
+    if (!uploadPath.exists()) {
+      uploadPath.mkdirs(); // 경로가 없으면 생성
+    }
+
+    List<MultipartFile> fileList = files.getFiles("files");
+
+    Product check = productDao.productSelectOne(productCode);
+
+    if (check == null) {
+      if (fileList.size() > 0) {
+        for(int i = 0; i < fileList.size(); i++) {
+          fileName = fileList.get(i).getOriginalFilename();
+          File file = new File(filePath, fileName);
+          image.setProductCode(productCode);
+          image.setFileName(fileName);
+          imageDao.insertProductImage(image);
+          product.setProductFile(fileName); // 파일명 규격화 후 수정 필요
+          try {
+            fileList.get(i).transferTo(file);
+          } catch (IllegalStateException e) {
+            e.printStackTrace();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+        productDao.productInsert(product);
+        msg = "제품 등록에 성공하였습니다.";
+      } else {
+        msg = "업로드 된 파일이 없습니다.";
+      }
+    } else {
+      msg = "이미 존재하는 제품입니다.";
     }
 
     request.setAttribute("msg", msg);
