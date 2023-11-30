@@ -409,6 +409,10 @@ public class adminController {
           list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberTier(pageInt, limit) :
             memberDao.memberListByMemberTier(pageInt, limit);
           break;
+        case "member_disable":
+          list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberDisable(pageInt, limit) :
+            memberDao.memberListByMemberDisable(pageInt, limit);
+          break;
         default:
           list = memberDao.memberListByMemberTier(pageInt, limit);
           break;

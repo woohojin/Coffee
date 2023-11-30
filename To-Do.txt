@@ -9,10 +9,8 @@ order 테이블도 필요해보임 (현재 주문 상태, 주문번호 등)
 제품 sold out 여부
 제품 상세 페이지 이미지 부분 수정 필요
 대시보드
-admin 회원 비활성화 여부
 admin 제품 정보 수정
 adminController memberTier -> memberId to tier
-admin memberList memberDisable 추가
 
 모바일 반응형 웹
 매퍼 등 보안 유지를 위해 전부 환경변수로
@@ -27,6 +25,7 @@ admin memberList memberDisable 추가
 일단 모든 테이블에 등록일 등록id 수정일 수정id 가 추가 되는것이 좋음 그래야 나중에 누가 등록했고 언제 수정했는지 알 수 있음 특히 제품테이블 같은 경우 제일 중요한 테이블이기때문에
 필수로 보임
 
+admin 클릭시 복사
 회원가입 사업자 개인 카테고리
 제품 등록 form option select
 통계

@@ -120,6 +120,12 @@
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
+                  <th class="member_disable" onclick="orderBy(this)">
+                    <div class="asc">
+                      <span>비활성화</span>
+                      <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
+                    </div>
+                  </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -162,6 +168,9 @@
                     </td>
                     <td>
                       <p>${ m.memberDate }</p>
+                    </td>
+                    <td>
+                      <p>${ m.memberDisable }</p>
                     </td>
                   </tr>
                 </c:forEach>

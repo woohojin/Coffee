@@ -162,6 +162,22 @@ public class memberDAO {
         return list;
     }
 
+    public List<Member> memberListByMemberDisable(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Member> list = session.selectList(NS + "memberListByMemberDisable", map);
+        return list;
+    }
+
+    public List<Member> memberListDescByMemberDisable(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Member> list = session.selectList(NS + "memberListDescByMemberDisable", map);
+        return list;
+    }
+
     public List<Member> memberSearchListByMemberCompanyName(int pageInt, int limit, String searchText) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);

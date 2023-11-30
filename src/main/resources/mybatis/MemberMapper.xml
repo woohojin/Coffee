@@ -164,6 +164,22 @@
         where b.rownum between #{start} and #{end};
     </select>
 
+    <select id="memberListByMemberDisable" parameterType="map" resultMap="memberMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from member a, (select @rownum := 0) tmp
+        where NOT member_id = "admin" order by member_disable ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="memberListDescByMemberDisable" parameterType="map" resultMap="memberMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from member a, (select @rownum := 0) tmp
+        where NOT member_id = "admin" order by member_disable desc ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
     <select id="memberSearchListByMemberCompanyName" parameterType="map" resultMap="memberMap">
         select * from (
         select @rownum := @rownum + 1 as rownum,
