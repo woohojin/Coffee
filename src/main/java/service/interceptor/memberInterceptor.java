@@ -44,10 +44,23 @@ public class memberInterceptor implements HandlerInterceptor {
         memberCookieId = cookie.getValue();
         member = memberDao.memberSelectOne(memberCookieId);
         if(member != null) {
-          memberId = member.getMemberId();
-          memberTier = member.getMemberTier();
-          cookieDTO = cookieDao.cookieSelectOne(memberId);
-          cookieDBToken = cookieDTO.getToken();
+          if(member.getMemberDisable() != 1) {
+            memberId = member.getMemberId();
+            memberTier = member.getMemberTier();
+            cookieDTO = cookieDao.cookieSelectOne(memberId);
+            cookieDBToken = cookieDTO.getToken();
+          } else {
+            cookieDBToken = "";
+            Cookie cookieId = new Cookie("memberId", null);
+            Cookie cookieToken = new Cookie("token", null);
+            cookieId.setMaxAge(0); // 0초 = 쿠키 삭제
+            cookieId.setPath("/");
+            cookieToken.setMaxAge(0);
+            cookieToken.setPath("/");
+            response.addCookie(cookieId);
+            response.addCookie(cookieToken);
+            cookieDao.cookieDelete(memberId);
+          }
         }
       }
       if(cookie.getName().equals("token")) {

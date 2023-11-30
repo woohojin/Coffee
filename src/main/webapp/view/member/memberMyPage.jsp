@@ -7,7 +7,7 @@
   <main id="member_mypage_page">
     <div class="member_mypage_page_wrap">
       <div class="page_head">
-        <a>
+        <a href="">
           <h1>마이페이지</h1>
         </a>
       </div>

@@ -17,11 +17,12 @@
         <id column="member_file" property="memberFile" />
         <id column="member_fran_code" property="memberFranCode" />
         <id column="member_tier" property="memberTier" />
+        <id column="member_disable" property="memberDisable" />
     </resultMap>
 
     <insert id="memberInsert" parameterType="member">
         insert into member values (#{memberId}, #{memberName}, #{memberCompanyName}, #{memberPassword}, #{memberTel}, #{memberCompanyTel},
-                                   #{memberAddress}, #{memberDetailAddress}, #{memberDeliveryAddress}, #{memberDetailDeliveryAddress}, #{memberEmail}, #{memberFile}, 0000, 0, NOW())
+                                   #{memberAddress}, #{memberDetailAddress}, #{memberDeliveryAddress}, #{memberDetailDeliveryAddress}, #{memberEmail}, #{memberFile}, 0000, 0, NOW(), 0)
     </insert>
 
     <select id="rownumSet" parameterType="int" resultType="int">
@@ -237,6 +238,10 @@
                           member_detail_address = #{memberDetailAddress}, member_delivery_address = #{memberDeliveryAddress},
                           member_detail_delivery_address = #{memberDetailDeliveryAddress}, member_email = #{memberEmail}, member_file = #{memberFile}
         where member_id = #{memberId}
+    </update>
+
+    <update id="memberDisable" parameterType="String">
+        update member set member_disable = 1 where member_id = #{memberId}
     </update>
 
 </mapper>

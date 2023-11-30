@@ -6,7 +6,7 @@
 <main id="member_history_page">
   <div class="member_history_page_wrap">
     <div class="page_head">
-      <a>
+      <a href="">
         <h1>주문기록</h1>
       </a>
     </div>

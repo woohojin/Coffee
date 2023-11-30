@@ -5,7 +5,7 @@
 <body>
 <main id="member_profile_page">
   <div class="page_head">
-    <a>
+    <a href="">
       <h1>회원정보 수정</h1>
     </a>
   </div>
@@ -281,7 +281,10 @@
           </tr>
         </tbody>
       </table>
-      <div class="signup">
+      <div class="signup" style="justify-content: space-between">
+        <div class="input_btn">
+          <a href="${ pageContext.request.contextPath }/member/memberDisable">회원탈퇴</a>
+        </div>
         <input
           type="submit"
           value="수정"

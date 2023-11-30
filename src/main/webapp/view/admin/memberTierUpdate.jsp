@@ -6,7 +6,7 @@
 <main id="admin_page">
   <div class="admin_page_wrap">
     <div class="page_head">
-      <a href="${ pageContext.request.contextPath }/admin/memberTierUpdate">
+      <a href="">
         <h1>멤버 등급 수정</h1>
       </a>
     </div>

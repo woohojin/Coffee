@@ -18,6 +18,9 @@
   margin: 40px 0 50px 0;
   font-size: 30px;
 }
+.page_head a {
+  color: black;
+}
 .background-fadeout {
   position: fixed;
   width: 100vw;

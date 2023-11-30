@@ -240,4 +240,8 @@ public class memberDAO {
         session.update(NS + "memberUpdateNotPassword", member);
     }
 
+    public void memberDisable(String memberId) {
+        session.update(NS + "memberDisable", memberId);
+    }
+
 }

@@ -7,7 +7,7 @@
 <main id="member_cart_page">
   <div class="member_cart_page_wrap">
     <div class="page_head">
-      <a>
+      <a href="">
         <h1>장바구니</h1>
       </a>
     </div>
