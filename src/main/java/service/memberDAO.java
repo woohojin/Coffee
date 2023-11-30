@@ -162,6 +162,22 @@ public class memberDAO {
         return list;
     }
 
+    public List<Member> memberListByMemberDate(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Member> list = session.selectList(NS + "memberListByMemberDate", map);
+        return list;
+    }
+
+    public List<Member> memberListDescByMemberDate(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Member> list = session.selectList(NS + "memberListDescByMemberDate", map);
+        return list;
+    }
+
     public List<Member> memberListByMemberDisable(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);

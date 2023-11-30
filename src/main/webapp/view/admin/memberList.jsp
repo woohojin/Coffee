@@ -11,7 +11,7 @@
       </a>
     </div>
     <div class="excel_download">
-      <a href="${ pageContext.request.contextPath }/admin/excelMemberDownload">멤버 엑셀 다운로드</a>
+      <a href="${ pageContext.request.contextPath }/admin/excelMemberDownload">회원 엑셀 다운로드</a>
     </div>
     <div class="search_form_wrap center">
       <div class="inline_wrap">

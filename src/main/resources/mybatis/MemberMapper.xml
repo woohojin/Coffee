@@ -17,6 +17,7 @@
         <id column="member_file" property="memberFile" />
         <id column="member_fran_code" property="memberFranCode" />
         <id column="member_tier" property="memberTier" />
+        <id column="member_date" property="memberDate" />
         <id column="member_disable" property="memberDisable" />
     </resultMap>
 
@@ -161,6 +162,22 @@
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" order by member_tier desc ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="memberListByMemberDate" parameterType="map" resultMap="memberMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from member a, (select @rownum := 0) tmp
+        where NOT member_id = "admin" order by member_date ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="memberListDescByMemberDate" parameterType="map" resultMap="memberMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from member a, (select @rownum := 0) tmp
+        where NOT member_id = "admin" order by member_date desc ) b
         where b.rownum between #{start} and #{end};
     </select>
 

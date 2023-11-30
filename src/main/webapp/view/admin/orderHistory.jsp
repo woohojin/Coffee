@@ -103,7 +103,7 @@
                   </th>
                   <th class="quantity" onclick="orderBy(this)">
                     <div class="asc">
-                      <span>갯수</span>
+                      <span>수량</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>

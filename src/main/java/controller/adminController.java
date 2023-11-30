@@ -409,6 +409,10 @@ public class adminController {
           list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberTier(pageInt, limit) :
             memberDao.memberListByMemberTier(pageInt, limit);
           break;
+        case "member_date":
+          list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberDate(pageInt, limit) :
+            memberDao.memberListByMemberDate(pageInt, limit);
+          break;
         case "member_disable":
           list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberDisable(pageInt, limit) :
             memberDao.memberListByMemberDisable(pageInt, limit);
@@ -1045,6 +1049,7 @@ public class adminController {
     headerRow.createCell(9).setCellValue("이메일");
     headerRow.createCell(10).setCellValue("가맹점코드");
     headerRow.createCell(11).setCellValue("가입일");
+    headerRow.createCell(12).setCellValue("비활성화");
 
     int rowNum = 1;
     for (Member member : memberList) {
@@ -1062,6 +1067,7 @@ public class adminController {
       row.createCell(colNum++).setCellValue(member.getMemberEmail());
       row.createCell(colNum++).setCellValue(member.getMemberFranCode());
       row.createCell(colNum++).setCellValue(member.getMemberDate());
+      row.createCell(colNum++).setCellValue(member.getMemberDisable());
     }
 
     ServletOutputStream outputStream = response.getOutputStream();
@@ -1087,11 +1093,12 @@ public class adminController {
     headerRow.createCell(1).setCellValue("아이디");
     headerRow.createCell(2).setCellValue("제품번호");
     headerRow.createCell(3).setCellValue("제품이름");
-    headerRow.createCell(4).setCellValue("가격");
-    headerRow.createCell(5).setCellValue("용량");
+    headerRow.createCell(4).setCellValue("용량");
+    headerRow.createCell(5).setCellValue("가격");
     headerRow.createCell(6).setCellValue("수량");
-    headerRow.createCell(7).setCellValue("주문일");
-    headerRow.createCell(8).setCellValue("배송지");
+    headerRow.createCell(7).setCellValue("합계");
+    headerRow.createCell(8).setCellValue("주문일");
+    headerRow.createCell(9).setCellValue("배송지");
 
     int rowNum = 1;
     for (History history : historyList) {
@@ -1101,9 +1108,10 @@ public class adminController {
       row.createCell(colNum++).setCellValue(history.getMemberId());
       row.createCell(colNum++).setCellValue(history.getProductCode());
       row.createCell(colNum++).setCellValue(history.getProductName());
-      row.createCell(colNum++).setCellValue(history.getProductPrice());
       row.createCell(colNum++).setCellValue(history.getProductUnit());
+      row.createCell(colNum++).setCellValue(history.getProductPrice());
       row.createCell(colNum++).setCellValue(history.getQuantity());
+      row.createCell(colNum++).setCellValue(Integer.valueOf(history.getProductPrice())  * Integer.valueOf(history.getQuantity()));
       row.createCell(colNum++).setCellValue(history.getOrderDate());
       row.createCell(colNum++).setCellValue(history.getDeliveryAddress() + " " + history.getDetailDeliveryAddress());
     }

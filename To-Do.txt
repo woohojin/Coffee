@@ -11,6 +11,7 @@ order 테이블도 필요해보임 (현재 주문 상태, 주문번호 등)
 대시보드
 admin 제품 정보 수정
 adminController memberTier -> memberId to tier
+admin 회원 가입일
 
 모바일 반응형 웹
 매퍼 등 보안 유지를 위해 전부 환경변수로
