@@ -21,7 +21,7 @@
               style="max-height: 35px"
         >
           <div>
-            <label for="productCode">제품 코드</label>
+            <label for="productCode">제품 번호</label>
             <input type="text" id="productCode" name="productCode" value="${ requestScope.productCode }">
             <label for="productName">제품 이름</label>
             <input type="text" id="productName" name="productName" value="${ requestScope.productName }">

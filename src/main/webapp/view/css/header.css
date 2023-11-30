@@ -52,7 +52,7 @@ header {
 .hd_search input[type="text"] {
   width: 250px;
   background: none;
-  padding-left: 10px;
+  padding-left: 30px;
   border: none;
   z-index: 2;
 }

@@ -13,12 +13,12 @@
     <div class="search_form_wrap center">
       <div class="inline_wrap">
         <form class="search_form"
-              action="${ pageContext.request.contextPath }/admin/productSearch"
+              action="${ pageContext.request.contextPath }/admin/productDeletePro"
               method="post"
               style="max-height: 35px"
         >
-          <div>
-            <label for="productCode">제품 코드</label>
+          <div style="justify-content: center;">
+            <label for="productCode" style="flex: none;">제품 번호</label>
             <input type="text" id="productCode" name="productCode" value="${ requestScope.productCode }">
           </div>
         </form>
@@ -149,13 +149,13 @@
         <c:choose>
           <c:when test="${ requestScope.searchText == null }">
             <a
-              href="${ pageContext.request.contextPath }/admin/productList?pageNum=${ pageNum - 3 }"
+              href="${ pageContext.request.contextPath }/admin/productDelete?pageNum=${ pageNum - 3 }"
             >&laquo;</a
             >
           </c:when>
           <c:when test="${requestScope.searchText != null}">
             <a
-              href="${ pageContext.request.contextPath }/admin/productListSearch?pageNum=${ pageNum - 3 }&&searchText=${ requestScope.searchText }"
+              href="${ pageContext.request.contextPath }/admin/productDeleteSearch?pageNum=${ pageNum - 3 }&&searchText=${ requestScope.searchText }"
             >&laquo;</a
             >
           </c:when>
@@ -166,13 +166,13 @@
           <c:choose>
             <c:when test="${requestScope.searchText == null}">
               <a
-                href="${ pageContext.request.contextPath }/admin/productList?pageNum=${ p }"
+                href="${ pageContext.request.contextPath }/admin/productDelete?pageNum=${ p }"
               >${ p }</a
               >
             </c:when>
             <c:when test="${ requestScope.searchText != null }">
               <a
-                href="${ pageContext.request.contextPath }/admin/productListSearch?pageNum=${ p }&&searchText=${ requestScope.searchText }"
+                href="${ pageContext.request.contextPath }/admin/productDeleteSearch?pageNum=${ p }&&searchText=${ requestScope.searchText }"
               >${ p }</a
               >
             </c:when>
@@ -184,13 +184,13 @@
         <c:choose>
           <c:when test="${ requestScope.searchText == null}">
             <a
-              href="${ pageContext.request.contextPath }/admin/productList?pageNum=${ pageNum + 3 }"
+              href="${ pageContext.request.contextPath }/admin/productDelete?pageNum=${ pageNum + 3 }"
             >&raquo;</a
             >
           </c:when>
           <c:when test="${ requestScope.searchText != null}">
             <a
-              href="${ pageContext.request.contextPath }/admin/productListSearch?pageNum=${ pageNum + 3 }&&searchText=${ requestScope.searchText }"
+              href="${ pageContext.request.contextPath }/admin/productDeleteSearch?pageNum=${ pageNum + 3 }&&searchText=${ requestScope.searchText }"
             >&raquo;</a
             >
           </c:when>

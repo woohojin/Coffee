@@ -18,7 +18,7 @@ public class adminInterceptor implements HandlerInterceptor {
     String memberId = (String) session.getAttribute("memberId");
 
     if (memberId == null || !memberId.equals(ADMIN_ID)) { // 멤버 아이디가 없거나 관리자 아이디가 아닌 경우
-      response.sendRedirect(request.getContextPath() + "/access-denied");
+      response.sendRedirect(request.getContextPath() + "/member/memberSignIn");
       return false;
     } else if (memberId.equals(ADMIN_ID)) {
       return true;

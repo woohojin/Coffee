@@ -220,6 +220,14 @@
         where b.rownum between #{start} and #{end};
     </select>
 
+    <select id="memberSearchListByMemberDisable" parameterType="map" resultMap="memberMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from member a, (select @rownum := 0) tmp
+        where NOT member_id = "admin" and member_disable LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
     <update id="memberTierUpdate" parameterType="map">
         update member set member_tier = #{memberTier} where member_id = #{memberId}
     </update>
@@ -240,8 +248,8 @@
         where member_id = #{memberId}
     </update>
 
-    <update id="memberDisable" parameterType="String">
-        update member set member_disable = 1 where member_id = #{memberId}
+    <update id="memberDisable" parameterType="map">
+        update member set member_disable = #{memberDisable} where member_id = #{memberId}
     </update>
 
 </mapper>

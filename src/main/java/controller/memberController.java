@@ -256,7 +256,7 @@ public class memberController {
       response.addCookie(cookieToken);
 
       cookieDao.cookieDelete(memberId);
-      memberDao.memberDisable(memberId);
+      memberDao.memberDisable(memberId, 1);
 
       session.invalidate();
 

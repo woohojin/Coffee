@@ -26,6 +26,11 @@ public class productDAO {
         return num;
     }
 
+    public int productDelete(String productCode) {
+        int num = session.delete(NS + "productDelete", productCode);
+        return num;
+    }
+
     public int productCount() {
         int num = session.selectOne(NS + "productCount");
         return num;

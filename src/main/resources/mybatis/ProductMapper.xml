@@ -21,6 +21,10 @@
                                     #{productSpecies}, #{productCompany}, 0, #{productFile})
     </insert>
 
+    <delete id="productDelete" parameterType="String">
+        delete from product where product_code = #{productCode}
+    </delete>
+
     <select id="productCountByTier" parameterType="map" resultType="int">
         select count(*) from product where product_tier = #{memberTier}
     </select>

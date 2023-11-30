@@ -786,7 +786,7 @@ public class adminController {
       memberTier = 0;
     }
 
-    List<Member> list = null;
+    List<Member> list;
 
     if(memberTier == 9) {
       list = memberDao.memberSearchListByMemberTier(1, 32, "0");
@@ -794,6 +794,7 @@ public class adminController {
     }
 
     request.setAttribute("memberTier", memberTier);
+
     return "admin/memberTierUpdate";
   }
 
@@ -805,9 +806,44 @@ public class adminController {
     memberDao.memberTierUpdate(memberId, memberTier);
 
     String url = "/admin/memberTierUpdate";
+    String msg ="멤버 등급 수정 성공";
 
     request.setAttribute("url", url);
-    return "anchor";
+    request.setAttribute("msg", msg);
+
+    return "alert";
+  }
+
+  @RequestMapping("memberDisableUpdate")
+  public String memberDisableUpdate() throws Exception {
+    Integer memberTier = (Integer) session.getAttribute("memberTier");
+    if(memberTier == null) {
+      memberTier = 0;
+    }
+
+    List<Member> list;
+
+    if(memberTier == 9) {
+      list = memberDao.memberSearchListByMemberDisable(1, 32, "1");
+      request.setAttribute("list", list);
+    }
+
+    request.setAttribute("memberTier", memberTier);
+
+    return "admin/memberDisable";
+  }
+
+  @RequestMapping("memberDisableUpdatePro")
+  public String memberDisableUpdatePro(String memberId, int memberDisable) throws Exception {
+    memberDao.memberDisable(memberId, memberDisable);
+
+    String url = "/admin/memberDisableUpdate";
+    String msg = "멤버 비활성화 상태 수정 성공";
+
+    request.setAttribute("url", url);
+    request.setAttribute("msg", msg);
+
+    return "alert";
   }
 
   @RequestMapping("productUpload")
@@ -859,6 +895,75 @@ public class adminController {
       }
     } else {
       msg = "이미 존재하는 제품입니다.";
+    }
+
+    request.setAttribute("msg", msg);
+    request.setAttribute("url", url);
+
+    return "alert";
+  }
+
+  @RequestMapping("productDelete")
+  public String productDelete() throws Exception {
+    Integer memberTier = (Integer) session.getAttribute("memberTier");
+    if(memberTier == null) {
+      memberTier = 0;
+    }
+
+    String pageNum = request.getParameter("pageNum");
+    if (pageNum == null) {
+      pageNum = "1";
+    }
+
+    int pageInt = Integer.parseInt(pageNum);
+
+    int limit = 32; // 한 page당 게시물 개수
+    int bottomLine = 100; // pagination 개수
+
+    int productCount = 0;
+
+    if(memberTier == 9) {
+      productDao.rownumSet();
+      List<Product> list = productDao.productList(pageInt, limit);
+      productCount = productDao.productCount();
+      request.setAttribute("list", list);
+    }
+
+    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
+    int end = start + bottomLine - 1;
+    int maxPage = (productCount / limit) + (productCount % limit == 0 ? 0 : 1);
+    if (end > maxPage) {
+      end = maxPage;
+    }
+    if (end > productCount) {
+      end = productCount;
+    }
+
+    request.setAttribute("memberTier", memberTier);
+    request.setAttribute("productCount", productCount);
+    request.setAttribute("pageNum", pageNum);
+    request.setAttribute("start", start);
+    request.setAttribute("end", end);
+    request.setAttribute("bottomLine", bottomLine);
+    request.setAttribute("maxPage", maxPage);
+    request.setAttribute("pageInt", pageInt);
+
+    return "admin/productDelete";
+  }
+
+  @RequestMapping("productDeletePro")
+  public String productDeletePro(String productCode) throws Exception {
+    Integer memberTier = (Integer) session.getAttribute("memberTier");
+    if(memberTier == null) {
+      memberTier = 0;
+    }
+
+    String msg = "제품 삭제에 실패했습니다.";
+    String url = "/admin/productDelete";
+
+    if(memberTier == 9) {
+      productDao.productDelete(productCode);
+      msg = "제품 삭제에 성공했습니다.";
     }
 
     request.setAttribute("msg", msg);

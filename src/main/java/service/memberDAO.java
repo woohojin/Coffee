@@ -225,6 +225,15 @@ public class memberDAO {
         return list;
     }
 
+    public List<Member> memberSearchListByMemberDisable(int pageInt, int limit, String searchText) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        map.put("searchText", searchText);
+        List<Member> list = session.selectList(NS + "memberSearchListByMemberDisable", map);
+        return list;
+    }
+
     public void memberTierUpdate(String memberId, int memberTier) {
         map.clear();
         map.put("memberId", memberId);
@@ -240,8 +249,11 @@ public class memberDAO {
         session.update(NS + "memberUpdateNotPassword", member);
     }
 
-    public void memberDisable(String memberId) {
-        session.update(NS + "memberDisable", memberId);
+    public void memberDisable(String memberId, int memberDisable) {
+        map.clear();
+        map.put("memberId", memberId);
+        map.put("memberDisable", memberDisable);
+        session.update(NS + "memberDisable", map);
     }
 
 }
