@@ -6,7 +6,7 @@
 <main id="admin_page">
   <div class="admin_page_wrap">
     <div class="page_head">
-      <a href="">
+      <a href="${ pageContext.request.contextPath }/admin/memberDisable">
         <h1>회원 비활성화 수정</h1>
       </a>
     </div>

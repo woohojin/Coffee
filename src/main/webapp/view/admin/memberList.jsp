@@ -6,7 +6,7 @@
 <main id="admin_page">
   <div class="admin_page_wrap">
     <div class="page_head">
-      <a href="">
+      <a href="${ pageContext.request.contextPath }/admin/memberList">
         <h1>회원 리스트</h1>
       </a>
     </div>

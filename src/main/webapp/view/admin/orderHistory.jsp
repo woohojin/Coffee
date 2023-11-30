@@ -6,7 +6,7 @@
 <main id="admin_page">
   <div class="admin_page_wrap">
     <div class="page_head">
-      <a href="">
+      <a href="${ pageContext.request.contextPath }/admin/orderHistory">
         <h1>주문 기록</h1>
       </a>
     </div>
@@ -107,6 +107,11 @@
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
+                  <th class="product_price" onclick="orderBy(this)">
+                    <div class="asc">
+                      <span>합계</span>
+                    </div>
+                  </th>
                   <th class="delivery_address" onclick="orderBy(this)">
                     <div class="asc">
                       <span>배송지</span>
@@ -140,10 +145,13 @@
                       <p>${ h.productUnit }</p>
                     </td>
                     <td>
-                      <p>${ h.productPrice }</p>
+                      <p><fmt:formatNumber value="${ h.productPrice}" pattern="#,###" /></p>
                     </td>
                     <td>
                       <p>${ h.quantity }</p>
+                    </td>
+                    <td>
+                      <p><fmt:formatNumber value="${ h.productPrice * h.quantity }" pattern="#,###" /></p>
                     </td>
                     <td>
                       <p>${ h.deliveryAddress }</p>
