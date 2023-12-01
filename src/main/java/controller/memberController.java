@@ -341,6 +341,12 @@ public class memberController {
     return "member/memberCart";
   }
 
+  @RequestMapping("memberFindAccount")
+  public String memberFindAccount() throws Exception {
+
+    return "member/memberFindAccount";
+  }
+
   @RequestMapping("memberMyPage")
   public String memberMyPage() throws Exception {
 

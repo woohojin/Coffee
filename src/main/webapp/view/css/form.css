@@ -61,6 +61,9 @@ input::file-selector-button {
   display: flex;
   justify-content: center;
 }
+.member_signin_form_wrap {
+  margin-top: 200px;
+}
 .member_signup_form_wrap {
   margin-bottom: 100px;
 }

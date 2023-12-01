@@ -92,11 +92,15 @@ input:focus {
   margin-top: 200px;
 }
 
-.signin,
 .signup,
 .submit {
   display: flex;
   justify-content: flex-end;
+}
+.signin {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .signup {
   width: 100%;

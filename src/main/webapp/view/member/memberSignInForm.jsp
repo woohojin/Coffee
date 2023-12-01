@@ -55,6 +55,7 @@
                 />
             </div>
             <div class="signin">
+                <a href="${ pageContext.request.contextPath }/member/memberFindAccount">아이디 / 비밀번호 찾기</a>
                 <input type="submit" value="로그인" class="submit_btn" />
             </div>
         </form>

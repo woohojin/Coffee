@@ -282,7 +282,7 @@
     </update>
 
     <update id="memberDisable" parameterType="map">
-        update member set member_disable = #{memberDisable} where member_id = #{memberId}
+        update member set member_disable = #{memberDisable}, member_disable_date = NOW() where member_id = #{memberId}
     </update>
 
 </mapper>
