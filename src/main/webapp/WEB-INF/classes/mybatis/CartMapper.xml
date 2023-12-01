@@ -9,6 +9,7 @@
         <id column="product_unit" property="productUnit" />
         <id column="product_price" property="productPrice" />
         <id column="product_file" property="productFile" />
+        <id column="product_sold_out" property="productSoldOut" />
         <id column="quantity" property="quantity" />
     </resultMap>
 
@@ -21,18 +22,18 @@
     </select>
 
     <select id="cartSelectMember" parameterType="String" resultMap="cartMap">
-        select cart.*, product.product_name, product.product_unit, product.product_price, product.product_file
+        select cart.*, product.product_name, product.product_unit, product.product_price, product.product_file, product.product_sold_out
         from cart inner join product on cart.product_code = product.product_code where cart.member_id = #{memberId};
     </select>
 
     <select id="cartSelectOne" parameterType="String" resultMap="cartMap">
-        select cart.*, product.product_name, product.product_unit, product.product_price, product.product_file
+        select cart.*, product.product_name, product.product_unit, product.product_price, product.product_file, product.product_sold_out
         from cart inner join product on cart.product_code = product.product_code where cart.member_id = #{memberId} and cart.product_code = #{productCode};
     </select>
 
     <select id="cartSumPrice" parameterType="String" resultType="String">
         select sum(cart.quantity * product.product_price)
-        from cart inner join product on cart.product_code = product.product_code where cart.member_id = #{memberId};
+        from cart inner join product on cart.product_code = product.product_code where cart.member_id = #{memberId} and not product.product_sold_out = 1;
     </select>
 
     <delete id="cartDelete" parameterType="map">

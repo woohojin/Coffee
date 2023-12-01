@@ -7,58 +7,31 @@
   <div class="admin_page_wrap">
     <div class="page_head">
       <a href="${ pageContext.request.contextPath }/admin/productList">
-        <h1>제품 리스트</h1>
+        <h1>제품 품절 수정</h1>
       </a>
-    </div>
-    <div class="excel_download">
-      <a href="${ pageContext.request.contextPath }/admin/excelProductDownload">제품 엑셀 다운로드</a>
     </div>
     <div class="search_form_wrap center">
       <div class="inline_wrap">
         <form class="search_form"
-              action="${ pageContext.request.contextPath }/admin/productSearch"
+              action="${ pageContext.request.contextPath }/admin/productSoldOutUpdatePro"
               method="post"
               style="max-height: 35px"
         >
-          <div>
-            <label for="productCode">제품 번호</label>
+          <div style="justify-content: center">
+            <label for="productCode" style="flex: none;">제품 번호</label>
             <input type="text" id="productCode" name="productCode" value="${ requestScope.productCode }">
-            <label for="productName">제품 이름</label>
-            <input type="text" id="productName" name="productName" value="${ requestScope.productName }">
-          </div>
-          <div>
-            <label for="productType">제품 타입</label>
-            <input type="text" id="productType" name="productType" value="${ requestScope.productType }">
-            <label for="productPrice">금액</label>
-            <input type="text" id="productPrice" name="productPrice" value="${ requestScope.productPrice }">
-          </div>
-          <div>
-            <label for="productUnit">용량</label>
-            <input type="text" id="productUnit" name="productUnit" value="${ requestScope.productUnit }">
-            <label for="productCountry">원산지</label>
-            <input type="text" id="productCountry" name="productCountry" value="${ requestScope.productCountry }">
-          </div>
-          <div>
-            <label for="productSpecies">품종</label>
-            <input type="text" id="productSpecies" name="productSpecies" value="${ requestScope.productSpecies }">
-            <label for="productCompany">제조사</label>
-            <input type="text" id="productCompany" name="productCompany" value="${ requestScope.productCompany }">
-          </div>
-          <div>
-            <label for="productTier">등급</label>
-            <input type="text" id="productTier" name="productTier" value="${ requestScope.productTier }">
-            <label for="productSoldOut">품절</label>
-            <input type="text" id="productSoldOut" name="productSoldOut" value="${ requestScope.productSoldOut }">
+            <label for="productSoldOut" style="flex: none;">품절</label>
+            <select id="productSoldOut" name="productSoldOut">
+              <option value="0">0 (품절 X)</option>
+              <option value="1">1 (품절 O)</option>
+            </select>
           </div>
         </form>
-        <div class="collapse" onclick="expand(this)">
-          <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
-        </div>
       </div>
     </div>
     <div class="btn_wrap center">
       <div class="btn">
-        <a onclick="submit()">검색</a>
+        <a onclick="submit()">수정</a>
       </div>
     </div>
     <div class="list">
@@ -285,7 +258,7 @@
     const form = document.querySelector(".search_form");
     const img = object.firstElementChild;
     const state = object.className;
-    
+
     if(state === "collapse") {
       form.style.maxHeight = "200px";
       object.className = "expand";

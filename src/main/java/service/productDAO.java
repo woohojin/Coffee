@@ -31,6 +31,13 @@ public class productDAO {
         return num;
     }
 
+    public void productSoldOutUpdate(String productCode, int productSoldOut) {
+        map.clear();
+        map.put("productCode", productCode);
+        map.put("productSoldOut", productSoldOut);
+        session.update(NS + "productSoldoutUpdate", map);
+    }
+
     public int productCount() {
         int num = session.selectOne(NS + "productCount");
         return num;
@@ -176,6 +183,15 @@ public class productDAO {
         return list;
     }
 
+    public List<Product> productSearchListByProductSoldOut(int pageInt, int limit, String searchText) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        map.put("searchText", searchText);
+        List<Product> list = session.selectList(NS + "productSearchListByProductSoldOut", map);
+        return list;
+    }
+
     public List<Product> productListByProductType(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
@@ -317,6 +333,22 @@ public class productDAO {
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<Product> list = session.selectList(NS + "productListDescByProductTier", map);
+        return list;
+    }
+
+    public List<Product> productListByProductSoldOut(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "productListByProductSoldOut", map);
+        return list;
+    }
+
+    public List<Product> productListDescByProductSoldOut(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Product> list = session.selectList(NS + "productListDescByProductSoldOut", map);
         return list;
     }
 

@@ -14,16 +14,21 @@
         <id column="product_company" property="productCompany" />
         <id column="product_tier" property="productTier" />
         <id column="product_file" property="productFile" />
+        <id column="product_sold_out" property="productSoldOut" />
     </resultMap>
 
     <insert id="productInsert" parameterType="product">
         insert into product values (#{productCode}, #{productType}, #{productName}, #{productPrice}, #{productUnit}, #{productCountry},
-                                    #{productSpecies}, #{productCompany}, 0, #{productFile})
+                                    #{productSpecies}, #{productCompany}, 0, #{productFile}, 0)
     </insert>
 
     <delete id="productDelete" parameterType="String">
         delete from product where product_code = #{productCode}
     </delete>
+
+    <update id="productSoldoutUpdate" parameterType="map">
+        update product set product_sold_out = #{productSoldOut} where product_code = #{productCode}
+    </update>
 
     <select id="productCountByTier" parameterType="map" resultType="int">
         select count(*) from product where product_tier = #{memberTier}
@@ -150,6 +155,14 @@
         select @rownum := @rownum + 1 as rownum,
         a.* from product a, (select @rownum := 0) tmp
         where product_tier LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchListByProductSoldOut" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_sold_out LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -310,6 +323,22 @@
         select @rownum := @rownum + 1 as rownum,
         a.* from product a, (select @rownum := 0) tmp
         order by product_tier desc ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListByProductSoldOut" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_sold_out ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListDescByProductSoldOut" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_sold_out desc ) b
         where b.rownum between #{start} and #{end};
     </select>
 

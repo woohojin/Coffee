@@ -7,6 +7,7 @@ public class Cart {
   String productFile;
   String productUnit;
   int productPrice;
+  int productSoldOut;
   int quantity;
 
   public String getMemberId() {
@@ -57,6 +58,14 @@ public class Cart {
     this.productPrice = productPrice;
   }
 
+  public int getProductSoldOut() {
+    return productSoldOut;
+  }
+
+  public void setProductSoldOut(int productSoldOut) {
+    this.productSoldOut = productSoldOut;
+  }
+
   public int getQuantity() {
     return quantity;
   }
@@ -74,6 +83,7 @@ public class Cart {
       ", productFile='" + productFile + '\'' +
       ", productUnit='" + productUnit + '\'' +
       ", productPrice=" + productPrice +
+      ", productSoldOut=" + productSoldOut +
       ", quantity=" + quantity +
       '}';
   }

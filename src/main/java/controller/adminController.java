@@ -181,6 +181,10 @@ public class adminController {
           list = ("desc".equals(orderBy)) ? productDao.productListDescByProductTier(pageInt, limit) :
             productDao.productListByProductTier(pageInt, limit);
           break;
+        case "product_sold_out":
+          list = ("desc".equals(orderBy)) ? productDao.productListDescByProductSoldOut(pageInt, limit) :
+            productDao.productListByProductSoldOut(pageInt, limit);
+          break;
         default:
           list = productDao.productListByProductType(pageInt, limit);
           break;
@@ -240,7 +244,7 @@ public class adminController {
     String searchText = "";
     List<Product> list = null;
     String[] array = {"productCode", "productName", "productType", "productPrice",
-                      "productUnit", "productCountry", "productSpecies", "productCompany", "productTier"};
+                      "productUnit", "productCountry", "productSpecies", "productCompany", "productTier", "productSoldOut"};
 
     if(memberTier == 9) {
       for(String param : array) {
@@ -276,6 +280,9 @@ public class adminController {
             case "productTier":
               list = productDao.productSearchListByProductTier(pageInt, limit, searchText);
               break;
+            case "productSoldOut":
+              list = productDao.productSearchListByProductSoldOut(pageInt, limit, searchText);
+              break;
           }
         }
       }
@@ -303,6 +310,70 @@ public class adminController {
     request.setAttribute("pageInt", pageInt);
 
     return "admin/productList";
+  }
+
+
+  @RequestMapping("productSoldOutUpdate")
+  public String productSoldOutUpdate() throws Exception {
+    Integer memberTier = (Integer) session.getAttribute("memberTier");
+    if(memberTier == null) {
+      memberTier = 0;
+    }
+
+    String pageNum = request.getParameter("pageNum");
+    if (pageNum == null) {
+      pageNum = "1";
+    }
+
+    int pageInt = Integer.parseInt(pageNum);
+
+    int limit = 32; // 한 page당 게시물 개수
+    int bottomLine = 100; // pagination 개수
+
+    int productCount = 0;
+
+    if(memberTier == 9) {
+      productDao.rownumSet();
+      List<Product> list = productDao.productList(pageInt, limit);
+      productCount = productDao.productCount();
+      request.setAttribute("list", list);
+    }
+
+    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
+    int end = start + bottomLine - 1;
+    int maxPage = (productCount / limit) + (productCount % limit == 0 ? 0 : 1);
+    if (end > maxPage) {
+      end = maxPage;
+    }
+    if (end > productCount) {
+      end = productCount;
+    }
+
+    request.setAttribute("memberTier", memberTier);
+    request.setAttribute("productCount", productCount);
+    request.setAttribute("pageNum", pageNum);
+    request.setAttribute("start", start);
+    request.setAttribute("end", end);
+    request.setAttribute("bottomLine", bottomLine);
+    request.setAttribute("maxPage", maxPage);
+    request.setAttribute("pageInt", pageInt);
+
+    return "admin/productSoldOutUpdate";
+  }
+
+
+  @RequestMapping("productSoldOutUpdatePro")
+  public String productSoldOutUpdatePro(String productCode, int productSoldOut) throws Exception {
+
+    productDao.productSoldOutUpdate(productCode, productSoldOut);
+
+    String url = "/admin/productSoldOutUpdate";
+    String msg ="제품 품절 수정 성공";
+
+    request.setAttribute("url", url);
+    request.setAttribute("msg", msg);
+
+    return "alert";
   }
 
   @RequestMapping("memberList")

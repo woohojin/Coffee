@@ -7,7 +7,7 @@
   <div class="admin_page_wrap">
     <div class="page_head">
       <a href="">
-        <h1>제품 업로드</h1>
+        <h1>제품 등록</h1>
       </a>
     </div>
   <form

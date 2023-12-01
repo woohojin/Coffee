@@ -9,7 +9,15 @@
   animation: fadeOut 0.5s linear forwards;
 }
 .sold_out {
-  background-color: rgba(131, 131, 131, 100);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  color: white;
+  width: 115px;
+  height: 115px;
+  background-color: rgba(131, 131, 131, 0.7);
+  font-size: 20px;
 }
 .page_head {
   display: flex;

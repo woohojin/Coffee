@@ -8,7 +8,7 @@
     <div class="product_detail_wrap">
       <div class="product_detail">
         <div class="product_detail_img">
-          <img src="${ pageContext.request.contextPath }/view/board/files/${ product.productFile }" alt="" />
+          <img src="${ pageContext.request.contextPath }/view/files/${ product.productFile }" alt="" />
         </div>
         <div class="product_info">
           <h1>${ product.productName } ${ product.productUnit } </h1>
@@ -85,15 +85,21 @@
                   <fmt:formatNumber value="${ product.productPrice }" pattern="#,###" /> 원
                 </div>
               </div>
-              <div class="product_quantity_submit">
-                <input type="hidden" value="${ sessionScope.memberId }" name="memberId">
-                <input type="hidden" value="${ product.productCode }" name="productCode">
-                <input type="hidden" value="${ product.productName }" name="productName">
-                <input type="hidden" value="${ product.productPrice }" name="productPrice">
-                <input type="hidden" value="${ product.productUnit }" name="productUnit">
-                <input type="hidden" value="${ product.productFile }" name="productFile">
-                <input type="submit" value="장바구니에 담기" class="submit_btn" />
-              </div>
+              <c:if test="${ product.productSoldOut == 1 }">
+                <br/>
+                Sold Out
+              </c:if>
+              <c:if test="${ product.productSoldOut != 1 }">
+                <div class="product_quantity_submit">
+                  <input type="hidden" value="${ sessionScope.memberId }" name="memberId">
+                  <input type="hidden" value="${ product.productCode }" name="productCode">
+                  <input type="hidden" value="${ product.productName }" name="productName">
+                  <input type="hidden" value="${ product.productPrice }" name="productPrice">
+                  <input type="hidden" value="${ product.productUnit }" name="productUnit">
+                  <input type="hidden" value="${ product.productFile }" name="productFile">
+                  <input type="submit" value="장바구니에 담기" class="submit_btn" />
+                </div>
+              </c:if>
             </form>
           </div>
         </div>

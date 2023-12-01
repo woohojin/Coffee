@@ -10,7 +10,7 @@
   width: 760px;
 }
 .product ul li {
-  justify-content: flex-start;
+  position: relative;
   margin: 0 20px;
 }
 .product ul li p {

@@ -11,6 +11,7 @@ public class Product {
     String productCompany;
     int productTier;
     String productFile;
+    int productSoldOut;
 
     public String getProductCode() {
         return productCode;
@@ -92,6 +93,14 @@ public class Product {
         this.productFile = productFile;
     }
 
+    public int getProductSoldOut() {
+        return productSoldOut;
+    }
+
+    public void setProductSoldOut(int productSoldOut) {
+        this.productSoldOut = productSoldOut;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -105,6 +114,7 @@ public class Product {
           ", productCompany='" + productCompany + '\'' +
           ", productTier=" + productTier +
           ", productFile='" + productFile + '\'' +
+          ", productSoldOut=" + productSoldOut +
           '}';
     }
 }

@@ -54,7 +54,12 @@
               </form>
             </td>
             <td class="member_cart_price">
-              <p><fmt:formatNumber value="${ c.productPrice * c.quantity }" pattern="#,###" /> 원</p>
+              <c:if test="${ c.productSoldOut == 1}">
+                <p>Sold Out</p>
+              </c:if>
+              <c:if test="${ c.productSoldOut != 1}">
+                <p><fmt:formatNumber value="${ c.productPrice * c.quantity }" pattern="#,###" /> 원</p>
+              </c:if>
             </td>
             <td>
               <a class="member_cart_delete" onclick="deleteCart(${ status.index })">

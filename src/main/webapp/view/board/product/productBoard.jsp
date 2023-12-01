@@ -27,6 +27,9 @@
             <c:if test="${ requestScope.productSearchCount != 0 || requestScope.productCount != 0 }">
               <c:forEach var="p" items="${ list }">
                 <li>
+                  <c:if test="${ p.productSoldOut == 1 }">
+                    <div class="sold_out">Sold Out</div>
+                  </c:if>
                   <a
                     href="${ pageContext.request.contextPath }/board/productDetail?productCode=${ p.productCode }"
                   >
@@ -36,7 +39,7 @@
                     />
                   </a>
                   <div>
-                    <a onclick="return fileSystem('${ p.productFile }', '${ p.productName }')">${ p.productName }</a>
+                    <a>${ p.productName }</a>
                     <p><fmt:formatNumber value="${ p.productPrice }" pattern="#,###" /> 원</p>
                   </div>
                 </li>
