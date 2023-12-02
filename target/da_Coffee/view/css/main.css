@@ -1,0 +1,34 @@
+.main_product {
+    height: 1000px;
+    margin-top: 150px;
+}
+.main_product h1 {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    font-size: 30px;
+}
+.main_premium_product {
+    justify-content: center;
+}
+.main_premium_product ul li {
+    justify-content: flex-start;
+    margin-right: 70px;
+}
+.main_premium_product ul li p {
+    display: block;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.main_slider_wrap {
+    height: 648px;
+    margin-bottom: 115px;
+}
+.slider {
+    transition: 0.5s;
+}
+.slider li img {
+    position: absolute;
+    vertical-align: top;
+}

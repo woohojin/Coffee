@@ -1,0 +1,18 @@
+footer {
+  background-color: var(--mainColor);
+  height: 200px;
+  border-right: 1px solid var(--grayLine);
+}
+footer div {
+  align-items: center;
+  height: 100%;
+}
+footer li {
+  float: none;
+  margin-bottom: 10px;
+}
+footer p {
+  color: white;
+  margin-left: 20px;
+  font-size: 13px;
+}
