@@ -1,15 +1,21 @@
 package controller;
 
-import model.Cart;
-import model.History;
-import org.apache.commons.io.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import service.*;
 import model.Member;
+import model.Cart;
+import model.History;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.mail.MailException;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -22,6 +28,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +41,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Properties;
 
 @Controller
 @RequestMapping("/member/")
@@ -57,7 +66,22 @@ public class memberController {
   historyDAO historyDao;
 
   @Autowired
+  private JavaMailSender mailSender;
+
+  @Autowired
   private PasswordEncoder passwordEncoder;
+
+  @Value("${spring.mail.host}")
+  String host;
+
+  @Value("${spring.mail.port}")
+  int port;
+
+  @Value("${spring.mail.username}")
+  String username;
+
+  @Value("${spring.mail.password}")
+  String password;
 
   HttpServletRequest request;
   HttpServletResponse response;
@@ -93,6 +117,41 @@ public class memberController {
     }
 
   }
+
+  @Bean
+  public JavaMailSender mailSender() {
+    JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+    mailSender.setHost(host);
+    mailSender.setPort(port);
+    mailSender.setUsername(username);
+    mailSender.setPassword(password);
+
+    Properties props = mailSender.getJavaMailProperties();
+    props.put("mail.smtp.auth", "true");
+    props.put("mail.smtp.starttls.enable", "true");
+
+    return mailSender;
+  }
+
+  public void sendEmail(String toEmail, String subject, String text) {
+    try {
+      MimeMessage message = mailSender.createMimeMessage();
+      MimeMessageHelper helper = new MimeMessageHelper(message, true);
+      helper.setTo(toEmail);
+      helper.setSubject(subject);
+      helper.setText(text);
+      mailSender.send(message);
+    } catch (MailException e) {
+      // 메일 전송 실패 시 예외 처리
+      LOGGER.error("메일 전송 중 오류 발생: {}", e.getMessage()); // 에러 로그 상세 기록
+      e.printStackTrace(); // 스택 트레이스도 남기기
+      // 여기에 실패 시 사용자에게 알릴 방법 추가 가능
+    } catch (MessagingException e) {
+      LOGGER.error("메일 전송 중 메시징 예외 발생: {}", e.getMessage());
+      e.printStackTrace();
+    }
+  }
+
 
   @RequestMapping("memberSignUp")
   public String memberSignUp() throws Exception {
@@ -342,7 +401,50 @@ public class memberController {
   }
 
   @RequestMapping("memberFindAccount")
-  public String memberFindAccount() throws Exception {
+  public String memberFindAccount(@RequestParam(value = "findType", required = false, defaultValue = "id") String findType) throws Exception {
+    int isFind = 0;
+
+    request.setAttribute("isFind", isFind);
+    request.setAttribute("findType", findType);
+
+    return "member/memberFindAccount";
+  }
+
+  @RequestMapping("memberFindAccountPro")
+  public String memberFindAccountPro() throws Exception {
+    JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+    String findType = request.getParameter("findType");
+    if(findType == null || findType.isEmpty()) {
+      findType = "id";
+    }
+    int isFind = 0;
+
+    LOGGER.info(findType);
+
+    if(findType.equals("id")) {
+      String memberName = request.getParameter("memberName");
+      String memberEmail = request.getParameter("memberEmail");
+      List<Member> list = memberDao.memberFindId(memberName, memberEmail);
+
+      if(list != null || !list.isEmpty()) {
+        isFind = 1;
+        request.setAttribute("list", list);
+      }
+    } else if (findType.equals("password")) {
+      String memberId = request.getParameter("memberId");
+      String memberEmail = request.getParameter("memberEmail");
+      String memberPassword = memberDao.memberFindPassword(memberId, memberEmail);
+
+      if(memberPassword != null || !memberPassword.isEmpty()) {
+        String subject = "다올 커피 임시 비밀번호 생성";
+        String text = "회원님의 비밀번호는 " + memberPassword + " 입니다.";
+
+        sendEmail(memberEmail, subject, text);
+      }
+    }
+
+    request.setAttribute("isFind", isFind);
+    request.setAttribute("findType", findType);
 
     return "member/memberFindAccount";
   }

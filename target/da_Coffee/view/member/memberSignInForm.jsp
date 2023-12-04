@@ -7,7 +7,6 @@
     <div class="member_signin_form_wrap">
         <form
           action="${ pageContext.request.contextPath }/member/memberSignInPro"
-          name="f"
           method="post"
           class="member_signin_form"
         >
@@ -55,7 +54,7 @@
                 />
             </div>
             <div class="signin">
-                <a href="${ pageContext.request.contextPath }/member/memberFindAccount">아이디 / 비밀번호 찾기</a>
+                <a href="${ pageContext.request.contextPath }/member/memberFindAccount" target="_blank">아이디 / 비밀번호 찾기</a>
                 <input type="submit" value="로그인" class="submit_btn" />
             </div>
         </form>

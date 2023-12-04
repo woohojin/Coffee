@@ -50,6 +50,22 @@ public class memberDAO {
         return mem;
     }
 
+    public List<Member> memberFindId(String memberName, String memberEmail) {
+        map.clear();
+        map.put("memberName", memberName);
+        map.put("memberEmail", memberEmail);
+        List<Member> list = session.selectList(NS + "memberFindId", map);
+        return list;
+    }
+
+    public String memberFindPassword(String memberId, String memberEmail) {
+        map.clear();
+        map.put("memberId", memberId);
+        map.put("memberEmail", memberEmail);
+        String str = session.selectOne(NS + "memberFindPassword", map);
+        return str;
+    }
+
     public List<Member> memberListByMemberCompanyName(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);

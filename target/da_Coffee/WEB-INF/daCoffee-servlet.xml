@@ -56,7 +56,7 @@
     </bean>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:log4j.properties" />
+        <property name="location" value="classpath:application.properties" />
     </bean>
 
     <mvc:interceptors>
