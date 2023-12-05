@@ -1,5 +1,7 @@
 package controller;
 
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import service.*;
 import model.Member;
 import model.Cart;
@@ -45,10 +47,14 @@ import java.util.Properties;
 
 @Controller
 @RequestMapping("/member/")
+@PropertySource("classpath:application.properties")
 public class memberController {
 
   @Autowired
   private DataSource ds;
+
+  @Autowired
+  private Environment env;
 
   @Autowired
   productDAO productDao;
@@ -70,18 +76,6 @@ public class memberController {
 
   @Autowired
   private PasswordEncoder passwordEncoder;
-
-  @Value("${spring.mail.host}")
-  String host;
-
-  @Value("${spring.mail.port}")
-  int port;
-
-  @Value("${spring.mail.username}")
-  String username;
-
-  @Value("${spring.mail.password}")
-  String password;
 
   HttpServletRequest request;
   HttpServletResponse response;
@@ -118,9 +112,16 @@ public class memberController {
 
   }
 
+
   @Bean
   public JavaMailSender mailSender() {
     JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+    String host = "smtp.naver.com";
+    int port = 587;
+
+    String username = env.getProperty("spring.mail.username");
+    String password = env.getProperty("spring.mail.password");
+
     mailSender.setHost(host);
     mailSender.setPort(port);
     mailSender.setUsername(username);
@@ -134,18 +135,18 @@ public class memberController {
   }
 
   public void sendEmail(String toEmail, String subject, String text) {
+    String username = env.getProperty("spring.mail.username");
     try {
       MimeMessage message = mailSender.createMimeMessage();
       MimeMessageHelper helper = new MimeMessageHelper(message, true);
+      helper.setFrom(username);
       helper.setTo(toEmail);
       helper.setSubject(subject);
       helper.setText(text);
       mailSender.send(message);
     } catch (MailException e) {
-      // 메일 전송 실패 시 예외 처리
-      LOGGER.error("메일 전송 중 오류 발생: {}", e.getMessage()); // 에러 로그 상세 기록
-      e.printStackTrace(); // 스택 트레이스도 남기기
-      // 여기에 실패 시 사용자에게 알릴 방법 추가 가능
+      LOGGER.error("메일 전송 중 오류 발생: {}", e.getMessage());
+      e.printStackTrace();
     } catch (MessagingException e) {
       LOGGER.error("메일 전송 중 메시징 예외 발생: {}", e.getMessage());
       e.printStackTrace();
@@ -418,8 +419,6 @@ public class memberController {
       findType = "id";
     }
     int isFind = 0;
-
-    LOGGER.info(findType);
 
     if(findType.equals("id")) {
       String memberName = request.getParameter("memberName");
