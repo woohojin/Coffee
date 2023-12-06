@@ -459,7 +459,6 @@ public class memberController {
 
   @RequestMapping("memberFindAccountPro")
   public String memberFindAccountPro() throws Exception {
-    JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
     String findType = request.getParameter("findType");
     if(findType == null || findType.isEmpty()) {
       findType = "id";
@@ -471,19 +470,33 @@ public class memberController {
       String memberEmail = request.getParameter("memberEmail");
       List<Member> list = memberDao.memberFindId(memberName, memberEmail);
 
-      if(list != null || !list.isEmpty()) {
+      if(list != null && !list.isEmpty()) {
         isFind = 1;
         request.setAttribute("list", list);
+      } else {
+        String url = "/member/memberFindAccount";
+        String msg = "아이디가 존재하지 않거나 이름 및 이메일이 일치하지 않습니다.";
+
+        request.setAttribute("url", url);
+        request.setAttribute("msg", msg);
+        return "alert";
       }
     } else if (findType.equals("password")) {
       String memberId = request.getParameter("memberId");
       String memberEmail = request.getParameter("memberEmail");
       String memberPassword = memberDao.memberFindPassword(memberId, memberEmail);
 
-      if(memberPassword != null || !memberPassword.isEmpty()) {
-        String subject = "다올 커피 임시 비밀번호 생성";
-        String code = getRandomPassword(6);
+      if(memberPassword != null && !memberPassword.isEmpty()) {
+        String subject = "회원님의 비밀번호가 임시 비밀번호로 변경되었습니다.";
+        String code = getRandomPassword(8);
         sendEmail(memberEmail, subject, code);
+      } else {
+        String url = "/member/memberFindAccount";
+        String msg = "존재하지 않는 아이디 혹은 이메일이 일치하지 않습니다.";
+
+        request.setAttribute("url", url);
+        request.setAttribute("msg", msg);
+        return "alert";
       }
     }
 
