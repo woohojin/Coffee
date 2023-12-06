@@ -2,6 +2,8 @@ package controller;
 
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import service.*;
 import model.Member;
 import model.Cart;
@@ -10,7 +12,6 @@ import model.History;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -38,10 +39,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
-import java.io.File;
+import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -73,6 +76,9 @@ public class memberController {
 
   @Autowired
   private JavaMailSender mailSender;
+
+  @Autowired
+  private ResourceLoader resourceLoader;
 
   @Autowired
   private PasswordEncoder passwordEncoder;
@@ -112,6 +118,26 @@ public class memberController {
 
   }
 
+  public String getRandomPassword(int size) {
+    char[] charSet = new char[] {
+      '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+      'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+      'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+      '!', '@', '#', '$', '%', '^', '&' };
+    StringBuffer sb = new StringBuffer();
+    SecureRandom sr = new SecureRandom();
+    sr.setSeed(new Date().getTime());
+
+    int idx = 0;
+    int len = charSet.length;
+    for (int i = 0; i < size; i++) {
+      idx = sr.nextInt(len);
+      sb.append(charSet[idx]);
+    }
+
+    return sb.toString();
+  }
+
 
   @Bean
   public JavaMailSender mailSender() {
@@ -122,6 +148,7 @@ public class memberController {
     String username = env.getProperty("spring.mail.username");
     String password = env.getProperty("spring.mail.password");
 
+    mailSender.setDefaultEncoding("UTF-8");
     mailSender.setHost(host);
     mailSender.setPort(port);
     mailSender.setUsername(username);
@@ -134,15 +161,18 @@ public class memberController {
     return mailSender;
   }
 
-  public void sendEmail(String toEmail, String subject, String text) {
+  public void sendEmail(String toEmail, String subject, String code) {
     String username = env.getProperty("spring.mail.username");
+    String htmlContent = readTemplate();
+    htmlContent = htmlContent.replace("{{code}}", code);
+
     try {
       MimeMessage message = mailSender.createMimeMessage();
       MimeMessageHelper helper = new MimeMessageHelper(message, true);
       helper.setFrom(username);
       helper.setTo(toEmail);
       helper.setSubject(subject);
-      helper.setText(text);
+      helper.setText(htmlContent, true);
       mailSender.send(message);
     } catch (MailException e) {
       LOGGER.error("메일 전송 중 오류 발생: {}", e.getMessage());
@@ -151,6 +181,22 @@ public class memberController {
       LOGGER.error("메일 전송 중 메시징 예외 발생: {}", e.getMessage());
       e.printStackTrace();
     }
+  }
+
+  public String readTemplate() {
+    Resource resource = resourceLoader.getResource("classpath:mail.html");
+    StringBuilder contentBuilder = new StringBuilder();
+
+    try (BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream()))) {
+      String line;
+      while ((line = br.readLine()) != null) {
+        contentBuilder.append(line).append("\n");
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    return contentBuilder.toString();
   }
 
 
@@ -436,9 +482,8 @@ public class memberController {
 
       if(memberPassword != null || !memberPassword.isEmpty()) {
         String subject = "다올 커피 임시 비밀번호 생성";
-        String text = "회원님의 비밀번호는 " + memberPassword + " 입니다.";
-
-        sendEmail(memberEmail, subject, text);
+        String code = getRandomPassword(6);
+        sendEmail(memberEmail, subject, code);
       }
     }
 
