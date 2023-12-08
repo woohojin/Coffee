@@ -219,3 +219,12 @@ input:focus {
 .next {
   left: 650px;
 }
+
+.remain_time {
+  position: absolute;
+  right: -60px;
+  top: 32px;
+}
+.countdown {
+  color: red;
+}

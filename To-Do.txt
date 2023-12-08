@@ -22,6 +22,7 @@ memberInterceptor 로그인 페이지로 이동
 
 예외처리
 1. int nullPointException = Integer 사용
+2. String.isEmpty() = String이 null값 일 때 NullPointerException을 발생시킴
 
 일단 모든 테이블에 등록일 등록id 수정일 수정id 가 추가 되는것이 좋음 그래야 나중에 누가 등록했고 언제 수정했는지 알 수 있음 특히 제품테이블 같은 경우 제일 중요한 테이블이기때문에
 필수로 보임

@@ -4,6 +4,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.web.bind.annotation.*;
 import service.*;
 import model.Member;
 import model.Cart;
@@ -17,7 +18,6 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
@@ -28,8 +28,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -44,9 +42,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 @Controller
 @RequestMapping("/member/")
@@ -138,7 +134,6 @@ public class memberController {
     return sb.toString();
   }
 
-
   @Bean
   public JavaMailSender mailSender() {
     JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -161,9 +156,10 @@ public class memberController {
     return mailSender;
   }
 
-  public void sendEmail(String toEmail, String subject, String code) {
+  public void sendEmail(String toEmail, String subject, String main, String code) {
     String username = env.getProperty("spring.mail.username");
     String htmlContent = readTemplate();
+    htmlContent = htmlContent.replace("{{main}}", main);
     htmlContent = htmlContent.replace("{{code}}", code);
 
     try {
@@ -459,6 +455,17 @@ public class memberController {
 
   @RequestMapping("memberFindAccountPro")
   public String memberFindAccountPro() throws Exception {
+    String verifyCode = request.getParameter("verifyCode");
+    if(verifyCode == null || verifyCode.equals("timeout")) {
+      String url = "/member/memberFindAccount";
+      String msg = "인증시간이 초과되었습니다.";
+
+      request.setAttribute("url", url);
+      request.setAttribute("msg", msg);
+
+      return "alert";
+    }
+
     String findType = request.getParameter("findType");
     if(findType == null || findType.isEmpty()) {
       findType = "id";
@@ -475,7 +482,7 @@ public class memberController {
         request.setAttribute("list", list);
       } else {
         String url = "/member/memberFindAccount";
-        String msg = "아이디가 존재하지 않거나 이름 및 이메일이 일치하지 않습니다.";
+        String msg = "아이디가 존재하지 않거나 이름 혹은 이메일이 일치하지 않습니다.";
 
         request.setAttribute("url", url);
         request.setAttribute("msg", msg);
@@ -487,9 +494,10 @@ public class memberController {
       String memberPassword = memberDao.memberFindPassword(memberId, memberEmail);
 
       if(memberPassword != null && !memberPassword.isEmpty()) {
-        String subject = "회원님의 비밀번호가 임시 비밀번호로 변경되었습니다.";
+        String subject = "다올커피 - 비밀번호가 임시 비밀번호로 변경되었습니다.";
+        String main = "회원님의 임시 비밀번호는";
         String code = getRandomPassword(8);
-        sendEmail(memberEmail, subject, code);
+        sendEmail(memberEmail, subject, main, code);
       } else {
         String url = "/member/memberFindAccount";
         String msg = "존재하지 않는 아이디 혹은 이메일이 일치하지 않습니다.";
@@ -600,6 +608,22 @@ public class memberController {
     request.setAttribute("list", list);
 
     return "member/memberHistory";
+  }
+
+  @PostMapping("verifyEmail")
+  @ResponseBody
+  public Map<String, Object> verifyEmail(String memberEmail) throws Exception {
+    Map<String, Object> map = new HashMap<>();
+
+    String code = getRandomPassword(6);
+    String subject = "다올커피 - 이메일 인증번호가 도착했습니다.";
+    String main = "회원님의 이메일 인증번호는";
+
+    sendEmail(memberEmail, subject, main, code);
+    map.clear();
+    map.put("code", code);
+
+    return map;
   }
 
 }

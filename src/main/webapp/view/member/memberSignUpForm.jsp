@@ -179,7 +179,7 @@
                               id="member_tel"
                               type="tel"
                               maxlength="11"
-                              placeholder="예) 01012345678"
+                              placeholder="'-'없이 입력"
                               oninput="maxLengthCheck(this), numberInputCheck(this)"
                               spellcheck="false"
                               required
