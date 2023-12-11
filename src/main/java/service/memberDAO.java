@@ -289,6 +289,13 @@ public class memberDAO {
         session.update(NS + "memberTierUpdate", map);
     }
 
+    public void memberTempPasswordUpdate(String memberId, String memberTempPassword) {
+        map.clear();
+        map.put("memberId", memberId);
+        map.put("memberTempPassword", memberTempPassword);
+        session.update(NS + "memberTempPasswordUpdate", map);
+    }
+
     public void memberUpdate(Member member) {
         session.update(NS + "memberUpdate", member);
     }

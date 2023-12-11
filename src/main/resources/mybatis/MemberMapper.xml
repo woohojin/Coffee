@@ -269,6 +269,10 @@
         where b.rownum between #{start} and #{end};
     </select>
 
+    <update id="memberTempPasswordUpdate" parameterType="map">
+        update member set member_password = #{memberTempPassword} where member_id = #{memberId}
+    </update>
+
     <update id="memberTierUpdate" parameterType="map">
         update member set member_tier = #{memberTier} where member_id = #{memberId}
     </update>

@@ -1,4 +1,3 @@
-아이디 / 비밀번호 찾기
 회원가입시 이메일 인증
 회원가입시 개인정보처리동의서
 footer
@@ -68,3 +67,5 @@ https://www.erdcloud.com/d/ifkt7zHppbaMgXAyF
 회원가입 아이디 -> 이름 한글 자동으로
 페이지의 완성도? 뭔가 부족해보임
 아이콘 저작권
+
+아쉬운거는 변수명 등 정할 때 memberTierUpdate가 아니라 updateMemberTier와 같은 동사가 앞으로 왔으면 좋았을 것

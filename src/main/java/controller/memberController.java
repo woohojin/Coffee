@@ -496,8 +496,19 @@ public class memberController {
       if(memberPassword != null && !memberPassword.isEmpty()) {
         String subject = "다올커피 - 비밀번호가 임시 비밀번호로 변경되었습니다.";
         String main = "회원님의 임시 비밀번호는";
-        String code = getRandomPassword(8);
-        sendEmail(memberEmail, subject, main, code);
+        String password = getRandomPassword(8);
+        sendEmail(memberEmail, subject, main, password);
+
+        String tempPassword = passwordEncoder.encode(password);
+        LOGGER.info(tempPassword);
+        memberDao.memberTempPasswordUpdate(memberId, tempPassword);
+
+        String url = "/member/memberSignIn";
+        String msg = "임시비밀번호가 이메일로 전송되었습니다.";
+
+        request.setAttribute("url", url);
+        request.setAttribute("msg", msg);
+        return "alert";
       } else {
         String url = "/member/memberFindAccount";
         String msg = "존재하지 않는 아이디 혹은 이메일이 일치하지 않습니다.";
