@@ -65,6 +65,11 @@
                   spellcheck="false"
                   required
                 />
+                <div class="member_email_verify_button">
+                  <button class="input_btn" type="button" onclick="stopCountdown()">
+                    인증하기
+                  </button>
+                </div>
                 <div class="remain_time">
                   <span class="countdown"></span>
                 </div>
@@ -117,6 +122,11 @@
                   spellcheck="false"
                   required
                 />
+                <div class="member_email_verify_button">
+                  <button class="input_btn" type="button" onclick="stopCountdown()">
+                    인증하기
+                  </button>
+                </div>
                 <div class="remain_time">
                   <span class="countdown"></span>
                 </div>
@@ -149,6 +159,7 @@
 </script>
 <script>
   let code;
+  let countdownInterval;
   const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   
   function verifyEmail() {
@@ -219,7 +230,7 @@
     let countdown = document.querySelector('.countdown');
     let endTime = new Date().getTime() + timeLimit * 1000; // 현재 시간 + 3분
 
-    let countdownInterval = setInterval(function () {
+    countdownInterval = setInterval(function () {
       let now = new Date().getTime(); // 현재시간
       let distance = endTime - now; // 현재와 종료시간의 차이 (남은시간을 분과 초로 바꾸기 위해)
 
@@ -234,6 +245,20 @@
         code = "timeout";
       }
     }, 1000);
+  }
+
+  function stopCountdown() {
+    let verifyCode = document.querySelector(".verify_code").value;
+    let countdown = document.querySelector('.countdown');
+    
+    if(code != null && code != verifyCode) {
+      alert("인증에 실패했습니다.");
+      return;
+    }
+    
+    clearInterval(countdownInterval);
+    countdown.textContent = "";
+    alert("인증이 완료되었습니다.");
   }
 </script>
 </body>

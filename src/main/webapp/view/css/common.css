@@ -222,7 +222,7 @@ input:focus {
 
 .remain_time {
   position: absolute;
-  right: -60px;
+  right: -180px;
   top: 32px;
 }
 .countdown {
