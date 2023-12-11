@@ -456,9 +456,20 @@ public class memberController {
   @RequestMapping("memberFindAccountPro")
   public String memberFindAccountPro() throws Exception {
     String verifyCode = request.getParameter("verifyCode");
+    String storedVerifyCode = (String) session.getAttribute("storedVerifyCode");
     if(verifyCode == null || verifyCode.equals("timeout")) {
       String url = "/member/memberFindAccount";
       String msg = "인증시간이 초과되었습니다.";
+
+      request.setAttribute("url", url);
+      request.setAttribute("msg", msg);
+
+      return "alert";
+    }
+
+    if(!verifyCode.equals(storedVerifyCode)) {
+      String url = "/member/memberFindAccount";
+      String msg = "인증번호가 일치하지 않습니다.";
 
       request.setAttribute("url", url);
       request.setAttribute("msg", msg);
@@ -631,6 +642,9 @@ public class memberController {
     String main = "회원님의 이메일 인증번호는";
 
     sendEmail(memberEmail, subject, main, code);
+
+    session.setAttribute("storedVerifyCode", code);
+
     map.clear();
     map.put("code", code);
 
