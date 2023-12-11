@@ -40,7 +40,8 @@ input::file-selector-button {
   height: 44px;
 }
 .member_address_wrap,
-.member_delivery_address_wrap {
+.member_delivery_address_wrap,
+.member_email_wrap {
   position: relative;
 }
 .member_address_button,

@@ -23,7 +23,7 @@
 
     <insert id="memberInsert" parameterType="member">
         insert into member values (#{memberId}, #{memberName}, #{memberCompanyName}, #{memberPassword}, #{memberTel}, #{memberCompanyTel},
-                                   #{memberAddress}, #{memberDetailAddress}, #{memberDeliveryAddress}, #{memberDetailDeliveryAddress}, #{memberEmail}, #{memberFile}, 0000, 0, NOW(), 0)
+                                   #{memberAddress}, #{memberDetailAddress}, #{memberDeliveryAddress}, #{memberDetailDeliveryAddress}, #{memberEmail}, #{memberFile}, 0000, 0, NOW(), 0, null)
     </insert>
 
     <select id="rownumSet" parameterType="int" resultType="int">

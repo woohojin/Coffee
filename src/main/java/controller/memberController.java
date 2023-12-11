@@ -203,6 +203,28 @@ public class memberController {
 
   @RequestMapping("memberSignUpPro")
   public String memberSignUpPro(@RequestParam("file") MultipartFile file, Member member) throws Exception {
+    String verifyCode = request.getParameter("verifyCode");
+    String storedVerifyCode = (String) session.getAttribute("storedVerifyCode");
+    if(verifyCode == null || verifyCode.equals("timeout")) {
+      String url = "/member/memberSignUp";
+      String msg = "인증시간이 초과되었습니다.";
+
+      request.setAttribute("url", url);
+      request.setAttribute("msg", msg);
+
+      return "alert";
+    }
+
+    if(!verifyCode.equals(storedVerifyCode)) {
+      String url = "/member/memberSignUp";
+      String msg = "인증번호가 일치하지 않습니다.";
+
+      request.setAttribute("url", url);
+      request.setAttribute("msg", msg);
+
+      return "alert";
+    }
+
     String msg = "이미 있는 아이디 입니다.";
     String url = "/member/memberSignUp";
 
