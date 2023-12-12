@@ -7,7 +7,6 @@ order 테이블도 필요해보임 (현재 주문 상태, 주문번호 등)
 주문번호 (231130001 / YYMMDD001)
 비활성화 된 회원 개인정보처리 방침에 게시한 기간 이후 삭제
 발신 이메일 새로 만들기
-memberInterceptor 로그인 페이지로 이동
 
 https://www.tosspayments.com/
 
