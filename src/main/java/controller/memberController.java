@@ -195,6 +195,11 @@ public class memberController {
     return contentBuilder.toString();
   }
 
+  @RequestMapping("memberTerms")
+  public String memberTerms() throws Exception {
+    return "member/memberTerms";
+  }
+
 
   @RequestMapping("memberSignUp")
   public String memberSignUp() throws Exception {
