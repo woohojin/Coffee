@@ -9,13 +9,23 @@ import javax.servlet.http.HttpSession;
 public class loginInterceptor implements HandlerInterceptor {
   String memberSessionId; //세션에서 가져온 멤버 아이디
 
+  private static final String SIGN_IN_URL = "/member/memberSignIn";
+
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
     HttpSession session = request.getSession();
     memberSessionId = (String) session.getAttribute("memberId");
 
+
+
     if(memberSessionId == null) {
-      response.sendRedirect(request.getContextPath() + "/member/memberSignIn");
+      String msg = "로그인이 되어있지 않습니다.";
+      String url = "/member/memberSignIn";
+
+      request.setAttribute("url", url);
+      request.setAttribute("msg", msg);
+      response.sendRedirect(request.getContextPath() + SIGN_IN_URL);
+
       return false;
     }
 

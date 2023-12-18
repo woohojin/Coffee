@@ -63,15 +63,10 @@
 
         <mvc:interceptor>
 
-            <mvc:mapping path="/**" />
-            <mvc:exclude-mapping path="/alert" />
-            <mvc:exclude-mapping path="/anchor" />
-            <mvc:exclude-mapping path="/admin/**" />
-            <mvc:exclude-mapping path="/board/main" />
-            <mvc:exclude-mapping path="/member/memberSignUp" />
-            <mvc:exclude-mapping path="/member/memberSignIn" />
-            <mvc:exclude-mapping path="/member/memberFindAccount" />
-            <mvc:exclude-mapping path="/member/memberCart" />
+            <mvc:mapping path="/member/memberDisable" />
+            <mvc:mapping path="/member/memberHistory" />
+            <mvc:mapping path="/member/memberMyPage" />
+            <mvc:mapping path="/member/memberProfile" />
 
             <bean class="service.interceptor.loginInterceptor" />
 
