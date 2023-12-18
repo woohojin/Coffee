@@ -479,7 +479,8 @@ public class memberController {
   public String memberFindAccountPro() throws Exception {
     String verifyCode = request.getParameter("verifyCode");
     String storedVerifyCode = (String) session.getAttribute("storedVerifyCode");
-    if(verifyCode == null || verifyCode.equals("timeout")) {
+
+    if(verifyCode == null || verifyCode.equals("timeout")) { // 인증시간이 초과되면 verifyCode가 timeout으로 바뀜
       String url = "/member/memberFindAccount";
       String msg = "인증시간이 초과되었습니다.";
 
@@ -489,7 +490,7 @@ public class memberController {
       return "alert";
     }
 
-    if(!verifyCode.equals(storedVerifyCode)) {
+    if(!verifyCode.equals(storedVerifyCode)) { // 사용자가 입력한 코드와 생성된 코드가 일치하는지 확인
       String url = "/member/memberFindAccount";
       String msg = "인증번호가 일치하지 않습니다.";
 
@@ -500,9 +501,11 @@ public class memberController {
     }
 
     String findType = request.getParameter("findType");
+
     if(findType == null || findType.isEmpty()) {
       findType = "id";
     }
+
     int isFind = 0;
 
     if(findType.equals("id")) {
@@ -521,10 +524,16 @@ public class memberController {
         request.setAttribute("msg", msg);
         return "alert";
       }
-    } else if (findType.equals("password")) {
+
+    }
+
+    if(findType.equals("password")) {
       String memberId = request.getParameter("memberId");
       String memberEmail = request.getParameter("memberEmail");
       String memberPassword = memberDao.memberFindPassword(memberId, memberEmail);
+
+      String url = "/member/memberFindAccount";
+      String msg = "존재하지 않는 아이디 혹은 이메일이 일치하지 않습니다."; // 밑의 if문의 조건에 부합하지 않을 경우 사용 됨
 
       if(memberPassword != null && !memberPassword.isEmpty()) {
         String subject = "다올커피 - 비밀번호가 임시 비밀번호로 변경되었습니다.";
@@ -536,20 +545,13 @@ public class memberController {
         LOGGER.info(tempPassword);
         memberDao.memberTempPasswordUpdate(memberId, tempPassword);
 
-        String url = "/member/memberSignIn";
-        String msg = "임시비밀번호가 이메일로 전송되었습니다.";
-
-        request.setAttribute("url", url);
-        request.setAttribute("msg", msg);
-        return "alert";
-      } else {
-        String url = "/member/memberFindAccount";
-        String msg = "존재하지 않는 아이디 혹은 이메일이 일치하지 않습니다.";
-
-        request.setAttribute("url", url);
-        request.setAttribute("msg", msg);
-        return "alert";
+        url = "/member/memberSignIn";
+        msg = "임시비밀번호가 이메일로 전송되었습니다.";
       }
+
+      request.setAttribute("url", url);
+      request.setAttribute("msg", msg);
+      return "alert";
     }
 
     request.setAttribute("isFind", isFind);
