@@ -1,5 +1,6 @@
 package controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
@@ -29,6 +30,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
@@ -114,20 +118,49 @@ public class memberController {
 
   }
 
-  public String getRandomPassword(int size) {
+  public class AESEncryptionUtil {
+    private final String AES_ALGORITHM = "AES";
+    private final String AES_TRANSFORMATION = "AES/CBC/PKCS5Padding";
+    private final String AES_IV = getRandomPassword(16);
+    private final String AES_KEY = env.getProperty("AES_KEY");
+
+
+    public String encrypt(String data) throws Exception {
+      Cipher cipher = Cipher.getInstance(AES_TRANSFORMATION);
+      SecretKeySpec keySpec = new SecretKeySpec(AES_KEY.getBytes(), AES_ALGORITHM);
+      IvParameterSpec ivSpec = new IvParameterSpec(AES_IV.getBytes());
+      cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
+      byte[] encrypted = cipher.doFinal(data.getBytes());
+      return Base64.getEncoder().encodeToString(encrypted);
+    }
+
+    public String decrypt(String encryptedData) throws Exception {
+      Cipher cipher = Cipher.getInstance(AES_TRANSFORMATION);
+      SecretKeySpec keySpec = new SecretKeySpec(AES_KEY.getBytes(), AES_ALGORITHM);
+      IvParameterSpec ivSpec = new IvParameterSpec(AES_IV.getBytes());
+      cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
+      byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(encryptedData));
+      return new String(decrypted);
+    }
+  }
+
+  public static String getRandomPassword(int size) { //난수 생성기
     char[] charSet = new char[] {
       '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
       'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-      'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-      '!', '@', '#', '$', '%', '^', '&' };
-    StringBuffer sb = new StringBuffer();
-    SecureRandom sr = new SecureRandom();
-    sr.setSeed(new Date().getTime());
+      'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+    };
 
-    int idx = 0;
+    if (size <= 0 || charSet.length == 0) {
+      throw new IllegalArgumentException("Invalid size or character set");
+    }
+
+    StringBuilder sb = new StringBuilder();
+    SecureRandom sr = new SecureRandom();
+
     int len = charSet.length;
     for (int i = 0; i < size; i++) {
-      idx = sr.nextInt(len);
+      int idx = sr.nextInt(len);
       sb.append(charSet[idx]);
     }
 
@@ -208,6 +241,9 @@ public class memberController {
 
   @RequestMapping("memberSignUpPro")
   public String memberSignUpPro(@RequestParam("file") MultipartFile file, Member member) throws Exception {
+
+    AESEncryptionUtil aesUtil = new AESEncryptionUtil();
+
     String verifyCode = request.getParameter("verifyCode");
     String storedVerifyCode = (String) session.getAttribute("storedVerifyCode");
     if(verifyCode == null || verifyCode.equals("timeout")) {
@@ -247,9 +283,20 @@ public class memberController {
 
     if(mem == null) {
       member.setMemberPassword(passwordEncoder.encode(member.getMemberPassword()));
-      LOGGER.info(String.valueOf(member));
+      String memberTel = member.getMemberTel();
+      String encryptTel = aesUtil.encrypt(memberTel);
+
+      LOGGER.info("memberTel " + memberTel);
+      LOGGER.info("encryptTel " + encryptTel);
+
       int num = memberDao.memberInsert(member);
-      file.transferTo(uploadFile);
+
+      String memberFile = member.getMemberFile();
+
+      if(memberFile != null && !memberFile.isEmpty()) {
+        file.transferTo(uploadFile);
+      }
+
       if (num > 0) {
         msg = memberId + "님의 가입이 완료되었습니다.";
         url = "/member/memberSignIn";
@@ -361,18 +408,18 @@ public class memberController {
     return "alert";
   }
 
-  @RequestMapping("memberDisable")
-  public String memberDisable() throws Exception {
-    return "member/memberDisable";
+  @RequestMapping("memberDelete")
+  public String memberDelete() throws Exception {
+    return "/member/memberDelete";
   }
 
-  @RequestMapping("memberDisablePro")
-  public String memberDisablePro(String memberPassword) throws Exception {
+  @RequestMapping("memberDeletePro")
+  public String memberDeletePro(String memberPassword) throws Exception {
     String memberId = (String) session.getAttribute("memberId");
     Member member = memberDao.memberSelectOne(memberId);
 
     String msg = "회원 탈퇴에 실패했습니다.";
-    String url = "/member/memberDisable";
+    String url = "/member/memberDelete";
 
     if(passwordEncoder.matches(memberPassword, member.getMemberPassword())) {
       Cookie cookieId = new Cookie("memberId", null);
