@@ -4,6 +4,8 @@
 
 <configuration>
 
+    <properties resource="application.properties"/>
+
     <typeAliases>
 
         <typeAlias type="model.Product" alias="product" />
