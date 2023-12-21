@@ -17,6 +17,7 @@ public class Member {
     Integer memberTier;
     String memberDate;
     Integer memberDisable;
+    String memberDisableDate;
 
     public String getMemberId() {
         return memberId;
@@ -146,6 +147,14 @@ public class Member {
         this.memberDisable = memberDisable;
     }
 
+    public String getMemberDisableDate() {
+        return memberDisableDate;
+    }
+
+    public void setMemberDisableDate(String memberDisableDate) {
+        this.memberDisableDate = memberDisableDate;
+    }
+
     @Override
     public String toString() {
         return "Member{" +
@@ -165,6 +174,7 @@ public class Member {
           ", memberTier=" + memberTier +
           ", memberDate='" + memberDate + '\'' +
           ", memberDisable=" + memberDisable +
+          ", memberDisableDate='" + memberDisableDate + '\'' +
           '}';
     }
 }

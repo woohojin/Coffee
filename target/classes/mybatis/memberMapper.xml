@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="member">
     <resultMap type="member" id="memberMap">
-        <id column="member_id" property="memberId" />
+        <id column="member_id" property="memberId" typeHandler="handler.EncryptionTypeHandler" />
         <id column="member_name" property="memberName" />
         <id column="member_company_name" property="memberCompanyName" />
         <id column="member_password" property="memberPassword" />
@@ -19,6 +19,7 @@
         <id column="member_tier" property="memberTier" />
         <id column="member_date" property="memberDate" />
         <id column="member_disable" property="memberDisable" />
+        <id column="member_disable_date" property="memberDisableDate" />
     </resultMap>
 
     <insert id="memberInsert" parameterType="member">
@@ -39,7 +40,16 @@
     </select>
 
     <select id="memberList" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" order by member_tier ) b
@@ -47,14 +57,32 @@
     </select>
 
     <select id="memberListAll" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin") b;
     </select>
 
     <select id="memberSelectOne" parameterType="map" resultMap="memberMap">
-        select * from member where member_id = #{memberId}
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date, member_password,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from member where member_id = #{memberId}
     </select>
 
     <select id="memberFindId" parameterType="map" resultMap="memberMap">
@@ -66,7 +94,16 @@
     </select>
 
     <select id="memberListByMemberCompanyName" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" order by member_company_name ) b
@@ -74,7 +111,16 @@
     </select>
 
     <select id="memberListDescByMemberCompanyName" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" order by member_company_name desc ) b
@@ -82,7 +128,16 @@
     </select>
 
     <select id="memberListByMemberFranCode" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" order by member_fran_code ) b
@@ -90,7 +145,16 @@
     </select>
 
     <select id="memberListDescByMemberFranCode" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" order by member_fran_code desc ) b
@@ -98,7 +162,16 @@
     </select>
 
     <select id="memberListByMemberId" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" order by member_id ) b
@@ -106,7 +179,16 @@
     </select>
 
     <select id="memberListDescByMemberId" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" order by member_id desc ) b
@@ -114,7 +196,16 @@
     </select>
 
     <select id="memberListByMemberName" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" order by member_name ) b
@@ -122,7 +213,16 @@
     </select>
 
     <select id="memberListDescByMemberName" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" order by member_name desc ) b
@@ -130,7 +230,16 @@
     </select>
 
     <select id="memberListByMemberTel" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" order by member_tel ) b
@@ -138,7 +247,16 @@
     </select>
 
     <select id="memberListDescByMemberTel" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" order by member_tel desc ) b
@@ -146,7 +264,16 @@
     </select>
 
     <select id="memberListByMemberCompanyTel" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" order by member_company_tel ) b
@@ -154,7 +281,16 @@
     </select>
 
     <select id="memberListDescByMemberCompanyTel" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" order by member_company_tel desc ) b
@@ -162,7 +298,16 @@
     </select>
 
     <select id="memberListByMemberTier" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" order by member_tier ) b
@@ -170,7 +315,16 @@
     </select>
 
     <select id="memberListDescByMemberTier" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" order by member_tier desc ) b
@@ -178,7 +332,16 @@
     </select>
 
     <select id="memberListByMemberDate" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" order by member_date ) b
@@ -186,7 +349,16 @@
     </select>
 
     <select id="memberListDescByMemberDate" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" order by member_date desc ) b
@@ -194,7 +366,16 @@
     </select>
 
     <select id="memberListByMemberDisable" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" order by member_disable ) b
@@ -202,7 +383,16 @@
     </select>
 
     <select id="memberListDescByMemberDisable" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" order by member_disable desc ) b
@@ -210,7 +400,16 @@
     </select>
 
     <select id="memberSearchListByMemberCompanyName" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" and member_company_name LIKE CONCAT('%',#{searchText},'%')) b
@@ -218,7 +417,16 @@
     </select>
 
     <select id="memberSearchListByMemberFranCode" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" and member_fran_code LIKE CONCAT('%',#{searchText},'%')) b
@@ -226,7 +434,16 @@
     </select>
 
     <select id="memberSearchListByMemberId" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" and member_id LIKE CONCAT('%',#{searchText},'%')) b
@@ -234,7 +451,16 @@
     </select>
 
     <select id="memberSearchListByMemberName" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" and member_name LIKE CONCAT('%',#{searchText},'%')) b
@@ -242,7 +468,16 @@
     </select>
 
     <select id="memberSearchListByMemberTel" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" and member_tel LIKE CONCAT('%',#{searchText},'%')) b
@@ -250,7 +485,16 @@
     </select>
 
     <select id="memberSearchListByMemberCompanyTel" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" and member_company_tel LIKE CONCAT('%',#{searchText},'%')) b
@@ -258,7 +502,16 @@
     </select>
 
     <select id="memberSearchListByMemberTier" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" and member_tier LIKE CONCAT('%',#{searchText},'%')) b
@@ -266,7 +519,16 @@
     </select>
 
     <select id="memberSearchListByMemberDisable" parameterType="map" resultMap="memberMap">
-        select * from (
+        select member_id, member_company_name, member_company_tel, member_file,
+               member_fran_code, member_tier, member_date, member_disable, member_disable_date,
+               CAST(AES_DECRYPT(member_name, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_tel, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_detail_delivery_address, '${AES_KEY}') AS CHAR(100)),
+               CAST(AES_DECRYPT(member_email, '${AES_KEY}') AS CHAR(100))
+        from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member a, (select @rownum := 0) tmp
         where NOT member_id = "admin" and member_disable LIKE CONCAT('%',#{searchText},'%')) b

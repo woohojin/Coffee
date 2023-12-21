@@ -398,6 +398,7 @@ public class adminController {
     if(memberTier == 9) {
       memberDao.rownumSet();
       List<Member> list = memberDao.memberList(pageInt, limit);
+      LOGGER.info(list.toString());
       memberCount = memberDao.memberCount();
       request.setAttribute("list", list);
       LOGGER.info(list.toString());

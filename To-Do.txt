@@ -17,6 +17,7 @@ order_history 같은데에 주문일자가 시분초 까지 나와야함
 암복호화 방식을 mysql에서 처리하도록 변경
 회원가입 requirement id 길이
 회원가입 mapper 빈칸이면 null
+회원가입 안채운input empty -> null로
 
 https://www.tosspayments.com/
 

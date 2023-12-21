@@ -17,6 +17,10 @@
 
     </typeAliases>
 
+    <typeHandlers>
+        <typeHandler handler="handler.EncryptionTypeHandler"/>
+    </typeHandlers>
+
     <mappers><!-- sql 구문 -->
 
         <mapper resource="mybatis/ProductMapper.xml"/>

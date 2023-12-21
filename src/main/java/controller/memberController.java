@@ -283,26 +283,6 @@ public class memberController {
 
     if(mem == null) {
       member.setMemberPassword(passwordEncoder.encode(member.getMemberPassword()));
-//      String encryptName = aesUtil.encrypt(member.getMemberName());
-//      String encryptTel = aesUtil.encrypt(member.getMemberTel());
-//      String encryptEmail = aesUtil.encrypt(member.getMemberEmail());
-//      String encryptAddress = aesUtil.encrypt(member.getMemberAddress());
-//      String encryptDetailAddress = aesUtil.encrypt(member.getMemberDetailAddress());
-//      String encryptDeliveryAddress = aesUtil.encrypt(member.getMemberDeliveryAddress());
-//      String encryptDetailDeliveryAddress = aesUtil.encrypt(member.getMemberDetailDeliveryAddress());
-//
-//      LOGGER.info(encryptAddress);
-//      LOGGER.info(encryptDetailAddress);
-//
-//
-//      member.setMemberName(encryptName);
-//      member.setMemberTel(encryptTel);
-//      member.setMemberEmail(encryptEmail);
-//      member.setMemberAddress(encryptAddress);
-//      member.setMemberDetailAddress(encryptDetailAddress);
-//      member.setMemberDeliveryAddress(encryptDeliveryAddress);
-//      member.setMemberDetailDeliveryAddress(encryptDetailDeliveryAddress);
-
       int num = memberDao.memberInsert(member);
 
       String memberFile = member.getMemberFile();
