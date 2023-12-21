@@ -40,12 +40,14 @@ input::file-selector-button {
   height: 44px;
 }
 .member_address_wrap,
-.member_delivery_address_wrap {
+.member_delivery_address_wrap,
+.member_email_wrap {
   position: relative;
 }
 .member_address_button,
 .member_delivery_address_button,
-.member_delivery_address_button2 {
+.member_delivery_address_button2,
+.member_email_verify_button {
   position: absolute;
   right: -91px;
   top: 20px;
@@ -56,6 +58,14 @@ input::file-selector-button {
 .member_delivery_address_button2 {
   top: 74px;
 }
+.member_email_verify_button {
+  right: -120px;
+}
+.member_email_verify_button button {
+  width: 100px;
+  height: 44px;
+}
+
 .member_signup_form_wrap,
 .member_signin_form_wrap {
   display: flex;

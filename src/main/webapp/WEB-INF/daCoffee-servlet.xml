@@ -13,7 +13,7 @@
     <mvc:annotation-driven></mvc:annotation-driven>
 
     <!-- base-package="controller, service" 패키지를 먼저 scan 해서 @Component를 가진 클래스의 객체 생성 -->
-    <context:component-scan base-package="controller, service"/>
+    <context:component-scan base-package="controller, service, modules, handler, service.interceptor"/>
 
     <!-- css,js,html 웹에서 제공되는 파일의 기본 기능 제외 -->
     <mvc:default-servlet-handler/>
@@ -25,12 +25,12 @@
     </bean>
 
     <!-- 파일 업로드 설정 : enctype="multipart/form-data"형식의 요청이 들어오면 구동.
-    maxUploadSize : 100M. 최대 업로등 가능 크기
+    maxUploadSize : 100M. 최대 업로드 가능 크기
     maxInMemorySize : 10M.  10M까지는 메모리에 파일의 내용 저장.  -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="defaultEncoding" value="utf-8"></property>
-        <property name="maxUploadSize" value="104854600"></property>
-        <property name="maxInMemorySize" value="10485460"></property>
+        <property name="defaultEncoding" value="utf-8" />
+        <property name="maxUploadSize" value="104854600" />
+        <property name="maxInMemorySize" value="10485460" />
     </bean>
     <!-- mybatis db -->
     <bean id="dataSource"
@@ -44,7 +44,6 @@
         <property name="minIdle" value="2"/>
         <property name="maxIdle" value="30"/>
         <property name="maxTotal" value="30"/>
-        <property name="maxWaitMillis" value="1000"/>
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">

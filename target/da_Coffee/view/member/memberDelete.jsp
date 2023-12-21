@@ -6,10 +6,17 @@
 <main>
   <div class="member_signin_form_wrap">
     <form
-      action="${ pageContext.request.contextPath }/member/memberSignInPro"
+      action="${ pageContext.request.contextPath }/member/memberDisablePro"
+      name="f"
       method="post"
       class="member_signin_form"
+      onsubmit="checkDisable()"
     >
+      <div class="page_head">
+        <a href="">
+          <h1>회원탈퇴</h1>
+        </a>
+      </div>
       <table>
         <tbody>
         <tr>
@@ -23,7 +30,9 @@
               class="memberId"
               type="text"
               spellcheck="false"
-              required
+              value="${ sessionScope.memberId }"
+              readonly
+              style="border: 1px solid var(--grayLine);"
             />
           </td>
         </tr>
@@ -44,20 +53,19 @@
         </tr>
         </tbody>
       </table>
-      <div class="autologin_checkbox">
-        <label for="auto_login">자동 로그인</label>
-        <input
-          type="checkbox"
-          id="auto_login"
-          name="autoLogin"
-          value="0"
-        />
-      </div>
       <div class="signin">
-        <a href="${ pageContext.request.contextPath }/member/memberFindAccount" target="_blank">아이디 / 비밀번호 찾기</a>
-        <input type="submit" value="로그인" class="submit_btn" />
+        <input type="submit" value="회원탈퇴" class="submit_btn" style="margin-top: 15px;" />
       </div>
     </form>
   </div>
 </main>
+<script>
+  function checkDisable() {
+    if(confirm("정말 회원을 탈퇴하시겠습니까?") === true) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+</script>
 </body>

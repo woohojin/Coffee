@@ -88,6 +88,7 @@ input:focus {
 #member_profile_page .page_head,
 #member_mypage_page .page_head,
 #member_history_page .page_head,
+#member_terms_page .page_head,
 #product_page .page_head {
   margin-top: 200px;
 }
@@ -218,4 +219,13 @@ input:focus {
 }
 .next {
   left: 650px;
+}
+
+.remain_time {
+  position: absolute;
+  right: -180px;
+  top: 32px;
+}
+.countdown {
+  color: red;
 }

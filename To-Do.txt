@@ -34,8 +34,10 @@ https://www.tosspayments.com/
 일단 모든 테이블에 등록일 등록id 수정일 수정id 가 추가 되는것이 좋음 그래야 나중에 누가 등록했고 언제 수정했는지 알 수 있음 특히 제품테이블 같은 경우 제일 중요한 테이블이기때문에
 필수로 보임
 
-
-
+시크릿 탭 이용시 에러
+로그인 상태에선 memberSignIn 페이지 접속 안되게
+이미 로그인 상태에서 재로그인시 cookie duplicate error
+memberInterceptor 구조 재확인 필요
 로그저장
 대시보드
 admin 제품 정보 수정

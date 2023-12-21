@@ -118,32 +118,6 @@ public class memberController {
 
   }
 
-  public class AESEncryptionUtil {
-    private final String AES_ALGORITHM = "AES";
-    private final String AES_TRANSFORMATION = "AES/CBC/PKCS5Padding";
-    private final String AES_IV = getRandomPassword(16);
-    private final String AES_KEY = env.getProperty("AES_KEY");
-
-
-    public String encrypt(String data) throws Exception {
-      Cipher cipher = Cipher.getInstance(AES_TRANSFORMATION);
-      SecretKeySpec keySpec = new SecretKeySpec(AES_KEY.getBytes(), AES_ALGORITHM);
-      IvParameterSpec ivSpec = new IvParameterSpec(AES_IV.getBytes());
-      cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
-      byte[] encrypted = cipher.doFinal(data.getBytes());
-      return Base64.getEncoder().encodeToString(encrypted);
-    }
-
-    public String decrypt(String encryptedData) throws Exception {
-      Cipher cipher = Cipher.getInstance(AES_TRANSFORMATION);
-      SecretKeySpec keySpec = new SecretKeySpec(AES_KEY.getBytes(), AES_ALGORITHM);
-      IvParameterSpec ivSpec = new IvParameterSpec(AES_IV.getBytes());
-      cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
-      byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(encryptedData));
-      return new String(decrypted);
-    }
-  }
-
   public static String getRandomPassword(int size) { //난수 생성기
     char[] charSet = new char[] {
       '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
@@ -241,8 +215,6 @@ public class memberController {
 
   @RequestMapping("memberSignUpPro")
   public String memberSignUpPro(@RequestParam("file") MultipartFile file, Member member) throws Exception {
-
-    AESEncryptionUtil aesUtil = new AESEncryptionUtil();
 
     String verifyCode = request.getParameter("verifyCode");
     String storedVerifyCode = (String) session.getAttribute("storedVerifyCode");
