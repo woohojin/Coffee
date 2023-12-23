@@ -20,11 +20,13 @@
         <id column="member_date" property="memberDate" />
         <id column="member_disable" property="memberDisable" />
         <id column="member_disable_date" property="memberDisableDate" />
+        <id column="member_modifier_name" property="memberModifierName" />
+        <id column="member_modified_date" property="memberModifiedDate" />
     </resultMap>
 
     <insert id="memberInsert" parameterType="member">
         insert into member values (#{memberId}, #{memberName}, #{memberCompanyName}, #{memberPassword}, #{memberTel}, #{memberCompanyTel},
-                                   #{memberAddress}, #{memberDetailAddress}, #{memberDeliveryAddress}, #{memberDetailDeliveryAddress}, #{memberEmail}, #{memberFile}, 0000, 0, NOW(), 0, null)
+                                   #{memberAddress}, #{memberDetailAddress}, #{memberDeliveryAddress}, #{memberDetailDeliveryAddress}, #{memberEmail}, #{memberFile}, 0000, 0, NOW(), 0, null, null, null)
     </insert>
 
     <select id="rownumSet" parameterType="int" resultType="int">
@@ -47,7 +49,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin") b;
+        where NOT member_id = "admin") b;
     </select>
 
     <select id="memberSelectOne" parameterType="map" resultMap="memberMap">

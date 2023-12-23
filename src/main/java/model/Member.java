@@ -18,6 +18,8 @@ public class Member {
     String memberDate;
     Integer memberDisable;
     String memberDisableDate;
+    String memberModifierName;
+    String memberModifiedDate;
 
     public String getMemberId() {
         return memberId;
@@ -155,6 +157,22 @@ public class Member {
         this.memberDisableDate = memberDisableDate;
     }
 
+    public String getMemberModifierName() {
+        return memberModifierName;
+    }
+
+    public void setMemberModifierName(String memberModifierName) {
+        this.memberModifierName = memberModifierName;
+    }
+
+    public String getMemberModifiedDate() {
+        return memberModifiedDate;
+    }
+
+    public void setMemberModifiedDate(String memberModifiedDate) {
+        this.memberModifiedDate = memberModifiedDate;
+    }
+
     @Override
     public String toString() {
         return "Member{" +
@@ -175,6 +193,8 @@ public class Member {
           ", memberDate='" + memberDate + '\'' +
           ", memberDisable=" + memberDisable +
           ", memberDisableDate='" + memberDisableDate + '\'' +
+          ", memberModifierName='" + memberModifierName + '\'' +
+          ", memberModifiedDate='" + memberModifiedDate + '\'' +
           '}';
     }
 }

@@ -42,6 +42,8 @@ import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -255,13 +257,26 @@ public class memberController {
 
     if(mem == null) {
       member.setMemberPassword(passwordEncoder.encode(member.getMemberPassword()));
-      int num = memberDao.memberInsert(member);
 
+      String memberCompanyName = member.getMemberCompanyName();
+      String memberCompanyTel = member.getMemberCompanyTel();
       String memberFile = member.getMemberFile();
 
-      if(memberFile != null && !memberFile.isEmpty()) {
+      if(memberFile != null && !memberFile.trim().isEmpty()) {
         file.transferTo(uploadFile);
+      } else {
+        member.setMemberFile(null);
       }
+
+      if(memberCompanyName != null && memberCompanyName.trim().isEmpty()) {
+        member.setMemberCompanyName(null);
+      }
+
+      if(memberCompanyTel != null && memberCompanyTel.trim().isEmpty()) {
+        member.setMemberCompanyTel(null);
+      }
+
+      int num = memberDao.memberInsert(member);
 
       if (num > 0) {
         msg = memberId + "님의 가입이 완료되었습니다.";

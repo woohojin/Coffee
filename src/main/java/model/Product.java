@@ -12,6 +12,9 @@ public class Product {
     int productTier;
     String productFile;
     int productSoldOut;
+    String productDate;
+    String productModifierName;
+    String productModifiedDate;
 
     public String getProductCode() {
         return productCode;
@@ -101,6 +104,30 @@ public class Product {
         this.productSoldOut = productSoldOut;
     }
 
+    public String getProductDate() {
+        return productDate;
+    }
+
+    public void setProductDate(String productDate) {
+        this.productDate = productDate;
+    }
+
+    public String getProductModifierName() {
+        return productModifierName;
+    }
+
+    public void setProductModifierName(String productModifierName) {
+        this.productModifierName = productModifierName;
+    }
+
+    public String getProductModifiedDate() {
+        return productModifiedDate;
+    }
+
+    public void setProductModifiedDate(String productModifiedDate) {
+        this.productModifiedDate = productModifiedDate;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -115,6 +142,9 @@ public class Product {
           ", productTier=" + productTier +
           ", productFile='" + productFile + '\'' +
           ", productSoldOut=" + productSoldOut +
+          ", productDate='" + productDate + '\'' +
+          ", productModifierName='" + productModifierName + '\'' +
+          ", productModifiedDate='" + productModifiedDate + '\'' +
           '}';
     }
 }

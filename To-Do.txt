@@ -9,30 +9,21 @@ order 테이블도 필요해보임 (현재 주문 상태, 주문번호 등)
 제품 코드별로 폴더를 나누어서 이미지 저장
 mssql agent (mysql 스케쥴러 확인)
 주문기록에 세금계산서 현금영수증 + 프론트에서 선택 후 form 생성
-테이블에 등록일 등록자 수정일 수정자
 order_history 같은데에 주문일자가 시분초 까지 나와야함
 인증번호가 일치하지 않습니다를 Ajax로 처리해야할듯
 인증하기 여러번 누르면 인증이 끝나고 카운트가 안끝나며 이후 다시 누르면 인증 실패 발생
 인증하기 빈칸으로 누르면 js 인증 성공 발생
-암복호화 방식을 mysql에서 처리하도록 변경
 회원가입 requirement id 길이
-회원가입 mapper 빈칸이면 null
-회원가입 안채운input empty -> null로
+
+historymapper insert 수정 필요
 
 https://www.tosspayments.com/
 
-
 모바일 반응형 웹
-매퍼 등 보안 유지를 위해 전부 환경변수로
-
-전체적인 보안
 
 예외처리
 1. int nullPointException = Integer 사용
 2. String.isEmpty() = String이 null값 일 때 NullPointerException을 발생시킴
-
-일단 모든 테이블에 등록일 등록id 수정일 수정id 가 추가 되는것이 좋음 그래야 나중에 누가 등록했고 언제 수정했는지 알 수 있음 특히 제품테이블 같은 경우 제일 중요한 테이블이기때문에
-필수로 보임
 
 시크릿 탭 이용시 에러
 로그인 상태에선 memberSignIn 페이지 접속 안되게
