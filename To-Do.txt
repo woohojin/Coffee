@@ -14,8 +14,9 @@ order_history 같은데에 주문일자가 시분초 까지 나와야함
 인증하기 여러번 누르면 인증이 끝나고 카운트가 안끝나며 이후 다시 누르면 인증 실패 발생
 인증하기 빈칸으로 누르면 js 인증 성공 발생
 회원가입 requirement id 길이
-
 historymapper insert 수정 필요
+커피 분쇄상태 컬럼 추가
+주문시 기타 요청사항 추가
 
 https://www.tosspayments.com/
 
