@@ -20,6 +20,8 @@
         <id column="member_date" property="memberDate" />
         <id column="member_disable" property="memberDisable" />
         <id column="member_disable_date" property="memberDisableDate" />
+        <id column="member_modifier_name" property="memberModifierName" />
+        <id column="member_modified_date" property="memberModifiedDate" />
     </resultMap>
 
     <insert id="memberInsert" parameterType="member">

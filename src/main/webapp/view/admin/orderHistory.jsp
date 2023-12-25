@@ -107,7 +107,12 @@
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="product_price" onclick="orderBy(this)">
+                  <th class="product_grinding" onclick="orderBy(this)">
+                    <div class="asc">
+                      <span>분쇄상태</span>
+                    </div>
+                  </th>
+                  <th class="product_price">
                     <div class="asc">
                       <span>합계</span>
                     </div>
@@ -122,6 +127,11 @@
                     <div class="asc">
                       <span>주문날짜</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
+                    </div>
+                  </th>
+                  <th class="member_request">
+                    <div class="asc">
+                      <span>요청사항</span>
                     </div>
                   </th>
                 </tr>
@@ -151,6 +161,14 @@
                       <p>${ h.quantity }</p>
                     </td>
                     <td>
+                      <p>
+                        ${ h.productGrinding }
+                        <c:if test="${ h.productGrinding == 0 }">(원두)</c:if>
+                          <c:if test="${ h.productGrinding == 1 }">(핸드드립)</c:if>
+                          <c:if test="${ h.productGrinding == 2 }">(에스프레소)</c:if>
+                      </p>
+                    </td>
+                    <td>
                       <p><fmt:formatNumber value="${ h.productPrice * h.quantity }" pattern="#,###" /></p>
                     </td>
                     <td>
@@ -159,6 +177,9 @@
                     </td>
                     <td>
                       <p>${ h.orderDate }</p>
+                    </td>
+                    <td>
+                      <p>${ h.memberRequest }</p>
                     </td>
                   </tr>
                 </c:forEach>

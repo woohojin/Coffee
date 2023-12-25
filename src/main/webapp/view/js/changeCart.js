@@ -67,7 +67,6 @@ function decreaseCartQuantity(num) {
 function deleteCart(num) {
     const form = document.querySelector(".form" + num);
     const status = document.querySelector(".status" + num);
-    const button = document.querySelector(".member_cart_delete");
 
     if(confirm("장바구니에서 상품을 삭제하시겠습니까?") === true) {
         status.value = 0;
@@ -75,4 +74,26 @@ function deleteCart(num) {
     } else {
         return false;
     }
+}
+
+function changeGrinding(num) {
+    const form = document.querySelector(".grinding_form" + num);
+    const status = document.querySelector(".grinding_status" + num);
+    const productGrinding = form.querySelector('select[name="productGrinding"]');
+
+    const formElements = form.elements;
+    console.log(formElements);
+
+    // productGrinding이 선택되었는지 확인
+    console.log(productGrinding);
+
+    status.value = 2;
+
+    const formData = new FormData(form);
+
+    for(const pair of formData.entries()) {
+        console.log(pair[0] + ', ' + pair[1]);
+    }
+
+    form.submit();
 }

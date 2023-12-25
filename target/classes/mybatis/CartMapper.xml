@@ -7,14 +7,16 @@
         <id column="product_code" property="productCode" />
         <id column="product_name" property="productName" />
         <id column="product_unit" property="productUnit" />
+        <id column="product_grinding" property="productGrinding" />
         <id column="product_price" property="productPrice" />
         <id column="product_file" property="productFile" />
         <id column="product_sold_out" property="productSoldOut" />
         <id column="quantity" property="quantity" />
+        <id column="member_request" property="memberRequest" />
     </resultMap>
 
     <insert id="cartInsert" parameterType="cart">
-        insert into cart values (#{memberId}, #{productCode}, #{quantity})
+        insert into cart values (#{memberId}, #{productCode}, #{quantity}, #{productGrinding}, null)
     </insert>
 
     <select id="cartCount" parameterType="String" resultType="int">
@@ -42,6 +44,10 @@
 
     <update id="cartQuantityUpdate" parameterType="map">
         update cart set quantity = #{quantity} where member_id = #{memberId} and product_code = #{productCode}
+    </update>
+
+    <update id="cartGrindingUpdate" parameterType="map">
+        update cart set product_grinding = #{productGrinding} where member_id = #{memberId} and product_code = #{productCode}
     </update>
 
 </mapper>

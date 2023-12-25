@@ -458,19 +458,31 @@ public class memberController {
 
   @RequestMapping("memberCartPro")
   public String memberCartPro() throws Exception {
-    int status = Integer.parseInt(request.getParameter("status"));
-    int quantity = Integer.parseInt(request.getParameter("quantity"));
+    int status = 9;
+    String statusParam = request.getParameter("status");
+    int quantity = 1;
+    String quantityParam = request.getParameter("quantity");
+    int productGrinding = 0;
+    String productGrindingParam = request.getParameter("productGrinding");
     String productCode = request.getParameter("productCode");
     String memberId = (String) session.getAttribute("memberId");
 
-    if(quantity < 1) {
-      quantity = 1;
+    if(statusParam != null && !statusParam.trim().isEmpty()) {
+      status = Integer.parseInt(statusParam);
+    }
+    if(quantityParam != null && !quantityParam.trim().isEmpty()) {
+      quantity = Integer.parseInt(quantityParam);
+    }
+    if(productGrindingParam != null && !productGrindingParam.trim().isEmpty()) {
+      productGrinding = Integer.parseInt(productGrindingParam);
     }
 
     if(status == 0) {
       cartDao.cartDelete(memberId, productCode);
     } else if (status == 1) {
       cartDao.cartQuantityUpdate(memberId, productCode, quantity);
+    } else if (status == 2) {
+      cartDao.cartGrindingUpdate(memberId, productCode, productGrinding);
     }
 
     int sumPrice = Integer.parseInt(cartDao.cartSumPrice(memberId));
@@ -486,8 +498,6 @@ public class memberController {
     int totalPrice = deliveryFee + sumPrice;
 
     List<Cart> list = cartDao.cartSelectMember(memberId);
-
-    System.out.println(list);
 
     request.setAttribute("totalPrice", totalPrice);
     request.setAttribute("sumPrice", sumPrice);

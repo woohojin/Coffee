@@ -12,6 +12,7 @@ public class History {
   String orderDate;
   String deliveryAddress;
   String detailDeliveryAddress;
+  int productGrinding;
 
   public String getHistoryCode() {
     return historyCode;
@@ -101,6 +102,14 @@ public class History {
     this.detailDeliveryAddress = detailDeliveryAddress;
   }
 
+  public int getProductGrinding() {
+    return productGrinding;
+  }
+
+  public void setProductGrinding(int productGrinding) {
+    this.productGrinding = productGrinding;
+  }
+
   @Override
   public String toString() {
     return "History{" +
@@ -115,6 +124,7 @@ public class History {
       ", orderDate='" + orderDate + '\'' +
       ", deliveryAddress='" + deliveryAddress + '\'' +
       ", detailDeliveryAddress='" + detailDeliveryAddress + '\'' +
+      ", productGrinding=" + productGrinding +
       '}';
   }
 }

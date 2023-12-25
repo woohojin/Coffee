@@ -22,6 +22,7 @@
           <th class="member_cart_image">이미지</th>
           <th class="member_cart_info">상품정보</th>
           <th>수량</th>
+          <th>분쇄상태</th>
           <th class="member_cart_price">금액</th>
         </tr>
         </thead>
@@ -51,6 +52,23 @@
                     <img src="${ pageContext.request.contextPath }/view/image/triangle-down.png" alt="" />
                   </button>
                 </div>
+              </form>
+            </td>
+            <td class="member_cart_grinding">
+              <form
+                action="${ pageContext.request.contextPath }/member/memberCartPro"
+                class="member_cart_form grinding_form${ status.index }"
+                method="post"
+              >
+                <input type="hidden" name="status" class="grinding_status${ status.index }" value="" />
+                <input type="hidden" name="productCode" value="${ c.productCode }"/>
+                <p>
+                  <select class="productGrinding${ status.index }" name="productGrinding" onchange="changeGrinding(${ status.index })">
+                    <option value="0" ${ c.productGrinding == 0 ? "selected" : "" }>원두</option>
+                    <option value="1" ${ c.productGrinding == 1 ? "selected" : "" }>핸드드립</option>
+                    <option value="2" ${ c.productGrinding == 2 ? "selected" : "" }>에스프레소</option>
+                  </select>
+                </p>
               </form>
             </td>
             <td class="member_cart_price">

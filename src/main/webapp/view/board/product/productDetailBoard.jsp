@@ -85,6 +85,14 @@
                   <fmt:formatNumber value="${ product.productPrice }" pattern="#,###" /> 원
                 </div>
               </div>
+              <div class="product_grinding">
+                <span>원두 분쇄 선택</span>
+                <select name="productGrinding">
+                  <option value="0">원두</option>
+                  <option value="1">핸드드립</option>
+                  <option value="2">에스프레소</option>
+                </select>
+              </div>
               <c:if test="${ product.productSoldOut == 1 }">
                 <br/>
                 Sold Out

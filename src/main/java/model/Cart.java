@@ -9,6 +9,7 @@ public class Cart {
   int productPrice;
   int productSoldOut;
   int quantity;
+  int productGrinding;
 
   public String getMemberId() {
     return memberId;
@@ -74,6 +75,14 @@ public class Cart {
     this.quantity = quantity;
   }
 
+  public int getProductGrinding() {
+    return productGrinding;
+  }
+
+  public void setProductGrinding(int productGrinding) {
+    this.productGrinding = productGrinding;
+  }
+
   @Override
   public String toString() {
     return "Cart{" +
@@ -85,6 +94,7 @@ public class Cart {
       ", productPrice=" + productPrice +
       ", productSoldOut=" + productSoldOut +
       ", quantity=" + quantity +
+      ", productGrinding=" + productGrinding +
       '}';
   }
 }

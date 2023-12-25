@@ -6,6 +6,8 @@
     <resultMap type="image" id="imageMap">
         <id column="product_code" property="productCode" />
         <id column="file_name" property="fileName" />
+        <id column="file_modifier_name" property="fileModifierName" />
+        <id column="file_modified_date" property="fileModifiedDate" />
     </resultMap>
 
     <insert id="insertProductImage" parameterType="image">

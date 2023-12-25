@@ -9,6 +9,7 @@
         <id column="product_name" property="productName" />
         <id column="product_price" property="productPrice" />
         <id column="product_unit" property="productUnit" />
+        <id column="product_grinding" property="productGrinding" />
         <id column="product_file" property="productFile" />
         <id column="quantity" property="quantity" />
         <id column="order_date" property="orderDate" />

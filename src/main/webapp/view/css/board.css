@@ -88,6 +88,27 @@
   font-weight: bold;
   font-size: 18px;
 }
+.product_grinding {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+}
+.product_grinding select {
+  width: 200px;
+}
+.member_request {
+  display: flex;
+  justify-content: space-between;
+}
+.member_request textarea {
+  box-sizing: border-box;
+  outline: none;
+  resize: none;
+  width: 200px;
+  height: 80px;
+  border-radius: 3px;
+}
 .product_quantity_submit {
   display: flex;
   justify-content: flex-end;

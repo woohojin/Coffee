@@ -149,6 +149,7 @@ public class mainController {
                 map.put("productCode", cart.getProductCode());
                 map.put("productName", cart.getProductName());
                 map.put("productUnit", cart.getProductUnit());
+                map.put("productGrinding", cart.getProductGrinding());
                 map.put("quantity", cart.getQuantity());
                 map.put("productPrice", cart.getProductPrice());
                 map.put("productFile", cart.getProductFile());
@@ -160,6 +161,7 @@ public class mainController {
             map.put("productCode", cart.getProductCode());
             map.put("productName", cart.getProductName());
             map.put("productUnit", cart.getProductUnit());
+            map.put("productGrinding", cart.getProductGrinding());
             map.put("quantity", cart.getQuantity());
             map.put("productPrice", cart.getProductPrice());
             map.put("productFile", cart.getProductFile());
