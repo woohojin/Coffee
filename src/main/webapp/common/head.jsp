@@ -38,7 +38,7 @@
                         <a href="${ pageContext.request.contextPath }/member/memberSignIn">로그인</a>
                       </li>
                       <li>
-                        <a href="${ pageContext.request.contextPath }/member/memberSignUp">회원가입</a>
+                        <a href="${ pageContext.request.contextPath }/member/memberTerms">회원가입</a>
                       </li>
                     </c:when>
 
