@@ -9,11 +9,8 @@ order 테이블도 필요해보임 (현재 주문 상태, 주문번호 등)
 제품 코드별로 폴더를 나누어서 이미지 저장
 mssql agent (mysql 스케쥴러 확인)
 주문기록에 세금계산서 현금영수증 + 프론트에서 선택 후 form 생성
-인증번호가 일치하지 않습니다를 Ajax로 처리해야할듯
-인증하기 여러번 누르면 인증이 끝나고 카운트가 안끝나며 이후 다시 누르면 인증 실패 발생
-인증하기 빈칸으로 누르면 js 인증 성공 발생
-회원가입 requirement id 길이
 historymapper insert 수정 필요
+회원등급부족 문구 수정
 
 https://www.tosspayments.com/
 
@@ -23,6 +20,7 @@ https://www.tosspayments.com/
 1. int nullPointException = Integer 사용
 2. String.isEmpty() = String이 null값 일 때 NullPointerException을 발생시킴
 
+검색시 pagination 갯수
 고객요청사항 추가
 productGrinding이 다를 경우 카트 제품 여러개로
 시크릿 탭 이용시 에러

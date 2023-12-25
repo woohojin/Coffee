@@ -26,8 +26,9 @@
               name="memberId"
               id="member_id"
               type="text"
-              placeholder="영문 소문자만 가능, 4자리 이상"
+              placeholder="영문 소문자만 가능, 4자리 이상, 21자리 미만"
               minlength="4"
+              maxlength="20"
               oninput="idInputCheck(this)"
               spellcheck="false"
               required
@@ -313,108 +314,6 @@
     }
   }
 </script>
-<script>
-  let code;
-  let countdownInterval;
-  const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-  function verifyEmail() {
-    let memberEmail = document.querySelector('.member_email').value;
-
-    if(emailRegex.test(memberEmail) == false) {
-      alert("이메일 형식이 올바르지 않습니다.");
-      return;
-    }
-
-    if(${ findType == 'id'}) {
-      let memberName = document.querySelector('.member_name').value;
-
-      if (memberName.trim() === '' || memberEmail.trim() === '') {
-        alert('이름과 이메일을 입력하세요.');
-        return;
-      }
-    }
-
-    if(${ findType == 'password'}) {
-      let memberId = document.querySelector('.member_id').value;
-
-      if(memberId.trim() === '' || memberEmail.trim() === '') {
-        alert('아이디와 이메일을 입력하세요.');
-        return;
-      }
-    }
-
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', '${ pageContext.request.contextPath }/member/verifyEmail', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        if (xhr.status === 200) {
-          let response = JSON.parse(xhr.responseText);
-          code = response.code;
-          startCountdown();
-          alert("인증번호가 전송되었습니다.");
-        } else {
-          console.error('요청 실패');
-        }
-      }
-    };
-
-    let params = 'memberEmail=' + encodeURIComponent(memberEmail);
-    xhr.send(params);
-  }
-
-  function checkVerify() {
-    let verifyCode = document.querySelector(".verify_code").value;
-
-    if(code === "timeout") {
-      alert("인증시간이 초과되었습니다.");
-      return false;
-    }
-
-    if(code === verifyCode && !(code === "timeout")) {
-      return true;
-    } else {
-      alert("인증번호가 일치하지 않습니다.");
-      return false;
-    }
-  }
-
-  function startCountdown() {
-    let timeLimit = 180; // 3분 (초 단위)
-
-    let countdown = document.querySelector('.countdown');
-    let endTime = new Date().getTime() + timeLimit * 1000; // 현재 시간 + 3분
-
-    countdownInterval = setInterval(function () {
-      let now = new Date().getTime(); // 현재시간
-      let distance = endTime - now; // 현재와 종료시간의 차이 (남은시간을 분과 초로 바꾸기 위해)
-
-      let minutes = Math.floor((distance / 1000) / 60);
-      let seconds = Math.floor((distance / 1000) % 60);
-
-      countdown.textContent = minutes + ' : ' + seconds;
-
-      if (distance <= 0) {
-        clearInterval(countdownInterval);
-        countdown.textContent = '0 : 0';
-        code = "timeout";
-      }
-    }, 1000);
-  }
-
-  function stopCountdown() {
-    let verifyCode = document.querySelector(".verify_code").value;
-    let countdown = document.querySelector('.countdown');
-
-    if(code != null && code != verifyCode) {
-      alert("인증에 실패했습니다.");
-      return;
-    }
-
-    clearInterval(countdownInterval);
-    countdown.textContent = "";
-    alert("인증이 완료되었습니다.");
-  }
-</script>
+<script src="${ pageContext.request.contextPath }/view/js/signUpFormRequirement.js"></script>
+<script src="${ pageContext.request.contextPath }/view/js/emailVerification.js"></script>
 </body>

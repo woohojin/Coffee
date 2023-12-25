@@ -15,7 +15,6 @@
         <id column="order_date" property="orderDate" />
         <id column="delivery_address" property="deliveryAddress" />
         <id column="detail_delivery_address" property="detailDeliveryAddress" />
-        <id column="member_request" property="memberRequest" />
     </resultMap>
 
     <insert id="historyInsert" parameterType="history">
