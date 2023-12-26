@@ -1,14 +1,12 @@
 footer
 https 활성화 = ssl 인증서 발급
-장바구니/결제 및 주문기록에 현금영수증, 세금계산서 추가
-order 테이블도 필요해보임 (현재 주문 상태, 주문번호 등)
 제품 상세 페이지 이미지 부분 수정 필요 크기 및 파일명 규격화
 주문번호 (231130001 / YYMMDD001)
 개인정보처리 기간에 맞게 삭제
 이미지를 나눌 때 타입을 나누어서
 제품 코드별로 폴더를 나누어서 이미지 저장
 mssql agent (mysql 스케쥴러 확인)
-주문기록에 세금계산서 현금영수증 + 프론트에서 선택 후 form 생성
+
 historymapper insert 수정 필요
 회원등급부족 문구 수정
 
@@ -20,6 +18,9 @@ https://www.tosspayments.com/
 1. int nullPointException = Integer 사용
 2. String.isEmpty() = String이 null값 일 때 NullPointerException을 발생시킴
 
+order 테이블도 필요해보임 (현재 주문 상태, 주문번호 등)
+장바구니/결제 및 주문기록에 현금영수증, 세금계산서 추가
+주문기록에 세금계산서 현금영수증 + 프론트에서 선택 후 form 생성
 검색시 pagination 갯수
 고객요청사항 추가
 productGrinding이 다를 경우 카트 제품 여러개로

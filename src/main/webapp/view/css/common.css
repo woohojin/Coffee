@@ -198,7 +198,7 @@ input:focus {
 
 .main_slider,
 .slider,
-.main_premium_product,
+.main_product_list,
 .da_footer {
   display: flex;
   width: 100%;
