@@ -12,7 +12,8 @@ public class Product {
     int productTier;
     String productFile;
     int productSoldOut;
-    String productDate;
+    String productRegisterName;
+    String productRegisterDate;
     String productModifierName;
     String productModifiedDate;
 
@@ -104,12 +105,20 @@ public class Product {
         this.productSoldOut = productSoldOut;
     }
 
-    public String getProductDate() {
-        return productDate;
+    public String getProductRegisterName() {
+        return productRegisterName;
     }
 
-    public void setProductDate(String productDate) {
-        this.productDate = productDate;
+    public void setProductRegisterName(String productRegisterName) {
+        this.productRegisterName = productRegisterName;
+    }
+
+    public String getProductRegisterDate() {
+        return productRegisterDate;
+    }
+
+    public void setProductRegisterDate(String productRegisterDate) {
+        this.productRegisterDate = productRegisterDate;
     }
 
     public String getProductModifierName() {
@@ -142,7 +151,8 @@ public class Product {
           ", productTier=" + productTier +
           ", productFile='" + productFile + '\'' +
           ", productSoldOut=" + productSoldOut +
-          ", productDate='" + productDate + '\'' +
+          ", productRegisterName='" + productRegisterName + '\'' +
+          ", productRegisterDate='" + productRegisterDate + '\'' +
           ", productModifierName='" + productModifierName + '\'' +
           ", productModifiedDate='" + productModifiedDate + '\'' +
           '}';

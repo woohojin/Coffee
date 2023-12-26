@@ -97,6 +97,37 @@
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
+                  <th class="product_sold_out" onclick="orderBy(this)">
+                    <div class="asc">
+                      <span>품절</span>
+                      <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
+                    </div>
+                  </th>
+                  <th class="product_file">
+                    <div class="asc">
+                      <span>파일명</span>
+                    </div>
+                  </th>
+                  <th class="product_register_name">
+                    <div class="asc">
+                      <span>등록자</span>
+                    </div>
+                  </th>
+                  <th class="product_register_date">
+                    <div class="asc">
+                      <span>등록일</span>
+                    </div>
+                  </th>
+                  <th class="product_modifier_name">
+                    <div class="asc">
+                      <span>수정자</span>
+                    </div>
+                  </th>
+                  <th class="product_modified_date">
+                    <div class="asc">
+                      <span>수정일</span>
+                    </div>
+                  </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -128,6 +159,24 @@
                     </td>
                     <td>
                       <p>${ p.productTier }</p>
+                    </td>
+                    <td>
+                      <p>${ p.productSoldOut }</p>
+                    </td>
+                    <td>
+                      <p>${ p.productFile }</p>
+                    </td>
+                    <td>
+                      <p>${ p.productRegisterName }</p>
+                    </td>
+                    <td>
+                      <p>${ p.productRegisterDate }</p>
+                    </td>
+                    <td>
+                      <p>${ p.productModifierName }</p>
+                    </td>
+                    <td>
+                      <p>${ p.productModifiedDate }</p>
                     </td>
                   </tr>
                 </c:forEach>

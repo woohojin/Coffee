@@ -11,7 +11,7 @@
     </resultMap>
 
     <insert id="insertProductImage" parameterType="image">
-        insert into product_image values (#{productCode}, #{fileName})
+        insert into product_image values (#{productCode}, #{fileName}, null, null)
     </insert>
 
     <select id="selectProductImage" parameterType="map" resultMap="imageMap">

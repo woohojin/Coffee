@@ -15,14 +15,15 @@
         <id column="product_tier" property="productTier" />
         <id column="product_file" property="productFile" />
         <id column="product_sold_out" property="productSoldOut" />
-        <id column="product_date" property="productDate" />
+        <id column="product_register_name" property="productRegisterName" />
+        <id column="product_register_date" property="productRegisterDate" />
         <id column="product_modifier_name" property="productModifierName" />
         <id column="product_modified_date" property="productModifiedDate" />
     </resultMap>
 
     <insert id="productInsert" parameterType="product">
         insert into product values (#{productCode}, #{productType}, #{productName}, #{productPrice}, #{productUnit}, #{productCountry},
-                                    #{productSpecies}, #{productCompany}, 0, #{productFile}, 0)
+                                    #{productSpecies}, #{productCompany}, #{productTier}, #{productFile}, 0, #{productRegisterName}, NOW(), null, null)
     </insert>
 
     <delete id="productDelete" parameterType="String">
