@@ -25,8 +25,11 @@
     </resultMap>
 
     <insert id="memberInsert" parameterType="member">
-        insert into member values (#{memberId}, #{memberName}, #{memberCompanyName}, #{memberPassword}, #{memberTel}, #{memberCompanyTel},
-                                   #{memberAddress}, #{memberDetailAddress}, #{memberDeliveryAddress}, #{memberDetailDeliveryAddress}, #{memberEmail}, #{memberFile}, 0000, 0, NOW(), 0, null, null, null)
+        insert into member values (#{memberId}, #{memberName, typeHandler=handler.EncryptionTypeHandler}, #{memberCompanyName}, #{memberPassword},
+                                   #{memberTel, typeHandler=handler.EncryptionTypeHandler}, #{memberCompanyTel}, #{memberAddress, typeHandler=handler.EncryptionTypeHandler},
+                                   #{memberDetailAddress, typeHandler=handler.EncryptionTypeHandler}, #{memberDeliveryAddress, typeHandler=handler.EncryptionTypeHandler},
+                                   #{memberDetailDeliveryAddress, typeHandler=handler.EncryptionTypeHandler}, #{memberEmail, typeHandler=handler.EncryptionTypeHandler},
+                                   #{memberFile}, 0000, 0, NOW(), 0, null, null, null)
     </insert>
 
     <select id="rownumSet" parameterType="int" resultType="int">

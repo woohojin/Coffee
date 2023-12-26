@@ -17,24 +17,27 @@ public class EncryptionTypeHandler extends BaseTypeHandler<String> {
 
   @Override
   public void setNonNullParameter(PreparedStatement preparedStatement, int i, String s, JdbcType jdbcType) throws SQLException {
-    preparedStatement.setString(i, s);
+    String encryptedValue;
+
+    try {
+      encryptedValue = aesEncryptionModule.encrypt(s);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+
+    preparedStatement.setString(i, encryptedValue);
   }
 
   @Override
   public String getNullableResult(ResultSet resultSet, String columnName) throws SQLException {
     String value = resultSet.getString(columnName);
-    System.out.println("value check " + value + " " + columnName);
+
     try {
-      if(columnName.equals("member_tel")) {
-        String encryptValue = aesEncryptionModule.encrypt(value);
-        System.out.println("encryptValue = " + encryptValue);
-        String decryptValue = aesEncryptionModule.decrypt(encryptValue);
-        System.out.println("decryptValue = " + decryptValue);
-      }
+        String decryptedValue = aesEncryptionModule.decrypt(value);
+        return decryptedValue;
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
-    return value;
   }
 
   @Override
