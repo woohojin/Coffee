@@ -3,17 +3,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="member">
     <resultMap type="member" id="memberMap">
-        <id column="member_id" property="memberId" typeHandler="handler.EncryptionTypeHandler" />
-        <id column="member_name" property="memberName" />
+        <id column="member_id" property="memberId" />
+        <id column="member_name" property="memberName" typeHandler="handler.EncryptionTypeHandler"/>
         <id column="member_company_name" property="memberCompanyName" />
         <id column="member_password" property="memberPassword" />
-        <id column="member_tel" property="memberTel" />
+        <id column="member_tel" property="memberTel" typeHandler="handler.EncryptionTypeHandler"/>
         <id column="member_company_tel" property="memberCompanyTel" />
-        <id column="member_address" property="memberAddress" />
-        <id column="member_detail_address" property="memberDetailAddress" />
-        <id column="member_delivery_address" property="memberDeliveryAddress" />
-        <id column="member_detail_delivery_address" property="memberDetailDeliveryAddress" />
-        <id column="member_email" property="memberEmail" />
+        <id column="member_address" property="memberAddress" typeHandler="handler.EncryptionTypeHandler"/>
+        <id column="member_detail_address" property="memberDetailAddress" typeHandler="handler.EncryptionTypeHandler"/>
+        <id column="member_delivery_address" property="memberDeliveryAddress" typeHandler="handler.EncryptionTypeHandler"/>
+        <id column="member_detail_delivery_address" property="memberDetailDeliveryAddress" typeHandler="handler.EncryptionTypeHandler"/>
+        <id column="member_email" property="memberEmail" typeHandler="handler.EncryptionTypeHandler"/>
         <id column="member_file" property="memberFile" />
         <id column="member_fran_code" property="memberFranCode" />
         <id column="member_tier" property="memberTier" />

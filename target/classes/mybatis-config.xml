@@ -17,9 +17,9 @@
 
     </typeAliases>
 
-    <typeHandlers>
-        <typeHandler handler="handler.EncryptionTypeHandler"/>
-    </typeHandlers>
+<!--    <typeHandlers>-->
+<!--        <typeHandler handler="handler.EncryptionTypeHandler"/>-->
+<!--    </typeHandlers>-->
 
     <mappers><!-- sql 구문 -->
 
