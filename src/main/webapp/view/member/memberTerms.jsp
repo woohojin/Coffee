@@ -15,7 +15,7 @@
       <div class="member_terms">
         <p>
           <input type="checkbox" class="check-all" onclick="setCheckAll()">
-          <label>(필수) 이용약관 및 개인정보수집 및 이용에 모두 동의합니다.</label>
+          <label onclick="setCheckAll()">(필수) 이용약관 및 개인정보수집 및 이용에 모두 동의합니다.</label>
         </p>
         <div class="member_terms_textarea">
           <p>[필수] 이용약관 동의</p>
@@ -257,7 +257,7 @@
         </textarea>
           <p>
             <input type="checkbox" class="first_checkbox" required>
-            <label>이용약관에 동의하십니까?</label>
+            <label onclick="setCheckedClickText(this)">이용약관에 동의하십니까?</label>
           </p>
         </div>
         <div class="member_terms_textarea">
@@ -284,7 +284,7 @@
         </textarea>
           <p>
             <input type="checkbox" class="second_checkbox" required>
-            <label>개인정보 수집 및 이용에 동의하십니까?</label>
+            <label onclick="setCheckedClickText(this)">개인정보 수집 및 이용에 동의하십니까?</label>
           </p>
         </div>
         <div class="member_terms_button">
@@ -313,13 +313,15 @@
     if (!firstCheckbox.checked || !secondCheckbox.checked) {
       firstCheckbox.checked = true;
       secondCheckbox.checked = true;
+      checkAll.checked = true;
     } else {
       firstCheckbox.checked = false;
       secondCheckbox.checked = false;
+      checkAll.checked = false;
     }
   }
   
-  function checkbox() {
+  function getChecked() {
     if(firstCheckbox.checked === true && secondCheckbox.checked === true) {
       checkAll.checked = true;
     } else {
@@ -327,8 +329,14 @@
     }
   }
 
-  firstCheckbox.addEventListener('change', checkbox);
-  secondCheckbox.addEventListener('change', checkbox);
+  function setCheckedClickText(object) {
+    const checkbox = object.parentNode.firstElementChild;
+    checkbox.checked == false ? checkbox.checked = true : checkbox.checked = false;
+    getChecked();
+  }
+
+  firstCheckbox.addEventListener('change', getChecked);
+  secondCheckbox.addEventListener('change', getChecked);
 
 </script>
 </body>

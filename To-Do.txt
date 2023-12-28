@@ -7,9 +7,8 @@ https 활성화 = ssl 인증서 발급
 제품 코드별로 폴더를 나누어서 이미지 저장
 mssql agent (mysql 스케쥴러 확인)
 historymapper insert 수정 필요
-개인정보이용약관 필수버튼
 회원등급부족 문구 수정
-회원정보수정에 이메일 인증추가
+메인페이지
 
 https://www.tosspayments.com/
 
