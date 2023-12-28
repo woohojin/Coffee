@@ -389,18 +389,18 @@ public class memberController {
     return "alert";
   }
 
-  @RequestMapping("memberDelete")
-  public String memberDelete() throws Exception {
-    return "/member/memberDelete";
+  @RequestMapping("memberWithdrawal")
+  public String memberWithdrawal() throws Exception {
+    return "/member/memberWithdrawal";
   }
 
-  @RequestMapping("memberDeletePro")
-  public String memberDeletePro(String memberPassword) throws Exception {
+  @RequestMapping("memberWithdrawalPro")
+  public String memberWithdrawalPro(String memberPassword) throws Exception {
     String memberId = (String) session.getAttribute("memberId");
     Member member = memberDao.memberSelectOne(memberId);
 
     String msg = "회원 탈퇴에 실패했습니다.";
-    String url = "/member/memberDelete";
+    String url = "/member/memberWithdrawal";
 
     if(passwordEncoder.matches(memberPassword, member.getMemberPassword())) {
       Cookie cookieId = new Cookie("memberId", null);
@@ -413,7 +413,8 @@ public class memberController {
       response.addCookie(cookieToken);
 
       cookieDao.cookieDelete(memberId);
-      memberDao.memberDisable(memberId, 1);
+      memberDao.memberWithdrawal(memberId);
+      memberDao.memberDelete(memberId);
 
       session.invalidate();
 

@@ -254,6 +254,7 @@
                       type="email"
                       spellcheck="false"
                       required
+                      value="${ member.memberEmail }"
               />
               <div class="member_email_verify_button">
                 <button class="input_btn" type="button" onclick="verifyEmail()">
@@ -272,7 +273,7 @@
                       class="verify_code"
                       type="text"
                       spellcheck="false"
-                      required
+                      placeholder="이메일 변경 시 인증바랍니다."
               />
               <div class="member_email_verify_button">
                 <button class="input_btn" type="button" onclick="stopCountdown()">
@@ -307,12 +308,13 @@
       </table>
       <div class="signup" style="justify-content: space-between">
         <div class="input_btn">
-          <a href="${ pageContext.request.contextPath }/member/memberDisable">회원탈퇴</a>
+          <a href="${ pageContext.request.contextPath }/member/memberWithdrawal">회원탈퇴</a>
         </div>
         <input
           type="submit"
           value="수정"
           class="submit_btn"
+          onclick="return checkVerifyInProfile()"
         />
       </div>
     </form>
@@ -342,4 +344,24 @@
 </script>
 <script src="${ pageContext.request.contextPath }/view/js/signUpFormRequirement.js"></script>
 <script src="${ pageContext.request.contextPath }/view/js/emailVerification.js"></script>
+<script>
+  function checkVerifyInProfile() {
+    let verifyCode = document.querySelector(".verify_code").value;
+    let memberEmailValue = document.querySelector(".member_email").value;
+
+    if(memberEmailValue !== '${ member.memberEmail }') {
+      if(code === "timeout") {
+        alert("인증시간이 초과되었습니다.");
+        return false;
+      }
+
+      if(code === verifyCode && !(code === "timeout")) {
+        return true;
+      } else {
+        alert("인증번호가 일치하지 않습니다.");
+        return false;
+      }
+    }
+  }
+</script>
 </body>

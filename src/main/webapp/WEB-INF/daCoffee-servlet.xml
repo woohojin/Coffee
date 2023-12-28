@@ -62,7 +62,7 @@
 
         <mvc:interceptor>
 
-            <mvc:mapping path="/member/memberDisable" />
+            <mvc:mapping path="/member/memberWithdrawal" />
             <mvc:mapping path="/member/memberHistory" />
             <mvc:mapping path="/member/memberMyPage" />
             <mvc:mapping path="/member/memberProfile" />

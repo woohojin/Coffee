@@ -8,6 +8,7 @@ https 활성화 = ssl 인증서 발급
 mssql agent (mysql 스케쥴러 확인)
 historymapper insert 수정 필요
 회원등급부족 문구 수정
+결제기록을 저장하는 테이블도 필요할듯
 메인페이지
 
 https://www.tosspayments.com/

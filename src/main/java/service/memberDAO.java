@@ -304,11 +304,33 @@ public class memberDAO {
         session.update(NS + "memberUpdateNotPassword", member);
     }
 
+    public int memberWithdrawal(String memberId) {
+        int num = session.insert(NS+"memberWithdrawal", memberId);
+        return num;
+    }
+
+    public List<Member> memberWithdrawalList(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Member> list = session.selectList(NS + "memberWithdrawalList", map);
+        return list;
+    }
+
+    public int memberWithdrawalCount() {
+        int num = session.selectOne(NS + "memberWithdrawalCount");
+        return num;
+    }
+
     public void memberDisable(String memberId, int memberDisable) {
         map.clear();
         map.put("memberId", memberId);
         map.put("memberDisable", memberDisable);
         session.update(NS + "memberDisable", map);
+    }
+
+    public void memberDelete(String memberId) {
+        session.delete(NS + "memberDelete", memberId);
     }
 
 }

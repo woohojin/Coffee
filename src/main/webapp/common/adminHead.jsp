@@ -10,6 +10,9 @@
         <div class="hd_lnb_list">
           <ul>
             <li>
+              <a href="${ pageContext.request.contextPath }/admin/orderHistory">주문 기록</a>
+            </li>
+            <li>
               <a href="${ pageContext.request.contextPath }/admin/productList">제품 리스트</a>
             </li>
             <li>
@@ -31,7 +34,7 @@
               <a href="${ pageContext.request.contextPath }/admin/memberDisableUpdate">회원 비활성화 수정</a>
             </li>
             <li>
-              <a href="${ pageContext.request.contextPath }/admin/orderHistory">주문 기록</a>
+              <a href="${ pageContext.request.contextPath }/admin/memberWithdrawalList">탈퇴 회원 리스트</a>
             </li>
           </ul>
         </div>

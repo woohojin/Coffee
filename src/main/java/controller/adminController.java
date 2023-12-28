@@ -607,6 +607,56 @@ public class adminController {
     return "admin/memberList";
   }
 
+  @RequestMapping("memberWithdrawalList")
+  public String memberWithdrawalList() throws Exception {
+    Integer memberTier = (Integer) session.getAttribute("memberTier");
+    if(memberTier == null) {
+      memberTier = 0;
+    }
+
+    String pageNum = request.getParameter("pageNum");
+    if (pageNum == null) {
+      pageNum = "1";
+    }
+
+    int pageInt = Integer.parseInt(pageNum);
+
+    int limit = 32; // 한 page당 게시물 개수
+    int bottomLine = 100; // pagination 개수
+
+    int memberCount = 0;
+
+    if(memberTier == 9) {
+      memberDao.rownumSet();
+      List<Member> list = memberDao.memberWithdrawalList(pageInt, limit);
+      LOGGER.info(list.toString());
+      memberCount = memberDao.memberWithdrawalCount();
+      request.setAttribute("list", list);
+      LOGGER.info(list.toString());
+    }
+
+    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
+    int end = start + bottomLine - 1;
+    int maxPage = (memberCount / limit) + (memberCount % limit == 0 ? 0 : 1);
+    if (end > maxPage) {
+      end = maxPage;
+    }
+    if (end > memberCount) {
+      end = memberCount;
+    }
+
+    request.setAttribute("memberTier", memberTier);
+    request.setAttribute("memberCount", memberCount);
+    request.setAttribute("pageNum", pageNum);
+    request.setAttribute("start", start);
+    request.setAttribute("end", end);
+    request.setAttribute("bottomLine", bottomLine);
+    request.setAttribute("maxPage", maxPage);
+    request.setAttribute("pageInt", pageInt);
+
+    return "admin/memberWithdrawalList";
+  }
+
   @RequestMapping("orderHistory")
   public String orderHistory() throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");

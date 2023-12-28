@@ -284,23 +284,46 @@
     </update>
 
     <update id="memberUpdate" parameterType="member">
-        update member set member_name = #{memberName}, member_company_name = #{memberCompanyName}, member_password = #{memberPassword},
-                          member_tel = #{memberTel}, member_company_tel = #{memberCompanyTel}, member_address = #{memberAddress},
-                          member_detail_address = #{memberDetailAddress}, member_delivery_address = #{memberDeliveryAddress},
-                          member_detail_delivery_address = #{memberDetailDeliveryAddress}, member_email = #{memberEmail}, member_file = #{memberFile}
+        update member set member_name = #{memberName, typeHandler=handler.EncryptionTypeHandler}, member_company_name = #{memberCompanyName}, member_password = #{memberPassword},
+                          member_tel = #{memberTel, typeHandler=handler.EncryptionTypeHandler}, member_company_tel = #{memberCompanyTel},
+                          member_address = #{memberAddress, typeHandler=handler.EncryptionTypeHandler}, member_detail_address = #{memberDetailAddress, typeHandler=handler.EncryptionTypeHandler},
+                          member_delivery_address = #{memberDeliveryAddress, typeHandler=handler.EncryptionTypeHandler}, member_detail_delivery_address = #{memberDetailDeliveryAddress, typeHandler=handler.EncryptionTypeHandler},
+                          member_email = #{memberEmail, typeHandler=handler.EncryptionTypeHandler}, member_file = #{memberFile}
         where member_id = #{memberId}
     </update>
 
     <update id="memberUpdateNotPassword" parameterType="member">
-        update member set member_name = #{memberName}, member_company_name = #{memberCompanyName},
-                          member_tel = #{memberTel}, member_company_tel = #{memberCompanyTel}, member_address = #{memberAddress},
-                          member_detail_address = #{memberDetailAddress}, member_delivery_address = #{memberDeliveryAddress},
-                          member_detail_delivery_address = #{memberDetailDeliveryAddress}, member_email = #{memberEmail}, member_file = #{memberFile}
+        update member set member_name = #{memberName, typeHandler=handler.EncryptionTypeHandler}, member_company_name = #{memberCompanyName},
+                          member_tel = #{memberTel, typeHandler=handler.EncryptionTypeHandler}, member_company_tel = #{memberCompanyTel},
+                          member_address = #{memberAddress, typeHandler=handler.EncryptionTypeHandler},  member_detail_address = #{memberDetailAddress, typeHandler=handler.EncryptionTypeHandler},
+                          member_delivery_address = #{memberDeliveryAddress,typeHandler=handler.EncryptionTypeHandler}, member_detail_delivery_address = #{memberDetailDeliveryAddress, typeHandler=handler.EncryptionTypeHandler},
+                          member_email = #{memberEmail, typeHandler=handler.EncryptionTypeHandler}, member_file = #{memberFile}
         where member_id = #{memberId}
     </update>
 
-    <update id="memberDisable" parameterType="map">
-        update member set member_disable = #{memberDisable}, member_disable_date = NOW() where member_id = #{memberId}
-    </update>
+    <insert id="memberWithdrawal" parameterType="String">
+        insert into member_withdrawal (member_id, member_company_name, member_tel, member_company_tel)
+        select member_id, member_company_name, member_tel, member_company_tel from member where member_id = #{member_id}
+    </insert>
+
+  <select id="memberWithdrawalList" parameterType="map" resultMap="memberMap">
+    select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from member_withdrawal a, (select @rownum := 0) tmp
+        where NOT member_id = "admin" ) b
+    where b.rownum between #{start} and #{end};
+  </select>
+
+  <select id="memberWithdrawalCount" parameterType="map" resultType="int">
+    select count(*) from member_withdrawal where NOT member_id = "admin"
+  </select>
+
+  <update id="memberDisable" parameterType="map">
+    update member set member_disable = #{memberDisable}, member_disable_date = NOW() where member_id = #{memberId}
+  </update>
+
+  <delete id="memberDelete" parameterType="string">
+        delete from member where member_id = #{memberId}
+  </delete>
 
 </mapper>
