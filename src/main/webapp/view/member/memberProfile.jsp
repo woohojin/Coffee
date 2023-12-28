@@ -241,20 +241,47 @@
               />
             </td>
           </tr>
-          <tr>
+          <tr class="member_email_wrap">
             <th>
               <label for="member_email">이메일</label>
               <div class="form_required">*</div>
             </th>
             <td>
               <input
-                name="memberEmail"
-                id="member_email"
-                type="email"
-                value="${ member.memberEmail }"
-                spellcheck="false"
-                required
+                      name="memberEmail"
+                      id="member_email"
+                      class="member_email"
+                      type="email"
+                      spellcheck="false"
+                      required
               />
+              <div class="member_email_verify_button">
+                <button class="input_btn" type="button" onclick="verifyEmail()">
+                  인증번호 발송
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr style="position: relative;">
+            <th>
+              <label>인증번호</label>
+            </th>
+            <td>
+              <input
+                      name="verifyCode"
+                      class="verify_code"
+                      type="text"
+                      spellcheck="false"
+                      required
+              />
+              <div class="member_email_verify_button">
+                <button class="input_btn" type="button" onclick="stopCountdown()">
+                  인증하기
+                </button>
+              </div>
+              <div class="remain_time">
+                <span class="countdown"></span>
+              </div>
             </td>
           </tr>
           <tr>
@@ -264,18 +291,15 @@
             <td>
               <div class="file_input_wrap">
                 <input
-                  name="memberFile"
-                  id="file"
-                  type="text"
-                  value=""
-                  placeholder="사진 넣기 버튼을 이용해주세요"
-                  value=" ${ member.memberFile }"
-                  readonly
-                  spellcheck="false"
+                        name="file"
+                        id="file"
+                        type="file"
+                        value=""
+                        placeholder="사업자 회원의 경우 꼭 넣어주세요"
+                        spellcheck="false"
+                        onchange="inputFileName()"
                 />
-                <div class="input_btn">
-                  <a href="" onclick="fileUpload()">사진 넣기</a>
-                </div>
+                <input type="hidden" id="memberFile" name="memberFile" value="">
               </div>
             </td>
           </tr>
@@ -294,4 +318,28 @@
     </form>
   </div>
 </main>
+<script>
+  function sameAddress() {
+    const memberAddress = document.getElementById("member_address");
+    const memberDetailAddress = document.getElementById("member_detail_address");
+    const memberDeliveryAddress = document.getElementById("member_delivery_address");
+    const memberDetailDeliveryAddress = document.getElementById("member_detail_delivery_address");
+
+    memberDeliveryAddress.value = memberAddress.value;
+    memberDetailDeliveryAddress.value = memberDetailAddress.value;
+  }
+
+  function inputFileName() {
+    const fileInput = document.getElementById("file");
+    const file = fileInput.files[0];
+
+    if(file) {
+      const fileName = file.name;
+      const input = document.getElementById("memberFile");
+      input.value = fileName;
+    }
+  }
+</script>
+<script src="${ pageContext.request.contextPath }/view/js/signUpFormRequirement.js"></script>
+<script src="${ pageContext.request.contextPath }/view/js/emailVerification.js"></script>
 </body>
