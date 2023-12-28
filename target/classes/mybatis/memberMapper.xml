@@ -22,6 +22,7 @@
         <id column="member_disable_date" property="memberDisableDate" />
         <id column="member_modifier_name" property="memberModifierName" />
         <id column="member_modified_date" property="memberModifiedDate" />
+        <id column="member_withdrawal_date" property="memberWithdrawalDate" />
     </resultMap>
 
     <insert id="memberInsert" parameterType="member">
@@ -302,8 +303,8 @@
     </update>
 
     <insert id="memberWithdrawal" parameterType="String">
-        insert into member_withdrawal (member_id, member_company_name, member_tel, member_company_tel)
-        select member_id, member_company_name, member_tel, member_company_tel from member where member_id = #{member_id}
+        insert into member_withdrawal (member_id, member_company_name, member_tel, member_company_tel, member_withdrawal_date)
+        select member_id, member_company_name, member_tel, member_company_tel, NOW() from member where member_id = #{member_id}
     </insert>
 
   <select id="memberWithdrawalList" parameterType="map" resultMap="memberMap">

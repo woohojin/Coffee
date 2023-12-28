@@ -305,7 +305,7 @@ public class memberDAO {
     }
 
     public int memberWithdrawal(String memberId) {
-        int num = session.insert(NS+"memberWithdrawal", memberId);
+        int num = session.insert(NS + "memberWithdrawal", memberId);
         return num;
     }
 

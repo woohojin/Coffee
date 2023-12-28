@@ -52,6 +52,11 @@
                       <span>회사번호</span>
                     </div>
                   </th>
+                  <th class="member_withdrawal_date">
+                    <div class="asc">
+                      <span>탈퇴일자</span>
+                    </div>
+                  </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -68,6 +73,9 @@
                     </td>
                     <td>
                       <p>${ m.memberCompanyTel }</p>
+                    </td>
+                    <td>
+                      <p>${ m.memberWithdrawalDate }</p>
                     </td>
                   </tr>
                 </c:forEach>
