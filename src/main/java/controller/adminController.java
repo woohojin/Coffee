@@ -989,8 +989,8 @@ public class adminController {
     Image image = new Image();
     String productCode = product.getProductCode();
 
-    String filePath = request.getServletContext().getRealPath("/") + "view/files/";
-    String fileName = null;
+    String filePath = request.getServletContext().getRealPath("/") + "view/files/" + productCode;
+    String fileName;
     File uploadPath = new File(filePath);
 
     if (!uploadPath.exists()) {
@@ -1006,10 +1006,15 @@ public class adminController {
         for(int i = 0; i < fileList.size(); i++) {
           fileName = fileList.get(i).getOriginalFilename();
           File file = new File(filePath, fileName);
+
           image.setProductCode(productCode);
           image.setFileName(fileName);
           imageDao.insertProductImage(image);
-          product.setProductFile(fileName); // 파일명 규격화 후 수정 필요
+
+          if(fileName.contains("thumbnail")) {
+            product.setProductFile(fileName);
+          }
+
           try {
             fileList.get(i).transferTo(file);
           } catch (IllegalStateException e) {
