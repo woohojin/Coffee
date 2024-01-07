@@ -167,12 +167,12 @@
                   </li>
                   <li>
                     <a href="${ pageContext.request.contextPath }/board/product"
-                    >임대머신</a
+                    >기타용품</a
                     >
                   </li>
                   <li>
                     <a href="${ pageContext.request.contextPath }/board/product"
-                    >기타용품</a
+                    >임대머신</a
                     >
                   </li>
                 </ul>

@@ -9,7 +9,7 @@
   <div class="product_wrap">
     <div class="page_head">
       <a>
-        <h1>블렌드 커피</h1>
+        <h1>원두 커피</h1>
       </a>
     </div>
     <div class="product">

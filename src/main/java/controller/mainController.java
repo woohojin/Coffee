@@ -117,7 +117,21 @@ public class mainController {
 
     @RequestMapping("productDetail")
     public String productDetail(String productCode) throws Exception {
+        Integer memberTier = (Integer) session.getAttribute("memberTier");
+        if(memberTier == null) {
+            memberTier = 0;
+        }
+
+        int productCount = 0;
+
+        if(memberTier != 0) {
+            productCount = productDao.productCountByTier(memberTier);
+        }
+
         Product product = productDao.productSelectOne(productCode);
+
+        request.setAttribute("memberTier", memberTier);
+        request.setAttribute("productCount", productCount);
         request.setAttribute("product", product);
 
         return "board/product/productDetailBoard";

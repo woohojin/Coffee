@@ -11,6 +11,7 @@ historymapper insert 수정 필요
 이미지 완성 후 업로드 테스트
 제품상세페이지 interceptor
 controller product 수정 필요 (원두, 믹스, 임대 등)
+productDetail scroll menu 수정
 메인페이지
 
 제품 이미지명 AA0001_thumbnail, AA0001_detail
