@@ -1,0 +1,235 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
+@import "./animations/keyframes.css";
+@import "variables.css";
+
+.fade_in {
+  animation: fadeIn 0.5s linear forwards;
+}
+.fade_out {
+  animation: fadeOut 0.5s linear forwards;
+}
+.sold_out {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  color: white;
+  width: 115px;
+  height: 115px;
+  background-color: rgba(131, 131, 131, 0.7);
+  font-size: 20px;
+}
+.page_head {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 40px 0 50px 0;
+  font-size: 30px;
+}
+.page_head a {
+  color: black;
+}
+.background-fadeout {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
+}
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.left-align {
+  display: flex;
+  justify-content: flex-start;
+}
+.datepicker {
+  text-align: center;
+  caret-color: transparent;
+  width: 75px;
+  height: 20px;
+  border: 2px solid var(--mainColor);
+  border-radius: 4px;
+  line-height: 20px;
+}
+
+body {
+  overflow-x: hidden;
+  user-select:none;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+}
+body::-webkit-scrollbar {
+  width: 12px;
+}
+body::-webkit-scrollbar-thumb {
+  background: var(--mainColor);
+  border-radius: 25px;
+}
+a {
+  cursor: pointer;
+  text-decoration: none;
+  color: #666;
+}
+li {
+  float: left;
+}
+main {
+  min-height: 100vh;
+  margin-top: 155px;
+}
+input:focus {
+  outline: none;
+}
+
+.member_cart_page_wrap,
+.member_profile_page_wrap {
+  width: 100%;
+}
+#member_profile_page .page_head,
+#member_mypage_page .page_head,
+#member_history_page .page_head,
+#member_terms_page .page_head,
+#product_page .page_head {
+  margin-top: 200px;
+}
+
+.signup,
+.submit {
+  display: flex;
+  justify-content: flex-end;
+}
+.signin {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.signup {
+  width: 100%;
+  margin-top: 10px;
+}
+.btn,
+.submit_btn,
+.input_btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: initial;
+  color: black;
+  cursor: pointer;
+  box-sizing: border-box;
+  width: 80px;
+  height: 40px;
+  border: 2px solid var(--mainColor);
+  border-radius: 4px;
+  font-size: 14px;
+
+}
+.submit_btn,
+.btn {
+  background-color: var(--mainColor);
+  color: white;
+}
+.btn a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  width: 100%;
+  height: 100%;
+}
+.input_btn a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+.left_btn,
+.right_btn {
+  position: absolute;
+  background-color: white;
+  cursor: pointer;
+  width: 40px;
+  height: 35px;
+  border: 1px solid var(--grayLine);
+  border-radius: 4px;
+  font-size: 15px;
+}
+.left_btn {
+  left: -38px;
+}
+.right_btn {
+  left: 42px;
+}
+.left_btn img,
+.right_btn img {
+  width: 10px;
+}
+.up_btn,
+.down_btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  cursor: pointer;
+  width: 20px;
+  height: 18px;
+  border: 1px solid var(--grayLine);
+  border-radius: 2px;
+}
+.down_btn {
+  border-top: none;
+}
+.up_btn img,
+.down_btn img {
+  width: 8px;
+}
+
+.pagination_wrap {
+  margin-top: 70px;
+}
+.pagination a {
+  font-size: 17px;
+}
+
+.main_slider,
+.slider,
+.main_product_list,
+.da_footer {
+  display: flex;
+  width: 100%;
+}
+.arrow {
+  width: 100%;
+  position: relative;
+  top: 240px;
+}
+.arrow a img {
+  width: 50px;
+  height: 75px;
+  opacity: 0.3;
+}
+.prev,
+.next {
+  position: absolute;
+  font-size: 80px;
+}
+.prev {
+  left: -650px;
+}
+.next {
+  left: 650px;
+}
+
+.remain_time {
+  position: absolute;
+  right: -180px;
+  top: 32px;
+}
+.countdown {
+  color: red;
+}

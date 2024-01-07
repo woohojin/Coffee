@@ -1,0 +1,34 @@
+<footer>
+  <div class="da_footer">
+    <ul>
+      <li>
+        <p>법인명 : (주)다올커피 &nbsp 대표 : 우경윤</p>
+      </li>
+      <li>
+        <span>사업자 등록번호 : 783-44-01146</span>
+        <a href="https://www.ftc.go.kr/www/biz/bizCommList.do?key=5375&searchCnd=wrkr_no&searchKrwd=7834401146" target="_blank">[사업자정보확인]</a>
+      </li>
+      <li>
+        <span>통신판매번호 : 2023-경기부천-4221</span>
+      </li>
+      <li>
+        <p>
+          주소 : 경기도 부천시 도약로 261 (부천대우테크노파크) C동 901호
+          (주)다올커피
+        </p>
+      </li>
+      <li>
+        <p>개인정보 보호 책임자 : 우경윤</p>
+      </li>
+      <li>
+        <p>이메일 : coffeedaall@gmail.com</p>
+      </li>
+      <li>
+        <p>전화번호 : xxx-xxxx</p>
+      </li>
+      <li class="copyright">
+        <p>COPYRIGHT ⓒ (주)다올커피, All Rights Reserved.</p>
+      </li>
+    </ul>
+  </div>
+</footer>
