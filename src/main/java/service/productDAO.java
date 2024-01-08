@@ -43,8 +43,11 @@ public class productDAO {
         return num;
     }
 
-    public int productCountByTier(int memberTier) {
-        int num = session.selectOne(NS + "productCount", memberTier);
+    public int productCountByTierByProductType(int memberTier, int productType) {
+        map.clear();
+        map.put("memberTier", memberTier);
+        map.put("productType", productType);
+        int num = session.selectOne(NS + "productCountByTierByProductType", map);
         return num;
     }
 
@@ -83,12 +86,13 @@ public class productDAO {
         return list;
     }
 
-    public List<Product> productListByMemberTier(int pageInt, int limit, int memberTier) {
+    public List<Product> productListByMemberTierByProductType(int pageInt, int limit, int memberTier, int productType) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("memberTier", memberTier);
-        List<Product> list = session.selectList(NS + "productListByMemberTier", map);
+        map.put("productType", productType);
+        List<Product> list = session.selectList(NS + "productListByMemberTierByProductType", map);
         return list;
     }
 

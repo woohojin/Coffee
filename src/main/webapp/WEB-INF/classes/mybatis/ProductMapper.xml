@@ -34,8 +34,8 @@
         update product set product_sold_out = #{productSoldOut} where product_code = #{productCode}
     </update>
 
-    <select id="productCountByTier" parameterType="map" resultType="int">
-        select count(*) from product where product_tier = #{memberTier}
+    <select id="productCountByTierByProductType" parameterType="map" resultType="int">
+        select count(*) from product where product_tier = #{memberTier} and product_type = #{productType}
     </select>
 
     <select id="productCount" parameterType="map" resultType="int">
@@ -65,11 +65,11 @@
         set @rownum := 0
     </select>
 
-    <select id="productListByMemberTier" parameterType="map" resultMap="productMap">
+    <select id="productListByMemberTierByProductType" parameterType="map" resultMap="productMap">
         select * from (
         select @rownum := @rownum + 1 as rownum,
         a.* from product a, (select @rownum := 0) tmp
-        where product_tier = #{memberTier} order by product_code ) b
+        where product_tier = #{memberTier} and product_type = #{productType} order by product_code ) b
         where b.rownum between #{start} and #{end};
     </select>
 

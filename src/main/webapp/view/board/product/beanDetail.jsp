@@ -14,7 +14,7 @@
         </div>
       </c:when>
 
-      <c:when test="${ requestScope.memberTier == '0' && requestScope.productCount == 0 }">
+      <c:when test="${ requestScope.memberTier != '0' && requestScope.productCount == 0 }">
         <p>제품을 찾을 수 없습니다.</p>
       </c:when>
 
@@ -66,7 +66,7 @@
                       <span>배송비</span>
                     </th>
                     <td>
-                      <span>3,000 원 (30,000원 이상 구매시 무료)</span>
+                      <span>3,000 원 (2kg 이상 구매시 무료)</span>
                     </td>
                   </tr>
                   <tr>
@@ -81,7 +81,7 @@
                 </table>
                 <div>
                   <form class="product_quantity_form"
-                        action="${ pageContext.request.contextPath }/board/productDetailPro"
+                        action="${ pageContext.request.contextPath }/board/beanDetailPro"
                         method="post"
                         accept-charset = "UTF-8"
                   >

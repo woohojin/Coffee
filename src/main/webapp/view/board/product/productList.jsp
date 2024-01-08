@@ -9,16 +9,29 @@
   <div class="product_wrap">
     <div class="page_head">
       <a>
-        <h1>원두 커피</h1>
+        <c:if test="${ requestScope.pageType == 'bean' }">
+          <h1>원두 커피</h1>
+        </c:if>
+        <c:if test="${ requestScope.pageType == 'mix' }">
+          <h1>믹스 커피</h1>
+        </c:if>
+        <c:if test="${ requestScope.pageType == 'cafe' }">
+          <h1>카페 용품</h1>
+        </c:if>
+        <c:if test="${ requestScope.pageType == 'machine' }">
+          <h1>임대 머신</h1>
+        </c:if>
       </a>
     </div>
     <div class="product">
       <ul class="center">
         <c:choose>
           <c:when test="${ requestScope.memberTier == '0' }">
-            <p>게시물을 열람 할 권한이 부족합니다.</p>
-            <p>회원가입을 하시거나 회원가입 이후 문제가 발생했다면</p>
-            <p>xxx로 연락주십시오.</p>
+            <div class="denied-text">
+              <p>로그인을 진행하시거나</p>
+              <br/>
+              <p>초기 회원가입 진행 후에 032-233-7400 으로 연락 부탁드립니다.</p>
+            </div>
           </c:when>
           <c:when test="${ requestScope.memberTier == '0' && requestScope.productCount == 0 }">
             <p>제품을 찾을 수 없습니다.</p>
@@ -30,14 +43,26 @@
                   <c:if test="${ p.productSoldOut == 1 }">
                     <div class="sold_out">Sold Out</div>
                   </c:if>
-                  <a
-                    href="${ pageContext.request.contextPath }/board/productDetail?productCode=${ p.productCode }"
-                  >
-                    <img
-                      src="${ pageContext.request.contextPath }/view/files/${ p.productFile }"
-                      alt=""
-                    />
-                  </a>
+                  <c:if test="${ requestScope.pageType == 'bean' }">
+                    <a href="${ pageContext.request.contextPath }/board/beanDetail?productCode=${ p.productCode }">
+                      <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
+                    </a>
+                  </c:if>
+                  <c:if test="${ requestScope.pageType == 'mix' }">
+                    <a href="${ pageContext.request.contextPath }/board/mixDetail?productCode=${ p.productCode }">
+                      <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
+                    </a>
+                  </c:if>
+                  <c:if test="${ requestScope.pageType == 'cafe' }">
+                    <a href="${ pageContext.request.contextPath }/board/cafeDetail?productCode=${ p.productCode }">
+                      <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
+                    </a>
+                  </c:if>
+                  <c:if test="${ requestScope.pageType == 'machine' }">
+                    <a href="${ pageContext.request.contextPath }/board/machineDetail?productCode=${ p.productCode }">
+                      <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
+                    </a>
+                  </c:if>
                   <div>
                     <a>${ p.productName }</a>
                     <p><fmt:formatNumber value="${ p.productPrice }" pattern="#,###" /> 원</p>

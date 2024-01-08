@@ -156,22 +156,22 @@
               <div class="hd_lnb_list">
                 <ul>
                   <li>
-                    <a href="${ pageContext.request.contextPath }/board/product"
+                    <a href="${ pageContext.request.contextPath }/board/product?pageType=bean"
                       >원두</a
                     >
                   </li>
                   <li>
-                    <a href="${ pageContext.request.contextPath }/board/product"
+                    <a href="${ pageContext.request.contextPath }/board/product?pageType=mix"
                     >믹스커피</a
                     >
                   </li>
                   <li>
-                    <a href="${ pageContext.request.contextPath }/board/product"
-                    >기타용품</a
+                    <a href="${ pageContext.request.contextPath }/board/product?pageType=cafe"
+                    >카페용품</a
                     >
                   </li>
                   <li>
-                    <a href="${ pageContext.request.contextPath }/board/product"
+                    <a href="${ pageContext.request.contextPath }/board/product?pageType=machine"
                     >임대머신</a
                     >
                   </li>
