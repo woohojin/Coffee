@@ -5,7 +5,6 @@ https 활성화 = ssl 인증서 발급
 개인정보처리 기간에 맞게 삭제
 제품 코드별로 폴더를 나누어서 이미지 저장
 historymapper insert 수정 필요
-회원등급부족 문구 수정
 결제기록을 저장하는 테이블도 필요할듯
 엑셀 저장 컬럼 수정
 이미지 완성 후 업로드 테스트
@@ -13,6 +12,8 @@ historymapper insert 수정 필요
 controller product 수정 필요 (원두, 믹스, 임대 등)
 productDetail scroll menu 수정
 메인페이지
+제품 디테일 페이지
+데이터 백업 시스템 필요
 
 제품 이미지명 AA0001_thumbnail, AA0001_detail
 
