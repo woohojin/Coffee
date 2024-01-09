@@ -8,7 +8,6 @@ historymapper insert 수정 필요
 결제기록을 저장하는 테이블도 필요할듯
 엑셀 저장 컬럼 수정
 이미지 완성 후 업로드 테스트
-제품상세페이지 interceptor
 controller product 수정 필요 (원두, 믹스, 임대 등)
 제품테이블 유통기한
 productDetail scroll menu 수정
