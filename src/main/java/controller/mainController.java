@@ -93,6 +93,7 @@ public class mainController {
                 productCount = productDao.productCountByTierByProductType(memberTier, productType);
                 request.setAttribute("list", list);
             }
+
             if(pageType.equals("mix")) {
                 productType = 1;
                 productDao.rownumSet();
@@ -100,6 +101,7 @@ public class mainController {
                 productCount = productDao.productCountByTierByProductType(memberTier, productType);
                 request.setAttribute("list", list);
             }
+
             if(pageType.equals("cafe")) {
                 productType = 2;
                 productDao.rownumSet();
@@ -107,6 +109,7 @@ public class mainController {
                 productCount = productDao.productCountByTierByProductType(memberTier, productType);
                 request.setAttribute("list", list);
             }
+
             if(pageType.equals("machine")) {
                 productType = 3;
                 productDao.rownumSet();
@@ -190,7 +193,7 @@ public class mainController {
                 map.put("productCode", cart.getProductCode());
                 map.put("productName", cart.getProductName());
                 map.put("productUnit", cart.getProductUnit());
-                map.put("productGrinding", cart.getProductGrinding());
+//                map.put("productGrinding", cart.getProductGrinding());
                 map.put("quantity", cart.getQuantity());
                 map.put("productPrice", cart.getProductPrice());
                 map.put("productFile", cart.getProductFile());
@@ -202,7 +205,7 @@ public class mainController {
             map.put("productCode", cart.getProductCode());
             map.put("productName", cart.getProductName());
             map.put("productUnit", cart.getProductUnit());
-            map.put("productGrinding", cart.getProductGrinding());
+//            map.put("productGrinding", cart.getProductGrinding());
             map.put("quantity", cart.getQuantity());
             map.put("productPrice", cart.getProductPrice());
             map.put("productFile", cart.getProductFile());

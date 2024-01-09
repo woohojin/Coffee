@@ -482,9 +482,9 @@ public class memberController {
       cartDao.cartDelete(memberId, productCode);
     } else if (status == 1) {
       cartDao.cartQuantityUpdate(memberId, productCode, quantity);
-    } else if (status == 2) {
-      cartDao.cartGrindingUpdate(memberId, productCode, productGrinding);
-    }
+    } // else if (status == 2) {
+    //  cartDao.cartGrindingUpdate(memberId, productCode, productGrinding);
+   // }
 
     int sumPrice = Integer.parseInt(cartDao.cartSumPrice(memberId));
     int cartCount = cartDao.cartCount(memberId);

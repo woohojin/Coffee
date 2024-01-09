@@ -15,7 +15,7 @@
     </resultMap>
 
     <insert id="cartInsert" parameterType="cart">
-        insert into cart values (#{memberId}, #{productCode}, #{quantity}, #{productGrinding})
+        insert into cart values (#{memberId}, #{productCode}, #{quantity}, 0)
     </insert>
 
     <select id="cartCount" parameterType="String" resultType="int">
@@ -45,8 +45,8 @@
         update cart set quantity = #{quantity} where member_id = #{memberId} and product_code = #{productCode}
     </update>
 
-    <update id="cartGrindingUpdate" parameterType="map">
-        update cart set product_grinding = #{productGrinding} where member_id = #{memberId} and product_code = #{productCode}
-    </update>
+<!--    <update id="cartGrindingUpdate" parameterType="map">-->
+<!--        update cart set product_grinding = #{productGrinding} where member_id = #{memberId} and product_code = #{productCode}-->
+<!--    </update>-->
 
 </mapper>

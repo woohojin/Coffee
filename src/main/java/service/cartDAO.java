@@ -66,12 +66,12 @@ public class cartDAO {
     session.update(NS + "cartQuantityUpdate", map);
   }
 
-  public void cartGrindingUpdate(String memberId, String productCode, int productGrinding) {
-    map.clear();
-    map.put("memberId", memberId);
-    map.put("productCode", productCode);
-    map.put("productGrinding", productGrinding);
-    session.update(NS + "cartGrindingUpdate", map);
-  }
+//  public void cartGrindingUpdate(String memberId, String productCode, int productGrinding) {
+//    map.clear();
+//    map.put("memberId", memberId);
+//    map.put("productCode", productCode);
+//    map.put("productGrinding", productGrinding);
+//    session.update(NS + "cartGrindingUpdate", map);
+//  }
 
 }
