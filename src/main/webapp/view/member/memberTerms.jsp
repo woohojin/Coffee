@@ -8,7 +8,7 @@
   <div class="member_terms_page_wrap">
     <div class="page_head">
       <a href="">
-        <h1>개인정보이용약관</h1>
+        <h1>이용약관 / 개인정보수집 및 이용</h1>
       </a>
     </div>
     <div class="member_terms_wrap center">

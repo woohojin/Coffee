@@ -10,10 +10,12 @@ historymapper insert 수정 필요
 이미지 완성 후 업로드 테스트
 제품상세페이지 interceptor
 controller product 수정 필요 (원두, 믹스, 임대 등)
+제품테이블 유통기한
 productDetail scroll menu 수정
 메인페이지
 제품 디테일 페이지
 데이터 백업 시스템 필요
+footer 및 제품 상세페이지 등 레이아웃 일치
 
 제품 이미지명 AA0001_thumbnail, AA0001_detail
 
@@ -25,6 +27,7 @@ https://www.tosspayments.com/
 1. int nullPointException = Integer 사용
 2. String.isEmpty() = String이 null값 일 때 NullPointerException을 발생시킴
 
+전체 레이아웃 수정
 환불테이블 필요
 order 테이블도 필요해보임 (현재 주문 상태, 주문번호 등)
 장바구니/결제 및 주문기록에 현금영수증, 세금계산서 추가
@@ -46,7 +49,6 @@ admin 클릭시 복사
 통계
 택배 크롤링
 어드민 제품 리스트 이후 클릭시 제품 이미지 보이게
-UI 통일감 만들기
 컨트롤러 세분화
 html formatting
 jquery 제거

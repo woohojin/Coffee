@@ -205,8 +205,7 @@ input:focus {
 
 .main_slider,
 .slider,
-.main_product_list,
-.da_footer {
+.main_product_list {
   display: flex;
   width: 100%;
 }

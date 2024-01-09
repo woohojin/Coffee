@@ -340,3 +340,38 @@
   height: 50px;
   margin-bottom: 50px;
 }
+
+.terms {
+  width: 1200px;
+  border: 2px solid var(--grayLine);
+}
+.terms_textarea {
+  padding: 10px;
+}
+.terms_textarea p {
+  margin: 10px;
+  font-size: 13px;
+  line-height: 15px;
+}
+.terms_textarea table {
+  width: 100%;
+  margin: 30px 0;
+}
+.terms_textarea table p {
+  margin: 0;
+  font-size: 12px;
+}
+.terms_textarea th,
+.terms_textarea td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
+  border: 1px solid var(--grayLine);
+  line-height: 15px;
+}
+.terms_textarea span,
+.terms_textarea th,
+.terms_textarea td {
+  font-weight: 400;
+  font-size: 12px;
+}

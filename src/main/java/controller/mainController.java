@@ -64,6 +64,16 @@ public class mainController {
         return "main";
     }
 
+    @RequestMapping("terms")
+    public String terms() throws Exception {
+        return "terms";
+    }
+
+    @RequestMapping("privacy")
+    public String privacy() throws Exception {
+        return "privacy";
+    }
+
     @RequestMapping("product")
     public String product(@RequestParam(value = "pageType", defaultValue = "bean") String pageType) throws Exception {
         Integer memberTier = (Integer) session.getAttribute("memberTier");
