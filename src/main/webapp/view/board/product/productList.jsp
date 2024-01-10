@@ -37,31 +37,64 @@
             <p>제품을 찾을 수 없습니다.</p>
           </c:when>
           <c:when test="${ requestScope.memberTier != 0 }">
-            <c:if test="${ requestScope.productSearchCount != 0 || requestScope.productCount != 0 }">
+            <c:if test="${ requestScope.productSearchCount > 0 || requestScope.productCount > 0 }">
               <c:forEach var="p" items="${ list }">
                 <li>
                   <c:if test="${ p.productSoldOut == 1 }">
                     <div class="sold_out">Sold Out</div>
                   </c:if>
-                  <c:if test="${ requestScope.pageType == 'bean' }">
-                    <a href="${ pageContext.request.contextPath }/board/beanDetail?productCode=${ p.productCode }">
-                      <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
-                    </a>
-                  </c:if>
-                  <c:if test="${ requestScope.pageType == 'mix' }">
-                    <a href="${ pageContext.request.contextPath }/board/mixDetail?productCode=${ p.productCode }">
-                      <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
-                    </a>
-                  </c:if>
-                  <c:if test="${ requestScope.pageType == 'cafe' }">
-                    <a href="${ pageContext.request.contextPath }/board/cafeDetail?productCode=${ p.productCode }">
-                      <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
-                    </a>
-                  </c:if>
-                  <c:if test="${ requestScope.pageType == 'machine' }">
-                    <a href="${ pageContext.request.contextPath }/board/machineDetail?productCode=${ p.productCode }">
-                      <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
-                    </a>
+                  <c:choose>
+                    <c:when test="${ requestScope.pageType == 'bean' }">
+                      <a href="${ pageContext.request.contextPath }/board/beanDetail?productCode=${ p.productCode }">
+                        <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
+                      </a>
+                    </c:when>
+
+                    <c:when test="${ requestScope.pageType == 'mix' }">
+                      <a href="${ pageContext.request.contextPath }/board/mixDetail?productCode=${ p.productCode }">
+                        <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
+                      </a>
+                    </c:when>
+
+                    <c:when test="${ requestScope.pageType == 'cafe' }">
+                      <a href="${ pageContext.request.contextPath }/board/cafeDetail?productCode=${ p.productCode }">
+                        <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
+                      </a>
+                    </c:when>
+
+                    <c:when test="${ requestScope.pageType == 'machine' }">
+                      <a href="${ pageContext.request.contextPath }/board/machineDetail?productCode=${ p.productCode }">
+                        <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
+                      </a>
+                    </c:when>
+                  </c:choose>
+
+                  <c:if test="${ requestScope.productSearchCount > 0 }">
+                    <c:choose>
+                      <c:when test="${ p.productType == 0 }">
+                        <a href="${ pageContext.request.contextPath }/board/beanDetail?productCode=${ p.productCode }">
+                          <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
+                        </a>
+                      </c:when>
+
+                      <c:when test="${ p.productType == 1 }">
+                        <a href="${ pageContext.request.contextPath }/board/mixDetail?productCode=${ p.productCode }">
+                          <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
+                        </a>
+                      </c:when>
+
+                      <c:when test="${ p.productType == 2 }">
+                        <a href="${ pageContext.request.contextPath }/board/cafeDetail?productCode=${ p.productCode }">
+                          <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
+                        </a>
+                      </c:when>
+
+                      <c:when test="${ p.productType == 3 }">
+                        <a href="${ pageContext.request.contextPath }/board/machineDetail?productCode=${ p.productCode }">
+                          <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
+                        </a>
+                      </c:when>
+                    </c:choose>
                   </c:if>
                   <div>
                     <a>${ p.productName }</a>
