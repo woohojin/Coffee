@@ -965,7 +965,18 @@ public class adminController {
 
   @RequestMapping("memberDisableUpdatePro")
   public String memberDisableUpdatePro(String memberId, int memberDisable) throws Exception {
-    memberDao.memberDisable(memberId, memberDisable);
+    Member member = memberDao.memberSelectOne(memberId);
+    Member disabledMember = memberDao.memberDisableSelectOne(memberId);
+
+    if(member != null) {
+      memberDao.memberDisable(memberId);
+      memberDao.memberDelete(memberId);
+      memberDao.updateDisableDate(memberId);
+    } else if(disabledMember != null) {
+      memberDao.memberEnable(memberId);
+      memberDao.disabledMemberDelete(memberId);
+      memberDao.updateDisableDateToNull(memberId);
+    }
 
     String url = "/admin/memberDisableUpdate";
     String msg = "멤버 비활성화 상태 수정 성공";

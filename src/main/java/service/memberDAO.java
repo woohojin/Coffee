@@ -322,15 +322,33 @@ public class memberDAO {
         return num;
     }
 
-    public void memberDisable(String memberId, int memberDisable) {
-        map.clear();
-        map.put("memberId", memberId);
-        map.put("memberDisable", memberDisable);
-        session.update(NS + "memberDisable", map);
+    public Member memberDisableSelectOne(String memberId) {
+        Member mem = session.selectOne(NS + "memberDisableSelectOne", memberId);
+        return mem;
+    }
+
+    public void memberDisable(String memberId) {
+        session.update(NS + "memberDisable", memberId);
+    }
+
+    public void memberEnable(String memberId) {
+        session.update(NS + "memberDisable", memberId);
     }
 
     public void memberDelete(String memberId) {
         session.delete(NS + "memberDelete", memberId);
+    }
+
+    public void disabledMemberDelete(String memberId) {
+        session.delete(NS + "disabledMemberDelete", memberId);
+    }
+
+    public void updateDisableDate(String memberId) {
+        session.update(NS + "updateDisableDate", memberId);
+    }
+
+    public void updateDisableDateToNull(String memberId) {
+        session.update(NS + "updateDisableDateToNull", memberId);
     }
 
 }

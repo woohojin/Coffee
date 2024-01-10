@@ -26,6 +26,8 @@ https://www.tosspayments.com/
 1. int nullPointException = Integer 사용
 2. String.isEmpty() = String이 null값 일 때 NullPointerException을 발생시킴
 
+memberDisabled 수정 필요(disabledMemberList 등)
+product 테이블의 컬럼을 bean, mix, cafe 등으로 옮기기 (원산지, 품종, 제조사와 같은 겹치치 않는 컬럼들) product 테이블은 공통컬럼만
 footer 및 제품 상세페이지 등 레이아웃 일치
 전체 레이아웃 수정
 환불테이블 필요
