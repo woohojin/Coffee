@@ -130,14 +130,26 @@
 .product_detail_list ul li.active {
   border-bottom: 2px solid var(--mainColor);
 }
+.product_detail_list ul {
+  width: 1000px;
+}
 .product_detail_list ul li {
   display: flex;
   justify-content: center;
   align-items: center;
   float: left;
   height: 50px;
-  width: 200px;
-  border-right: 2px solid var(--grayLine);
+  width: 33%;
+  border-bottom: 1px solid var(--grayLine);
+}
+.product_detail_list ul li:after {
+  content: "";
+  height: 40px;
+  width: 1px;
+  border-right: 1px solid var(--grayLine);
+}
+.product_detail_list ul li:last-child:after {
+  border-right: none;
 }
 .product_detail_list ul li a {
   display: flex;
