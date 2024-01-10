@@ -43,33 +43,7 @@
                   <c:if test="${ p.productSoldOut == 1 }">
                     <div class="sold_out">Sold Out</div>
                   </c:if>
-                  <c:choose>
-                    <c:when test="${ requestScope.pageType == 'bean' }">
-                      <a href="${ pageContext.request.contextPath }/board/beanDetail?productCode=${ p.productCode }">
-                        <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
-                      </a>
-                    </c:when>
 
-                    <c:when test="${ requestScope.pageType == 'mix' }">
-                      <a href="${ pageContext.request.contextPath }/board/mixDetail?productCode=${ p.productCode }">
-                        <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
-                      </a>
-                    </c:when>
-
-                    <c:when test="${ requestScope.pageType == 'cafe' }">
-                      <a href="${ pageContext.request.contextPath }/board/cafeDetail?productCode=${ p.productCode }">
-                        <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
-                      </a>
-                    </c:when>
-
-                    <c:when test="${ requestScope.pageType == 'machine' }">
-                      <a href="${ pageContext.request.contextPath }/board/machineDetail?productCode=${ p.productCode }">
-                        <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
-                      </a>
-                    </c:when>
-                  </c:choose>
-
-                  <c:if test="${ requestScope.productSearchCount > 0 }">
                     <c:choose>
                       <c:when test="${ p.productType == 0 }">
                         <a href="${ pageContext.request.contextPath }/board/beanDetail?productCode=${ p.productCode }">
@@ -95,7 +69,7 @@
                         </a>
                       </c:when>
                     </c:choose>
-                  </c:if>
+                  
                   <div>
                     <a>${ p.productName }</a>
                     <p><fmt:formatNumber value="${ p.productPrice }" pattern="#,###" /> 원</p>

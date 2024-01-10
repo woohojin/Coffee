@@ -13,8 +13,6 @@ controller product 수정 필요 (원두, 믹스, 임대 등)
 메인페이지
 제품 디테일 페이지
 데이터 백업 시스템 필요
-productSearch 수정 필요
-
 
 제품 이미지명 AA0001_thumbnail, AA0001_detail
 
