@@ -123,7 +123,7 @@ public class mainController {
 
             if(pageType.equals("machine")) {
                 productType = 3;
-                memberTier = 1; // 카페 용품은 등급 구분이 없음
+                memberTier = 1; // 임대머신은 등급 구분이 없음
                 productDao.rownumSet();
                 List<Product> list = productDao.productListByMemberTierByProductType(pageInt, limit, memberTier, productType);
                 productCount = productDao.productCountByTierByProductType(memberTier, productType);
@@ -186,20 +186,12 @@ public class mainController {
 
         String msg = "장바구니 추가 실패";
         String memberId = (String) session.getAttribute("memberId");
-        String productCode = cart.getProductCode();
-
-        int quantity = cart.getQuantity();
-
-        if(quantity < 1) {
-            quantity = 1;
-            cart.setQuantity(quantity);
-        }
 
         //추가 상품 부분
 
         if (additionalProductsCodes != null && !additionalProductsCodes.isEmpty()) {
             for (String additionalProductsCode : additionalProductsCodes) {
-                if(additionalProductsCode != "0") {
+                if(!additionalProductsCode.equals("none")) {
                     Cart cartCheck = cartDao.cartSelectOne(memberId, additionalProductsCode);
 
                     if(cartCheck == null) {
@@ -209,8 +201,8 @@ public class mainController {
                         additionalCart.setQuantity(1);
                         cartDao.cartInsert(additionalCart);
                     } else {
-                        quantity = quantity + cartCheck.getQuantity();
-                        cartDao.cartQuantityUpdate(memberId, additionalProductsCode, quantity);
+                        int additionalProductQuantity = 1 + cartCheck.getQuantity();
+                        cartDao.cartQuantityUpdate(memberId, additionalProductsCode, additionalProductQuantity);
                     }
                 }
             }
@@ -218,34 +210,43 @@ public class mainController {
 
         //일반 상품 부분
 
+        int quantity = cart.getQuantity();
+
+        if(quantity < 1) {
+            quantity = 1;
+            cart.setQuantity(quantity);
+        }
+
+        String productCode = cart.getProductCode();
+
+        Product product = productDao.productSelectOne(productCode);
+
         Cart cartCheck = cartDao.cartSelectOne(memberId, productCode);
-        System.out.println("normalProductsCheck ======================================");
         if(cartCheck == null) {
-            System.out.println(cart);
             cart.setMemberId(memberId);
             int num = cartDao.cartInsert(cart);
-            System.out.println(num);
+
             if(num > 0) {
                 msg = "장바구니 추가 성공";
-                map.put("productCode", cart.getProductCode());
-                map.put("productName", cart.getProductName());
-                map.put("productUnit", cart.getProductUnit());
+                map.put("productCode", product.getProductCode());
+                map.put("productName", product.getProductName());
+                map.put("productUnit", product.getProductUnit());
 //                map.put("productGrinding", cart.getProductGrinding());
                 map.put("quantity", cart.getQuantity());
-                map.put("productPrice", cart.getProductPrice());
-                map.put("productFile", cart.getProductFile());
+                map.put("productPrice", product.getProductPrice());
+                map.put("productFile", product.getProductFile());
             }
         } else {
             quantity = quantity + cartCheck.getQuantity();
             cartDao.cartQuantityUpdate(memberId, productCode, quantity);
             msg = "장바구니 추가 성공";
-            map.put("productCode", cart.getProductCode());
-            map.put("productName", cart.getProductName());
-            map.put("productUnit", cart.getProductUnit());
-//            map.put("productGrinding", cart.getProductGrinding());
+            map.put("productCode", product.getProductCode());
+            map.put("productName", product.getProductName());
+            map.put("productUnit", product.getProductUnit());
+//            map.put("productGrinding", product.getProductGrinding());
             map.put("quantity", cart.getQuantity());
-            map.put("productPrice", cart.getProductPrice());
-            map.put("productFile", cart.getProductFile());
+            map.put("productPrice", product.getProductPrice());
+            map.put("productFile", product.getProductFile());
         }
 
         map.put("cartStatus", msg);

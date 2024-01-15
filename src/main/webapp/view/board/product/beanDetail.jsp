@@ -104,7 +104,7 @@
                       <span>추가 상품 선택</span>
                       <label>
                         <select name="additionalProducts">
-                          <option value="0">없음</option>
+                          <option value="none">없음</option>
                           <option value="CA0001">종이컵6.5온스</option>
                           <option value="CA0003">종이컵8온스</option>
                         </select>
