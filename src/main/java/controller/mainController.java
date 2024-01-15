@@ -196,18 +196,20 @@ public class mainController {
         //추가 상품 부분
 
         if (additionalProductsCodes != null && !additionalProductsCodes.isEmpty()) {
-            for (String additionalProductCode : additionalProductsCodes) {
-                Cart cartCheck = cartDao.cartSelectOne(memberId, additionalProductCode);
+            for (String additionalProductsCode : additionalProductsCodes) {
+                if(additionalProductsCode != "0") {
+                    Cart cartCheck = cartDao.cartSelectOne(memberId, additionalProductsCode);
 
-                if(cartCheck == null) {
-                    Cart additionalCart = new Cart();
-                    additionalCart.setProductCode(additionalProductCode);
-                    additionalCart.setMemberId(memberId);
-                    additionalCart.setQuantity(1);
-                    cartDao.cartInsert(additionalCart);
-                } else {
-                    quantity = quantity + cartCheck.getQuantity();
-                    cartDao.cartQuantityUpdate(memberId, additionalProductCode, quantity);
+                    if(cartCheck == null) {
+                        Cart additionalCart = new Cart();
+                        additionalCart.setProductCode(additionalProductsCode);
+                        additionalCart.setMemberId(memberId);
+                        additionalCart.setQuantity(1);
+                        cartDao.cartInsert(additionalCart);
+                    } else {
+                        quantity = quantity + cartCheck.getQuantity();
+                        cartDao.cartQuantityUpdate(memberId, additionalProductsCode, quantity);
+                    }
                 }
             }
         }
@@ -215,10 +217,12 @@ public class mainController {
         //일반 상품 부분
 
         Cart cartCheck = cartDao.cartSelectOne(memberId, productCode);
-
+        System.out.println("normalProductsCheck ======================================");
         if(cartCheck == null) {
+            System.out.println(cart);
+            cart.setMemberId(memberId);
             int num = cartDao.cartInsert(cart);
-
+            System.out.println(num);
             if(num > 0) {
                 msg = "장바구니 추가 성공";
                 map.put("productCode", cart.getProductCode());
