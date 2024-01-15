@@ -7,14 +7,17 @@
 }
 .product ul {
   flex-wrap: wrap;
+  align-items: flex-start;
   width: 760px;
 }
 .product ul li {
   position: relative;
+  text-align: center;
   margin: 0 20px;
 }
 .product ul li div {
   text-align: center;
+  width: 135px;
   line-height: 20px;
 }
 .product ul li div p {

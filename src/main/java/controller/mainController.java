@@ -114,6 +114,7 @@ public class mainController {
 
             if(pageType.equals("cafe")) {
                 productType = 2;
+                memberTier = 1; // 카페용품은 등급 구분이 없음
                 productDao.rownumSet();
                 List<Product> list = productDao.productListByMemberTierByProductType(pageInt, limit, memberTier, productType);
                 productCount = productDao.productCountByTierByProductType(memberTier, productType);
@@ -122,6 +123,7 @@ public class mainController {
 
             if(pageType.equals("machine")) {
                 productType = 3;
+                memberTier = 1; // 카페 용품은 등급 구분이 없음
                 productDao.rownumSet();
                 List<Product> list = productDao.productListByMemberTierByProductType(pageInt, limit, memberTier, productType);
                 productCount = productDao.productCountByTierByProductType(memberTier, productType);
