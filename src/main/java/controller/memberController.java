@@ -461,10 +461,13 @@ public class memberController {
   public String memberCartPro() throws Exception {
     int status = 9;
     String statusParam = request.getParameter("status");
+
     int quantity = 1;
     String quantityParam = request.getParameter("quantity");
+
     int productGrinding = 0;
     String productGrindingParam = request.getParameter("productGrinding");
+
     String productCode = request.getParameter("productCode");
     String memberId = (String) session.getAttribute("memberId");
 

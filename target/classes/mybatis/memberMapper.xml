@@ -304,7 +304,7 @@
 
     <insert id="memberWithdrawal" parameterType="String">
         insert into member_withdrawal (member_id, member_company_name, member_tel, member_company_tel, member_withdrawal_date)
-        select member_id, member_company_name, member_tel, member_company_tel, NOW() from member where member_id = #{member_id}
+        select member_id, member_company_name, member_tel, member_company_tel, NOW() from member where member_id = #{memberId}
     </insert>
 
   <select id="memberWithdrawalList" parameterType="map" resultMap="memberMap">
@@ -319,12 +319,32 @@
     select count(*) from member_withdrawal where NOT member_id = "admin"
   </select>
 
-  <update id="memberDisable" parameterType="map">
-    update member set member_disable = #{memberDisable}, member_disable_date = NOW() where member_id = #{memberId}
-  </update>
+  <select id="memberDisableSelectOne" parameterType="map" resultMap="memberMap">
+    select * from member_disabled where member_id = #{memberId}
+  </select>
+
+  <insert id="memberDisable" parameterType="String">
+    insert into member_disabled select * from member where member_id = #{memberId}
+  </insert>
+
+  <insert id="memberEnable" parameterType="String">
+    insert into member select * from member_disabled where member_id = #{memberId}
+  </insert>
 
   <delete id="memberDelete" parameterType="string">
         delete from member where member_id = #{memberId}
   </delete>
+
+  <delete id="disabledMemberDelete" parameterType="string">
+    delete from member_disabled where member_id = #{memberId}
+  </delete>
+
+  <update id="updateDisabledDate" parameterType="String">
+    update member_disabled set member_disable_date = now() where member_id = #{memberId}
+  </update>
+
+  <update id="updateDisabledDateToNull" parameterType="String">
+    update member set member_disable_date = null where member_id = #{memberId}
+  </update>
 
 </mapper>

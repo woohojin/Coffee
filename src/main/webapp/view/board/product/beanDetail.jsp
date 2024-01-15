@@ -100,28 +100,22 @@
                         <fmt:formatNumber value="${ product.productPrice }" pattern="#,###" /> 원
                       </div>
                     </div>
-<%--                    <div class="product_grinding">--%>
-<%--                      <span>원두 분쇄 선택</span>--%>
-<%--                      <label>--%>
-<%--                        <select name="productGrinding">--%>
-<%--                          <option value="0">원두</option>--%>
-<%--                          <option value="1">핸드드립</option>--%>
-<%--                          <option value="2">에스프레소</option>--%>
-<%--                        </select>--%>
-<%--                      </label>--%>
-<%--                    </div>--%>
+                    <div class="product_additional">
+                      <span>추가 상품 선택</span>
+                      <label>
+                        <select name="additionalProducts">
+                          <option value="AA0099">종이컵6.5온스</option>
+                          <option value="AA0098">종이컵8온스</option>
+                        </select>
+                      </label>
+                    </div>
                     <c:if test="${ product.productSoldOut == 1 }">
                       <br/>
                       Sold Out
                     </c:if>
                     <c:if test="${ product.productSoldOut != 1 }">
                       <div class="product_quantity_submit">
-                        <input type="hidden" value="${ sessionScope.memberId }" name="memberId">
                         <input type="hidden" value="${ product.productCode }" name="productCode">
-                        <input type="hidden" value="${ product.productName }" name="productName">
-                        <input type="hidden" value="${ product.productPrice }" name="productPrice">
-                        <input type="hidden" value="${ product.productUnit }" name="productUnit">
-                        <input type="hidden" value="${ product.productFile }" name="productFile">
                         <input type="submit" value="장바구니에 담기" class="submit_btn" />
                       </div>
                     </c:if>

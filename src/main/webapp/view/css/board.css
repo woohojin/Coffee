@@ -92,13 +92,13 @@
   font-weight: bold;
   font-size: 18px;
 }
-.product_grinding {
+.product_additional {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 20px 0;
 }
-.product_grinding select {
+.product_additional select {
   width: 200px;
 }
 .member_request {
