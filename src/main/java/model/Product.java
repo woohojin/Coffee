@@ -6,16 +6,23 @@ public class Product {
     String productName;
     int productPrice;
     String productUnit;
-    String productCountry;
-    String productSpecies;
-    String productCompany;
     int productTier;
     String productFile;
     int productSoldOut;
     String productRegisterName;
     String productRegisterDate;
     String productModifierName;
-    String productModifiedDate;
+    String productModifierDate;
+
+    //bean
+
+    String beanCountry;
+    String beanSpecies;
+    String beanCompany;
+    String beanRegisterName;
+    String beanRegitsterDate;
+    String beanModifierName;
+    String beanModifierDate;
 
     public String getProductCode() {
         return productCode;
@@ -55,30 +62,6 @@ public class Product {
 
     public void setProductUnit(String productUnit) {
         this.productUnit = productUnit;
-    }
-
-    public String getProductCountry() {
-        return productCountry;
-    }
-
-    public void setProductCountry(String productCountry) {
-        this.productCountry = productCountry;
-    }
-
-    public String getProductSpecies() {
-        return productSpecies;
-    }
-
-    public void setProductSpecies(String productSpecies) {
-        this.productSpecies = productSpecies;
-    }
-
-    public String getProductCompany() {
-        return productCompany;
-    }
-
-    public void setProductCompany(String productCompany) {
-        this.productCompany = productCompany;
     }
 
     public int getProductTier() {
@@ -129,32 +112,92 @@ public class Product {
         this.productModifierName = productModifierName;
     }
 
-    public String getProductModifiedDate() {
-        return productModifiedDate;
+    public String getProductModifierDate() {
+        return productModifierDate;
     }
 
-    public void setProductModifiedDate(String productModifiedDate) {
-        this.productModifiedDate = productModifiedDate;
+    public void setProductModifierDate(String productModifierDate) {
+        this.productModifierDate = productModifierDate;
+    }
+
+    public String getBeanCountry() {
+        return beanCountry;
+    }
+
+    public void setBeanCountry(String beanCountry) {
+        this.beanCountry = beanCountry;
+    }
+
+    public String getBeanSpecies() {
+        return beanSpecies;
+    }
+
+    public void setBeanSpecies(String beanSpecies) {
+        this.beanSpecies = beanSpecies;
+    }
+
+    public String getBeanCompany() {
+        return beanCompany;
+    }
+
+    public void setBeanCompany(String beanCompany) {
+        this.beanCompany = beanCompany;
+    }
+
+    public String getBeanRegisterName() {
+        return beanRegisterName;
+    }
+
+    public void setBeanRegisterName(String beanRegisterName) {
+        this.beanRegisterName = beanRegisterName;
+    }
+
+    public String getBeanRegitsterDate() {
+        return beanRegitsterDate;
+    }
+
+    public void setBeanRegitsterDate(String beanRegitsterDate) {
+        this.beanRegitsterDate = beanRegitsterDate;
+    }
+
+    public String getBeanModifierName() {
+        return beanModifierName;
+    }
+
+    public void setBeanModifierName(String beanModifierName) {
+        this.beanModifierName = beanModifierName;
+    }
+
+    public String getBeanModifierDate() {
+        return beanModifierDate;
+    }
+
+    public void setBeanModifierDate(String beanModifierDate) {
+        this.beanModifierDate = beanModifierDate;
     }
 
     @Override
     public String toString() {
         return "Product{" +
-          "productCode='" + productCode + '\'' +
-          ", productType=" + productType +
-          ", productName='" + productName + '\'' +
-          ", productPrice=" + productPrice +
-          ", productUnit='" + productUnit + '\'' +
-          ", productCountry='" + productCountry + '\'' +
-          ", productSpecies='" + productSpecies + '\'' +
-          ", productCompany='" + productCompany + '\'' +
-          ", productTier=" + productTier +
-          ", productFile='" + productFile + '\'' +
-          ", productSoldOut=" + productSoldOut +
-          ", productRegisterName='" + productRegisterName + '\'' +
-          ", productRegisterDate='" + productRegisterDate + '\'' +
-          ", productModifierName='" + productModifierName + '\'' +
-          ", productModifiedDate='" + productModifiedDate + '\'' +
-          '}';
+                "productCode='" + productCode + '\'' +
+                ", productType=" + productType +
+                ", productName='" + productName + '\'' +
+                ", productPrice=" + productPrice +
+                ", productUnit='" + productUnit + '\'' +
+                ", productTier=" + productTier +
+                ", productFile='" + productFile + '\'' +
+                ", productSoldOut=" + productSoldOut +
+                ", productRegisterName='" + productRegisterName + '\'' +
+                ", productRegisterDate='" + productRegisterDate + '\'' +
+                ", productModifierName='" + productModifierName + '\'' +
+                ", productModifierDate='" + productModifierDate + '\'' +
+                ", beanCountry='" + beanCountry + '\'' +
+                ", beanSpecies='" + beanSpecies + '\'' +
+                ", beanCompany='" + beanCompany + '\'' +
+                ", beanRegisterName='" + beanRegisterName + '\'' +
+                ", beanRegitsterDate='" + beanRegitsterDate + '\'' +
+                ", beanModifierName='" + beanModifierName + '\'' +
+                ", beanModifierDate='" + beanModifierDate + '\'' +
+                '}';
     }
 }

@@ -1150,9 +1150,9 @@ public class adminController {
       row.createCell(colNum++).setCellValue(product.getProductType());
       row.createCell(colNum++).setCellValue(product.getProductPrice());
       row.createCell(colNum++).setCellValue(product.getProductUnit());
-      row.createCell(colNum++).setCellValue(product.getProductCountry());
-      row.createCell(colNum++).setCellValue(product.getProductSpecies());
-      row.createCell(colNum++).setCellValue(product.getProductCompany());
+      row.createCell(colNum++).setCellValue(product.getBeanCountry());
+      row.createCell(colNum++).setCellValue(product.getBeanSpecies());
+      row.createCell(colNum++).setCellValue(product.getBeanCompany());
       row.createCell(colNum++).setCellValue(product.getProductTier());
     }
 

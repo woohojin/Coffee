@@ -34,7 +34,7 @@
                       <span>원산지</span>
                     </th>
                     <td>
-                      <span>${ product.productCountry }</span>
+                      <span>${ product.beanCountry }</span>
                     </td>
                   </tr>
                   <tr>
@@ -42,7 +42,7 @@
                       <span>품종</span>
                     </th>
                     <td>
-                      <span>${ product.productSpecies}</span>
+                      <span>${ product.beanSpecies}</span>
                     </td>
                   </tr>
                   <tr>
@@ -50,7 +50,7 @@
                       <span>제조사</span>
                     </th>
                     <td>
-                      <span>${ product.productCompany }</span>
+                      <span>${ product.beanCompany }</span>
                     </td>
                   </tr>
                   <tr>

@@ -170,7 +170,7 @@ public class mainController {
             productCount = productDao.productCountByTierByProductType(memberTier, productType);
         }
 
-        Product product = productDao.productSelectOne(productCode);
+        Product product = productDao.beanSelectOne(productCode);
 
         request.setAttribute("memberTier", memberTier);
         request.setAttribute("productCount", productCount);
