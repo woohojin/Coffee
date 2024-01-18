@@ -22,6 +22,9 @@
         <result column="bean_country" property="beanCountry" />
         <result column="bean_species" property="beanSpecies" />
         <result column="bean_company" property="beanCompany" />
+        <result column="bean_manufacturing_date" property="beanManufacturingDate" />
+        <result column="bean_use_by_date" property="beanUseByDate" />
+        <result column="bean_raw_materials" property="beanRawMaterials" />
         <result column="bean_register_name" property="beanRegisterName" />
         <result column="bean_register_date" property="beanRegisterName" />
         <result column="bean_register_name" property="beanModifierName" />

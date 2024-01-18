@@ -26,9 +26,25 @@
                 <img src="${ pageContext.request.contextPath }/view/files/${ product.productFile }" alt="" />
               </div>
               <div class="product_info">
-                <h1>${ product.productName } ${ product.productUnit } </h1>
+                <h1>${ product.productName }</h1>
                 <table>
                   <tbody>
+                  <tr>
+                    <th>
+                      <span>식품유형</span>
+                    </th>
+                    <td>
+                      <span>원두커피</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <span>원재료명</span>
+                    </th>
+                    <td>
+                      <span>${ product.beanRawMaterials }</span>
+                    </td>
+                  </tr>
                   <tr>
                     <th>
                       <span>원산지</span>
@@ -51,6 +67,22 @@
                     </th>
                     <td>
                       <span>${ product.beanCompany }</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <span>제조연월일</span>
+                    </th>
+                    <td>
+                      <span>${ product.beanManufacturingDate }</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <span>소비기한</span>
+                    </th>
+                    <td>
+                      <span>${ product.beanUseByDate }</span>
                     </td>
                   </tr>
                   <tr>

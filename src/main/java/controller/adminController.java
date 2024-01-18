@@ -999,8 +999,22 @@ public class adminController {
 
     Image image = new Image();
     String productCode = product.getProductCode();
+    int productType = product.getProductType();
 
-    String filePath = request.getServletContext().getRealPath("/") + "view/files/" + productCode;
+    String filePath = request.getServletContext().getRealPath("/") + "view/files/bean/" + productCode;
+
+    if(productType == 1) {
+      filePath = request.getServletContext().getRealPath("/") + "view/files/mix/" + productCode;
+    }
+
+    if(productType == 2) {
+      filePath = request.getServletContext().getRealPath("/") + "view/files/cafe/" + productCode;
+    }
+
+    if(productType == 3) {
+      filePath = request.getServletContext().getRealPath("/") + "view/files/machine/" + productCode;
+    }
+
     String fileName;
     File uploadPath = new File(filePath);
 
