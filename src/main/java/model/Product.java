@@ -203,6 +203,63 @@ public class Product {
         this.beanModifierDate = beanModifierDate;
     }
 
+    // mix
+
+    String mixCompany;
+    String mixUseByDate;
+    String mixRegisterName;
+    String mixRegisterDate;
+    String mixModifierName;
+    String mixModifierDate;
+
+    public String getMixCompany() {
+        return mixCompany;
+    }
+
+    public void setMixCompany(String mixCompany) {
+        this.mixCompany = mixCompany;
+    }
+
+    public String getMixUseByDate() {
+        return mixUseByDate;
+    }
+
+    public void setMixUseByDate(String mixUseByDate) {
+        this.mixUseByDate = mixUseByDate;
+    }
+
+    public String getMixRegisterName() {
+        return mixRegisterName;
+    }
+
+    public void setMixRegisterName(String mixRegisterName) {
+        this.mixRegisterName = mixRegisterName;
+    }
+
+    public String getMixRegisterDate() {
+        return mixRegisterDate;
+    }
+
+    public void setMixRegisterDate(String mixRegisterDate) {
+        this.mixRegisterDate = mixRegisterDate;
+    }
+
+    public String getMixModifierName() {
+        return mixModifierName;
+    }
+
+    public void setMixModifierName(String mixModifierName) {
+        this.mixModifierName = mixModifierName;
+    }
+
+    public String getMixModifierDate() {
+        return mixModifierDate;
+    }
+
+    public void setMixModifierDate(String mixModifierDate) {
+        this.mixModifierDate = mixModifierDate;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -228,6 +285,12 @@ public class Product {
                 ", beanRegitsterDate='" + beanRegitsterDate + '\'' +
                 ", beanModifierName='" + beanModifierName + '\'' +
                 ", beanModifierDate='" + beanModifierDate + '\'' +
+                ", mixCompany='" + mixCompany + '\'' +
+                ", mixUseByDate='" + mixUseByDate + '\'' +
+                ", mixRegisterName='" + mixRegisterName + '\'' +
+                ", mixRegisterDate='" + mixRegisterDate + '\'' +
+                ", mixModifierName='" + mixModifierName + '\'' +
+                ", mixModifierDate='" + mixModifierDate + '\'' +
                 '}';
     }
 }

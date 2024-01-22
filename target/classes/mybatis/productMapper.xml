@@ -29,6 +29,16 @@
         <result column="bean_register_date" property="beanRegisterName" />
         <result column="bean_register_name" property="beanModifierName" />
         <result column="bean_modifier_date" property="beanModifierDate" />
+
+        <!-- mix -->
+
+        <result column="mix_company" property="mixCompany" />
+        <result column="mix_use_by_date" property="mixUseByDate" />
+        <result column="mix_register_name" property="mixRegisterName" />
+        <result column="mix_register_date" property="mixRegisterDate" />
+        <result column="mix_modifier_name" property="mixModifierName" />
+        <result column="mix_modifier_date" property="mixModifierDate" />
+
     </resultMap>
 
     <insert id="productInsert" parameterType="product">
@@ -37,11 +47,23 @@
     </insert>
 
     <insert id="beanInsert" parameterType="product">
-        insert into bean values (#{productCode}, #{beanCountry}, #{beanSpecies}, #{beanCompany}, #{beanRegisterName}, #{beanRegisterDate}, null, null)
+        insert into bean values (#{productCode}, #{beanCountry}, #{beanSpecies}, #{beanCompany}, #{beanRegisterName}, NOW(), null, null)
+    </insert>
+
+    <insert id="mixInsert" parameterType="product">
+        insert into mix values (#{productCode}, #{mixCompany}, #{mixUseByDate}, #{mixRegisterName}, NOW(), null, null)
     </insert>
 
     <delete id="productDelete" parameterType="String">
         delete from product where product_code = #{productCode}
+    </delete>
+
+    <delete id="beanDelete" parameterType="String">
+        delete from bean where product_code = #{productCode}
+    </delete>
+
+    <delete id="mixDelete" parameterType="String">
+        delete from mix where product_code = #{productCode}
     </delete>
 
     <update id="productSoldoutUpdate" parameterType="map">
@@ -69,6 +91,10 @@
 
     <select id="beanSelectOne" parameterType="String" resultMap="productMap">
         select product.*, bean.* from bean inner join product on bean.product_code = product.product_code where product.product_code = #{productCode}
+    </select>
+
+    <select id="mixSelectOne" parameterType="String" resultMap="productMap">
+        select product.*, mix.* from mix inner join product on mix.product_code = product.product_code where product.product_code = #{productCode}
     </select>
 
     <select id="productSearchCountByTier" parameterType="map" resultType="int">

@@ -22,8 +22,28 @@ public class productDAO {
         return num;
     }
 
+    public int beanInsert(Product product) {
+        int num = session.insert(NS + "beanInsert", product);
+        return num;
+    }
+
+    public int mixInsert(Product product) {
+        int num = session.insert(NS + "mixInsert", product);
+        return num;
+    }
+
     public int productDelete(String productCode) {
         int num = session.delete(NS + "productDelete", productCode);
+        return num;
+    }
+
+    public int beanDelete(String productCode) {
+        int num = session.delete(NS + "beanDelete", productCode);
+        return num;
+    }
+
+    public int mixDelete(String productCode) {
+        int num = session.delete(NS + "mixDelete", productCode);
         return num;
     }
 
