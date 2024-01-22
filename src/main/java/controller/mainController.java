@@ -179,9 +179,57 @@ public class mainController {
         return "board/product/beanDetail";
     }
 
-    @PostMapping("beanDetailPro")
+    @RequestMapping("mixDetail")
+    public String mixDetail(String productCode) throws Exception {
+        Integer memberTier = (Integer) session.getAttribute("memberTier");
+        if(memberTier == null) {
+            memberTier = 0;
+        }
+
+        int productCount = 0;
+
+        int productType = 1;
+
+        if(memberTier != 0) {
+            productCount = productDao.productCountByTierByProductType(memberTier, productType);
+        }
+
+        Product product = productDao.mixSelectOne(productCode);
+
+        request.setAttribute("memberTier", memberTier);
+        request.setAttribute("productCount", productCount);
+        request.setAttribute("product", product);
+
+        return "board/product/mixDetail";
+    }
+
+    @RequestMapping("cafeDetail")
+    public String cafeDetail(String productCode) throws Exception {
+        Integer memberTier = (Integer) session.getAttribute("memberTier");
+        if(memberTier == null) {
+            memberTier = 0;
+        }
+
+        int productCount = 0;
+
+        int productType = 1;
+
+        if(memberTier != 0) {
+            productCount = productDao.productCountByTierByProductType(memberTier, productType);
+        }
+
+        Product product = productDao.cafeSelectOne(productCode);
+
+        request.setAttribute("memberTier", memberTier);
+        request.setAttribute("productCount", productCount);
+        request.setAttribute("product", product);
+
+        return "board/product/cafeDetail";
+    }
+
+    @PostMapping("productDetailPro")
     @ResponseBody
-    public Map<String, Object> beanDetailPro(@RequestParam("additionalProducts")List<String> additionalProductsCodes, Cart cart) throws Exception {
+    public Map<String, Object> productDetailPro(@RequestParam("additionalProducts")List<String> additionalProductsCodes, Cart cart) throws Exception {
         Map<String, Object> map = new HashMap<>();
 
         String msg = "장바구니 추가 실패";

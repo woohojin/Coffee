@@ -42,9 +42,9 @@
 }
 .product_detail h1 {
   display: block;
-  height: 65px;
+  height: 50px;
   border-bottom: 1px solid black;
-  font-size: 35px;
+  font-size: 30px;
   font-weight: bold;
 }
 .product_detail span {
@@ -52,6 +52,10 @@
 }
 .product_detail_img {
   margin-right: 70px;
+}
+
+.product_info {
+  width: 374px;
 }
 .product_info table {
   border-bottom: 1px solid black;

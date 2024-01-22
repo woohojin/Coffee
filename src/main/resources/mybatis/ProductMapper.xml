@@ -39,6 +39,14 @@
         <result column="mix_modifier_name" property="mixModifierName" />
         <result column="mix_modifier_date" property="mixModifierDate" />
 
+        <!-- cafe -->
+
+        <result column="cafe_company" property="cafeCompany" />
+        <result column="cafe_register_name" property="cafeRegisterName" />
+        <result column="cafe_register_date" property="cafeRegisterDate" />
+        <result column="cafe_modifier_name" property="cafeModifierName" />
+        <result column="cafe_modifier_date" property="cafeModifierDate" />
+
     </resultMap>
 
     <insert id="productInsert" parameterType="product">
@@ -54,6 +62,10 @@
         insert into mix values (#{productCode}, #{mixCompany}, #{mixUseByDate}, #{mixRegisterName}, NOW(), null, null)
     </insert>
 
+    <insert id="cafeInsert" parameterType="product">
+        insert into cafe values (#{productCode}, #{cafeCompany}, #{cafeRegisterName}, NOW(), null, null)
+    </insert>
+
     <delete id="productDelete" parameterType="String">
         delete from product where product_code = #{productCode}
     </delete>
@@ -64,6 +76,10 @@
 
     <delete id="mixDelete" parameterType="String">
         delete from mix where product_code = #{productCode}
+    </delete>
+
+    <delete id="cafeDelete" parameterType="String">
+        delete from cafe where product_code = #{productCode}
     </delete>
 
     <update id="productSoldoutUpdate" parameterType="map">
@@ -95,6 +111,10 @@
 
     <select id="mixSelectOne" parameterType="String" resultMap="productMap">
         select product.*, mix.* from mix inner join product on mix.product_code = product.product_code where product.product_code = #{productCode}
+    </select>
+
+    <select id="cafeSelectOne" parameterType="String" resultMap="productMap">
+        select product.*, cafe.* from cafe inner join product on cafe.product_code = product.product_code where product.product_code = #{productCode}
     </select>
 
     <select id="productSearchCountByTier" parameterType="map" resultType="int">

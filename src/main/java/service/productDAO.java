@@ -32,6 +32,11 @@ public class productDAO {
         return num;
     }
 
+    public int cafeInsert(Product product) {
+        int num = session.insert(NS + "cafeInsert", product);
+        return num;
+    }
+
     public int productDelete(String productCode) {
         int num = session.delete(NS + "productDelete", productCode);
         return num;
@@ -44,6 +49,11 @@ public class productDAO {
 
     public int mixDelete(String productCode) {
         int num = session.delete(NS + "mixDelete", productCode);
+        return num;
+    }
+
+    public int cafeDelete(String productCode) {
+        int num = session.delete(NS + "cafeDelete", productCode);
         return num;
     }
 
@@ -87,6 +97,16 @@ public class productDAO {
 
     public Product beanSelectOne(String productCode) {
         Product product = session.selectOne(NS + "beanSelectOne", productCode);
+        return product;
+    }
+
+    public Product mixSelectOne(String productCode) {
+        Product product = session.selectOne(NS + "mixSelectOne", productCode);
+        return product;
+    }
+
+    public Product cafeSelectOne(String productCode) {
+        Product product = session.selectOne(NS + "cafeSelectOne", productCode);
         return product;
     }
 

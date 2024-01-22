@@ -260,6 +260,54 @@ public class Product {
         this.mixModifierDate = mixModifierDate;
     }
 
+    // cafe
+
+    String cafeCompany;
+    String cafeRegisterName;
+    String cafeRegisterDate;
+    String cafeModifierName;
+    String cafeModifierDate;
+
+    public String getCafeCompany() {
+        return cafeCompany;
+    }
+
+    public void setCafeCompany(String cafeCompany) {
+        this.cafeCompany = cafeCompany;
+    }
+
+    public String getCafeRegisterName() {
+        return cafeRegisterName;
+    }
+
+    public void setCafeRegisterName(String cafeRegisterName) {
+        this.cafeRegisterName = cafeRegisterName;
+    }
+
+    public String getCafeRegisterDate() {
+        return cafeRegisterDate;
+    }
+
+    public void setCafeRegisterDate(String cafeRegisterDate) {
+        this.cafeRegisterDate = cafeRegisterDate;
+    }
+
+    public String getCafeModifierName() {
+        return cafeModifierName;
+    }
+
+    public void setCafeModifierName(String cafeModifierName) {
+        this.cafeModifierName = cafeModifierName;
+    }
+
+    public String getCafeModifierDate() {
+        return cafeModifierDate;
+    }
+
+    public void setCafeModifierDate(String cafeModifierDate) {
+        this.cafeModifierDate = cafeModifierDate;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -291,6 +339,11 @@ public class Product {
                 ", mixRegisterDate='" + mixRegisterDate + '\'' +
                 ", mixModifierName='" + mixModifierName + '\'' +
                 ", mixModifierDate='" + mixModifierDate + '\'' +
+                ", cafeCompany='" + cafeCompany + '\'' +
+                ", cafeRegisterName='" + cafeRegisterName + '\'' +
+                ", cafeRegisterDate='" + cafeRegisterDate + '\'' +
+                ", cafeModifierName='" + cafeModifierName + '\'' +
+                ", cafeModifierDate='" + cafeModifierDate + '\'' +
                 '}';
     }
 }

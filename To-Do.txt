@@ -10,6 +10,8 @@ controller product 수정 필요 (원두, 믹스, 임대 등)
 제품 디테일 페이지
 데이터 백업 시스템 필요
 product 테이블의 컬럼을 bean, mix, cafe 등으로 옮기기 (원산지, 품종, 제조사와 같은 겹치치 않는 컬럼들) product 테이블은 공통컬럼만
+배송비 2kg 이상으로 카페 용품 개별 배송비 적용
+cart 용량 표시
 
 제품 이미지명 AA0001_thumbnail, AA0001_detail
 

@@ -34,31 +34,7 @@
                       <span>식품유형</span>
                     </th>
                     <td>
-                      <span>원두커피</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>
-                      <span>원재료명</span>
-                    </th>
-                    <td>
-                      <span>${ product.beanRawMaterials }</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>
-                      <span>원산지</span>
-                    </th>
-                    <td>
-                      <span>${ product.beanCountry }</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>
-                      <span>품종</span>
-                    </th>
-                    <td>
-                      <span>${ product.beanSpecies}</span>
+                      <span>커피믹스</span>
                     </td>
                   </tr>
                   <tr>
@@ -66,15 +42,7 @@
                       <span>제조사</span>
                     </th>
                     <td>
-                      <span>${ product.beanCompany }</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>
-                      <span>제조연월일</span>
-                    </th>
-                    <td>
-                      <span>${ product.beanManufacturingDate }</span>
+                      <span>${ product.mixCompany }</span>
                     </td>
                   </tr>
                   <tr>
@@ -82,7 +50,7 @@
                       <span>소비기한</span>
                     </th>
                     <td>
-                      <span>${ product.beanUseByDate }</span>
+                      <span>${ product.mixUseByDate }</span>
                     </td>
                   </tr>
                   <tr>
