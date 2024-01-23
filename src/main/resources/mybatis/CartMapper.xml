@@ -18,8 +18,24 @@
         insert into cart values (#{memberId}, #{productCode}, #{quantity}, 0)
     </insert>
 
+    <select id="cartProductCodeList" parameterType="String" resultType="String">
+        select product_code from cart where member_id = #{memberId}
+    </select>
+
     <select id="cartCount" parameterType="String" resultType="int">
         select count(*) from cart where member_id = #{memberId}
+    </select>
+
+    <select id="cartCountByProductType" parameterType="map" resultType="int">
+        select count(*) from cart inner join product on cart.product_code = product.product_code where cart.member_id = #{memberId} and product.product_type = #{productType}
+    </select>
+
+    <select id="checkQuantityByProductCode" parameterType="map" resultType="int">
+        select quantity from cart inner join product on cart.product_code = product.product_code where cart.member_id = #{memberId} and product.product_code = #{productCode}
+    </select>
+
+    <select id="checkQuantityByProductType" parameterType="map" resultType="int">
+        select cart.quantity from cart inner join product on cart.product_code = product.product_code where cart.member_id = #{memberId} and product.product_type = #{productType}
     </select>
 
     <select id="cartSelectMember" parameterType="String" resultMap="cartMap">

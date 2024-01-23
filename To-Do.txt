@@ -10,7 +10,7 @@ controller product 수정 필요 (원두, 믹스, 임대 등)
 제품 디테일 페이지
 데이터 백업 시스템 필요
 product 테이블의 컬럼을 bean, mix, cafe 등으로 옮기기 (원산지, 품종, 제조사와 같은 겹치치 않는 컬럼들) product 테이블은 공통컬럼만
-배송비 2kg 이상으로 카페 용품 개별 배송비 적용
+특정 제품 배송비 적용
 cart 용량 표시
 
 제품 이미지명 AA0001_thumbnail, AA0001_detail
@@ -23,6 +23,7 @@ https://www.tosspayments.com/
 1. int nullPointException = Integer 사용
 2. String.isEmpty() = String이 null값 일 때 NullPointerException을 발생시킴
 
+memberCartPro 가격계산하는부분은 따로 빼기
 productDetail 추가 상품 여러개로 선택가능하게 구현
 memberDisabled 수정 필요(disabledMemberList 등)
 footer 및 제품 상세페이지 등 레이아웃 일치

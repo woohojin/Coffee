@@ -23,9 +23,41 @@ public class cartDAO {
     return num;
   }
 
+  public List<String> cartProductCodeList(String memberId) {
+    List<String> list = session.selectList(NS + "cartProductCodeList", memberId);
+    return list;
+  }
+
   public int cartCount(String memberId) {
     int num = session.selectOne(NS + "cartCount", memberId);
     return num;
+  }
+
+  public int cartCountByProductType(String memberId, int productType) {
+    map.clear();
+    map.put("memberId", memberId);
+    map.put("productType", productType);
+    int num = session.selectOne(NS + "cartCountByProductType", map);
+
+    return num;
+  }
+
+  public int checkQuantityByProductCode(String memberId, String productCode) {
+    map.clear();
+    map.put("memberId", memberId);
+    map.put("productCode", productCode);
+    int num = session.selectOne(NS + "checkQuantityByProductCode", map);
+
+    return num;
+  }
+
+  public List<Integer> checkQuantityByProductType(String memberId, int productType) {
+    map.clear();
+    map.put("memberId", memberId);
+    map.put("productType", productType);
+    List<Integer> list = session.selectList(NS + "checkQuantityByProductType", map);
+
+    return list;
   }
 
   public List<Cart> cartSelectMember(String memberId) {
