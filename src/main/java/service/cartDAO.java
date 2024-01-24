@@ -42,13 +42,13 @@ public class cartDAO {
     return num;
   }
 
-  public int checkQuantityByProductCode(String memberId, String productCode) {
+  public Integer checkQuantityByProductCode(String memberId, String productCode) {
     map.clear();
     map.put("memberId", memberId);
     map.put("productCode", productCode);
-    int num = session.selectOne(NS + "checkQuantityByProductCode", map);
+    Integer num = session.selectOne(NS + "checkQuantityByProductCode", map);
 
-    return num;
+    return (num != null) ? num : 0;
   }
 
   public List<Integer> checkQuantityByProductType(String memberId, int productType) {

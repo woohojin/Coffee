@@ -116,7 +116,7 @@
           </c:when>
         </c:choose>
       </c:if>
-      <c:if test="${ productSearchCount != 0 }">
+      <c:if test="${ productSearchCount > 0 }">
         <c:forEach var="p" begin="${ start }" end="${ end }">
           <c:choose>
             <c:when test="${requestScope.searchText == null}">
