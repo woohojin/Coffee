@@ -229,7 +229,7 @@ public class mainController {
 
     @PostMapping("productDetailPro")
     @ResponseBody
-    public Map<String, Object> productDetailPro(@RequestParam("additionalProducts")List<String> additionalProductsCodes, Cart cart) throws Exception {
+    public Map<String, Object> productDetailPro(@RequestParam(value = "additionalProducts", required = false) List<String> additionalProductsCodes, Cart cart) throws Exception {
         Map<String, Object> map = new HashMap<>();
 
         String msg = "장바구니 추가 실패";
