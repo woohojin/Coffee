@@ -137,8 +137,10 @@
                       <label>
                         <select name="additionalProducts">
                           <option value="none">없음</option>
-                          <option value="CA0001">종이컵6.5온스</option>
-                          <option value="CA0003">종이컵8온스</option>
+                          <option value="CA0001">종이컵 6.5온스</option>
+                          <option value="CA0003">종이컵 8온스</option>
+                          <option value="CA0010">종이컵 뚜껑 8온스</option>
+                          <option value="CA0214">스틱 15cm 검정</option>
                         </select>
                       </label>
                     </div>
