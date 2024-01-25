@@ -231,10 +231,11 @@
   background-color: gray;
   width: 80px;
 }
+
 .member_cart_quantity_btn {
   position: absolute;
   top: 0;
-  right: 39px;
+  right: 11px;
 }
 .member_cart_form {
   position: relative;
@@ -246,7 +247,7 @@
   position: absolute;
   color: white;
   background-color: var(--mainColor);
-  height: 100vh;
+  height: -webkit-fill-available;
   width: 350px;
   top: 0;
   right: 0;
@@ -254,6 +255,8 @@
   font-size: 17px;
 }
 .member_cart_order {
+  position: absolute;
+  top: 141px;
   width: 250px;
   margin-bottom: 371px;
 }

@@ -9,7 +9,6 @@ controller product 수정 필요 (원두, 믹스, 임대 등)
 메인페이지
 데이터 백업 시스템 필요
 추가 상품에 추가 할 상품
-cart 용량 표시
 이메일 글자 깨짐
 
 제품 이미지명 AA0001_thumbnail, AA0001_detail

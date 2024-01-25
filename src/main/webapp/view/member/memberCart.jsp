@@ -17,14 +17,23 @@
       </c:if>
       <c:if test="${ cartCount >= 1}">
       <table class="member_cart">
+        <colgroup>
+          <col style="width: 15%;">
+          <col style="width: 25%;">
+          <col style="width: 25%;">
+          <col style="width: 10%;">
+          <col style="width: 20%;">
+          <col style="width: 5%;">
+        </colgroup>
         <thead>
-        <tr>
-          <th class="member_cart_image">이미지</th>
-          <th class="member_cart_info">상품정보</th>
-          <th>수량</th>
-<%--          <th>분쇄상태</th>--%>
-          <th class="member_cart_price">금액</th>
-        </tr>
+          <tr>
+            <th class="member_cart_image">이미지</th>
+            <th class="member_cart_info">상품정보</th>
+            <th>용량</th>
+            <th>수량</th>
+  <%--          <th>분쇄상태</th>--%>
+            <th class="member_cart_price">금액</th>
+          </tr>
         </thead>
         <tbody>
         <c:forEach var="c" items="${ list }" varStatus="status">
@@ -34,6 +43,9 @@
             </td>
             <td class="member_cart_info">
               <p>${ c.productName }</p>
+            </td>
+            <td class="member_cart_unit">
+              <p>${ c.productUnit }</p>
             </td>
             <td class="member_cart_quantity">
               <form
