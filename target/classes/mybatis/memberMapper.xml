@@ -22,6 +22,7 @@
         <id column="member_disable_date" property="memberDisableDate" />
         <id column="member_modifier_name" property="memberModifierName" />
         <id column="member_modified_date" property="memberModifiedDate" />
+        <id column="member_withdrawal_date" property="memberWithdrawalDate" />
     </resultMap>
 
     <insert id="memberInsert" parameterType="member">
@@ -284,23 +285,66 @@
     </update>
 
     <update id="memberUpdate" parameterType="member">
-        update member set member_name = #{memberName}, member_company_name = #{memberCompanyName}, member_password = #{memberPassword},
-                          member_tel = #{memberTel}, member_company_tel = #{memberCompanyTel}, member_address = #{memberAddress},
-                          member_detail_address = #{memberDetailAddress}, member_delivery_address = #{memberDeliveryAddress},
-                          member_detail_delivery_address = #{memberDetailDeliveryAddress}, member_email = #{memberEmail}, member_file = #{memberFile}
+        update member set member_name = #{memberName, typeHandler=handler.EncryptionTypeHandler}, member_company_name = #{memberCompanyName}, member_password = #{memberPassword},
+                          member_tel = #{memberTel, typeHandler=handler.EncryptionTypeHandler}, member_company_tel = #{memberCompanyTel},
+                          member_address = #{memberAddress, typeHandler=handler.EncryptionTypeHandler}, member_detail_address = #{memberDetailAddress, typeHandler=handler.EncryptionTypeHandler},
+                          member_delivery_address = #{memberDeliveryAddress, typeHandler=handler.EncryptionTypeHandler}, member_detail_delivery_address = #{memberDetailDeliveryAddress, typeHandler=handler.EncryptionTypeHandler},
+                          member_email = #{memberEmail, typeHandler=handler.EncryptionTypeHandler}, member_file = #{memberFile}
         where member_id = #{memberId}
     </update>
 
     <update id="memberUpdateNotPassword" parameterType="member">
-        update member set member_name = #{memberName}, member_company_name = #{memberCompanyName},
-                          member_tel = #{memberTel}, member_company_tel = #{memberCompanyTel}, member_address = #{memberAddress},
-                          member_detail_address = #{memberDetailAddress}, member_delivery_address = #{memberDeliveryAddress},
-                          member_detail_delivery_address = #{memberDetailDeliveryAddress}, member_email = #{memberEmail}, member_file = #{memberFile}
+        update member set member_name = #{memberName, typeHandler=handler.EncryptionTypeHandler}, member_company_name = #{memberCompanyName},
+                          member_tel = #{memberTel, typeHandler=handler.EncryptionTypeHandler}, member_company_tel = #{memberCompanyTel},
+                          member_address = #{memberAddress, typeHandler=handler.EncryptionTypeHandler},  member_detail_address = #{memberDetailAddress, typeHandler=handler.EncryptionTypeHandler},
+                          member_delivery_address = #{memberDeliveryAddress,typeHandler=handler.EncryptionTypeHandler}, member_detail_delivery_address = #{memberDetailDeliveryAddress, typeHandler=handler.EncryptionTypeHandler},
+                          member_email = #{memberEmail, typeHandler=handler.EncryptionTypeHandler}, member_file = #{memberFile}
         where member_id = #{memberId}
     </update>
 
-    <update id="memberDisable" parameterType="map">
-        update member set member_disable = #{memberDisable}, member_disable_date = NOW() where member_id = #{memberId}
-    </update>
+    <insert id="memberWithdrawal" parameterType="String">
+        insert into member_withdrawal (member_id, member_company_name, member_tel, member_company_tel, member_withdrawal_date)
+        select member_id, member_company_name, member_tel, member_company_tel, NOW() from member where member_id = #{memberId}
+    </insert>
+
+  <select id="memberWithdrawalList" parameterType="map" resultMap="memberMap">
+    select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from member_withdrawal a, (select @rownum := 0) tmp
+        where NOT member_id = "admin" ) b
+    where b.rownum between #{start} and #{end};
+  </select>
+
+  <select id="memberWithdrawalCount" parameterType="map" resultType="int">
+    select count(*) from member_withdrawal where NOT member_id = "admin"
+  </select>
+
+  <select id="memberDisableSelectOne" parameterType="map" resultMap="memberMap">
+    select * from member_disabled where member_id = #{memberId}
+  </select>
+
+  <insert id="memberDisable" parameterType="String">
+    insert into member_disabled select * from member where member_id = #{memberId}
+  </insert>
+
+  <insert id="memberEnable" parameterType="String">
+    insert into member select * from member_disabled where member_id = #{memberId}
+  </insert>
+
+  <delete id="memberDelete" parameterType="string">
+        delete from member where member_id = #{memberId}
+  </delete>
+
+  <delete id="disabledMemberDelete" parameterType="string">
+    delete from member_disabled where member_id = #{memberId}
+  </delete>
+
+  <update id="updateDisabledDate" parameterType="String">
+    update member_disabled set member_disable_date = now() where member_id = #{memberId}
+  </update>
+
+  <update id="updateDisabledDateToNull" parameterType="String">
+    update member set member_disable_date = null where member_id = #{memberId}
+  </update>
 
 </mapper>

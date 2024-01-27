@@ -1,24 +1,36 @@
-footer
 https 활성화 = ssl 인증서 발급
-제품 상세 페이지 이미지 부분 수정 필요 크기 및 파일명 규격화
 주문번호 (231130001 / YYMMDD001)
 개인정보처리 기간에 맞게 삭제
-이미지를 나눌 때 타입을 나누어서
-제품 코드별로 폴더를 나누어서 이미지 저장
-mssql agent (mysql 스케쥴러 확인)
 historymapper insert 수정 필요
-개인정보이용약관 필수버튼
-회원등급부족 문구 수정
-회원정보수정에 이메일 인증추가
+결제기록을 저장하는 테이블도 필요할듯
+엑셀 저장 컬럼 수정
+이미지 완성 후 업로드 테스트 (제품 코드별로 나누어놨으나 테스트 필요)
+controller product 수정 필요 (원두, 믹스, 임대 등)
+메인페이지
+데이터 백업 시스템 필요 (스크립트 작성후 cron으로 스케쥴링 설정)
+추가 상품에 추가 할 상품
+이메일 글자 깨짐
+
+제품 이미지명 AA0001_thumbnail, AA0001_detail
 
 https://www.tosspayments.com/
+aws 아이디
 
 모바일 반응형 웹
 
 예외처리
-1. int nullPointException = Integer 사용
+1. int nullPointException = Integer 사용 / null을 따로 처리하기
 2. String.isEmpty() = String이 null값 일 때 NullPointerException을 발생시킴
 
+pagination 수정 필요
+product 테이블 컬럼에 배송비 계산 여부 추가
+memberCartPro 가격계산하는부분은 따로 빼기
+memberCart에 배송비 추가
+productDetail 추가 상품 여러개로 선택가능하게 구현
+memberDisabled 수정 필요(disabledMemberList 등)
+footer 및 제품 상세페이지 등 레이아웃 일치
+전체 레이아웃 수정
+환불테이블 필요
 order 테이블도 필요해보임 (현재 주문 상태, 주문번호 등)
 장바구니/결제 및 주문기록에 현금영수증, 세금계산서 추가
 주문기록에 세금계산서 현금영수증 + 프론트에서 선택 후 form 생성
@@ -39,7 +51,6 @@ admin 클릭시 복사
 통계
 택배 크롤링
 어드민 제품 리스트 이후 클릭시 제품 이미지 보이게
-UI 통일감 만들기
 컨트롤러 세분화
 html formatting
 jquery 제거

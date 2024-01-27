@@ -8,14 +8,14 @@
   <div class="member_terms_page_wrap">
     <div class="page_head">
       <a href="">
-        <h1>개인정보이용약관</h1>
+        <h1>이용약관 / 개인정보수집 및 이용</h1>
       </a>
     </div>
     <div class="member_terms_wrap center">
       <div class="member_terms">
         <p>
           <input type="checkbox" class="check-all" onclick="setCheckAll()">
-          <label>(필수) 이용약관 및 개인정보수집 및 이용에 모두 동의합니다.</label>
+          <label onclick="setCheckAll()">(필수) 이용약관 및 개인정보수집 및 이용에 모두 동의합니다.</label>
         </p>
         <div class="member_terms_textarea">
           <p>[필수] 이용약관 동의</p>
@@ -257,19 +257,19 @@
         </textarea>
           <p>
             <input type="checkbox" class="first_checkbox" required>
-            <label>이용약관에 동의하십니까?</label>
+            <label onclick="setCheckedClickText(this)">이용약관에 동의하십니까?</label>
           </p>
         </div>
         <div class="member_terms_textarea">
           <p>[필수] 개인정보 수집 및 이용 동의</p>
-          <textarea>
+          <textarea readonly>
     ■ 개인정보의 수집 및 이용목적
     회사는 수집한 개인정보를 다음의 목적을 위해 활용합니다.
     ο 회원가입의사 확인, 이용자 식별 및 본인여부, 회원자격 유지 및 관리, 계약 이행 및 약관변경 등의 고지를 위한 연락, 본인의사 확인 및 민원 등의 고객 고충처리, 부정이용 방지, 비인가 사용방지 및 서비스 제공 및 계약의 이행, 서비스 이용 및 상담, 문의, 후기 등 원활한 의사소통 경로 확보, 맞춤형 서비스 제공, 거점 기반 서비스 제공, 구매 및 요금 결제 , 물품배송 또는 청구지 등 발송, 서비스방문 및 이용기록 분석, 부정 이용 방지 등을 위한 기록 관리
     
     ■ 수집하는 개인정보 항목
     회사는 회원가입, 상담, 서비스 신청 등등을 위해 아래와 같은 개인정보를 수집하고 있습니다.
-    ο 수집항목 : 이름 , 생년월일 , 성별 , 로그인ID , 비밀번호 , 휴대전화번호 , 기업전화번호, 이메일 , 이메일 수신여부 , SMS 수신여부 , 서비스 이용기록 , 접속 로그 , 접속 IP 정보 , 결제기록
+    ο 수집항목 : 이름 , 생년월일 , 로그인ID ,  주소  ,  비밀번호 , 휴대전화번호 , 이메일 , 서비스 이용기록 , 접속 로그 , 접속 IP 정보 , 결제기록
     ο 개인정보 수집방법 : 홈페이지(회원가입) , 서면양식
     
     ■ 개인정보의 보유 및 이용기간
@@ -280,13 +280,11 @@
     -  방문(로그)에 관한 기록: 3개월(통신비밀보호법)
     -  전자금융 거래에 관한 기록 : 5년
     -  설문조사, 이벤트 등 일시적 목적을 위하여 수집한 경우: 당해 설문조사, 이벤트 등의 종료 시점
-    (2) 1년 이상 정보통신 서비스를 이용하지 않는 경우 회사는 정보통신망법에 따라 개인정보 파기 등의 필요한 조치를 취합니다. 다만 다른 법령에서 별도의 기간을 정하고 있는 경우나 이용자의 요청에 따라 기간을 달리 정한 경우에는 그 기간이 경과한 후 파기 등의 필요한 조치를 취합니다.
-    
     ※서비스 제공을 위해서 필요한 최소한의 개인정보입니다. 동의를 해주셔야 서비스를 이용하실 수 있으며, 동의하지 않으실 경우 서비스에 제한이 있을 수 있습니다.
         </textarea>
           <p>
             <input type="checkbox" class="second_checkbox" required>
-            <label>개인정보 수집 및 이용에 동의하십니까?</label>
+            <label onclick="setCheckedClickText(this)">개인정보 수집 및 이용에 동의하십니까?</label>
           </p>
         </div>
         <div class="member_terms_button">
@@ -315,13 +313,15 @@
     if (!firstCheckbox.checked || !secondCheckbox.checked) {
       firstCheckbox.checked = true;
       secondCheckbox.checked = true;
+      checkAll.checked = true;
     } else {
       firstCheckbox.checked = false;
       secondCheckbox.checked = false;
+      checkAll.checked = false;
     }
   }
   
-  function checkbox() {
+  function getChecked() {
     if(firstCheckbox.checked === true && secondCheckbox.checked === true) {
       checkAll.checked = true;
     } else {
@@ -329,8 +329,14 @@
     }
   }
 
-  firstCheckbox.addEventListener('change', checkbox);
-  secondCheckbox.addEventListener('change', checkbox);
+  function setCheckedClickText(object) {
+    const checkbox = object.parentNode.firstElementChild;
+    checkbox.checked == false ? checkbox.checked = true : checkbox.checked = false;
+    getChecked();
+  }
+
+  firstCheckbox.addEventListener('change', getChecked);
+  secondCheckbox.addEventListener('change', getChecked);
 
 </script>
 </body>

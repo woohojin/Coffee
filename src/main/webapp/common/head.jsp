@@ -118,64 +118,61 @@
             </div>
 
             <div class="hd_lnb">
-              <div class="hd_lnb_menu">
-                <div class="hd_lnb_dropdown_wrap">
-                  <a class="hd_lnb_dropdown_icon">
-                    <img src="${ pageContext.request.contextPath }/view/image/menu.png" alt="" />
-                  </a>
-                  <div class="hd_lnb_dropdown" style="height: 0;">
-                    <ul>
-                      <li>
-                        <a href="">Menu Name</a>
-                      </li>
-                      <li>
-                        <a href="">Menu 1</a>
-                      </li>
-                      <li>
-                        <a href="">Menu 2</a>
-                      </li>
-                    </ul>
-                    <ul>
-                      <li>
-                        <a href="">Menu Name</a>
-                      </li>
-                      <li>
-                        <a href="">Menu 1</a>
-                      </li>
-                      <li>
-                        <a href="">Menu 2</a>
-                      </li>
-                    </ul>
-                    <ul>
-                      <li>
-                        <a href="">Menu Name</a>
-                      </li>
-                      <li>
-                        <a href="">Menu 1</a>
-                      </li>
-                      <li>
-                        <a href="">Menu 2</a>
-                      </li>
-                    </ul>
-                    <ul>
-                      <li>
-                        <a href="">Menu Name</a>
-                      </li>
-                      <li>
-                        <a href="">Menu 1</a>
-                      </li>
-                      <li>
-                        <a href="">Menu 2</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+<%--              <div class="hd_lnb_menu">--%>
+<%--                <div class="hd_lnb_dropdown_wrap">--%>
+<%--                  <a class="hd_lnb_dropdown_icon">--%>
+<%--                    <img src="${ pageContext.request.contextPath }/view/image/menu.png" alt="" />--%>
+<%--                  </a>--%>
+<%--                  <div class="hd_lnb_dropdown" style="height: 0;">--%>
+<%--                    <ul>--%>
+<%--                      <li>--%>
+<%--                        <a href="">Menu Name</a>--%>
+<%--                      </li>--%>
+<%--                    </ul>--%>
+<%--                    <ul>--%>
+<%--                      <li>--%>
+<%--                        <a href="">Menu Name</a>--%>
+<%--                      </li>--%>
+<%--                    </ul>--%>
+<%--                    <ul>--%>
+<%--                      <li>--%>
+<%--                        <a href="">Menu Name</a>--%>
+<%--                      </li>--%>
+<%--                    </ul>--%>
+<%--                    <ul>--%>
+<%--                      <li>--%>
+<%--                        <a href="">Menu Name</a>--%>
+<%--                      </li>--%>
+<%--                      <li>--%>
+<%--                        <a href="">Menu 1</a>--%>
+<%--                      </li>--%>
+<%--                      <li>--%>
+<%--                        <a href="">Menu 2</a>--%>
+<%--                      </li>--%>
+<%--                    </ul>--%>
+<%--                  </div>--%>
+<%--                </div>--%>
+<%--              </div>--%>
               <div class="hd_lnb_list">
                 <ul>
                   <li>
-                    <a href="${ pageContext.request.contextPath }/board/product"
+                    <a href="${ pageContext.request.contextPath }/board/product?pageType=bean"
                       >원두</a
+                    >
+                  </li>
+                  <li>
+                    <a href="${ pageContext.request.contextPath }/board/product?pageType=mix"
+                    >믹스커피</a
+                    >
+                  </li>
+                  <li>
+                    <a href="${ pageContext.request.contextPath }/board/product?pageType=cafe"
+                    >카페용품</a
+                    >
+                  </li>
+                  <li>
+                    <a href="${ pageContext.request.contextPath }/board/product?pageType=machine"
+                    >임대머신</a
                     >
                   </li>
                 </ul>

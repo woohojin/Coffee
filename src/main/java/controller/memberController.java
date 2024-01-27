@@ -49,6 +49,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/member/")
@@ -389,18 +390,18 @@ public class memberController {
     return "alert";
   }
 
-  @RequestMapping("memberDelete")
-  public String memberDelete() throws Exception {
-    return "/member/memberDelete";
+  @RequestMapping("memberWithdrawal")
+  public String memberWithdrawal() throws Exception {
+    return "/member/memberWithdrawal";
   }
 
-  @RequestMapping("memberDeletePro")
-  public String memberDeletePro(String memberPassword) throws Exception {
+  @RequestMapping("memberWithdrawalPro")
+  public String memberWithdrawalPro(String memberPassword) throws Exception {
     String memberId = (String) session.getAttribute("memberId");
     Member member = memberDao.memberSelectOne(memberId);
 
     String msg = "회원 탈퇴에 실패했습니다.";
-    String url = "/member/memberDelete";
+    String url = "/member/memberWithdrawal";
 
     if(passwordEncoder.matches(memberPassword, member.getMemberPassword())) {
       Cookie cookieId = new Cookie("memberId", null);
@@ -413,7 +414,8 @@ public class memberController {
       response.addCookie(cookieToken);
 
       cookieDao.cookieDelete(memberId);
-      memberDao.memberDisable(memberId, 1);
+      memberDao.memberWithdrawal(memberId);
+      memberDao.memberDelete(memberId);
 
       session.invalidate();
 
@@ -431,17 +433,50 @@ public class memberController {
   public String memberCart() throws Exception {
     String memberId = (String) session.getAttribute("memberId");
 
+    int productType = 0; // 원두
+
     int sumPrice = Integer.parseInt(cartDao.cartSumPrice(memberId));
     int cartCount = cartDao.cartCount(memberId);
-
     int deliveryFee = 3000;
-    int minimumPrice = 30000;
 
-    if(sumPrice > minimumPrice || sumPrice == 0) {
+    int beanCount = cartDao.cartCountByProductType(memberId, productType); // 담은 원두 상품의 종류 개수 확인
+    List<Integer> beanQuantityList = cartDao.checkQuantityByProductType(memberId, productType); // 담은 원두 상품의 개수 확인
+
+    boolean hasQuantityOverThanOne = beanQuantityList.stream().anyMatch(beanQuantity -> beanQuantity >= 2 ); // 개수가 2 이상이여야 true
+
+    List<String> cartProductCodeList = cartDao.cartProductCodeList(memberId);
+
+    List<String> freeShippingProductCodeList = Arrays.asList(
+            "DA0002", "DA0002-2", "DA0011", "DA0011-2", "DA0012", "DA0012-2", "DA0013", "DA0013-2", "DA0013-3", "CA0003", "CA0010", "CA0101", "CA0105"
+    ); // 무료배송 상품
+
+    List<String> paidShippingProductCodeList = Arrays.asList(
+            "AA0001", "AA0001-2", "AA0011", "AA0011-2", "AA0021", "AA0021-2", "AA0031", "AA0031-2", "AA0041", "AA0041-2", "AA0041-3", "AA0051", "AA0051-2", "AA0061", "AA0061-2",
+            "CA0001", "CA0202", "CA0214", "CA0501", "CA0210", "CA0520"
+    );
+
+    boolean allAreFreeShipping = cartProductCodeList.stream().allMatch(code -> freeShippingProductCodeList.contains(code));
+
+    String specificFeeProductCode = "CA0001"; // specificProduct = 배송비가 건당으로 붙는 특정 제품
+
+    int quantityBySpecificProduct = cartDao.checkQuantityByProductCode(memberId, specificFeeProductCode);
+
+    if(quantityBySpecificProduct > 0) { // 특정 제품이 존재 할 때만 추가 상품이 있을 때 추가 배송비 부여
+      if(quantityBySpecificProduct >= 2) {
+        deliveryFee = deliveryFee + (3000 * (quantityBySpecificProduct - 1)); // CA0001 제품은 건당으로 배송비 발생
+      }
+
+      if(cartProductCodeList.stream()
+              .anyMatch(code -> paidShippingProductCodeList.contains(code) && !code.equals(specificFeeProductCode))) { // 종이컵 이외에 다른 제품이 들어있을 경우 배송비 추가
+        deliveryFee += 3000;
+      }
+    }
+
+    if(beanCount >= 2 || hasQuantityOverThanOne || sumPrice == 0 || allAreFreeShipping) { // 2키로 이상시 전체 배송비 무료, 카트에 담은게 없어도 배송비 x
       deliveryFee = 0;
     }
 
-    int totalPrice = deliveryFee + sumPrice;
+    final int totalPrice = deliveryFee + sumPrice; // 총 가격 계산 후 변경 불가
 
     List<Cart> list = cartDao.cartSelectMember(memberId);
 
@@ -460,10 +495,13 @@ public class memberController {
   public String memberCartPro() throws Exception {
     int status = 9;
     String statusParam = request.getParameter("status");
+
     int quantity = 1;
     String quantityParam = request.getParameter("quantity");
+
     int productGrinding = 0;
     String productGrindingParam = request.getParameter("productGrinding");
+
     String productCode = request.getParameter("productCode");
     String memberId = (String) session.getAttribute("memberId");
 
@@ -477,25 +515,58 @@ public class memberController {
       productGrinding = Integer.parseInt(productGrindingParam);
     }
 
-    if(status == 0) {
+    if(status == 0) { // status 0 = delete || status 1 = updateQuantity || status 2 = updateGrindingType
       cartDao.cartDelete(memberId, productCode);
     } else if (status == 1) {
       cartDao.cartQuantityUpdate(memberId, productCode, quantity);
-    } else if (status == 2) {
-      cartDao.cartGrindingUpdate(memberId, productCode, productGrinding);
-    }
+    } // else if (status == 2) {
+    //  cartDao.cartGrindingUpdate(memberId, productCode, productGrinding);
+   // }
 
+    int deliveryFee = 3000; // 배송비
     int sumPrice = Integer.parseInt(cartDao.cartSumPrice(memberId));
     int cartCount = cartDao.cartCount(memberId);
 
-    int deliveryFee = 3000;
-    int minimumPrice = 30000;
+    int productType = 0; // 원두
 
-    if(sumPrice > minimumPrice || sumPrice == 0) {
+    int beanCount = cartDao.cartCountByProductType(memberId, productType); // 담은 원두 상품의 종류 개수 확인
+    List<Integer> beanQuantityList = cartDao.checkQuantityByProductType(memberId, productType); // 담은 원두 상품의 개수 확인
+
+    boolean hasQuantityOverThanOne = beanQuantityList.stream().anyMatch(beanQuantity -> beanQuantity >= 2 ); // 개수가 2 이상이여야 true
+
+    List<String> cartProductCodeList = cartDao.cartProductCodeList(memberId);
+
+    List<String> freeShippingProductCodeList = Arrays.asList(
+            "DA0002", "DA0002-2", "DA0011", "DA0011-2", "DA0012", "DA0012-2", "DA0013", "DA0013-2", "DA0013-3", "CA0003", "CA0010", "CA0101", "CA0105"
+    ); // 무료배송 상품
+
+    List<String> paidShippingProductCodeList = Arrays.asList(
+      "AA0001", "AA0001-2", "AA0011", "AA0011-2", "AA0021", "AA0021-2", "AA0031", "AA0031-2", "AA0041", "AA0041-2", "AA0041-3", "AA0051", "AA0051-2", "AA0061", "AA0061-2",
+      "CA0001", "CA0202", "CA0214", "CA0501", "CA0210", "CA0520"
+    );
+
+    boolean allAreFreeShipping = cartProductCodeList.stream().allMatch(code -> freeShippingProductCodeList.contains(code));
+
+    String specificFeeProductCode = "CA0001"; // specificProduct = 배송비가 건당으로 붙는 특정 제품
+
+    int quantityBySpecificProduct = cartDao.checkQuantityByProductCode(memberId, specificFeeProductCode);
+
+    if(quantityBySpecificProduct > 0) { // 특정 제품이 존재 할 때만 추가 상품이 있을 때 추가 배송비 부여
+      if(quantityBySpecificProduct >= 2) {
+        deliveryFee = deliveryFee + (3000 * (quantityBySpecificProduct - 1)); // CA0001 제품은 건당으로 배송비 발생
+      }
+
+      if(cartProductCodeList.stream()
+              .anyMatch(code -> paidShippingProductCodeList.contains(code) && !code.equals(specificFeeProductCode))) { // 종이컵 이외에 다른 제품이 들어있을 경우 배송비 추가
+        deliveryFee += 3000;
+      }
+    }
+
+    if(beanCount >= 2 || hasQuantityOverThanOne || sumPrice == 0 || allAreFreeShipping) { // 2키로 이상시 전체 배송비 무료, 카트에 담은게 없어도 배송비 x
       deliveryFee = 0;
     }
 
-    int totalPrice = deliveryFee + sumPrice;
+    final int totalPrice = deliveryFee + sumPrice; // 총 가격 계산 후 변경 불가
 
     List<Cart> list = cartDao.cartSelectMember(memberId);
 

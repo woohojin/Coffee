@@ -20,6 +20,7 @@ public class Member {
     String memberDisableDate;
     String memberModifierName;
     String memberModifiedDate;
+    String memberWithdrawalDate;
 
     public String getMemberId() {
         return memberId;
@@ -173,29 +174,38 @@ public class Member {
         this.memberModifiedDate = memberModifiedDate;
     }
 
+    public String getMemberWithdrawalDate() {
+        return memberWithdrawalDate;
+    }
+
+    public void setMemberWithdrawalDate(String memberWithdrawalDate) {
+        this.memberWithdrawalDate = memberWithdrawalDate;
+    }
+
     @Override
     public String toString() {
         return "Member{" +
-          "memberId='" + memberId + '\'' +
-          ", memberName='" + memberName + '\'' +
-          ", memberCompanyName='" + memberCompanyName + '\'' +
-          ", memberPassword='" + memberPassword + '\'' +
-          ", memberTel='" + memberTel + '\'' +
-          ", memberCompanyTel='" + memberCompanyTel + '\'' +
-          ", memberAddress='" + memberAddress + '\'' +
-          ", memberDetailAddress='" + memberDetailAddress + '\'' +
-          ", memberDeliveryAddress='" + memberDeliveryAddress + '\'' +
-          ", memberDetailDeliveryAddress='" + memberDetailDeliveryAddress + '\'' +
-          ", memberEmail='" + memberEmail + '\'' +
-          ", memberFile='" + memberFile + '\'' +
-          ", memberFranCode='" + memberFranCode + '\'' +
-          ", memberTier=" + memberTier +
-          ", memberDate='" + memberDate + '\'' +
-          ", memberDisable=" + memberDisable +
-          ", memberDisableDate='" + memberDisableDate + '\'' +
-          ", memberModifierName='" + memberModifierName + '\'' +
-          ", memberModifiedDate='" + memberModifiedDate + '\'' +
-          '}';
+                "memberId='" + memberId + '\'' +
+                ", memberName='" + memberName + '\'' +
+                ", memberCompanyName='" + memberCompanyName + '\'' +
+                ", memberPassword='" + memberPassword + '\'' +
+                ", memberTel='" + memberTel + '\'' +
+                ", memberCompanyTel='" + memberCompanyTel + '\'' +
+                ", memberAddress='" + memberAddress + '\'' +
+                ", memberDetailAddress='" + memberDetailAddress + '\'' +
+                ", memberDeliveryAddress='" + memberDeliveryAddress + '\'' +
+                ", memberDetailDeliveryAddress='" + memberDetailDeliveryAddress + '\'' +
+                ", memberEmail='" + memberEmail + '\'' +
+                ", memberFile='" + memberFile + '\'' +
+                ", memberFranCode='" + memberFranCode + '\'' +
+                ", memberTier=" + memberTier +
+                ", memberDate='" + memberDate + '\'' +
+                ", memberDisable=" + memberDisable +
+                ", memberDisableDate='" + memberDisableDate + '\'' +
+                ", memberModifierName='" + memberModifierName + '\'' +
+                ", memberModifiedDate='" + memberModifiedDate + '\'' +
+                ", memberWithdrawalDate='" + memberWithdrawalDate + '\'' +
+                '}';
     }
 }
 

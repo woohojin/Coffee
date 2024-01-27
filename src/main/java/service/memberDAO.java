@@ -304,11 +304,51 @@ public class memberDAO {
         session.update(NS + "memberUpdateNotPassword", member);
     }
 
-    public void memberDisable(String memberId, int memberDisable) {
+    public int memberWithdrawal(String memberId) {
+        int num = session.insert(NS + "memberWithdrawal", memberId);
+        return num;
+    }
+
+    public List<Member> memberWithdrawalList(int pageInt, int limit) {
         map.clear();
-        map.put("memberId", memberId);
-        map.put("memberDisable", memberDisable);
-        session.update(NS + "memberDisable", map);
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Member> list = session.selectList(NS + "memberWithdrawalList", map);
+        return list;
+    }
+
+    public int memberWithdrawalCount() {
+        int num = session.selectOne(NS + "memberWithdrawalCount");
+        return num;
+    }
+
+    public Member memberDisableSelectOne(String memberId) {
+        Member mem = session.selectOne(NS + "memberDisableSelectOne", memberId);
+        return mem;
+    }
+
+    public void memberDisable(String memberId) {
+        session.update(NS + "memberDisable", memberId);
+    }
+
+    public void memberEnable(String memberId) {
+        session.update(NS + "memberDisable", memberId);
+    }
+
+    public void memberDelete(String memberId) {
+        session.delete(NS + "memberDelete", memberId);
+    }
+
+    public void disabledMemberDelete(String memberId) {
+        session.delete(NS + "disabledMemberDelete", memberId);
+    }
+
+    public void updateDisableDate(String memberId) {
+        session.update(NS + "updateDisableDate", memberId);
+    }
+
+    public void updateDisableDateToNull(String memberId) {
+        session.update(NS + "updateDisableDateToNull", memberId);
     }
 
 }

@@ -607,6 +607,56 @@ public class adminController {
     return "admin/memberList";
   }
 
+  @RequestMapping("memberWithdrawalList")
+  public String memberWithdrawalList() throws Exception {
+    Integer memberTier = (Integer) session.getAttribute("memberTier");
+    if(memberTier == null) {
+      memberTier = 0;
+    }
+
+    String pageNum = request.getParameter("pageNum");
+    if (pageNum == null) {
+      pageNum = "1";
+    }
+
+    int pageInt = Integer.parseInt(pageNum);
+
+    int limit = 32; // 한 page당 게시물 개수
+    int bottomLine = 100; // pagination 개수
+
+    int memberCount = 0;
+
+    if(memberTier == 9) {
+      memberDao.rownumSet();
+      List<Member> list = memberDao.memberWithdrawalList(pageInt, limit);
+      LOGGER.info(list.toString());
+      memberCount = memberDao.memberWithdrawalCount();
+      request.setAttribute("list", list);
+      LOGGER.info(list.toString());
+    }
+
+    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
+    int end = start + bottomLine - 1;
+    int maxPage = (memberCount / limit) + (memberCount % limit == 0 ? 0 : 1);
+    if (end > maxPage) {
+      end = maxPage;
+    }
+    if (end > memberCount) {
+      end = memberCount;
+    }
+
+    request.setAttribute("memberTier", memberTier);
+    request.setAttribute("memberCount", memberCount);
+    request.setAttribute("pageNum", pageNum);
+    request.setAttribute("start", start);
+    request.setAttribute("end", end);
+    request.setAttribute("bottomLine", bottomLine);
+    request.setAttribute("maxPage", maxPage);
+    request.setAttribute("pageInt", pageInt);
+
+    return "admin/memberWithdrawalList";
+  }
+
   @RequestMapping("orderHistory")
   public String orderHistory() throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
@@ -915,7 +965,18 @@ public class adminController {
 
   @RequestMapping("memberDisableUpdatePro")
   public String memberDisableUpdatePro(String memberId, int memberDisable) throws Exception {
-    memberDao.memberDisable(memberId, memberDisable);
+    Member member = memberDao.memberSelectOne(memberId);
+    Member disabledMember = memberDao.memberDisableSelectOne(memberId);
+
+    if(member != null) {
+      memberDao.memberDisable(memberId);
+      memberDao.memberDelete(memberId);
+      memberDao.updateDisableDate(memberId);
+    } else if(disabledMember != null) {
+      memberDao.memberEnable(memberId);
+      memberDao.disabledMemberDelete(memberId);
+      memberDao.updateDisableDateToNull(memberId);
+    }
 
     String url = "/admin/memberDisableUpdate";
     String msg = "멤버 비활성화 상태 수정 성공";
@@ -938,9 +999,23 @@ public class adminController {
 
     Image image = new Image();
     String productCode = product.getProductCode();
+    int productType = product.getProductType();
 
-    String filePath = request.getServletContext().getRealPath("/") + "view/files/";
-    String fileName = null;
+    String filePath = request.getServletContext().getRealPath("/") + "view/files/bean/" + productCode;
+
+    if(productType == 1) {
+      filePath = request.getServletContext().getRealPath("/") + "view/files/mix/" + productCode;
+    }
+
+    if(productType == 2) {
+      filePath = request.getServletContext().getRealPath("/") + "view/files/cafe/" + productCode;
+    }
+
+    if(productType == 3) {
+      filePath = request.getServletContext().getRealPath("/") + "view/files/machine/" + productCode;
+    }
+
+    String fileName;
     File uploadPath = new File(filePath);
 
     if (!uploadPath.exists()) {
@@ -956,10 +1031,15 @@ public class adminController {
         for(int i = 0; i < fileList.size(); i++) {
           fileName = fileList.get(i).getOriginalFilename();
           File file = new File(filePath, fileName);
+
           image.setProductCode(productCode);
           image.setFileName(fileName);
           imageDao.insertProductImage(image);
-          product.setProductFile(fileName); // 파일명 규격화 후 수정 필요
+
+          if(fileName.contains("thumbnail")) {
+            product.setProductFile(fileName);
+          }
+
           try {
             fileList.get(i).transferTo(file);
           } catch (IllegalStateException e) {
@@ -1084,9 +1164,9 @@ public class adminController {
       row.createCell(colNum++).setCellValue(product.getProductType());
       row.createCell(colNum++).setCellValue(product.getProductPrice());
       row.createCell(colNum++).setCellValue(product.getProductUnit());
-      row.createCell(colNum++).setCellValue(product.getProductCountry());
-      row.createCell(colNum++).setCellValue(product.getProductSpecies());
-      row.createCell(colNum++).setCellValue(product.getProductCompany());
+      row.createCell(colNum++).setCellValue(product.getBeanCountry());
+      row.createCell(colNum++).setCellValue(product.getBeanSpecies());
+      row.createCell(colNum++).setCellValue(product.getBeanCompany());
       row.createCell(colNum++).setCellValue(product.getProductTier());
     }
 

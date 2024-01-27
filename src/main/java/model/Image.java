@@ -3,8 +3,10 @@ package model;
 public class Image {
   String productCode;
   String fileName;
+  String fileRegisterName;
+  String fileRegisterDate;
   String fileModifierName;
-  String fileModifiedDate;
+  String fileModifierDate;
 
   public String getProductCode() {
     return productCode;
@@ -22,6 +24,22 @@ public class Image {
     this.fileName = fileName;
   }
 
+  public String getFileRegisterName() {
+    return fileRegisterName;
+  }
+
+  public void setFileRegisterName(String fileRegisterName) {
+    this.fileRegisterName = fileRegisterName;
+  }
+
+  public String getFileRegisterDate() {
+    return fileRegisterDate;
+  }
+
+  public void setFileRegisterDate(String fileRegisterDate) {
+    this.fileRegisterDate = fileRegisterDate;
+  }
+
   public String getFileModifierName() {
     return fileModifierName;
   }
@@ -30,21 +48,23 @@ public class Image {
     this.fileModifierName = fileModifierName;
   }
 
-  public String getFileModifiedDate() {
-    return fileModifiedDate;
+  public String getFileModifierDate() {
+    return fileModifierDate;
   }
 
-  public void setFileModifiedDate(String fileModifiedDate) {
-    this.fileModifiedDate = fileModifiedDate;
+  public void setFileModifierDate(String fileModifierDate) {
+    this.fileModifierDate = fileModifierDate;
   }
 
   @Override
   public String toString() {
     return "Image{" +
-      "productCode='" + productCode + '\'' +
-      ", fileName='" + fileName + '\'' +
-      ", fileModifierName='" + fileModifierName + '\'' +
-      ", fileModifiedDate='" + fileModifiedDate + '\'' +
-      '}';
+            "productCode='" + productCode + '\'' +
+            ", fileName='" + fileName + '\'' +
+            ", fileRegisterName='" + fileRegisterName + '\'' +
+            ", fileRegisterDate='" + fileRegisterDate + '\'' +
+            ", fileModifierName='" + fileModifierName + '\'' +
+            ", fileModifierDate='" + fileModifierDate + '\'' +
+            '}';
   }
 }

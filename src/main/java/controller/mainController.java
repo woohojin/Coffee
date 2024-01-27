@@ -2,12 +2,10 @@ package controller;
 
 import model.Cart;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import service.productDAO;
 import service.memberDAO;
 import service.cartDAO;
 import model.Product;
-import model.Member;
 
 import java.io.*;
 import java.sql.Connection;
@@ -24,7 +22,6 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/board/")
@@ -67,8 +64,18 @@ public class mainController {
         return "main";
     }
 
+    @RequestMapping("terms")
+    public String terms() throws Exception {
+        return "terms";
+    }
+
+    @RequestMapping("privacy")
+    public String privacy() throws Exception {
+        return "privacy";
+    }
+
     @RequestMapping("product")
-    public String product() throws Exception {
+    public String product(@RequestParam(value = "pageType", defaultValue = "bean") String pageType) throws Exception {
         Integer memberTier = (Integer) session.getAttribute("memberTier");
         if(memberTier == null) {
             memberTier = 0;
@@ -86,11 +93,43 @@ public class mainController {
 
         int productCount = 0;
 
+        int productType;
+
         if(memberTier != 0) {
-            productDao.rownumSet();
-            List<Product> list = productDao.productListByMemberTier(pageInt, limit, memberTier);
-            productCount = productDao.productCountByTier(memberTier);
-            request.setAttribute("list", list);
+            if(pageType.equals("bean")) {
+                productType = 0;
+                productDao.rownumSet();
+                List<Product> list = productDao.productListByMemberTierByProductType(pageInt, limit, memberTier, productType);
+                productCount = productDao.productCountByTierByProductType(memberTier, productType);
+                request.setAttribute("list", list);
+            }
+
+            if(pageType.equals("mix")) {
+                productType = 1;
+                productDao.rownumSet();
+                List<Product> list = productDao.productListByMemberTierByProductType(pageInt, limit, memberTier, productType);
+                productCount = productDao.productCountByTierByProductType(memberTier, productType);
+                request.setAttribute("list", list);
+            }
+
+            if(pageType.equals("cafe")) {
+                productType = 2;
+                memberTier = 1; // 카페용품은 등급 구분이 없음
+                productDao.rownumSet();
+                List<Product> list = productDao.productListByMemberTierByProductType(pageInt, limit, memberTier, productType);
+                productCount = productDao.productCountByTierByProductType(memberTier, productType);
+                request.setAttribute("list", list);
+            }
+
+            if(pageType.equals("machine")) {
+                productType = 3;
+                memberTier = 1; // 임대머신은 등급 구분이 없음
+                productDao.rownumSet();
+                List<Product> list = productDao.productListByMemberTierByProductType(pageInt, limit, memberTier, productType);
+                productCount = productDao.productCountByTierByProductType(memberTier, productType);
+                request.setAttribute("list", list);
+            }
+
         }
 
         int start = (pageInt - 1) / bottomLine * bottomLine + 1;
@@ -103,6 +142,7 @@ public class mainController {
             end = productCount;
         }
 
+        request.setAttribute("pageType", pageType);
         request.setAttribute("memberTier", memberTier);
         request.setAttribute("productCount", productCount);
         request.setAttribute("pageNum", pageNum);
@@ -112,25 +152,111 @@ public class mainController {
         request.setAttribute("maxPage", maxPage);
         request.setAttribute("pageInt", pageInt);
 
-        return "board/product/productBoard";
+        return "board/product/productList";
     }
 
-    @RequestMapping("productDetail")
-    public String productDetail(String productCode) throws Exception {
-        Product product = productDao.productSelectOne(productCode);
+    @RequestMapping("beanDetail")
+    public String beanDetail(String productCode) throws Exception {
+        Integer memberTier = (Integer) session.getAttribute("memberTier");
+        if(memberTier == null) {
+            memberTier = 0;
+        }
+
+        int productCount = 0;
+
+        int productType = 0;
+
+        if(memberTier != 0) {
+            productCount = productDao.productCountByTierByProductType(memberTier, productType);
+        }
+
+        Product product = productDao.beanSelectOne(productCode);
+
+        request.setAttribute("memberTier", memberTier);
+        request.setAttribute("productCount", productCount);
         request.setAttribute("product", product);
 
-        return "board/product/productDetailBoard";
+        return "board/product/beanDetail";
+    }
+
+    @RequestMapping("mixDetail")
+    public String mixDetail(String productCode) throws Exception {
+        Integer memberTier = (Integer) session.getAttribute("memberTier");
+        if(memberTier == null) {
+            memberTier = 0;
+        }
+
+        int productCount = 0;
+
+        int productType = 1;
+
+        if(memberTier != 0) {
+            productCount = productDao.productCountByTierByProductType(memberTier, productType);
+        }
+
+        Product product = productDao.mixSelectOne(productCode);
+
+        request.setAttribute("memberTier", memberTier);
+        request.setAttribute("productCount", productCount);
+        request.setAttribute("product", product);
+
+        return "board/product/mixDetail";
+    }
+
+    @RequestMapping("cafeDetail")
+    public String cafeDetail(String productCode) throws Exception {
+        Integer memberTier = (Integer) session.getAttribute("memberTier");
+        if(memberTier == null) {
+            memberTier = 0;
+        }
+
+        int productCount = 0;
+
+        int productType = 1;
+
+        if(memberTier != 0) {
+            productCount = productDao.productCountByTierByProductType(memberTier, productType);
+        }
+
+        Product product = productDao.cafeSelectOne(productCode);
+
+        request.setAttribute("memberTier", memberTier);
+        request.setAttribute("productCount", productCount);
+        request.setAttribute("product", product);
+
+        return "board/product/cafeDetail";
     }
 
     @PostMapping("productDetailPro")
     @ResponseBody
-    public Map<String, Object> productDetailPro(Cart cart) throws Exception {
+    public Map<String, Object> productDetailPro(@RequestParam(value = "additionalProducts", required = false) List<String> additionalProductsCodes, Cart cart) throws Exception {
         Map<String, Object> map = new HashMap<>();
 
         String msg = "장바구니 추가 실패";
         String memberId = (String) session.getAttribute("memberId");
-        String productCode = cart.getProductCode();
+
+        //추가 상품 부분
+
+        if (additionalProductsCodes != null && !additionalProductsCodes.isEmpty()) {
+            for (String additionalProductsCode : additionalProductsCodes) {
+                if(!additionalProductsCode.equals("none")) {
+                    Cart cartCheck = cartDao.cartSelectOne(memberId, additionalProductsCode);
+
+                    if(cartCheck == null) {
+                        Cart additionalCart = new Cart();
+                        additionalCart.setProductCode(additionalProductsCode);
+                        additionalCart.setMemberId(memberId);
+                        additionalCart.setQuantity(1);
+                        cartDao.cartInsert(additionalCart);
+                    } else {
+                        int additionalProductQuantity = 1 + cartCheck.getQuantity();
+                        cartDao.cartQuantityUpdate(memberId, additionalProductsCode, additionalProductQuantity);
+                    }
+                }
+            }
+        }
+
+        //일반 상품 부분
 
         int quantity = cart.getQuantity();
 
@@ -139,32 +265,36 @@ public class mainController {
             cart.setQuantity(quantity);
         }
 
-        Cart cartCheck = cartDao.cartSelectOne(memberId, productCode);
+        String productCode = cart.getProductCode();
 
+        Product product = productDao.productSelectOne(productCode);
+
+        Cart cartCheck = cartDao.cartSelectOne(memberId, productCode);
         if(cartCheck == null) {
+            cart.setMemberId(memberId);
             int num = cartDao.cartInsert(cart);
 
             if(num > 0) {
                 msg = "장바구니 추가 성공";
-                map.put("productCode", cart.getProductCode());
-                map.put("productName", cart.getProductName());
-                map.put("productUnit", cart.getProductUnit());
-                map.put("productGrinding", cart.getProductGrinding());
+                map.put("productCode", product.getProductCode());
+                map.put("productName", product.getProductName());
+                map.put("productUnit", product.getProductUnit());
+//                map.put("productGrinding", cart.getProductGrinding());
                 map.put("quantity", cart.getQuantity());
-                map.put("productPrice", cart.getProductPrice());
-                map.put("productFile", cart.getProductFile());
+                map.put("productPrice", product.getProductPrice());
+                map.put("productFile", product.getProductFile());
             }
         } else {
             quantity = quantity + cartCheck.getQuantity();
             cartDao.cartQuantityUpdate(memberId, productCode, quantity);
             msg = "장바구니 추가 성공";
-            map.put("productCode", cart.getProductCode());
-            map.put("productName", cart.getProductName());
-            map.put("productUnit", cart.getProductUnit());
-            map.put("productGrinding", cart.getProductGrinding());
+            map.put("productCode", product.getProductCode());
+            map.put("productName", product.getProductName());
+            map.put("productUnit", product.getProductUnit());
+//            map.put("productGrinding", product.getProductGrinding());
             map.put("quantity", cart.getQuantity());
-            map.put("productPrice", cart.getProductPrice());
-            map.put("productFile", cart.getProductFile());
+            map.put("productPrice", product.getProductPrice());
+            map.put("productFile", product.getProductFile());
         }
 
         map.put("cartStatus", msg);
@@ -221,47 +351,47 @@ public class mainController {
         request.setAttribute("start", start);
         request.setAttribute("end", end);
 
-        return "board/product/productBoard";
+        return "board/product/productList";
     }
-
-    @RequestMapping("fileUploadForm")
-    public String fileUploadForm() throws Exception {
-        return "board/fileUploadForm";
-    }
-
-    @RequestMapping("fileUploadPro")
-    public String fileUploadPro(MultipartHttpServletRequest files) throws Exception {
-
-        String filePath = request.getServletContext().getRealPath("/") + "view/files/";
-        String fileName = null;
-        File uploadPath = new File(filePath);
-
-        if (!uploadPath.exists()) {
-            uploadPath.mkdirs(); // 경로가 없으면 생성
-        }
-
-        List<MultipartFile> fileList = files.getFiles("files");
-
-        if (fileList.size() > 0) {
-            for(int i = 0; i < fileList.size(); i++) {
-                fileName = fileList.get(i).getOriginalFilename();
-                File file = new File(filePath, fileName);
-                try {
-                    fileList.get(i).transferTo(file);
-                } catch (IllegalStateException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            System.out.println("Failed to upload file");
-            System.out.println(fileList.size() + " / "  + fileList);
-        }
-
-        request.setAttribute("fileName", fileName);
-        return "board/fileUploadPro";
-    }
+//
+//    @RequestMapping("fileUploadForm")
+//    public String fileUploadForm() throws Exception {
+//        return "board/fileUploadForm";
+//    }
+//
+//    @RequestMapping("fileUploadPro")
+//    public String fileUploadPro(MultipartHttpServletRequest files) throws Exception {
+//
+//        String filePath = request.getServletContext().getRealPath("/") + "view/files/";
+//        String fileName = null;
+//        File uploadPath = new File(filePath);
+//
+//        if (!uploadPath.exists()) {
+//            uploadPath.mkdirs(); // 경로가 없으면 생성
+//        }
+//
+//        List<MultipartFile> fileList = files.getFiles("files");
+//
+//        if (fileList.size() > 0) {
+//            for(int i = 0; i < fileList.size(); i++) {
+//                fileName = fileList.get(i).getOriginalFilename();
+//                File file = new File(filePath, fileName);
+//                try {
+//                    fileList.get(i).transferTo(file);
+//                } catch (IllegalStateException e) {
+//                    e.printStackTrace();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        } else {
+//            System.out.println("Failed to upload file");
+//            System.out.println(fileList.size() + " / "  + fileList);
+//        }
+//
+//        request.setAttribute("fileName", fileName);
+//        return "board/fileUploadPro";
+//    }
 
     @RequestMapping("fileDownload")
     public void fileDownload(HttpServletResponse response) {

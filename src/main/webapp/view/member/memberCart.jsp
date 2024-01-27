@@ -17,14 +17,23 @@
       </c:if>
       <c:if test="${ cartCount >= 1}">
       <table class="member_cart">
+        <colgroup>
+          <col style="width: 15%;">
+          <col style="width: 25%;">
+          <col style="width: 25%;">
+          <col style="width: 10%;">
+          <col style="width: 20%;">
+          <col style="width: 5%;">
+        </colgroup>
         <thead>
-        <tr>
-          <th class="member_cart_image">이미지</th>
-          <th class="member_cart_info">상품정보</th>
-          <th>수량</th>
-          <th>분쇄상태</th>
-          <th class="member_cart_price">금액</th>
-        </tr>
+          <tr>
+            <th class="member_cart_image">이미지</th>
+            <th class="member_cart_info">상품정보</th>
+            <th>용량</th>
+            <th>수량</th>
+  <%--          <th>분쇄상태</th>--%>
+            <th class="member_cart_price">금액</th>
+          </tr>
         </thead>
         <tbody>
         <c:forEach var="c" items="${ list }" varStatus="status">
@@ -34,6 +43,9 @@
             </td>
             <td class="member_cart_info">
               <p>${ c.productName }</p>
+            </td>
+            <td class="member_cart_unit">
+              <p>${ c.productUnit }</p>
             </td>
             <td class="member_cart_quantity">
               <form
@@ -54,23 +66,23 @@
                 </div>
               </form>
             </td>
-            <td class="member_cart_grinding">
-              <form
-                action="${ pageContext.request.contextPath }/member/memberCartPro"
-                class="member_cart_form grinding_form${ status.index }"
-                method="post"
-              >
-                <input type="hidden" name="status" class="grinding_status${ status.index }" value="" />
-                <input type="hidden" name="productCode" value="${ c.productCode }"/>
-                <p>
-                  <select class="productGrinding${ status.index }" name="productGrinding" onchange="changeGrinding(${ status.index })">
-                    <option value="0" ${ c.productGrinding == 0 ? "selected" : "" }>원두</option>
-                    <option value="1" ${ c.productGrinding == 1 ? "selected" : "" }>핸드드립</option>
-                    <option value="2" ${ c.productGrinding == 2 ? "selected" : "" }>에스프레소</option>
-                  </select>
-                </p>
-              </form>
-            </td>
+<%--            <td class="member_cart_grinding">--%>
+<%--              <form--%>
+<%--                action="${ pageContext.request.contextPath }/member/memberCartPro"--%>
+<%--                class="member_cart_form grinding_form${ status.index }"--%>
+<%--                method="post"--%>
+<%--              >--%>
+<%--                <input type="hidden" name="status" class="grinding_status${ status.index }" value="" />--%>
+<%--                <input type="hidden" name="productCode" value="${ c.productCode }"/>--%>
+<%--                <p>--%>
+<%--                  <select class="productGrinding${ status.index }" name="productGrinding" onchange="changeGrinding(${ status.index })">--%>
+<%--                    <option value="0" ${ c.productGrinding == 0 ? "selected" : "" }>원두</option>--%>
+<%--                    <option value="1" ${ c.productGrinding == 1 ? "selected" : "" }>핸드드립</option>--%>
+<%--                    <option value="2" ${ c.productGrinding == 2 ? "selected" : "" }>에스프레소</option>--%>
+<%--                  </select>--%>
+<%--                </p>--%>
+<%--              </form>--%>
+<%--            </td>--%>
             <td class="member_cart_price">
               <c:if test="${ c.productSoldOut == 1}">
                 <p>Sold Out</p>

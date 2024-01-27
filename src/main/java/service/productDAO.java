@@ -4,14 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
-import model.History;
-import model.Image;
-import model.Member;
+import model.*;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import model.Product;
 
 @Component
 public class productDAO {
@@ -26,8 +22,38 @@ public class productDAO {
         return num;
     }
 
+    public int beanInsert(Product product) {
+        int num = session.insert(NS + "beanInsert", product);
+        return num;
+    }
+
+    public int mixInsert(Product product) {
+        int num = session.insert(NS + "mixInsert", product);
+        return num;
+    }
+
+    public int cafeInsert(Product product) {
+        int num = session.insert(NS + "cafeInsert", product);
+        return num;
+    }
+
     public int productDelete(String productCode) {
         int num = session.delete(NS + "productDelete", productCode);
+        return num;
+    }
+
+    public int beanDelete(String productCode) {
+        int num = session.delete(NS + "beanDelete", productCode);
+        return num;
+    }
+
+    public int mixDelete(String productCode) {
+        int num = session.delete(NS + "mixDelete", productCode);
+        return num;
+    }
+
+    public int cafeDelete(String productCode) {
+        int num = session.delete(NS + "cafeDelete", productCode);
         return num;
     }
 
@@ -43,8 +69,11 @@ public class productDAO {
         return num;
     }
 
-    public int productCountByTier(int memberTier) {
-        int num = session.selectOne(NS + "productCount", memberTier);
+    public int productCountByTierByProductType(int memberTier, int productType) {
+        map.clear();
+        map.put("memberTier", memberTier);
+        map.put("productType", productType);
+        int num = session.selectOne(NS + "productCountByTierByProductType", map);
         return num;
     }
 
@@ -66,6 +95,21 @@ public class productDAO {
         return product;
     }
 
+    public Product beanSelectOne(String productCode) {
+        Product product = session.selectOne(NS + "beanSelectOne", productCode);
+        return product;
+    }
+
+    public Product mixSelectOne(String productCode) {
+        Product product = session.selectOne(NS + "mixSelectOne", productCode);
+        return product;
+    }
+
+    public Product cafeSelectOne(String productCode) {
+        Product product = session.selectOne(NS + "cafeSelectOne", productCode);
+        return product;
+    }
+
     public List<Product> productListAll() {
         List<Product> list = session.selectList(NS + "productListAll");
         return list;
@@ -83,12 +127,13 @@ public class productDAO {
         return list;
     }
 
-    public List<Product> productListByMemberTier(int pageInt, int limit, int memberTier) {
+    public List<Product> productListByMemberTierByProductType(int pageInt, int limit, int memberTier, int productType) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("memberTier", memberTier);
-        List<Product> list = session.selectList(NS + "productListByMemberTier", map);
+        map.put("productType", productType);
+        List<Product> list = session.selectList(NS + "productListByMemberTierByProductType", map);
         return list;
     }
 

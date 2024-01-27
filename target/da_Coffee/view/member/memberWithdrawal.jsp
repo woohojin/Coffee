@@ -6,7 +6,7 @@
 <main>
   <div class="member_signin_form_wrap">
     <form
-      action="${ pageContext.request.contextPath }/member/memberDisablePro"
+      action="${ pageContext.request.contextPath }/member/memberWithdrawalPro"
       name="f"
       method="post"
       class="member_signin_form"

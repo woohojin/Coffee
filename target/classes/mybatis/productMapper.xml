@@ -5,37 +5,89 @@
 <mapper namespace="product">
     <resultMap type="product" id="productMap">
         <id column="product_code" property="productCode" />
-        <id column="product_type" property="productType" />
-        <id column="product_name" property="productName" />
-        <id column="product_price" property="productPrice" />
-        <id column="product_unit" property="productUnit" />
-        <id column="product_country" property="productCountry" />
-        <id column="product_species" property="productSpecies" />
-        <id column="product_company" property="productCompany" />
-        <id column="product_tier" property="productTier" />
-        <id column="product_file" property="productFile" />
-        <id column="product_sold_out" property="productSoldOut" />
-        <id column="product_register_name" property="productRegisterName" />
-        <id column="product_register_date" property="productRegisterDate" />
-        <id column="product_modifier_name" property="productModifierName" />
-        <id column="product_modified_date" property="productModifiedDate" />
+        <result column="product_type" property="productType" />
+        <result column="product_name" property="productName" />
+        <result column="product_price" property="productPrice" />
+        <result column="product_unit" property="productUnit" />
+        <result column="product_tier" property="productTier" />
+        <result column="product_file" property="productFile" />
+        <result column="product_sold_out" property="productSoldOut" />
+        <result column="product_register_name" property="productRegisterName" />
+        <result column="product_register_date" property="productRegisterDate" />
+        <result column="product_modifier_name" property="productModifierName" />
+        <result column="product_modifier_date" property="productModifierDate" />
+
+        <!-- bean -->
+
+        <result column="bean_country" property="beanCountry" />
+        <result column="bean_species" property="beanSpecies" />
+        <result column="bean_company" property="beanCompany" />
+        <result column="bean_manufacturing_date" property="beanManufacturingDate" />
+        <result column="bean_use_by_date" property="beanUseByDate" />
+        <result column="bean_raw_materials" property="beanRawMaterials" />
+        <result column="bean_register_name" property="beanRegisterName" />
+        <result column="bean_register_date" property="beanRegisterName" />
+        <result column="bean_register_name" property="beanModifierName" />
+        <result column="bean_modifier_date" property="beanModifierDate" />
+
+        <!-- mix -->
+
+        <result column="mix_company" property="mixCompany" />
+        <result column="mix_use_by_date" property="mixUseByDate" />
+        <result column="mix_register_name" property="mixRegisterName" />
+        <result column="mix_register_date" property="mixRegisterDate" />
+        <result column="mix_modifier_name" property="mixModifierName" />
+        <result column="mix_modifier_date" property="mixModifierDate" />
+
+        <!-- cafe -->
+
+        <result column="cafe_company" property="cafeCompany" />
+        <result column="cafe_register_name" property="cafeRegisterName" />
+        <result column="cafe_register_date" property="cafeRegisterDate" />
+        <result column="cafe_modifier_name" property="cafeModifierName" />
+        <result column="cafe_modifier_date" property="cafeModifierDate" />
+
     </resultMap>
 
     <insert id="productInsert" parameterType="product">
-        insert into product values (#{productCode}, #{productType}, #{productName}, #{productPrice}, #{productUnit}, #{productCountry},
-                                    #{productSpecies}, #{productCompany}, #{productTier}, #{productFile}, 0, #{productRegisterName}, NOW(), null, null)
+        insert into product values (#{productCode}, #{productType}, #{productName}, #{productPrice}, #{productUnit}, #{productTier}, #{productFile}, 0,
+                                    #{productRegisterName}, NOW(), null, null)
+    </insert>
+
+    <insert id="beanInsert" parameterType="product">
+        insert into bean values (#{productCode}, #{beanCountry}, #{beanSpecies}, #{beanCompany}, #{beanRegisterName}, NOW(), null, null)
+    </insert>
+
+    <insert id="mixInsert" parameterType="product">
+        insert into mix values (#{productCode}, #{mixCompany}, #{mixUseByDate}, #{mixRegisterName}, NOW(), null, null)
+    </insert>
+
+    <insert id="cafeInsert" parameterType="product">
+        insert into cafe values (#{productCode}, #{cafeCompany}, #{cafeRegisterName}, NOW(), null, null)
     </insert>
 
     <delete id="productDelete" parameterType="String">
         delete from product where product_code = #{productCode}
     </delete>
 
+    <delete id="beanDelete" parameterType="String">
+        delete from bean where product_code = #{productCode}
+    </delete>
+
+    <delete id="mixDelete" parameterType="String">
+        delete from mix where product_code = #{productCode}
+    </delete>
+
+    <delete id="cafeDelete" parameterType="String">
+        delete from cafe where product_code = #{productCode}
+    </delete>
+
     <update id="productSoldoutUpdate" parameterType="map">
         update product set product_sold_out = #{productSoldOut} where product_code = #{productCode}
     </update>
 
-    <select id="productCountByTier" parameterType="map" resultType="int">
-        select count(*) from product where product_tier = #{memberTier}
+    <select id="productCountByTierByProductType" parameterType="map" resultType="int">
+        select count(*) from product where product_tier = #{memberTier} and product_type = #{productType}
     </select>
 
     <select id="productCount" parameterType="map" resultType="int">
@@ -53,6 +105,18 @@
         select * from product where product_code = #{productCode}
     </select>
 
+    <select id="beanSelectOne" parameterType="String" resultMap="productMap">
+        select product.*, bean.* from bean inner join product on bean.product_code = product.product_code where product.product_code = #{productCode}
+    </select>
+
+    <select id="mixSelectOne" parameterType="String" resultMap="productMap">
+        select product.*, mix.* from mix inner join product on mix.product_code = product.product_code where product.product_code = #{productCode}
+    </select>
+
+    <select id="cafeSelectOne" parameterType="String" resultMap="productMap">
+        select product.*, cafe.* from cafe inner join product on cafe.product_code = product.product_code where product.product_code = #{productCode}
+    </select>
+
     <select id="productSearchCountByTier" parameterType="map" resultType="int">
         select count(*) from product where product_tier = #{memberTier} and product_name LIKE CONCAT('%',#{searchText},'%')
     </select>
@@ -65,11 +129,11 @@
         set @rownum := 0
     </select>
 
-    <select id="productListByMemberTier" parameterType="map" resultMap="productMap">
+    <select id="productListByMemberTierByProductType" parameterType="map" resultMap="productMap">
         select * from (
         select @rownum := @rownum + 1 as rownum,
         a.* from product a, (select @rownum := 0) tmp
-        where product_tier = #{memberTier} order by product_code ) b
+        where product_tier = #{memberTier} and product_type = #{productType} order by product_code ) b
         where b.rownum between #{start} and #{end};
     </select>
 

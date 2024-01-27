@@ -1,5 +1,17 @@
 <footer>
   <div class="da_footer">
+    <div class="footer_anchor">
+      <span>
+        <a href="${ pageContext.request.contextPath }/board/terms">
+          이용약관
+        </a>
+      </span>
+      <span>
+        <a href="${ pageContext.request.contextPath }/board/privacy">
+          개인정보처리방침
+        </a>
+      </span>
+    </div>
     <ul>
       <li>
         <p>법인명 : (주)다올커피 &nbsp 대표 : 우경윤</p>
@@ -24,7 +36,7 @@
         <p>이메일 : coffeedaall@gmail.com</p>
       </li>
       <li>
-        <p>전화번호 : xxx-xxxx</p>
+        <p>전화번호 : 032-233-7400</p>
       </li>
       <li class="copyright">
         <p>COPYRIGHT ⓒ (주)다올커피, All Rights Reserved.</p>

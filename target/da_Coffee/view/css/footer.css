@@ -1,0 +1,28 @@
+footer {
+  background-color: var(--mainColor);
+  height: 300px;
+  border-right: 1px solid var(--grayLine);
+}
+footer div {
+  height: 100%;
+}
+footer ul {
+  margin-top: 50px;
+}
+footer li {
+  float: none;
+  margin-bottom: 10px;
+}
+footer p,
+footer span {
+  color: white;
+  margin-left: 20px;
+  font-size: 13px;
+}
+footer a {
+  color: white;
+  font-size: 13px;
+}
+.copyright {
+ margin-top: 25px;
+}

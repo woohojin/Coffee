@@ -54,6 +54,13 @@
   border-radius: 4px;
   line-height: 20px;
 }
+.denied-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 250px;
+}
 
 body {
   overflow-x: hidden;
@@ -198,8 +205,7 @@ input:focus {
 
 .main_slider,
 .slider,
-.main_product_list,
-.da_footer {
+.main_product_list {
   display: flex;
   width: 100%;
 }

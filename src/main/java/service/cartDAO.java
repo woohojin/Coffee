@@ -23,9 +23,41 @@ public class cartDAO {
     return num;
   }
 
+  public List<String> cartProductCodeList(String memberId) {
+    List<String> list = session.selectList(NS + "cartProductCodeList", memberId);
+    return list;
+  }
+
   public int cartCount(String memberId) {
     int num = session.selectOne(NS + "cartCount", memberId);
     return num;
+  }
+
+  public int cartCountByProductType(String memberId, int productType) {
+    map.clear();
+    map.put("memberId", memberId);
+    map.put("productType", productType);
+    int num = session.selectOne(NS + "cartCountByProductType", map);
+
+    return num;
+  }
+
+  public Integer checkQuantityByProductCode(String memberId, String productCode) {
+    map.clear();
+    map.put("memberId", memberId);
+    map.put("productCode", productCode);
+    Integer num = session.selectOne(NS + "checkQuantityByProductCode", map);
+
+    return (num != null) ? num : 0;
+  }
+
+  public List<Integer> checkQuantityByProductType(String memberId, int productType) {
+    map.clear();
+    map.put("memberId", memberId);
+    map.put("productType", productType);
+    List<Integer> list = session.selectList(NS + "checkQuantityByProductType", map);
+
+    return list;
   }
 
   public List<Cart> cartSelectMember(String memberId) {
@@ -66,12 +98,12 @@ public class cartDAO {
     session.update(NS + "cartQuantityUpdate", map);
   }
 
-  public void cartGrindingUpdate(String memberId, String productCode, int productGrinding) {
-    map.clear();
-    map.put("memberId", memberId);
-    map.put("productCode", productCode);
-    map.put("productGrinding", productGrinding);
-    session.update(NS + "cartGrindingUpdate", map);
-  }
+//  public void cartGrindingUpdate(String memberId, String productCode, int productGrinding) {
+//    map.clear();
+//    map.put("memberId", memberId);
+//    map.put("productCode", productCode);
+//    map.put("productGrinding", productGrinding);
+//    session.update(NS + "cartGrindingUpdate", map);
+//  }
 
 }

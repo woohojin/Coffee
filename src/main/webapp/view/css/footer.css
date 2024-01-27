@@ -1,13 +1,17 @@
 footer {
   background-color: var(--mainColor);
-  height: 300px;
   border-right: 1px solid var(--grayLine);
+}
+.da_footer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 footer div {
   height: 100%;
 }
 footer ul {
-  margin-top: 50px;
+  margin-top: 25px;
 }
 footer li {
   float: none;
@@ -22,6 +26,14 @@ footer span {
 footer a {
   color: white;
   font-size: 13px;
+}
+.footer_anchor {
+  padding: 25px 0;
+  border-bottom: white 1px solid;
+}
+.footer_anchor a {
+  font-size: 15px;
+  font-weight: 600;
 }
 .copyright {
  margin-top: 25px;
