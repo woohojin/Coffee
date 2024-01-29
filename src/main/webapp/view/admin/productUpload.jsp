@@ -60,11 +60,12 @@
           </li>
           <li>
             <label>제품 등급 : </label>
-            <input
-              name="productTier"
-              class="product_tier"
-              type="text"
-            />
+            <select name="productTier" class="product_tier">
+              <option value="0">0 - 비활성화</option>
+              <option value="1">1 - 임대고객(카페용품, 임대머신은 전부 등급 1)</option>
+              <option value="2">2 - 비임대고객</option>
+              <option value="3">3 - 카페고객</option>
+            </select>
           </li>
           <li>
             <label>등록자 : </label>
@@ -144,7 +145,7 @@
         let additionalField = document.createElement('li');
         additionalField.innerHTML = '<li>' +
                                     '<label>제조사 : </label>' +
-                                    '<input type="text" name="beanCompany" />' +
+                                    '<input type="text" name="cafeCompany" />' +
                                     '</li>';
 
         additionalFields.appendChild(additionalField);
