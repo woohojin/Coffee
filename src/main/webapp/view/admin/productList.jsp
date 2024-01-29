@@ -35,14 +35,6 @@
           <div>
             <label for="productUnit">용량</label>
             <input type="text" id="productUnit" name="productUnit" value="${ requestScope.productUnit }">
-            <label for="productCountry">원산지</label>
-            <input type="text" id="productCountry" name="productCountry" value="${ requestScope.productCountry }">
-          </div>
-          <div>
-            <label for="productSpecies">품종</label>
-            <input type="text" id="productSpecies" name="productSpecies" value="${ requestScope.productSpecies }">
-            <label for="productCompany">제조사</label>
-            <input type="text" id="productCompany" name="productCompany" value="${ requestScope.productCompany }">
           </div>
           <div>
             <label for="productTier">등급</label>
@@ -113,24 +105,6 @@
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="product_country" onclick="orderBy(this)">
-                    <div class="asc">
-                      <span>원산지</span>
-                      <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
-                    </div>
-                  </th>
-                  <th class="product_species" onclick="orderBy(this)">
-                    <div class="asc">
-                      <span>품종</span>
-                      <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
-                    </div>
-                  </th>
-                  <th class="product_company" onclick="orderBy(this)">
-                    <div class="asc">
-                      <span>제조사</span>
-                      <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
-                    </div>
-                  </th>
                   <th class="product_tier" onclick="orderBy(this)">
                     <div class="asc">
                       <span>등급</span>
@@ -163,7 +137,7 @@
                       <span>수정자</span>
                     </div>
                   </th>
-                  <th class="product_modified_date">
+                  <th class="product_modifier_date">
                     <div class="asc">
                       <span>수정일</span>
                     </div>
@@ -189,15 +163,6 @@
                       <p><fmt:formatNumber value="${ p.productPrice }" pattern="#,###" /> 원</p>
                     </td>
                     <td>
-                      <p>${ p.productCountry }</p>
-                    </td>
-                    <td>
-                      <p>${ p.productSpecies }</p>
-                    </td>
-                    <td>
-                      <p>${ p.productCompany }</p>
-                    </td>
-                    <td>
                       <p>${ p.productTier }</p>
                     </td>
                     <td>
@@ -216,7 +181,7 @@
                       <p>${ p.productModifierName }</p>
                     </td>
                     <td>
-                      <p>${ p.productModifiedDate }</p>
+                      <p>${ p.productModifierDate }</p>
                     </td>
                   </tr>
                 </c:forEach>
