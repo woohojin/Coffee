@@ -9,6 +9,7 @@ historymapper insert 수정 필요
 데이터 백업 시스템 필요 (스크립트 작성후 cron으로 스케쥴링 설정)
 추가 상품에 추가 할 상품
 이메일 글자 깨짐
+productUpload 가격 숫자만
 
 제품 이미지명 AA0001_thumbnail, AA0001_detail
 

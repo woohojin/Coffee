@@ -165,18 +165,6 @@ public class adminController {
           list = ("desc".equals(orderBy)) ? productDao.productListDescByProductPrice(pageInt, limit) :
             productDao.productListByProductPrice(pageInt, limit);
           break;
-        case "product_country":
-          list = ("desc".equals(orderBy)) ? productDao.productListDescByProductCountry(pageInt, limit) :
-            productDao.productListByProductCountry(pageInt, limit);
-          break;
-        case "product_species":
-          list = ("desc".equals(orderBy)) ? productDao.productListDescByProductSpecies(pageInt, limit) :
-            productDao.productListByProductSpecies(pageInt, limit);
-          break;
-        case "product_company":
-          list = ("desc".equals(orderBy)) ? productDao.productListDescByProductCompany(pageInt, limit) :
-            productDao.productListByProductCompany(pageInt, limit);
-          break;
         case "product_tier":
           list = ("desc".equals(orderBy)) ? productDao.productListDescByProductTier(pageInt, limit) :
             productDao.productListByProductTier(pageInt, limit);
@@ -1034,6 +1022,7 @@ public class adminController {
 
           image.setProductCode(productCode);
           image.setFileName(fileName);
+          image.setFileRegisterName(product.getProductRegisterName());
           imageDao.insertProductImage(image);
 
           if(fileName.contains("thumbnail")) {
@@ -1048,7 +1037,24 @@ public class adminController {
             e.printStackTrace();
           }
         }
+
         productDao.productInsert(product);
+
+        if(productType == 0) {
+          product.setBeanRegisterName(product.getProductRegisterName());
+          productDao.beanInsert(product);
+        }
+
+        if(productType == 1) {
+          product.setMixRegisterName(product.getProductRegisterName());
+          productDao.mixInsert(product);
+        }
+
+        if(productType == 2) {
+          product.setCafeRegisterName(product.getProductRegisterName());
+          productDao.cafeInsert(product);
+        }
+
         msg = "제품 등록에 성공하였습니다.";
       } else {
         msg = "업로드 된 파일이 없습니다.";

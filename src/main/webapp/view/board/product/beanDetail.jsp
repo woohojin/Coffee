@@ -47,14 +47,6 @@
                   </tr>
                   <tr>
                     <th>
-                      <span>원산지</span>
-                    </th>
-                    <td>
-                      <span>${ product.beanCountry }</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>
                       <span>품종</span>
                     </th>
                     <td>

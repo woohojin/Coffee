@@ -6,12 +6,14 @@
     <resultMap type="image" id="imageMap">
         <id column="product_code" property="productCode" />
         <id column="file_name" property="fileName" />
+        <id column="file_register_name" property="fileRegisterName" />
+        <id column="file_register_date" property="fileRegisterDate" />
         <id column="file_modifier_name" property="fileModifierName" />
-        <id column="file_modified_date" property="fileModifiedDate" />
+        <id column="file_modifier_date" property="fileModifierDate" />
     </resultMap>
 
     <insert id="insertProductImage" parameterType="image">
-        insert into product_image values (#{productCode}, #{fileName}, null, null)
+        insert into product_image values (#{productCode}, #{fileName}, #{fileRegisterName}, now(), null, null)
     </insert>
 
     <select id="selectProductImage" parameterType="map" resultMap="imageMap">

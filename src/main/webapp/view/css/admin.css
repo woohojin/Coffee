@@ -146,12 +146,13 @@ a {
   margin-bottom: 60px;
 }
 
-.product_form ul {
-  display: inline-block;
-  width: auto;
-}
 .product_form ul li {
   text-align: right;
   float: none;
   margin-bottom: 20px;
+}
+
+.product_form .product_type,
+.product_form .file {
+  width: 193px;
 }

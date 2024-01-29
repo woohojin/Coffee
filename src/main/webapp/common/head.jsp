@@ -162,7 +162,7 @@
                   </li>
                   <li>
                     <a href="${ pageContext.request.contextPath }/board/product?pageType=mix"
-                    >믹스커피</a
+                    >커피믹스</a
                     >
                   </li>
                   <li>

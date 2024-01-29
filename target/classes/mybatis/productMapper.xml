@@ -55,7 +55,7 @@
     </insert>
 
     <insert id="beanInsert" parameterType="product">
-        insert into bean values (#{productCode}, #{beanCountry}, #{beanSpecies}, #{beanCompany}, #{beanRegisterName}, NOW(), null, null)
+        insert into bean values (#{productCode}, #{beanSpecies}, #{beanCompany}, #{beanManufacturingDate}, #{beanUseByDate}, #{beanRawMaterials}, #{beanRegisterName}, NOW(), null, null)
     </insert>
 
     <insert id="mixInsert" parameterType="product">
