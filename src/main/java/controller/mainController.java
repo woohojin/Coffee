@@ -203,9 +203,12 @@ public class mainController {
 
         Product product = productDao.mixSelectOne(productCode);
 
+        String detailImageName = imageDao.selectDetailImage(productCode);
+
         request.setAttribute("memberTier", memberTier);
         request.setAttribute("productCount", productCount);
         request.setAttribute("product", product);
+        request.setAttribute("detailmageName", detailImageName);
 
         return "board/product/mixDetail";
     }
@@ -225,11 +228,14 @@ public class mainController {
             productCount = productDao.productCountByTierByProductType(memberTier, productType);
         }
 
-        Product product = productDao.cafeSelectOne(productCode);
+        Product product = productDao.productSelectOne(productCode);
+
+        String detailImageName = imageDao.selectDetailImage(productCode);
 
         request.setAttribute("memberTier", memberTier);
         request.setAttribute("productCount", productCount);
         request.setAttribute("product", product);
+        request.setAttribute("detailmageName", detailImageName);
 
         return "board/product/cafeDetail";
     }

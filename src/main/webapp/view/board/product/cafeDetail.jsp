@@ -31,14 +31,6 @@
                   <tbody>
                   <tr>
                     <th>
-                      <span>제조사</span>
-                    </th>
-                    <td>
-                      <span>${ product.cafeCompany }</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>
                       <span>용량</span>
                     </th>
                     <td>
