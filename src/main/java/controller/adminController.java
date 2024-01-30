@@ -1050,10 +1050,10 @@ public class adminController {
           productDao.mixInsert(product);
         }
 
-        if(productType == 2) {
-          product.setCafeRegisterName(product.getProductRegisterName());
-          productDao.cafeInsert(product);
-        }
+//        if(productType == 2) {
+//          product.setCafeRegisterName(product.getProductRegisterName());
+//          productDao.cafeInsert(product);
+//        }
 
         msg = "제품 등록에 성공하였습니다.";
       } else {
