@@ -23,36 +23,12 @@
           <div class="product_detail_wrap">
             <div class="product_detail">
               <div class="product_detail_img">
-                <img src="${ pageContext.request.contextPath }/view/files/mix/${ product.productCode }/${ product.productFile }" alt="" />
+                <img src="${ pageContext.request.contextPath }/view/files/machine/${ product.productCode }/${ product.productFile }" alt="" />
               </div>
               <div class="product_info">
                 <h1>${ product.productName }</h1>
                 <table>
                   <tbody>
-                  <tr>
-                    <th>
-                      <span>식품유형</span>
-                    </th>
-                    <td>
-                      <span>커피믹스</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>
-                      <span>제조사</span>
-                    </th>
-                    <td>
-                      <span>${ product.mixCompany }</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>
-                      <span>소비기한</span>
-                    </th>
-                    <td>
-                      <span>${ product.mixUseByDate }</span>
-                    </td>
-                  </tr>
                   <tr>
                     <th>
                       <span>용량</span>
@@ -100,16 +76,16 @@
                         <fmt:formatNumber value="${ product.productPrice }" pattern="#,###" /> 원
                       </div>
                     </div>
-                    <div class="product_additional">
-                      <span>추가 상품 선택</span>
-                      <label>
-                        <select name="additionalProducts">
-                          <option value="none">없음</option>
-                          <option value="CA0001">종이컵6.5온스</option>
-                          <option value="CA0003">종이컵8온스</option>
-                        </select>
-                      </label>
-                    </div>
+<%--                    <div class="product_additional">--%>
+<%--                      <span>추가 상품 선택</span>--%>
+<%--                      <label>--%>
+<%--                        <select name="additionalProducts">--%>
+<%--                          <option value="none">없음</option>--%>
+<%--                          <option value="CA0001">종이컵6.5온스</option>--%>
+<%--                          <option value="CA0003">종이컵8온스</option>--%>
+<%--                        </select>--%>
+<%--                      </label>--%>
+<%--                    </div>--%>
                     <c:if test="${ product.productSoldOut == 1 }">
                       <br/>
                       Sold Out

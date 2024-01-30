@@ -240,6 +240,33 @@ public class mainController {
         return "board/product/cafeDetail";
     }
 
+    @RequestMapping("machineDetail")
+    public String machineDetail(String productCode) throws Exception {
+        Integer memberTier = (Integer) session.getAttribute("memberTier");
+        if(memberTier == null) {
+            memberTier = 0;
+        }
+
+        int productCount = 0;
+
+        int productType = 1;
+
+        if(memberTier != 0) {
+            productCount = productDao.productCountByTierByProductType(memberTier, productType);
+        }
+
+        Product product = productDao.productSelectOne(productCode);
+
+        String detailImageName = imageDao.selectDetailImage(productCode);
+
+        request.setAttribute("memberTier", memberTier);
+        request.setAttribute("productCount", productCount);
+        request.setAttribute("product", product);
+        request.setAttribute("detailmageName", detailImageName);
+
+        return "board/product/machineDetail";
+    }
+
     @PostMapping("productDetailPro")
     @ResponseBody
     public Map<String, Object> productDetailPro(@RequestParam(value = "additionalProducts", required = false) List<String> additionalProductsCodes, Cart cart) throws Exception {

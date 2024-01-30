@@ -23,7 +23,7 @@
           <div class="product_detail_wrap">
             <div class="product_detail">
               <div class="product_detail_img">
-                <img src="${ pageContext.request.contextPath }/view/files/${ product.productFile }" alt="" />
+                <img src="${ pageContext.request.contextPath }/view/files/cafe/${ product.productCode }/${ product.productFile }" alt="" />
               </div>
               <div class="product_info">
                 <h1>${ product.productName }</h1>
@@ -117,7 +117,7 @@
                 </ul>
               </div>
               <div class="product_detail_content_wrap">
-                <img src="${ pageContext.request.contextPath }/view/image/coffeeDetail.jpg" alt="" />
+                <img src="${ pageContext.request.contextPath }/view/files/bean/${ product.productCode }/${ requestScope.detailmageName }" alt="" />
               </div>
             </li>
             <li>
