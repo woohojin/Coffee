@@ -31,4 +31,9 @@ public class imageDAO {
     return list;
   }
 
+  public String selectDetailImage(String productCode) {
+    String imageName = session.selectOne(NS + "selectDetailImage", productCode);
+    return imageName;
+  }
+
 }

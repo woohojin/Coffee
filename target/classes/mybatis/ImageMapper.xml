@@ -20,4 +20,8 @@
         select * from product_image where product_code = #{productCode}
     </select>
 
+    <select id="selectDetailImage" parameterType="String" resultType="String">
+        select file_name from product_image where product_code = #{productCode} and file_name like '%detail%'
+    </select>
+
 </mapper>

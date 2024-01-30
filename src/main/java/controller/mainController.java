@@ -2,6 +2,7 @@ package controller;
 
 import model.Cart;
 import org.springframework.web.bind.annotation.*;
+import service.imageDAO;
 import service.productDAO;
 import service.memberDAO;
 import service.cartDAO;
@@ -38,6 +39,9 @@ public class mainController {
 
     @Autowired
     cartDAO cartDao;
+
+    @Autowired
+    imageDAO imageDao;
 
     HttpServletRequest request;
     Model m;
@@ -172,9 +176,12 @@ public class mainController {
 
         Product product = productDao.beanSelectOne(productCode);
 
+        String detailImageName = imageDao.selectDetailImage(productCode);
+
         request.setAttribute("memberTier", memberTier);
         request.setAttribute("productCount", productCount);
         request.setAttribute("product", product);
+        request.setAttribute("detailmageName", detailImageName);
 
         return "board/product/beanDetail";
     }
