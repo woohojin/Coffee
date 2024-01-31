@@ -102,13 +102,19 @@
                     </div>
                     <div class="product_additional">
                       <span>추가 상품 선택</span>
-                      <label>
-                        <select name="additionalProducts">
-                          <option value="none">없음</option>
-                          <option value="CA0001">종이컵6.5온스</option>
-                          <option value="CA0003">종이컵8온스</option>
-                        </select>
-                      </label>
+                      <select name="additionalProducts">
+                        <option value="none">없음</option>
+                        <option value="CA0001">종이컵 6.5온스 1000개입 (+12,000원)</option>
+                        <option value="CA0003">종이컵 8온스 1000개입 (+48,400원)</option>
+                        <option value="CA0010">종이컵 뚜껑 8온스 1000개입 (+25,300원)</option>
+                        <option value="CA0101">아이스컵 14온스 1000개입 (+69,300원)</option>
+                        <option value="CA0105">아이스컵 뚜껑 14온스 1000개입 (+36,300원)</option>
+                        <option value="CA0210">스트로우 자바라 400개입 (+3,000원)</option>
+                        <option value="CA0214">스틱 15cm 검정 1000개입 (+2,800원)</option>
+                        <option value="CA0202">시럽 펌프 (+3,000원)</option>
+                        <option value="CA0501">카페 시럽 1.5L (+4,400원)</option>
+                        <option value="CA0520">대한제당 스틱설탕 5g x 100개입 (+2,000원)</option>
+                      </select>
                     </div>
                     <c:if test="${ product.productSoldOut == 1 }">
                       <br/>
@@ -178,7 +184,7 @@
                     </li>
                     <li>
                       <p>
-                        당일 3시 이전 주문 시 당일 발송 이후 주문시 익일 발송
+                        당일 2시 이전 주문 시 당일 발송 이후 주문시 익일 발송
                       </p>
                     </li>
                     <li>
@@ -217,10 +223,10 @@
                     </li>
                     <li>
                       <p>
-                        공급받으신 상품 및 용역의 내용이 표시.광고 내용과 다르거나
-                        다르게 이행된 경우에는<br />
-                        공급받은 날로부터 3개월이내, 그사실을 알게 된 날로부터
-                        30일이내 환불 가능합니다.
+                        공급받으신 상품 및 용역의 내용이 표시.광고 내용과 다르거나 다르게 이행된 경우에는
+                      </p>
+                      <p>
+                        공급받은 날로부터 3개월이내, 그사실을 알게 된 날로부터 30일이내 환불 가능합니다.
                       </p>
                     </li>
                   </ul>
@@ -230,18 +236,17 @@
                     </li>
                     <li>
                       <p>
-                        포장을 개봉하였거나 포장이 훼손되어 상품가치가 상실된
-                        경우<br />
-                        (예 : 가전제품, 식품, 음반 등, 단 액정화면이 부착된 노트북,
-                        LCD모니터, 디지털 카메라 등의<br />
-                        불량화소에 따른 반품/교환은 제조사 기준에 따릅니다.)
+                        포장을 개봉하였거나 포장이 훼손되어 상품가치가 상실된 경우
                       </p>
                     </li>
                     <li>
                       <p>
-                        고객님의 사용 또는 일부 소비에 의하여 상품의 가치가 현저히
-                        감소한 경우<br />
-                        단, 화장품등의 경우 시용제품을 제공한 경우에 한 합니다.
+                        고객님의 사용 또는 일부 소비에 의하여 상품의 가치가 현저히 감소한 경우
+                      </p>
+                    </li>
+                    <li>
+                      <p>
+                        분쇄상태를 선택 시 환불이 불가합니다.
                       </p>
                     </li>
                   </ul>
