@@ -461,15 +461,14 @@ public class memberController {
 
     int quantityBySpecificProduct = cartDao.checkQuantityByProductCode(memberId, specificFeeProductCode);
 
-    if(quantityBySpecificProduct > 0) { // 특정 제품이 존재 할 때만 추가 상품이 있을 때 추가 배송비 부여
-      if(quantityBySpecificProduct >= 2) {
-        deliveryFee = deliveryFee + (3000 * (quantityBySpecificProduct - 1)); // CA0001 제품은 건당으로 배송비 발생
-      }
+    long paidShippingProductCount = cartProductCodeList.stream().filter(code -> paidShippingProductCodeList.contains(code)).count();
 
-      if(cartProductCodeList.stream()
-              .anyMatch(code -> paidShippingProductCodeList.contains(code) && !code.equals(specificFeeProductCode))) { // 종이컵 이외에 다른 제품이 들어있을 경우 배송비 추가
-        deliveryFee += 3000;
-      }
+    if(quantityBySpecificProduct >= 2) {
+      deliveryFee = deliveryFee + (3000 * (quantityBySpecificProduct - 1)); // CA0001 제품은 건당으로 배송비 발생
+    }
+
+    if(paidShippingProductCount > 0) {
+      deliveryFee += 3000 * (paidShippingProductCount - 1);
     }
 
     if(beanCount >= 2 || hasQuantityOverThanOne || sumPrice == 0 || allAreFreeShipping) { // 2키로 이상시 전체 배송비 무료, 카트에 담은게 없어도 배송비 x
@@ -551,15 +550,14 @@ public class memberController {
 
     int quantityBySpecificProduct = cartDao.checkQuantityByProductCode(memberId, specificFeeProductCode);
 
-    if(quantityBySpecificProduct > 0) { // 특정 제품이 존재 할 때만 추가 상품이 있을 때 추가 배송비 부여
-      if(quantityBySpecificProduct >= 2) {
-        deliveryFee = deliveryFee + (3000 * (quantityBySpecificProduct - 1)); // CA0001 제품은 건당으로 배송비 발생
-      }
+    long paidShippingProductCount = cartProductCodeList.stream().filter(code -> paidShippingProductCodeList.contains(code)).count();
 
-      if(cartProductCodeList.stream()
-              .anyMatch(code -> paidShippingProductCodeList.contains(code) && !code.equals(specificFeeProductCode))) { // 종이컵 이외에 다른 제품이 들어있을 경우 배송비 추가
-        deliveryFee += 3000;
-      }
+    if(quantityBySpecificProduct >= 2) {
+      deliveryFee = deliveryFee + (3000 * (quantityBySpecificProduct - 1)); // CA0001 제품은 건당으로 배송비 발생
+    }
+
+    if(cartProductCodeList.size() > 0) {
+      deliveryFee += 3000 * (paidShippingProductCount - 1);
     }
 
     if(beanCount >= 2 || hasQuantityOverThanOne || sumPrice == 0 || allAreFreeShipping) { // 2키로 이상시 전체 배송비 무료, 카트에 담은게 없어도 배송비 x
