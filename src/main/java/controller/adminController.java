@@ -1152,27 +1152,21 @@ public class adminController {
 
     Row headerRow = sheet.createRow(0);
     headerRow.createCell(0).setCellValue("제품번호");
-    headerRow.createCell(1).setCellValue("제품이름");
-    headerRow.createCell(2).setCellValue("종류");
+    headerRow.createCell(1).setCellValue("종류");
+    headerRow.createCell(2).setCellValue("제품이름");
     headerRow.createCell(3).setCellValue("가격");
-    headerRow.createCell(4).setCellValue("용량");
-    headerRow.createCell(5).setCellValue("원산지");
-    headerRow.createCell(6).setCellValue("품종");
-    headerRow.createCell(7).setCellValue("제조사");
-    headerRow.createCell(8).setCellValue("등급");
+    headerRow.createCell(4).setCellValue("단위");
+    headerRow.createCell(5).setCellValue("등급");
 
     int rowNum = 1;
     for (Product product : productList) {
       Row row = sheet.createRow(rowNum++);
       int colNum = 0;
       row.createCell(colNum++).setCellValue(product.getProductCode());
-      row.createCell(colNum++).setCellValue(product.getProductName());
       row.createCell(colNum++).setCellValue(product.getProductType());
+      row.createCell(colNum++).setCellValue(product.getProductName());
       row.createCell(colNum++).setCellValue(product.getProductPrice());
       row.createCell(colNum++).setCellValue(product.getProductUnit());
-      row.createCell(colNum++).setCellValue(product.getBeanCountry());
-      row.createCell(colNum++).setCellValue(product.getBeanSpecies());
-      row.createCell(colNum++).setCellValue(product.getBeanCompany());
       row.createCell(colNum++).setCellValue(product.getProductTier());
     }
 
