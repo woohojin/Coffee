@@ -19,7 +19,7 @@
         <ul>
           <li>
             <label>제품 종류 : </label>
-            <select name="productType" class="product_type">
+            <select name="productType" class="product_type" required>
               <option value="0">원두</option>
               <option value="1">커피믹스</option>
               <option value="2">카페용품</option>
@@ -32,6 +32,7 @@
               name="productCode"
               class="product_code"
               type="text"
+              required
             />
           </li>
           <li>
@@ -40,6 +41,7 @@
               name="productName"
               class="product_name"
               type="text"
+              required
             />
           </li>
           <li>
@@ -48,6 +50,9 @@
               name="productPrice"
               class="product_price"
               type="text"
+              required
+              placeholder="숫자만 입력"
+              oninput="numberInputCheck(this)"
             />
           </li>
           <li>
@@ -56,11 +61,13 @@
               name="productUnit"
               class="product_unit"
               type="text"
+              required
+              placeholder="예) 1box / 800g * 12개입"
             />
           </li>
           <li>
             <label>제품 등급 : </label>
-            <select name="productTier" class="product_tier">
+            <select name="productTier" class="product_tier" required>
               <option value="0">0 - 비활성화</option>
               <option value="1">1 - 임대고객(카페용품, 임대머신은 전부 등급 1)</option>
               <option value="2">2 - 비임대고객</option>
@@ -73,6 +80,7 @@
               name="productRegisterName"
               class="product_register_name"
               type="text"
+              required
             />
           </li>
           <li>
@@ -82,6 +90,7 @@
               class="file"
               type="file"
               multiple="multiple"
+              required
             />
           </li>
           <div id="additional_fields"></div>
@@ -107,24 +116,24 @@
       if(productType.value === '0') { // 원두
         let additionalField = document.createElement('ul');
         additionalField.innerHTML = '<li>' +
-                                    '<label>품종 : </label>' +
-                                    '<input type="text" name="beanSpecies" />' +
+                                      '<label>품종 : </label>' +
+                                      '<input type="text" name="beanSpecies" required />' +
                                     '</li>' +
                                     '<li>' +
-                                    '<label>제조사 : </label>' +
-                                    '<input type="text" name="beanCompany" />' +
+                                      '<label>제조사 : </label>' +
+                                      '<input type="text" name="beanCompany" required />' +
                                     '</li>' +
                                     '<li>' +
-                                    '<label>제조연월일 : </label>' +
-                                    '<input type="text" name="beanManufacturingDate" />' +
+                                      '<label>제조연월일 : </label>' +
+                                      '<input type="text" name="beanManufacturingDate" required />' +
                                     '</li>' +
                                     '<li>' +
-                                    '<label>소비기한 : </label>' +
-                                    '<input type="text" name="beanUseByDate" />' +
+                                      '<label>소비기한 : </label>' +
+                                      '<input type="text" name="beanUseByDate" required />' +
                                     '</li>' +
                                     '<li>' +
-                                    '<label>원재료명 :  </label>' +
-                                    '<input type="text" name="beanRawMaterials" />' +
+                                      '<label>원재료명 :  </label>' +
+                                      '<input type="text" name="beanRawMaterials" required />' +
                                     '</li>';
 
         additionalFields.appendChild(additionalField);
@@ -132,20 +141,12 @@
       else if(productType.value === '1') { // 믹스커피
         let additionalField = document.createElement('ul');
         additionalField.innerHTML = '<li>' +
-                                    '<label>제조사 : </label>' +
-                                    '<input type="text" name="mixCompany" />' +
+                                      '<label>제조사 : </label>' +
+                                      '<input type="text" name="mixCompany" required />' +
                                     '</li>' +
                                     '<li>' +
-                                    '<label>소비기한 : </label>' +
-                                    '<input type="text" name="mixUseByDate" />' +
-                                    '</li>';
-
-        additionalFields.appendChild(additionalField);
-      } else if(productType.value === '2') { // 카페용품
-        let additionalField = document.createElement('li');
-        additionalField.innerHTML = '<li>' +
-                                    '<label>제조사 : </label>' +
-                                    '<input type="text" name="cafeCompany" />' +
+                                      '<label>소비기한 : </label>' +
+                                      '<input type="text" name="mixUseByDate" required />' +
                                     '</li>';
 
         additionalFields.appendChild(additionalField);
@@ -154,6 +155,15 @@
 
     document.querySelector(".product_type").addEventListener("change", showHideForm);
     showHideForm();
+  }
+</script>
+<script>
+  const numberRegex = /[^0-9]/g;
+
+  function numberInputCheck(object) {
+    const inputText = object.value;
+    const numberInputCheck = inputText.replace(numberRegex, "");
+    object.value = numberInputCheck;
   }
 </script>
 </body>
