@@ -319,9 +319,9 @@ public class memberController {
     String url = "/member/memberSignIn";
 
     Member member = memberDao.memberSelectOne(memberId);
-
+    int isDisabled = memberDao.disabledMemberSelectOne(memberId);
     if(member != null) {
-      if(member.getMemberDisable() != 1) {
+      if(isDisabled < 1) {
         if(passwordEncoder.matches(memberPassword, member.getMemberPassword())) {
           Integer memberTier = member.getMemberTier();
           session.setAttribute("memberId", memberId);
@@ -463,17 +463,23 @@ public class memberController {
 
     long paidShippingProductCount = cartProductCodeList.stream().filter(code -> paidShippingProductCodeList.contains(code)).count();
 
-    if(quantityBySpecificProduct >= 2) {
-      deliveryFee = deliveryFee + (3000 * (quantityBySpecificProduct - 1)); // CA0001 제품은 건당으로 배송비 발생
-    }
 
     if(paidShippingProductCount > 0) {
       deliveryFee += 3000 * (paidShippingProductCount - 1);
     }
 
+    if(quantityBySpecificProduct >= 2) { // CA0001 제품은 건당으로 배송비 발생
+      deliveryFee = deliveryFee + (3000 * (quantityBySpecificProduct - 1));
+    }
+
+    if(quantityBySpecificProduct < 2) {
+
+    }
+
     if(beanCount >= 2 || hasQuantityOverThanOne || sumPrice == 0 || allAreFreeShipping) { // 2키로 이상시 전체 배송비 무료, 카트에 담은게 없어도 배송비 x
       deliveryFee = 0;
     }
+
 
     final int totalPrice = deliveryFee + sumPrice; // 총 가격 계산 후 변경 불가
 

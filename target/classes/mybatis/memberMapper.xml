@@ -30,7 +30,7 @@
                                    #{memberTel, typeHandler=handler.EncryptionTypeHandler}, #{memberCompanyTel}, #{memberAddress, typeHandler=handler.EncryptionTypeHandler},
                                    #{memberDetailAddress, typeHandler=handler.EncryptionTypeHandler}, #{memberDeliveryAddress, typeHandler=handler.EncryptionTypeHandler},
                                    #{memberDetailDeliveryAddress, typeHandler=handler.EncryptionTypeHandler}, #{memberEmail, typeHandler=handler.EncryptionTypeHandler},
-                                   #{memberFile}, 0000, 0, NOW(), 0, null, null, null)
+                                   #{memberFile}, 0000, 0, NOW(), null, null, null)
     </insert>
 
     <select id="rownumSet" parameterType="int" resultType="int">
@@ -60,7 +60,12 @@
         select * from member where member_id = #{memberId}
     </select>
 
-    <select id="memberFindId" parameterType="map" resultMap="memberMap">
+    <select id="disabledMemberSelectOne" parameterType="String" resultType="int">
+      select count(*) from member_disabled where member_id = #{memberId}
+    </select>
+
+
+  <select id="memberFindId" parameterType="map" resultMap="memberMap">
         select member_id from member where member_name = #{memberName} and member_email = #{memberEmail}
     </select>
 

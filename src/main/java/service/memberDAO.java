@@ -50,6 +50,11 @@ public class memberDAO {
         return mem;
     }
 
+    public int disabledMemberSelectOne(String memberId) {
+        int num = session.selectOne(NS + "disabledMemberSelectOne", memberId);
+        return num;
+    }
+
     public List<Member> memberFindId(String memberName, String memberEmail) {
         map.clear();
         map.put("memberName", memberName);
