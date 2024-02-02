@@ -439,10 +439,9 @@ public class memberController {
     int cartCount = cartDao.cartCount(memberId);
     int deliveryFee = 3000;
 
-    int beanCount = cartDao.cartCountByProductType(memberId, productType); // 담은 원두 상품의 종류 개수 확인
     List<Integer> beanQuantityList = cartDao.checkQuantityByProductType(memberId, productType); // 담은 원두 상품의 개수 확인
 
-    boolean hasQuantityOverThanOne = beanQuantityList.stream().anyMatch(beanQuantity -> beanQuantity >= 2 ); // 개수가 2 이상이여야 true
+    boolean hasBeanQuantityOverThanOne = beanQuantityList.stream().anyMatch(beanQuantity -> beanQuantity >= 2 ); // 개수가 2 이상이여야 true
 
     List<String> cartProductCodeList = cartDao.cartProductCodeList(memberId);
 
@@ -450,42 +449,53 @@ public class memberController {
             "DA0002", "DA0002-2", "DA0011", "DA0011-2", "DA0012", "DA0012-2", "DA0013", "DA0013-2", "DA0013-3", "CA0003", "CA0010", "CA0101", "CA0105"
     ); // 무료배송 상품
 
-    List<String> paidShippingProductCodeList = Arrays.asList(
-            "AA0001", "AA0001-2", "AA0011", "AA0011-2", "AA0021", "AA0021-2", "AA0031", "AA0031-2", "AA0041", "AA0041-2", "AA0041-3", "AA0051", "AA0051-2", "AA0061", "AA0061-2",
-            "CA0001", "CA0202", "CA0214", "CA0501", "CA0210", "CA0520"
+    List<String> paidShippingBeanProductCodeList = Arrays.asList(
+            "AA0001", "AA0001-2", "AA0011", "AA0011-2", "AA0021", "AA0021-2", "AA0031", "AA0031-2", "AA0041", "AA0041-2", "AA0041-3", "AA0051", "AA0051-2", "AA0061", "AA0061-2"
     );
 
-    boolean allAreFreeShipping = cartProductCodeList.stream().allMatch(code -> freeShippingProductCodeList.contains(code));
+    List<String> paidShippingCafeProductCodeList = Arrays.asList(
+            "CA0001", "CA0202", "CA0214", "CA0501", "CA0210", "CA0520"
+    );
 
     String specificFeeProductCode = "CA0001"; // specificProduct = 배송비가 건당으로 붙는 특정 제품
 
     int quantityBySpecificProduct = cartDao.checkQuantityByProductCode(memberId, specificFeeProductCode);
 
-    long paidShippingProductCount = cartProductCodeList.stream().filter(code -> paidShippingProductCodeList.contains(code)).count();
+    boolean allAreFreeShipping = cartProductCodeList.stream().allMatch(code -> freeShippingProductCodeList.contains(code));
 
+    boolean allAreCafeProduct = cartProductCodeList.stream().allMatch(code -> paidShippingCafeProductCodeList.contains(code));
 
-    if(paidShippingProductCount > 0) {
-      deliveryFee += 3000 * (paidShippingProductCount - 1);
+    boolean onlySpecificFeeProduct = cartProductCodeList.size() == 1 && cartProductCodeList.contains(specificFeeProductCode);
+
+    long paidShippingBeanProductCount = cartProductCodeList.stream().filter(code -> paidShippingBeanProductCodeList.contains(code)).count();
+
+    if(paidShippingBeanProductCount > 0) {
+      deliveryFee += 3000 * (paidShippingBeanProductCount);
     }
 
-    if(quantityBySpecificProduct >= 2) { // CA0001 제품은 건당으로 배송비 발생
-      deliveryFee = deliveryFee + (3000 * (quantityBySpecificProduct - 1));
+    if(allAreCafeProduct) { // specificFeeProduct를 제외한 나머지 물품은 배송비는 1회만 부여
+      deliveryFee = 3000;
     }
 
-    if(quantityBySpecificProduct < 2) {
-
+    if(!hasBeanQuantityOverThanOne) {
+      deliveryFee = 3000;
     }
 
-    if(beanCount >= 2 || hasQuantityOverThanOne || sumPrice == 0 || allAreFreeShipping) { // 2키로 이상시 전체 배송비 무료, 카트에 담은게 없어도 배송비 x
+    if(onlySpecificFeeProduct) {
+      if(quantityBySpecificProduct >= 2) { // CA0001 제품은 건당으로 배송비 발생
+        deliveryFee = deliveryFee + (3000 * (quantityBySpecificProduct - 1));
+      }
+    } else if(!onlySpecificFeeProduct) {
+      deliveryFee = deliveryFee + (3000 * (quantityBySpecificProduct));
+    }
+
+    if(paidShippingBeanProductCount >= 2 || hasBeanQuantityOverThanOne || sumPrice == 0 || allAreFreeShipping) { // 2키로 이상시 전체 배송비 무료, 카트에 담은게 없어도 배송비 x
       deliveryFee = 0;
     }
-
 
     final int totalPrice = deliveryFee + sumPrice; // 총 가격 계산 후 변경 불가
 
     List<Cart> list = cartDao.cartSelectMember(memberId);
-
-    System.out.println(list);
 
     request.setAttribute("totalPrice", totalPrice);
     request.setAttribute("sumPrice", sumPrice);
@@ -528,16 +538,15 @@ public class memberController {
     //  cartDao.cartGrindingUpdate(memberId, productCode, productGrinding);
    // }
 
-    int deliveryFee = 3000; // 배송비
-    int sumPrice = Integer.parseInt(cartDao.cartSumPrice(memberId));
-    int cartCount = cartDao.cartCount(memberId);
-
     int productType = 0; // 원두
 
-    int beanCount = cartDao.cartCountByProductType(memberId, productType); // 담은 원두 상품의 종류 개수 확인
+    int sumPrice = Integer.parseInt(cartDao.cartSumPrice(memberId));
+    int cartCount = cartDao.cartCount(memberId);
+    int deliveryFee = 3000;
+
     List<Integer> beanQuantityList = cartDao.checkQuantityByProductType(memberId, productType); // 담은 원두 상품의 개수 확인
 
-    boolean hasQuantityOverThanOne = beanQuantityList.stream().anyMatch(beanQuantity -> beanQuantity >= 2 ); // 개수가 2 이상이여야 true
+    boolean hasBeanQuantityOverThanOne = beanQuantityList.stream().anyMatch(beanQuantity -> beanQuantity >= 2 ); // 개수가 2 이상이여야 true
 
     List<String> cartProductCodeList = cartDao.cartProductCodeList(memberId);
 
@@ -545,28 +554,47 @@ public class memberController {
             "DA0002", "DA0002-2", "DA0011", "DA0011-2", "DA0012", "DA0012-2", "DA0013", "DA0013-2", "DA0013-3", "CA0003", "CA0010", "CA0101", "CA0105"
     ); // 무료배송 상품
 
-    List<String> paidShippingProductCodeList = Arrays.asList(
-      "AA0001", "AA0001-2", "AA0011", "AA0011-2", "AA0021", "AA0021-2", "AA0031", "AA0031-2", "AA0041", "AA0041-2", "AA0041-3", "AA0051", "AA0051-2", "AA0061", "AA0061-2",
-      "CA0001", "CA0202", "CA0214", "CA0501", "CA0210", "CA0520"
+    List<String> paidShippingBeanProductCodeList = Arrays.asList(
+            "AA0001", "AA0001-2", "AA0011", "AA0011-2", "AA0021", "AA0021-2", "AA0031", "AA0031-2", "AA0041", "AA0041-2", "AA0041-3", "AA0051", "AA0051-2", "AA0061", "AA0061-2"
     );
 
-    boolean allAreFreeShipping = cartProductCodeList.stream().allMatch(code -> freeShippingProductCodeList.contains(code));
+    List<String> paidShippingCafeProductCodeList = Arrays.asList(
+            "CA0001", "CA0202", "CA0214", "CA0501", "CA0210", "CA0520"
+    );
 
     String specificFeeProductCode = "CA0001"; // specificProduct = 배송비가 건당으로 붙는 특정 제품
 
     int quantityBySpecificProduct = cartDao.checkQuantityByProductCode(memberId, specificFeeProductCode);
 
-    long paidShippingProductCount = cartProductCodeList.stream().filter(code -> paidShippingProductCodeList.contains(code)).count();
+    boolean allAreFreeShipping = cartProductCodeList.stream().allMatch(code -> freeShippingProductCodeList.contains(code));
 
-    if(quantityBySpecificProduct >= 2) {
-      deliveryFee = deliveryFee + (3000 * (quantityBySpecificProduct - 1)); // CA0001 제품은 건당으로 배송비 발생
+    boolean allAreCafeProduct = cartProductCodeList.stream().allMatch(code -> paidShippingCafeProductCodeList.contains(code));
+
+    boolean onlySpecificFeeProduct = cartProductCodeList.size() == 1 && cartProductCodeList.contains(specificFeeProductCode);
+
+    long paidShippingBeanProductCount = cartProductCodeList.stream().filter(code -> paidShippingBeanProductCodeList.contains(code)).count();
+
+    if(paidShippingBeanProductCount > 0) {
+      deliveryFee += 3000 * (paidShippingBeanProductCount);
     }
 
-    if(cartProductCodeList.size() > 0) {
-      deliveryFee += 3000 * (paidShippingProductCount - 1);
+    if(allAreCafeProduct) { // specificFeeProduct를 제외한 나머지 물품은 배송비는 1회만 부여
+      deliveryFee = 3000;
     }
 
-    if(beanCount >= 2 || hasQuantityOverThanOne || sumPrice == 0 || allAreFreeShipping) { // 2키로 이상시 전체 배송비 무료, 카트에 담은게 없어도 배송비 x
+    if(!hasBeanQuantityOverThanOne) {
+      deliveryFee = 3000;
+    }
+
+    if(onlySpecificFeeProduct) {
+      if(quantityBySpecificProduct >= 2) { // CA0001 제품은 건당으로 배송비 발생
+        deliveryFee = deliveryFee + (3000 * (quantityBySpecificProduct - 1));
+      }
+    } else if(!onlySpecificFeeProduct) {
+      deliveryFee = deliveryFee + (3000 * (quantityBySpecificProduct));
+    }
+
+    if(paidShippingBeanProductCount >= 2 || hasBeanQuantityOverThanOne || sumPrice == 0 || allAreFreeShipping) { // 2키로 이상시 전체 배송비 무료, 카트에 담은게 없어도 배송비 x
       deliveryFee = 0;
     }
 
