@@ -44,7 +44,8 @@ public class memberInterceptor implements HandlerInterceptor {
         memberCookieId = cookie.getValue();
         member = memberDao.memberSelectOne(memberCookieId);
         if(member != null) {
-          if(member.getMemberDisable() != 1) {
+          int isDisabled = memberDao.disabledMemberSelectOne(memberId);
+          if(isDisabled < 1) {
             memberId = member.getMemberId();
             memberTier = member.getMemberTier();
             cookieDTO = cookieDao.cookieSelectOne(memberId);
