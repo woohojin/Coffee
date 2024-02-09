@@ -23,7 +23,6 @@
               <option value="0">원두</option>
               <option value="1">커피믹스</option>
               <option value="2">카페용품</option>
-              <option value="3">임대머신</option>
             </select>
           </li>
           <li>
@@ -69,7 +68,7 @@
             <label>제품 등급 : </label>
             <select name="productTier" class="product_tier" required>
               <option value="0">0 - 비활성화</option>
-              <option value="1">1 - 임대고객(카페용품, 임대머신은 전부 등급 1)</option>
+              <option value="1">1 - 임대고객(카페용품은 전부 등급 1)</option>
               <option value="2">2 - 비임대고객</option>
               <option value="3">3 - 카페고객</option>
             </select>

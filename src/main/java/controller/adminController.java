@@ -999,10 +999,6 @@ public class adminController {
       filePath = request.getServletContext().getRealPath("/") + "view/files/cafe/" + productCode;
     }
 
-    if(productType == 3) {
-      filePath = request.getServletContext().getRealPath("/") + "view/files/machine/" + productCode;
-    }
-
     String fileName;
     File uploadPath = new File(filePath);
 

@@ -111,57 +111,57 @@
     </div>
   
   
-  <div class="main_product">
-    <h1>프리미엄 제품</h1>
-    <div class="main_product_list">
-      <ul>
-        <li>
-          <a href="">
-            <img
-              src="${ pageContext.request.contextPath }/view/image/1.jpg"
-              alt=""
-            />
-          </a>
-          <div class="center">
-            <a>케냐AA</a>
-          </div>
-        </li>
-        <li>
-          <a href="">
-            <img
-              src="${ pageContext.request.contextPath }/view/image/2.jpg"
-              alt=""
-            />
-          </a>
-          <div class="center">
-            <a>예가체프</a>
-          </div>
-        </li>
-        <li>
-          <a href="">
-            <img
-              src="${ pageContext.request.contextPath }/view/image/3.jpg"
-              alt=""
-            />
-          </a>
-          <div class="center">
-            <a>탄자니아</a>
-          </div>
-        </li>
-        <li>
-          <a href="">
-            <img
-              src="${ pageContext.request.contextPath }/view/image/4.jpg"
-              alt=""
-            />
-          </a>
-          <div class="center">
-            <a>아리차</a>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </div>
+<%--  <div class="main_product">--%>
+<%--    <h1>프리미엄 제품</h1>--%>
+<%--    <div class="main_product_list">--%>
+<%--      <ul>--%>
+<%--        <li>--%>
+<%--          <a href="">--%>
+<%--            <img--%>
+<%--              src="${ pageContext.request.contextPath }/view/image/1.jpg"--%>
+<%--              alt=""--%>
+<%--            />--%>
+<%--          </a>--%>
+<%--          <div class="center">--%>
+<%--            <a>케냐AA</a>--%>
+<%--          </div>--%>
+<%--        </li>--%>
+<%--        <li>--%>
+<%--          <a href="">--%>
+<%--            <img--%>
+<%--              src="${ pageContext.request.contextPath }/view/image/2.jpg"--%>
+<%--              alt=""--%>
+<%--            />--%>
+<%--          </a>--%>
+<%--          <div class="center">--%>
+<%--            <a>예가체프</a>--%>
+<%--          </div>--%>
+<%--        </li>--%>
+<%--        <li>--%>
+<%--          <a href="">--%>
+<%--            <img--%>
+<%--              src="${ pageContext.request.contextPath }/view/image/3.jpg"--%>
+<%--              alt=""--%>
+<%--            />--%>
+<%--          </a>--%>
+<%--          <div class="center">--%>
+<%--            <a>탄자니아</a>--%>
+<%--          </div>--%>
+<%--        </li>--%>
+<%--        <li>--%>
+<%--          <a href="">--%>
+<%--            <img--%>
+<%--              src="${ pageContext.request.contextPath }/view/image/4.jpg"--%>
+<%--              alt=""--%>
+<%--            />--%>
+<%--          </a>--%>
+<%--          <div class="center">--%>
+<%--            <a>아리차</a>--%>
+<%--          </div>--%>
+<%--        </li>--%>
+<%--      </ul>--%>
+<%--    </div>--%>
+<%--  </div>--%>
   </main>
   <script src="${ pageContext.request.contextPath }/view/js/slider.js"></script>
 </body>

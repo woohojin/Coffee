@@ -171,7 +171,7 @@
                     >
                   </li>
                   <li>
-                    <a href="${ pageContext.request.contextPath }/board/product?pageType=machine"
+                    <a href="${ pageContext.request.contextPath }/board/machineDetail"
                     >임대머신</a
                     >
                   </li>

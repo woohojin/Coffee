@@ -118,22 +118,12 @@ public class mainController {
 
             if(pageType.equals("cafe")) {
                 productType = 2;
-                memberTier = 1; // 카페용품은 등급 구분이 없음
+                memberTier = 1; // 카페용품은 등급이 항상 1임
                 productDao.rownumSet();
                 List<Product> list = productDao.productListByMemberTierByProductType(pageInt, limit, memberTier, productType);
                 productCount = productDao.productCountByTierByProductType(memberTier, productType);
                 request.setAttribute("list", list);
             }
-
-            if(pageType.equals("machine")) {
-                productType = 3;
-                memberTier = 1; // 임대머신은 등급 구분이 없음
-                productDao.rownumSet();
-                List<Product> list = productDao.productListByMemberTierByProductType(pageInt, limit, memberTier, productType);
-                productCount = productDao.productCountByTierByProductType(memberTier, productType);
-                request.setAttribute("list", list);
-            }
-
         }
 
         int start = (pageInt - 1) / bottomLine * bottomLine + 1;
@@ -222,7 +212,7 @@ public class mainController {
 
         int productCount = 0;
 
-        int productType = 1;
+        int productType = 2;
 
         if(memberTier != 0) {
             productCount = productDao.productCountByTierByProductType(memberTier, productType);
@@ -241,29 +231,7 @@ public class mainController {
     }
 
     @RequestMapping("machineDetail")
-    public String machineDetail(String productCode) throws Exception {
-        Integer memberTier = (Integer) session.getAttribute("memberTier");
-        if(memberTier == null) {
-            memberTier = 0;
-        }
-
-        int productCount = 0;
-
-        int productType = 1;
-
-        if(memberTier != 0) {
-            productCount = productDao.productCountByTierByProductType(memberTier, productType);
-        }
-
-        Product product = productDao.productSelectOne(productCode);
-
-        String detailImageName = imageDao.selectDetailImage(productCode);
-
-        request.setAttribute("memberTier", memberTier);
-        request.setAttribute("productCount", productCount);
-        request.setAttribute("product", product);
-        request.setAttribute("detailmageName", detailImageName);
-
+    public String machineDetail() throws Exception {
         return "board/product/machineDetail";
     }
 
