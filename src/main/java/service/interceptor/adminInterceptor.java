@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSession;
 
 public class adminInterceptor implements HandlerInterceptor {
 
-  private static final String ADMIN_ID = "admin";
+  private static final String ADMIN_ID = "daallcoffee";
 
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)

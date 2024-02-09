@@ -15,6 +15,9 @@
     <!-- base-package="controller, service" 패키지를 먼저 scan 해서 @Component를 가진 클래스의 객체 생성 -->
     <context:component-scan base-package="controller, service, modules, handler, service.interceptor"/>
 
+    <!-- application.properties 사용 -->
+    <context:property-placeholder location="classpath:application.properties" />
+
     <!-- css,js,html 웹에서 제공되는 파일의 기본 기능 제외 -->
     <mvc:default-servlet-handler/>
 
@@ -37,8 +40,8 @@
           class="org.apache.commons.dbcp2.BasicDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
         <property name="url" value="jdbc:mysql://localhost:3306/da_coffee?characterEncoding=UTF-8" />
-        <property name="username" value="root" />
-        <property name="password" value="1029" />
+        <property name="username" value="${database.username}" />
+        <property name="password" value="${database.password}" />
 
         <property name="initialSize" value="0"/>
         <property name="minIdle" value="2"/>
@@ -53,10 +56,6 @@
     <bean class="org.mybatis.spring.SqlSessionTemplate">
         <constructor-arg ref="sqlSessionFactory"/>
     </bean>
-
-<!--    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
-<!--        <property name="location" value="classpath:application.properties" />-->
-<!--    </bean>-->
 
     <mvc:interceptors>
 
