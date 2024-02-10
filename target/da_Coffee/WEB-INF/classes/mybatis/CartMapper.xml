@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cart">
+    <resultMap type="cart" id="cartMap">
+        <id column="member_id" property="memberId" />
+        <id column="product_code" property="productCode" />
+        <id column="product_name" property="productName" />
+        <id column="product_unit" property="productUnit" />
+        <id column="product_grinding" property="productGrinding" />
+        <id column="product_price" property="productPrice" />
+        <id column="product_file" property="productFile" />
+        <id column="product_sold_out" property="productSoldOut" />
+        <id column="quantity" property="quantity" />
+    </resultMap>
+
+    <insert id="cartInsert" parameterType="cart">
+        insert into cart values (#{memberId}, #{productCode}, #{quantity}, 0)
+    </insert>
+
+    <select id="cartProductCodeList" parameterType="String" resultType="String">
+        select product_code from cart where member_id = #{memberId}
+    </select>
+
+    <select id="cartCount" parameterType="String" resultType="int">
+        select count(*) from cart where member_id = #{memberId}
+    </select>
+
+    <select id="cartCountByProductType" parameterType="map" resultType="int">
+        select count(*) from cart inner join product on cart.product_code = product.product_code where cart.member_id = #{memberId} and product.product_type = #{productType}
+    </select>
+
+    <select id="checkQuantityByProductCode" parameterType="map" resultType="int">
+        select quantity from cart inner join product on cart.product_code = product.product_code where cart.member_id = #{memberId} and product.product_code = #{productCode}
+    </select>
+
+    <select id="checkQuantityByProductType" parameterType="map" resultType="int">
+        select cart.quantity from cart inner join product on cart.product_code = product.product_code where cart.member_id = #{memberId} and product.product_type = #{productType}
+    </select>
+
+    <select id="cartSelectMember" parameterType="String" resultMap="cartMap">
+        select cart.*, product.product_name, product.product_unit, product.product_price, product.product_file, product.product_sold_out
+        from cart inner join product on cart.product_code = product.product_code where cart.member_id = #{memberId};
+    </select>
+
+    <select id="cartSelectOne" parameterType="String" resultMap="cartMap">
+        select cart.*, product.product_name, product.product_unit, product.product_price, product.product_file, product.product_sold_out
+        from cart inner join product on cart.product_code = product.product_code where cart.member_id = #{memberId} and cart.product_code = #{productCode};
+    </select>
+
+    <select id="cartSumPrice" parameterType="String" resultType="String">
+        select sum(cart.quantity * product.product_price)
+        from cart inner join product on cart.product_code = product.product_code where cart.member_id = #{memberId} and not product.product_sold_out = 1;
+    </select>
+
+    <delete id="cartDelete" parameterType="map">
+        delete from cart where member_id = #{memberId} and product_code = #{productCode}
+    </delete>
+
+    <update id="cartQuantityUpdate" parameterType="map">
+        update cart set quantity = #{quantity} where member_id = #{memberId} and product_code = #{productCode}
+    </update>
+
+<!--    <update id="cartGrindingUpdate" parameterType="map">-->
+<!--        update cart set product_grinding = #{productGrinding} where member_id = #{memberId} and product_code = #{productCode}-->
+<!--    </update>-->
+
+</mapper>
