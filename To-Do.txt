@@ -11,6 +11,7 @@ historymapper insert 수정 필요
 machine_detail 이미지에 연락처 추가
 다올커피로고 이미지
 어드민 아이디 properties 파일로
+productList 이미지 src 위치 수정 필요
 
 
 제품 이미지명 AA0001_thumbnail, AA0001_detail
