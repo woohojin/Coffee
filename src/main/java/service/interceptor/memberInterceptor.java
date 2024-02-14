@@ -39,37 +39,40 @@ public class memberInterceptor implements HandlerInterceptor {
     HttpSession session = request.getSession();
     Cookie[] cookies = request.getCookies();
 
-    for(Cookie cookie: cookies) {
-      if(cookie.getName().equals("memberId")) {
-        memberCookieId = cookie.getValue();
-        member = memberDao.memberSelectOne(memberCookieId);
-        if(member != null) {
-          int isDisabled = memberDao.disabledMemberSelectOne(memberId);
-          if(isDisabled < 1) {
+    if(cookies != null) {
+      for(Cookie cookie: cookies) {
+        if(cookie.getName().equals("memberId")) {
+          memberCookieId = cookie.getValue();
+          member = memberDao.memberSelectOne(memberCookieId);
+          if(member != null) {
             memberId = member.getMemberId();
-            memberTier = member.getMemberTier();
-            cookieDTO = cookieDao.cookieSelectOne(memberId);
-            cookieDBToken = cookieDTO.getToken();
-          } else {
-            cookieDBToken = "";
-            Cookie cookieId = new Cookie("memberId", null);
-            Cookie cookieToken = new Cookie("token", null);
-            cookieId.setMaxAge(0); // 0초 = 쿠키 삭제
-            cookieId.setPath("/");
-            cookieToken.setMaxAge(0);
-            cookieToken.setPath("/");
-            response.addCookie(cookieId);
-            response.addCookie(cookieToken);
-            cookieDao.cookieDelete(memberId);
+            int isDisabled = memberDao.disabledMemberSelectOne(memberId);
+
+            if(isDisabled < 1) {
+              memberTier = member.getMemberTier();
+              cookieDTO = cookieDao.cookieSelectOne(memberId);
+              cookieDBToken = cookieDTO.getToken();
+            } else {
+              cookieDBToken = "";
+              Cookie cookieId = new Cookie("memberId", null);
+              Cookie cookieToken = new Cookie("token", null);
+              cookieId.setMaxAge(0); // 0초 = 쿠키 삭제
+              cookieId.setPath("/");
+              cookieToken.setMaxAge(0);
+              cookieToken.setPath("/");
+              response.addCookie(cookieId);
+              response.addCookie(cookieToken);
+              cookieDao.cookieDelete(memberId);
+            }
           }
         }
-      }
-      if(cookie.getName().equals("token")) {
-        cookieToken = cookie.getValue();
-        checkValidate = cookieDBToken.equals(cookieToken);
-        if(checkValidate == true) {
-          session.setAttribute("memberId", memberId);
-          session.setAttribute("memberTier", memberTier);
+        if(cookie.getName().equals("token")) {
+          cookieToken = cookie.getValue();
+          checkValidate = cookieDBToken.equals(cookieToken);
+          if(checkValidate) {
+            session.setAttribute("memberId", memberId);
+            session.setAttribute("memberTier", memberTier);
+          }
         }
       }
     }

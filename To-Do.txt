@@ -4,14 +4,12 @@ https 활성화 = ssl 인증서 발급
 historymapper insert 수정 필요
 결제기록을 저장하는 테이블도 필요할듯
 엑셀 저장 컬럼 수정
-이미지 완성 후 업로드 테스트 (제품 코드별로 나누어놨으나 테스트 필요)
 메인페이지
-데이터 백업 시스템 필요 (스크립트 작성후 cron으로 스케쥴링 설정)
-이메일 글자 깨짐
 machine_detail 이미지에 연락처 추가
 다올커피로고 이미지
 어드민 아이디 properties 파일로
 productList 이미지 src 위치 수정 필요
+장바구니 이미지 수정 필요
 
 
 제품 이미지명 AA0001_thumbnail, AA0001_detail
@@ -24,6 +22,7 @@ https://www.tosspayments.com/
 1. int nullPointException = Integer 사용 / null을 따로 처리하기
 2. String.isEmpty() = String이 null값 일 때 NullPointerException을 발생시킴
 
+아이디 소문자로
 pagination 수정 필요
 product 테이블 컬럼에 배송비 계산 여부 추가
 memberCartPro 가격계산하는부분은 따로 빼기
