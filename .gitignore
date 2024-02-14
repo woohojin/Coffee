@@ -169,6 +169,6 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/windows,java,intellij  
 *.MF
 src/main/resources/application.properties
-target/da_Coffee/WEB-INF/classes/application.properties
-target/classes/application.properties
 src/main/webapp/WEB-INF/classes/application.properties
+target
+target/*
