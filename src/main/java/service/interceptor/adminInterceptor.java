@@ -1,5 +1,10 @@
 package service.interceptor;
 
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.MutablePropertySources;
+import org.springframework.core.io.support.ResourcePropertySource;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,12 +13,20 @@ import javax.servlet.http.HttpSession;
 
 public class adminInterceptor implements HandlerInterceptor {
 
-  private static final String ADMIN_ID = "daallcoffee";
+  //Context 생성
+  ConfigurableApplicationContext context = new GenericXmlApplicationContext();
+  //Environment 생성
+  ConfigurableEnvironment environment = context.getEnvironment();
+  //PropertySource 다 가져오기
+  MutablePropertySources propertySources = environment.getPropertySources();
 
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
     throws Exception {
     HttpSession session = request.getSession();
+
+    propertySources.addLast(new ResourcePropertySource("classpath:application.properties"));
+    String ADMIN_ID = environment.getProperty("ADMIN_ID");
 
     String memberId = (String) session.getAttribute("memberId");
 
