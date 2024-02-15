@@ -352,7 +352,7 @@ public class memberController {
           msg = "비밀번호가 틀립니다.";
         }
       } else {
-        msg = "존재하지 않는 아이디입니다."; // disable 된 아이디 일 떄
+        msg = "비활성화 된 아이디입니다."; // disable 된 아이디 일 떄
       }
     } else {
       msg = "존재하지 않는 아이디입니다."; // db에 해당 아이디가 없을 때
