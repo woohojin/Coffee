@@ -7,7 +7,6 @@ historymapper insert 수정 필요
 메인페이지
 machine_detail 이미지에 연락처 추가
 다올커피로고 이미지
-어드민 아이디 properties 파일로
 productList 이미지 src 위치 수정 필요
 장바구니 이미지 수정 필요
 
@@ -22,6 +21,7 @@ https://www.tosspayments.com/
 1. int nullPointException = Integer 사용 / null을 따로 처리하기
 2. String.isEmpty() = String이 null값 일 때 NullPointerException을 발생시킴
 
+main 페이지 대신 index페이지로 옮겨 초기 접속시 url에 컨트롤러 경로를 띄우지 않도록
 아이디 소문자로
 pagination 수정 필요
 product 테이블 컬럼에 배송비 계산 여부 추가
