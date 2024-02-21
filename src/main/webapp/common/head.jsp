@@ -42,7 +42,7 @@
                       </li>
                     </c:when>
 
-                    <c:when test="${ sessionScope.memberId != null && sessionScope.memberId != 'daallcoffee' }">
+                    <c:when test="${ sessionScope.memberId != null && sessionScope.memberTier != 9 }">
                       <li>
                         <a href="${ pageContext.request.contextPath }/member/memberLogout" id="logout_button" onClick="return checkLogout()">로그아웃</a>
                       </li>
@@ -51,7 +51,7 @@
                       </li>
                     </c:when>
 
-                    <c:when test="${ sessionScope.memberId != null && sessionScope.memberId == 'daallcoffee' }">
+                    <c:when test="${ sessionScope.memberId != null && sessionScope.memberTier == 9 }">
                       <li>
                         <a href="${ pageContext.request.contextPath }/member/memberLogout" id="logout_button" onClick="return checkLogout()">로그아웃</a>
                       </li>
