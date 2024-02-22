@@ -47,7 +47,7 @@
                     <c:choose>
                       <c:when test="${ p.productType == 0 }">
                         <a href="${ pageContext.request.contextPath }/board/beanDetail?productCode=${ p.productCode }">
-                          <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
+                          <img src="${ pageContext.request.contextPath }/view/files/bean/${ p.productCode }/${ p.productFile }" alt="" />
                         </a>
                         <div>
                           <a href="${ pageContext.request.contextPath }/board/beanDetail?productCode=${ p.productCode }">${ p.productName }</a>
@@ -57,7 +57,7 @@
 
                       <c:when test="${ p.productType == 1 }">
                         <a href="${ pageContext.request.contextPath }/board/mixDetail?productCode=${ p.productCode }">
-                          <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
+                          <img src="${ pageContext.request.contextPath }/view/files/mix/${ p.productCode }/${ p.productFile }" alt="" />
                         </a>
                         <div>
                           <a href="${ pageContext.request.contextPath }/board/mixDetail?productCode=${ p.productCode }">${ p.productName }</a>
@@ -67,20 +67,10 @@
 
                       <c:when test="${ p.productType == 2 }">
                         <a href="${ pageContext.request.contextPath }/board/cafeDetail?productCode=${ p.productCode }">
-                          <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
+                          <img src="${ pageContext.request.contextPath }/view/files/cafe/${ p.productCode }/${ p.productFile }" alt="" />
                         </a>
                         <div>
                           <a href="${ pageContext.request.contextPath }/board/cafeDetail?productCode=${ p.productCode }">${ p.productName }</a>
-                          <p><fmt:formatNumber value="${ p.productPrice }" pattern="#,###" /> 원</p>
-                        </div>
-                      </c:when>
-
-                      <c:when test="${ p.productType == 3 }">
-                        <a href="${ pageContext.request.contextPath }/board/machineDetail?productCode=${ p.productCode }">
-                          <img src="${ pageContext.request.contextPath }/view/files/${ p.productFile }" alt="" />
-                        </a>
-                        <div>
-                          <a href="${ pageContext.request.contextPath }/board/machineDetail?productCode=${ p.productCode }">${ p.productName }</a>
                           <p><fmt:formatNumber value="${ p.productPrice }" pattern="#,###" /> 원</p>
                         </div>
                       </c:when>
