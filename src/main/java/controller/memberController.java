@@ -767,6 +767,10 @@ public class memberController {
       month = "0" + monthValue;
     }
 
+    if(monthValue <= 2) {
+      month = "01";
+    }
+
     if(dayOfMonth < 10 ) {
       day = "0" + dayOfMonth;
     }
