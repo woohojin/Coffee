@@ -147,7 +147,7 @@
                 </ul>
               </div>
               <div class="product_detail_content_wrap">
-                <img src="${ pageContext.request.contextPath }/view/files/bean/${ product.productCode }/${ requestScope.detailmageName }" alt="" />
+                <img src="${ pageContext.request.contextPath }/view/files/mix/${ product.productCode }/${ requestScope.detailmageName }" alt="" />
               </div>
             </li>
             <li>
