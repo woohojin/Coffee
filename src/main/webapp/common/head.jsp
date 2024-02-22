@@ -91,13 +91,45 @@
                         </div>
                       </div>
                       <div class="hd_gnb_member_cart_info">
-                        <a href="${ pageContext.request.contextPath }/board/productDetail?productCode=${ cart.productCode }">
-                          <img src="${ pageContext.request.contextPath }/view/image/1.jpg"  alt=""/>
-                        </a>
+                        <c:choose>
+                            <c:when test="${ product.productType == 0 }">
+                                <a href="${ pageContext.request.contextPath }/board/beanDetail?productCode=${ product.productCode }">
+                                    <img src="${ pageContext.request.contextPath }/view/files/bean/${ product.productCode }/${ product.productFile }"  alt=""/>
+                                </a>
+                            </c:when>
+
+                            <c:when test="${ product.productType == 1 }">
+                                <a href="${ pageContext.request.contextPath }/board/mixDetail?productCode=${ product.productCode }">
+                                    <img src="${ pageContext.request.contextPath }/view/files/mix/${ product.productCode }/${ product.productFile }" alt="" />
+                                </a>
+                            </c:when>
+
+                            <c:when test="${ product.productType == 2 }">
+                                <a href="${ pageContext.request.contextPath }/board/cafeDetail?productCode=${ product.productCode }">
+                                    <img src="${ pageContext.request.contextPath }/view/files/cafe/${ product.productCode }/${ product.productFile }" alt="" />
+                                </a>
+                            </c:when>
+                        </c:choose>
                         <div class="hd_gnb_member_cart_text">
-                          <a href="${ pageContext.request.contextPath }/board/productDetail?productCode=${ cart.productCode }">
-                            <p class="cart_product_name">Empty</p>
-                          </a>
+                          <c:choose>
+                            <c:when test="${ product.productType == 0 }">
+                              <a href="${ pageContext.request.contextPath }/board/beanDetail?productCode=${ product.productCode }">
+                                <p class="cart_product_name">Empty</p>
+                              </a>
+                            </c:when>
+
+                            <c:when test="${ product.productType == 1 }">
+                              <a href="${ pageContext.request.contextPath }/board/mixDetail?productCode=${ product.productCode }">
+                                <p class="cart_product_name">Empty</p>
+                              </a>
+                            </c:when>
+
+                            <c:when test="${ product.productType == 2 }">
+                              <a href="${ pageContext.request.contextPath }/board/cafeDetail?productCode=${ product.productCode }">
+                                <p class="cart_product_name">Empty</p>
+                              </a>
+                            </c:when>
+                          </c:choose>
                           <p class="cart_product_unit">Empty</p>
                           <p class="cart_quantity">Empty</p>
                           <p class="cart_product_price">Empty</p>

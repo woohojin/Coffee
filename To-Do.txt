@@ -6,7 +6,6 @@ historymapper insert 수정 필요
 메인페이지
 machine_detail 이미지에 연락처 추가
 다올커피로고 이미지
-productList 이미지 src 위치 수정 필요
 장바구니 이미지 수정 필요
 이메일 변경
 
