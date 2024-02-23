@@ -17,7 +17,6 @@
 }
 .product ul li div {
   text-align: center;
-  width: 135px;
   line-height: 20px;
 }
 .product ul li div p {
@@ -26,8 +25,8 @@
   margin-bottom: 15px;
 }
 .product img {
-  width: 115px;
-  height: 115px;
+  width: 200px;
+  height: 200px;
 }
 
 .product_detail_wrap {
