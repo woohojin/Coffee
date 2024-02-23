@@ -7,7 +7,6 @@ historymapper insert 수정 필요
 machine_detail 이미지에 연락처 추가
 다올커피로고 이미지
 이메일 변경
-thumbnail 이미지 공백 제거 / productList에서 정렬이 안맞는거처럼 보임
 
 
 제품 이미지명 AA0001_thumbnail, AA0001_detail
@@ -20,6 +19,7 @@ https://www.tosspayments.com/
 1. int nullPointException = Integer 사용 / null을 따로 처리하기
 2. String.isEmpty() = String이 null값 일 때 NullPointerException을 발생시킴
 
+thumbnail 이미지 공백 제거 / productList에서 정렬이 안맞는거처럼 보임
 main 페이지 대신 index페이지로 옮겨 초기 접속시 url에 컨트롤러 경로를 띄우지 않도록
 아이디 소문자로
 pagination 수정 필요

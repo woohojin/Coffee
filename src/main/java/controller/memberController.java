@@ -611,6 +611,11 @@ public class memberController {
     return "member/memberCart";
   }
 
+  @RequestMapping("memberPayments")
+  public String memberPayments() throws Exception {
+      return "member/memberPayments";
+  }
+
   @RequestMapping("memberFindAccount")
   public String memberFindAccount(@RequestParam(value = "findType", required = false, defaultValue = "id") String findType) throws Exception {
     int isFind = 0;
