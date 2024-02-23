@@ -70,7 +70,7 @@
               />
             </a>
             <div class="center">
-              <a>케냐AA</a>
+              <a>변경예정</a>
             </div>
           </li>
           <li>
@@ -81,7 +81,7 @@
               />
             </a>
             <div class="center">
-              <a>예가체프</a>
+              <a>변경예정</a>
             </div>
           </li>
           <li>
@@ -92,7 +92,7 @@
               />
             </a>
             <div class="center">
-              <a>탄자니아</a>
+              <a>변경예정</a>
             </div>
           </li>
           <li>
@@ -103,7 +103,7 @@
               />
             </a>
             <div class="center">
-              <a>아리차</a>
+              <a>변경예정</a>
             </div>
           </li>
         </ul>
