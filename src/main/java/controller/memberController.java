@@ -1,15 +1,17 @@
 package controller;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import service.*;
 import model.Member;
 import model.Cart;
 import model.History;
+import model.PaymentsRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -619,6 +621,53 @@ public class memberController {
   @RequestMapping("memberPaymentsSuccess")
   public String memberPaymentsSuccess() throws Exception {
     return "member/memberPaymentsSuccess";
+  }
+
+  @RequestMapping("memberPaymentsFailure")
+  public String memberPaymentsFailure() throws Exception {
+    return "member/memberPaymentsFailure";
+  }
+
+  @PostMapping("memberPaymentsConfirm")
+  public ResponseEntity<String> memberPaymentsConfirm(@RequestBody PaymentsRequest paymentsRequest) throws Exception {
+    String paymentKey = paymentsRequest.getPaymentKey();
+    String orderId = paymentsRequest.getOrderId();
+    String amount = paymentsRequest.getAmount();
+
+    try{
+      String widgetSecretKey = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6";
+      String encodedSecretKey = "Basic " + java.util.Base64.getEncoder().encodeToString((widgetSecretKey + ":").getBytes());
+
+      String apiUrl = "https://api.tosspayments.com/v1/payments/confirm";
+
+      HttpHeaders headers = new HttpHeaders();
+      headers.add("Authorization", encodedSecretKey);
+      headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+
+      // RestTemplate을 사용하여 API 호출
+      ResponseEntity<String> responseEntity = new RestTemplate().exchange(
+              apiUrl,
+              HttpMethod.POST,
+              new org.springframework.http.HttpEntity<>(paymentsRequest, headers),
+              String.class
+      );
+
+      if (responseEntity.getStatusCode().is2xxSuccessful()) {
+        // 결제 성공 로직
+        System.out.println(responseEntity.getBody());
+        return ResponseEntity.ok(responseEntity.getBody());
+      } else {
+        // 결제 실패 로직
+        System.out.println(responseEntity.getBody());
+        return ResponseEntity.status(responseEntity.getStatusCode()).body(responseEntity.getBody());
+      }
+
+
+      return ResponseEntity.ok("Payment Confirmed Successfully");
+    } catch (Exception e) {
+      LOGGER.error("Error in memberPaymentsConfirm", e);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
+    }
   }
 
   @RequestMapping("memberFindAccount")

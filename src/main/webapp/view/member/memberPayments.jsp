@@ -15,6 +15,8 @@
     </div>
   </main>
     <script>
+      const contextPath = "${ pageContext.request.contextPath }";
+
       const button = document.getElementById("payment-request-button");
 
       const widgetClientKey = "test_ck_yZqmkKeP8gNW0G14QzkBrbQRxB9l";
@@ -42,7 +44,7 @@
         paymentWidget.requestPayment({
           orderId: "1W_pCfO4rzG9szJEcT2Ke",
           orderName: "토스 티셔츠 외 2건",
-          successUrl: window.location.origin + "/success",
+          successUrl: window.location.origin + contextPath +"/member/memberPaymentsSuccess",
           failUrl: window.location.origin + "/fail",
           customerName: "김토스",
           customerMobilePhone: "01012341234",

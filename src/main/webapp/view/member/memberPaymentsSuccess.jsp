@@ -1,4 +1,7 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri =
+  "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <body>
   <main>
     <h2>결제 성공</h2>
@@ -7,6 +10,7 @@
     <p id="amount"></p>
   </main>
   <script>
+      const contextPath = "${ pageContext.request.contextPath }";
       // 쿼리 파라미터 값이 결제 요청할 때 보낸 데이터와 동일한지 반드시 확인하세요.
       // 클라이언트에서 결제 금액을 조작하는 행위를 방지할 수 있습니다.
       const urlParams = new URLSearchParams(window.location.search);
@@ -21,7 +25,7 @@
               amount: amount,
           };
 
-          const response = await fetch("/confirm", {
+          const response = await fetch(contextPath + "/member/memberPaymentsConfirm", {
               method: "POST",
               headers: {
                   "Content-Type": "application/json",
