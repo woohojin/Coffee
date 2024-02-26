@@ -631,11 +631,7 @@ public class memberController {
 
   @PostMapping("memberPaymentsConfirm")
   @ResponseBody
-  public ResponseEntity<Map<String, Object>> memberPaymentsConfirm(@RequestBody PaymentsRequest paymentsRequest) throws Exception {
-    String paymentKey = paymentsRequest.getPaymentKey();
-    String orderId = paymentsRequest.getOrderId();
-    String amount = paymentsRequest.getAmount();
-
+  public ResponseEntity<Object> memberPaymentsConfirm(@RequestBody PaymentsRequest paymentsRequest) throws Exception {
     try{
       String widgetSecretKey = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6";
       String encodedSecretKey = "Basic " + java.util.Base64.getEncoder().encodeToString((widgetSecretKey + ":").getBytes());
@@ -647,20 +643,21 @@ public class memberController {
       headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
 
       // RestTemplate을 사용하여 API 호출
-      ResponseEntity<Map<String, Object>> responseEntity = new RestTemplate().exchange(
+      ResponseEntity<Object> responseEntity = new RestTemplate().exchange(
               apiUrl,
               HttpMethod.POST,
               new org.springframework.http.HttpEntity<>(paymentsRequest, headers),
-              new ParameterizedTypeReference<Map<String, Object>>() {}
+              new ParameterizedTypeReference<>() {
+              }
       );
 
       if (responseEntity.getStatusCode().is2xxSuccessful()) {
         // 결제 성공 로직
-        System.out.println(responseEntity.getBody());
+        LOGGER.info(Objects.requireNonNull(responseEntity.getBody()).toString());
         return ResponseEntity.ok(responseEntity.getBody());
       } else {
         // 결제 실패 로직
-        System.out.println(responseEntity.getBody());
+        LOGGER.info(Objects.requireNonNull(responseEntity.getBody()).toString());
         return ResponseEntity.status(responseEntity.getStatusCode()).body(responseEntity.getBody());
       }
 
