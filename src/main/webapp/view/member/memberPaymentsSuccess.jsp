@@ -33,13 +33,14 @@
               body: JSON.stringify(requestData),
           });
 
-          const json = await response.json();
-
           if (!response.ok) {
               // 결제 실패 비즈니스 로직을 구현하세요.
+              const json = await response.json();
               console.log(json);
-              window.location.href = `/fail?message=${json.message}&code=${json.code}`;
+              window.location.href = contextPath + `/member/memberPaymentsFailure?message=${json.message}&code=${json.code}`;
           }
+
+          const json = await response.json();
 
           // 결제 성공 비즈니스 로직을 구현하세요.
           console.log(json);

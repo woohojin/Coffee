@@ -1,6 +1,7 @@
 package controller;
 
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -629,7 +630,8 @@ public class memberController {
   }
 
   @PostMapping("memberPaymentsConfirm")
-  public ResponseEntity<String> memberPaymentsConfirm(@RequestBody PaymentsRequest paymentsRequest) throws Exception {
+  @ResponseBody
+  public ResponseEntity<Map<String, Object>> memberPaymentsConfirm(@RequestBody PaymentsRequest paymentsRequest) throws Exception {
     String paymentKey = paymentsRequest.getPaymentKey();
     String orderId = paymentsRequest.getOrderId();
     String amount = paymentsRequest.getAmount();
@@ -645,11 +647,11 @@ public class memberController {
       headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
 
       // RestTemplate을 사용하여 API 호출
-      ResponseEntity<String> responseEntity = new RestTemplate().exchange(
+      ResponseEntity<Map<String, Object>> responseEntity = new RestTemplate().exchange(
               apiUrl,
               HttpMethod.POST,
               new org.springframework.http.HttpEntity<>(paymentsRequest, headers),
-              String.class
+              new ParameterizedTypeReference<Map<String, Object>>() {}
       );
 
       if (responseEntity.getStatusCode().is2xxSuccessful()) {
@@ -662,11 +664,9 @@ public class memberController {
         return ResponseEntity.status(responseEntity.getStatusCode()).body(responseEntity.getBody());
       }
 
-
-      return ResponseEntity.ok("Payment Confirmed Successfully");
     } catch (Exception e) {
       LOGGER.error("Error in memberPaymentsConfirm", e);
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("error", "Internal Server Error"));
     }
   }
 
