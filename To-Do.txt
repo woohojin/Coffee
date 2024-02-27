@@ -1,4 +1,4 @@
-주문번호 (231130001 / YYMMDD001)
+주문번호 (231130_L6vn7TzAB0qYb65a / YYMMDD + UUID)
 개인정보처리 기간에 맞게 삭제
 historymapper insert 수정 필요
 결제기록을 저장하는 테이블도 필요할듯

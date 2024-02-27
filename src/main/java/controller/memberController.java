@@ -1,5 +1,6 @@
 package controller;
 
+import modules.UUIDGenerateModule;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
@@ -616,7 +617,17 @@ public class memberController {
 
   @RequestMapping("memberPayments")
   public String memberPayments() throws Exception {
-      return "member/memberPayments";
+    String memberId = (String) session.getAttribute("memberId");
+
+    UUIDGenerateModule uuidGenerateModule = new UUIDGenerateModule();
+
+    String orderId = uuidGenerateModule.generateOrderId();
+    String customerKey = uuidGenerateModule.generateCustomerKey(memberId);
+
+    request.setAttribute("orderId", orderId);
+    request.setAttribute("customerKey", customerKey);
+
+    return "member/memberPayments";
   }
 
   @RequestMapping("memberPaymentsSuccess")
