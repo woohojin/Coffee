@@ -621,13 +621,25 @@ public class memberController {
 
     UUIDGenerateModule uuidGenerateModule = new UUIDGenerateModule();
 
-    String orderId = uuidGenerateModule.generateOrderId();
-    String customerKey = uuidGenerateModule.generateCustomerKey(memberId);
+    if(memberId != null) {
+      String orderId = uuidGenerateModule.generateOrderId();
+      String customerKey = uuidGenerateModule.generateCustomerKey(memberId);
 
-    request.setAttribute("orderId", orderId);
-    request.setAttribute("customerKey", customerKey);
+      List<Cart> list = cartDao.cartSelectMember(memberId);
 
-    return "member/memberPayments";
+      request.setAttribute("orderId", orderId);
+      request.setAttribute("customerKey", customerKey);
+
+      return "member/memberPayments";
+    }
+
+    String errorCode = "CANNOT_FIND_MEMBER_ID";
+    String errorMessage = "로그인 후 결제를 진행해주세요.";
+
+    request.setAttribute("errorCode", errorCode);
+    request.setAttribute("errorMessage", errorMessage);
+
+    return "member/memberPaymentsFailure";
   }
 
   @RequestMapping("memberPaymentsSuccess")

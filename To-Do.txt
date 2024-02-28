@@ -7,7 +7,10 @@ historymapper insert 수정 필요
 machine_detail 이미지에 연락처 추가
 다올커피로고 이미지
 이메일 변경
-
+memberIntercepter에 memberPayments 추가
+Cookie 자동로그인 cookie가 없는데 db에는 남아있는 경우 예외처리
+Cart 이미지
+toss 결제 실패 예외처리
 
 제품 이미지명 AA0001_thumbnail, AA0001_detail
 

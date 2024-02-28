@@ -125,7 +125,7 @@
       </div>
       <div class="btn_wrap">
         <div class="btn">
-          <a>결제하기</a>
+          <a href="${ pageContext.request.contextPath }/member/memberPayments">결제하기</a>
         </div>
       </div>
     </div>

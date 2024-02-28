@@ -23,15 +23,14 @@ a {
     max-width: 540px;
 }
 
-.btn-wrapper {
+.payments_btn-wrapper {
     padding: 0 24px;
 }
 
-.btn {
-    padding: 11px 22px;
+.payments_btn {
+    padding: 11px 45px;
     border: none;
     border-radius:  8px;
-
     background-color: #f2f4f6;
     color: #4e5968;
     font-weight: 600;
@@ -39,7 +38,7 @@ a {
     cursor: pointer;
 }
 
-.btn.primary {
+.payments_btn.primary {
     background-color: #3282f6;
     color: #f9fcff;
 }

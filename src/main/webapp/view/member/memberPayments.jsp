@@ -8,8 +8,8 @@
       <div class="max-w-540 w-100">
         <div id="payment-method" class="w-100"></div>
         <div id="agreement" class="w-100"></div>
-        <div class="btn-wrapper w-100">
-          <button id="payment-request-button" class="btn primary w-100">결제하기</button>
+        <div class="payments_btn-wrapper w-100">
+          <button id="payment-request-button" class="payments_btn primary w-100">결제하기</button>
         </div>
       </div>
     </div>

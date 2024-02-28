@@ -9,10 +9,10 @@
         <div class="flex-column align-center">
           <img src="https://static.toss.im/lotties/loading-spot-apng.png" width="120" height="120"></img>
           <h2 class="title text-center">결제 요청까지 성공했어요.</h2>
-          <h4 class="text-center description">결제 승인하고 완료해보세요.</h4>
+          <h4 class="text-center description">결제를 승인하고 완료해보세요.</h4>
         </div>
         <div class="w-100">
-          <button id="confirmPaymentButton" class="btn primary w-100">결제 승인하기</button>
+          <button id="confirmPaymentButton" class="payments_btn primary w-100">결제 승인하기</button>
         </div>
       </div>
       <div class="flex-column align-center confirm-success w-100 max-w-540">
@@ -31,6 +31,11 @@
             <span class="response-label">paymentKey</span>
             <span id="paymentKey" class="response-text"></span>
           </div>
+          <div class="flex-column align-center w-100 max-w-540">
+            <div class="button-group">
+              <a class="payments_btn primary" href="${ pageContext.request.contextPath }/board/main">메인화면으로 이동</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -43,6 +48,10 @@
       const paymentKey = urlParams.get("paymentKey");
       const orderId = urlParams.get("orderId");
       const amount = urlParams.get("amount");
+
+      const paymentKeyElement = document.getElementById("paymentKey");
+      const orderIdElement = document.getElementById("orderId");
+      const amountElement = document.getElementById("amount");
 
       const confirmLoadingSection = document.querySelector('.confirm-loading');
       const confirmSuccessSection = document.querySelector('.confirm-success');
@@ -81,12 +90,8 @@
       const confirmPaymentButton = document.getElementById('confirmPaymentButton');
       confirmPaymentButton.addEventListener('click', confirmPayment);
 
-      const paymentKeyElement = document.getElementById("paymentKey");
-      const orderIdElement = document.getElementById("orderId");
-      const amountElement = document.getElementById("amount");
-
-      orderIdElement.textContent = "주문번호: " + orderId;
-      amountElement.textContent = "결제 금액: " + amount;
-      paymentKeyElement.textContent = "paymentKey: " + paymentKey;
+      paymentKeyElement.textContent = paymentKey;
+      orderIdElement.textContent = orderId;
+      amountElement.textContent = amount + `원`;
   </script>
 </body>

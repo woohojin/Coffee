@@ -4,17 +4,38 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <body>
-  <h2> 결제 실패 </h2>
-  <p id="code"></p>
-  <p id="message"></p>
+<div class="wrapper w-100">
+  <div class="flex-column align-center w-100 max-w-540">
+    <img src="https://static.toss.im/lotties/error-spot-no-loop-space-apng.png" width="160" height="160" />
+    <h2 class="title">결제를 실패했어요</h2>
+    <div class="response-section w-100">
+      <div class="flex justify-between">
+        <span class="response-label">code</span>
+        <span id="error-code" class="response-text">${ requestScope.errorCode }</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="response-label">message</span>
+        <span id="error-message" class="response-text">${ requestScope.errorMessage }</span>
+      </div>
+    </div>
+    <div class="button-group">
+      <a class="payments_btn primary" href="${ pageContext.request.contextPath }/member/memberCart">장바구니로 이동하기</a>
+      <a class="payments_btn primary" href="${ pageContext.request.contextPath }/board/main">메인화면으로 이동하기</a>
+    </div>
+  </div>
+</div>
 </body>
 
 <script>
     const urlParams = new URLSearchParams(window.location.search);
+    const errorCode = urlParams.get("code");
+    const errorMessage = urlParams.get("message");
 
-    const codeElement = document.getElementById("code");
-    const messageElement = document.getElementById("message");
+    const errorCodeElement = document.getElementById("error-code");
+    const errorMessageElement = document.getElementById("error-message");
 
-    codeElement.textContent = "에러코드: " + urlParams.get("code");
-    messageElement.textContent = "실패 사유: " + urlParams.get("message");
+    if(errorCode != null && errorMessage != null) {
+        errorCodeElement.textContent = errorCode;
+        errorMessageElement.textContent = errorMessage;
+    }
 </script>
