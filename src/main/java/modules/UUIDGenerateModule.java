@@ -18,16 +18,16 @@ public class UUIDGenerateModule {
     public String generateOrderId() throws Exception {
         UUID randomUUID = UUID.randomUUID();
         String UUIDWithoutHyphens = randomUUID.toString().replace("-","");
-        String UUID16Digits = UUIDWithoutHyphens.substring(0, 16);
+        String UUID8Digits = UUIDWithoutHyphens.substring(0, 8);
 
         LocalDate currentDate = LocalDate.now();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");
         String formattedDate = currentDate.format(formatter);
 
-        String OrderId = formattedDate + "_" + UUID16Digits;
+        String orderId = formattedDate + "_" + UUID8Digits;
 
-        return OrderId;
+        return orderId;
     }
 
     public String generateCustomerKey(String memberId) throws Exception {
@@ -47,10 +47,10 @@ public class UUIDGenerateModule {
         assert keyString != null;
         UUID customUUID = UUID.nameUUIDFromBytes(customString.getBytes(StandardCharsets.UTF_8));
         String UUIDWithoutHyphens = customUUID.toString().replace("-","");
-        String UUID16Digits = UUIDWithoutHyphens.substring(0, 16);
+        String UUID8Digits = UUIDWithoutHyphens.substring(0, 8);
 
-        StringBuilder insertSpecialCharacterUUID = new StringBuilder(UUID16Digits);
-        insertSpecialCharacterUUID.insert(UUID16Digits.length() - 5, '_');
+        StringBuilder insertSpecialCharacterUUID = new StringBuilder(UUID8Digits);
+        insertSpecialCharacterUUID.insert(UUID8Digits.length() - 5, '_');
 
         String customerKey = insertSpecialCharacterUUID.toString();
 
