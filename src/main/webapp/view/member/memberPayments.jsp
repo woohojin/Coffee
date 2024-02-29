@@ -26,7 +26,7 @@
       const paymentMethodWidget = paymentWidget.renderPaymentMethods(
               "#payment-method",
               {
-                value: 1000,
+                value: ${ requestScope.totalPrice },
                 currency : "KRW",
                 country : "KR",
               },
@@ -43,11 +43,11 @@
         // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
         paymentWidget.requestPayment({
           orderId: "${ requestScope.orderId }",
-          orderName: "토스 티셔츠 외 2건",
+          orderName: "${ requestScope.orderName }",
           successUrl: window.location.origin + "${ pageContext.request.contextPath }" +"/member/memberPaymentsSuccess",
           failUrl: window.location.origin + "${ pageContext.request.contextPath }" + "/member/memberPaymentsFailure",
-          customerName: "김토스",
-          customerMobilePhone: "01012341234",
+          customerName: "${ requestScope.memberName }",
+          customerMobilePhone: "${ requestScope.memberTel }",
         });
       });
     </script>

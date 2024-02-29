@@ -3,14 +3,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="history">
     <resultMap type="history" id="historyMap">
-        <id column="history_code" property="historyCode" />
+        <id column="order_id" property="orderId" />
+        <id column="member_tier" property="memberTier" />
         <id column="member_id" property="memberId" />
+        <id column="member_name" property="memberName" />
+        <id column="member_fran_code" property="memberFranCode" />
         <id column="product_code" property="productCode" />
         <id column="product_name" property="productName" />
         <id column="product_price" property="productPrice" />
-        <id column="product_unit" property="productUnit" />
         <id column="product_grinding" property="productGrinding" />
-        <id column="product_file" property="productFile" />
         <id column="quantity" property="quantity" />
         <id column="order_date" property="orderDate" />
         <id column="delivery_address" property="deliveryAddress" />
@@ -18,7 +19,8 @@
     </resultMap>
 
     <insert id="historyInsert" parameterType="history">
-        insert into order_history values (#{memberId}, #{productCode}, #{quantity})
+        insert into order_history values (#{orderId}, #{memberTier}, #{memberId}, #{memberName}, #{memberFranCode}, #{productCode}, #{productName}, #{quantity}, #{product_price},
+                                          0, NOW(), #{delivery_address}, #{detail_delivery_address})
     </insert>
 
     <select id="rownumSet" parameterType="int" resultType="int">
@@ -50,14 +52,14 @@
         select * from (
         select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
         a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c
-        where c.rownum between #{start} and #{end} order by history_code;
+        where c.rownum between #{start} and #{end} order by order_id;
     </select>
 
     <select id="historyListDescByHistoryCode" parameterType="map" resultMap="historyMap">
         select * from (
         select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
         a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c
-        where c.rownum between #{start} and #{end} order by history_code desc;
+        where c.rownum between #{start} and #{end} order by order_id desc;
     </select>
 
     <select id="historyListByMemberId" parameterType="map" resultMap="historyMap">
@@ -184,7 +186,7 @@
         select * from (
         select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
         a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp
-        where history_code LIKE CONCAT('%',#{searchText},'%')) c
+        where order_id LIKE CONCAT('%',#{searchText},'%')) c
         where c.rownum between #{start} and #{end};
     </select>
 
@@ -200,7 +202,7 @@
         select * from (
         select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
         a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp
-        where history_code LIKE CONCAT('%',#{searchText},'%') and member_id LIKE CONCAT('%',#{searchText1},'%')) c
+        where order_id LIKE CONCAT('%',#{searchText},'%') and member_id LIKE CONCAT('%',#{searchText1},'%')) c
         where c.rownum between #{start} and #{end};
     </select>
 
@@ -208,7 +210,7 @@
         select * from (
         select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
         a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp
-        where history_code LIKE CONCAT('%',#{searchText},'%') and order_date between #{startDate} and #{endDate}) c
+        where order_id LIKE CONCAT('%',#{searchText},'%') and order_date between #{startDate} and #{endDate}) c
         where c.rownum between #{start} and #{end};
     </select>
 
@@ -224,7 +226,7 @@
         select * from (
         select @rownum := @rownum + 1 as rownum, b.product_name, b.product_unit, b.product_price,
         a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp
-        where history_code LIKE CONCAT('%',#{searchText},'%') and member_id LIKE CONCAT('%',#{searchText1},'%') and order_date between #{startDate} and #{endDate}) c
+        where order_id LIKE CONCAT('%',#{searchText},'%') and member_id LIKE CONCAT('%',#{searchText1},'%') and order_date between #{startDate} and #{endDate}) c
         where c.rownum between #{start} and #{end};
     </select>
 
@@ -242,7 +244,7 @@
     <select id="historySelectOne" parameterType="String" resultMap="historyMap">
         select order_history.*, product.product_name, product.product_unit, product.product_price, product.product_file
         from order_history inner join product on order_history.product_code = product.product_code
-        where order_history.member_id = #{memberId} and order_history.history_code = #{historyCode}
+        where order_history.member_id = #{memberId} and order_history.order_id = #{orderId}
     </select>
 
     <select id="historySelectDate" parameterType="String" resultMap="historyMap">

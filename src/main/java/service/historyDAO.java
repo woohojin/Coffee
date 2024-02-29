@@ -20,7 +20,7 @@ public class historyDAO {
   private static Map map = new HashMap<>();
 
   public int historyInsert(History history) {
-    int num = session.insert(NS+"historyInsert", history);
+    int num = session.insert(NS + "historyInsert", history);
     return num;
   }
 

@@ -1,25 +1,34 @@
 package model;
 
 public class History {
-  String historyCode;
+  String orderId;
+  int memberTier;
   String memberId;
+  String memberName;
+  String memberFranCode;
   String productCode;
   String productName;
-  String productPrice;
-  String productUnit;
-  String productFile;
-  String quantity;
+  int productPrice;
+  int quantity;
   String orderDate;
   String deliveryAddress;
   String detailDeliveryAddress;
   int productGrinding;
 
-  public String getHistoryCode() {
-    return historyCode;
+  public String getOrderId() {
+    return orderId;
   }
 
-  public void setHistoryCode(String historyCode) {
-    this.historyCode = historyCode;
+  public void setOrderId(String orderId) {
+    this.orderId = orderId;
+  }
+
+  public int getMemberTier() {
+    return memberTier;
+  }
+
+  public void setMemberTier(int memberTier) {
+    this.memberTier = memberTier;
   }
 
   public String getMemberId() {
@@ -28,6 +37,22 @@ public class History {
 
   public void setMemberId(String memberId) {
     this.memberId = memberId;
+  }
+
+  public String getMemberName() {
+    return memberName;
+  }
+
+  public void setMemberName(String memberName) {
+    this.memberName = memberName;
+  }
+
+  public String getMemberFranCode() {
+    return memberFranCode;
+  }
+
+  public void setMemberFranCode(String memberFranCode) {
+    this.memberFranCode = memberFranCode;
   }
 
   public String getProductCode() {
@@ -46,35 +71,19 @@ public class History {
     this.productName = productName;
   }
 
-  public String getProductPrice() {
+  public int getProductPrice() {
     return productPrice;
   }
 
-  public void setProductPrice(String productPrice) {
+  public void setProductPrice(int productPrice) {
     this.productPrice = productPrice;
   }
 
-  public String getProductUnit() {
-    return productUnit;
-  }
-
-  public void setProductUnit(String productUnit) {
-    this.productUnit = productUnit;
-  }
-
-  public String getProductFile() {
-    return productFile;
-  }
-
-  public void setProductFile(String productFile) {
-    this.productFile = productFile;
-  }
-
-  public String getQuantity() {
+  public int getQuantity() {
     return quantity;
   }
 
-  public void setQuantity(String quantity) {
+  public void setQuantity(int quantity) {
     this.quantity = quantity;
   }
 
@@ -108,23 +117,5 @@ public class History {
 
   public void setProductGrinding(int productGrinding) {
     this.productGrinding = productGrinding;
-  }
-
-  @Override
-  public String toString() {
-    return "History{" +
-      "historyCode='" + historyCode + '\'' +
-      ", memberId='" + memberId + '\'' +
-      ", productCode='" + productCode + '\'' +
-      ", productName='" + productName + '\'' +
-      ", productPrice='" + productPrice + '\'' +
-      ", productUnit='" + productUnit + '\'' +
-      ", productFile='" + productFile + '\'' +
-      ", quantity='" + quantity + '\'' +
-      ", orderDate='" + orderDate + '\'' +
-      ", deliveryAddress='" + deliveryAddress + '\'' +
-      ", detailDeliveryAddress='" + detailDeliveryAddress + '\'' +
-      ", productGrinding=" + productGrinding +
-      '}';
   }
 }
