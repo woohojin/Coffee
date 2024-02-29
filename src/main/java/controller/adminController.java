@@ -1223,51 +1223,51 @@ public class adminController {
     workbook.close();
     outputStream.close();
   }
-
-  @RequestMapping("excelHistoryDownload")
-  public void excelHistoryDownload(HttpServletResponse response) throws IOException {
-    List<History> historyList = historyDao.historyListAll();
-
-    String excelFileName = "historyList.xlsx";
-
-    response.setContentType("application/vnd.ms-excel");
-    response.setHeader("Content-Disposition", "attachment; filename=" + excelFileName);
-
-    Workbook workbook = new XSSFWorkbook();
-    Sheet sheet = workbook.createSheet("주문기록");
-
-    Row headerRow = sheet.createRow(0);
-    headerRow.createCell(0).setCellValue("주문번호");
-    headerRow.createCell(1).setCellValue("아이디");
-    headerRow.createCell(2).setCellValue("제품번호");
-    headerRow.createCell(3).setCellValue("제품이름");
-    headerRow.createCell(4).setCellValue("용량");
-    headerRow.createCell(5).setCellValue("가격");
-    headerRow.createCell(6).setCellValue("수량");
-    headerRow.createCell(7).setCellValue("합계");
-    headerRow.createCell(8).setCellValue("주문일");
-    headerRow.createCell(9).setCellValue("배송지");
-
-    int rowNum = 1;
-    for (History history : historyList) {
-      Row row = sheet.createRow(rowNum++);
-      int colNum = 0;
-      row.createCell(colNum++).setCellValue(history.getHistoryCode());
-      row.createCell(colNum++).setCellValue(history.getMemberId());
-      row.createCell(colNum++).setCellValue(history.getProductCode());
-      row.createCell(colNum++).setCellValue(history.getProductName());
-      row.createCell(colNum++).setCellValue(history.getProductUnit());
-      row.createCell(colNum++).setCellValue(history.getProductPrice());
-      row.createCell(colNum++).setCellValue(history.getQuantity());
-      row.createCell(colNum++).setCellValue(Integer.valueOf(history.getProductPrice())  * Integer.valueOf(history.getQuantity()));
-      row.createCell(colNum++).setCellValue(history.getOrderDate());
-      row.createCell(colNum++).setCellValue(history.getDeliveryAddress() + " " + history.getDetailDeliveryAddress());
-    }
-
-    ServletOutputStream outputStream = response.getOutputStream();
-    workbook.write(outputStream);
-    workbook.close();
-    outputStream.close();
-  }
+//
+//  @RequestMapping("excelHistoryDownload")
+//  public void excelHistoryDownload(HttpServletResponse response) throws IOException {
+//    List<History> historyList = historyDao.historyListAll();
+//
+//    String excelFileName = "historyList.xlsx";
+//
+//    response.setContentType("application/vnd.ms-excel");
+//    response.setHeader("Content-Disposition", "attachment; filename=" + excelFileName);
+//
+//    Workbook workbook = new XSSFWorkbook();
+//    Sheet sheet = workbook.createSheet("주문기록");
+//
+//    Row headerRow = sheet.createRow(0);
+//    headerRow.createCell(0).setCellValue("주문번호");
+//    headerRow.createCell(1).setCellValue("아이디");
+//    headerRow.createCell(2).setCellValue("제품번호");
+//    headerRow.createCell(3).setCellValue("제품이름");
+//    headerRow.createCell(4).setCellValue("용량");
+//    headerRow.createCell(5).setCellValue("가격");
+//    headerRow.createCell(6).setCellValue("수량");
+//    headerRow.createCell(7).setCellValue("합계");
+//    headerRow.createCell(8).setCellValue("주문일");
+//    headerRow.createCell(9).setCellValue("배송지");
+//
+//    int rowNum = 1;
+//    for (History history : historyList) {
+//      Row row = sheet.createRow(rowNum++);
+//      int colNum = 0;
+//      row.createCell(colNum++).setCellValue(history.getHistoryCode());
+//      row.createCell(colNum++).setCellValue(history.getMemberId());
+//      row.createCell(colNum++).setCellValue(history.getProductCode());
+//      row.createCell(colNum++).setCellValue(history.getProductName());
+//      row.createCell(colNum++).setCellValue(history.getProductUnit());
+//      row.createCell(colNum++).setCellValue(history.getProductPrice());
+//      row.createCell(colNum++).setCellValue(history.getQuantity());
+//      row.createCell(colNum++).setCellValue(Integer.valueOf(history.getProductPrice())  * Integer.valueOf(history.getQuantity()));
+//      row.createCell(colNum++).setCellValue(history.getOrderDate());
+//      row.createCell(colNum++).setCellValue(history.getDeliveryAddress() + " " + history.getDetailDeliveryAddress());
+//    }
+//
+//    ServletOutputStream outputStream = response.getOutputStream();
+//    workbook.write(outputStream);
+//    workbook.close();
+//    outputStream.close();
+//  }
 
 }
