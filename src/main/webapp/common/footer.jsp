@@ -25,7 +25,7 @@
       </li>
       <li>
         <p>
-          주소 : 경기도 부천시 도약로 261 (부천대우테크노파크) C동 901-2호
+          주소 : 경기도 부천시 도약로 261 (부천대우테크노파크) C동 902-1호
           (주)다올커피
         </p>
       </li>
@@ -39,7 +39,7 @@
         <p>전화번호 : 032-233-7400</p>
       </li>
       <li class="copyright">
-        <p>COPYRIGHT ⓒ (주)다올커피, All Rights Reserved.</p>
+        <p>COPYRIGHT ⓒ 다올커피, All Rights Reserved.</p>
       </li>
     </ul>
   </div>
