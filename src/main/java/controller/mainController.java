@@ -61,9 +61,16 @@ public class mainController {
             Connection conn = (Connection) ds.getConnection();
             System.out.println("Success : " + conn);
         } catch (Exception ex) {
-            System.out.println("Failed");
+            System.out.println("Failed to Connect DB");
             ex.printStackTrace();
         }
+
+        Integer memberTier = (Integer) session.getAttribute("memberTier");
+        if(memberTier == null) {
+            memberTier = 0;
+        }
+
+        session.setAttribute("memberTier", memberTier);
 
         return "main";
     }
