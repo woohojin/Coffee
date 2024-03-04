@@ -19,8 +19,8 @@
     </resultMap>
 
     <insert id="historyInsert" parameterType="history">
-        insert into order_history values (#{orderId}, #{memberTier}, #{memberId}, #{memberName}, #{memberFranCode}, #{productCode}, #{productName}, #{quantity}, #{product_price},
-                                          0, NOW(), #{delivery_address}, #{detail_delivery_address})
+        insert into order_history values (#{orderId}, #{memberTier}, #{memberId}, #{memberName}, #{memberFranCode}, #{productCode}, #{productName}, #{quantity}, #{productPrice},
+                                          0, NOW(), #{deliveryAddress}, #{detailDeliveryAddress})
     </insert>
 
     <select id="rownumSet" parameterType="int" resultType="int">
