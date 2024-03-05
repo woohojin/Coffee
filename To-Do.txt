@@ -10,9 +10,7 @@ machine_detail 이미지에 연락처 추가
 memberIntercepter에 memberPayments 추가
 Cookie 자동로그인 cookie가 없는데 db에는 남아있는 경우 예외처리
 Cart 이미지
-toss 결제 실패 예외처리
 어드민 회원 가맹점 코드 추가
-memberPayments 가격 계산 다시 해야함 결제 가격이 제품 가격만 적용됨
 
 제품 이미지명 AA0001_thumbnail, AA0001_detail
 

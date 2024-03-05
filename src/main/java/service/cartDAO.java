@@ -90,6 +90,11 @@ public class cartDAO {
     return num;
   }
 
+  public int deleteCartByMember(String memberId) {
+    int num = session.insert(NS + "deleteCartByMember", memberId);
+    return num;
+  }
+
   public void cartQuantityUpdate(String memberId, String productCode, int quantity) {
     map.clear();
     map.put("memberId", memberId);

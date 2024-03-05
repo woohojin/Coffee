@@ -120,8 +120,8 @@
       </div>
       <div class="member_cart_order_total">
         <span>합계 :</span>
-        <span><fmt:formatNumber value="${ requestScope.totalPrice }" pattern="#,###" /> 원</span>
-        <input type="hidden" name="sumPrice" value="${ requestScope.totalPrice }" />
+        <span><fmt:formatNumber value="${ sessionScope.totalPrice }" pattern="#,###" /> 원</span>
+        <input type="hidden" name="sumPrice" value="${ sessionScope.totalPrice }" />
       </div>
       <div class="btn_wrap">
         <div class="btn">

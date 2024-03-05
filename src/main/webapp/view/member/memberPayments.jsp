@@ -26,7 +26,7 @@
       const paymentMethodWidget = paymentWidget.renderPaymentMethods(
               "#payment-method",
               {
-                value: ${ requestScope.totalPrice },
+                value: ${ sessionScope.totalPrice },
                 currency : "KRW",
                 country : "KR",
               },
@@ -46,8 +46,8 @@
           orderName: "${ requestScope.orderName }",
           successUrl: window.location.origin + "${ pageContext.request.contextPath }" +"/member/memberPaymentsSuccess",
           failUrl: window.location.origin + "${ pageContext.request.contextPath }" + "/member/memberPaymentsFailure",
-          customerName: "${ requestScope.memberName }",
-          customerMobilePhone: "${ requestScope.memberTel }",
+          customerName: "${ member.memberName }",
+          customerMobilePhone: "${ member.memberTel }",
         });
       });
     </script>

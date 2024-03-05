@@ -501,7 +501,7 @@ public class memberController {
 
     List<Cart> list = cartDao.cartSelectMember(memberId);
 
-    request.setAttribute("totalPrice", totalPrice);
+    session.setAttribute("totalPrice", totalPrice);
     request.setAttribute("sumPrice", sumPrice);
     request.setAttribute("deliveryFee", deliveryFee);
     request.setAttribute("cartCount", cartCount);
@@ -606,7 +606,7 @@ public class memberController {
 
     List<Cart> list = cartDao.cartSelectMember(memberId);
 
-    request.setAttribute("totalPrice", totalPrice);
+    session.setAttribute("totalPrice", totalPrice);
     request.setAttribute("sumPrice", sumPrice);
     request.setAttribute("deliveryFee", deliveryFee);
     request.setAttribute("cartCount", cartCount);
@@ -631,46 +631,51 @@ public class memberController {
         String customerKey = uuidGenerateModule.generateCustomerKey(memberId);
         List<String> productNames = new ArrayList<>();
 
-        List<Cart> list = cartDao.cartSelectMember(memberId);
+        final Integer totalPrice = (Integer) session.getAttribute("totalPrice");
 
-        if(list != null) {
-          int totalPrice = 0;
+        if(totalPrice != null) {
+          List<Cart> list = cartDao.cartSelectMember(memberId);
 
-          for (Cart cart : list) {
-            History history = new History();
+          if(list != null) {
+            for (Cart cart : list) {
+              History history = new History();
 
-            history.setOrderId(orderId);
-            history.setMemberTier(member.getMemberTier());
-            history.setMemberId(memberId);
-            history.setMemberName(member.getMemberName());
-            history.setMemberFranCode(member.getMemberFranCode());
-            history.setProductCode(cart.getProductCode());
-            history.setProductName(cart.getProductName());
-            history.setQuantity(cart.getQuantity());
-            history.setProductPrice(cart.getProductPrice());
-            history.setDeliveryAddress(member.getMemberDeliveryAddress());
-            history.setDetailDeliveryAddress(member.getMemberDetailDeliveryAddress());
+              history.setOrderId(orderId);
+              history.setMemberTier(member.getMemberTier());
+              history.setMemberId(memberId);
+              history.setMemberName(member.getMemberName());
+              history.setMemberFranCode(member.getMemberFranCode());
+              history.setProductCode(cart.getProductCode());
+              history.setProductName(cart.getProductName());
+              history.setQuantity(cart.getQuantity());
+              history.setProductPrice(cart.getProductPrice());
+              history.setDeliveryAddress(member.getMemberDeliveryAddress());
+              history.setDetailDeliveryAddress(member.getMemberDetailDeliveryAddress());
 
-            historyDao.historyInsert(history);
+              historyDao.historyInsert(history);
+              productNames.add(cart.getProductName());
+            }
 
-            totalPrice += cart.getProductPrice();
-            productNames.add(cart.getProductName());
+            String orderName = productNames.get(0) + " 외 " + (productNames.size() - 1) + "건";
+
+            request.setAttribute("orderId", orderId);
+            request.setAttribute("customerKey", customerKey);
+            request.setAttribute("orderName", orderName);
+            request.setAttribute("member", member);
+
+            return "member/memberPayments";
           }
 
-          String orderName = productNames.get(0) + "외 " + (productNames.size() - 1) + "건";
+          errorCode = "CANNOT_FIND_CART_ITEMS";
+          errorMessage = "장바구니에 상품이 존재하지 않습니다.";
 
-          request.setAttribute("totalPrice", totalPrice);
-          request.setAttribute("orderId", orderId);
-          request.setAttribute("customerKey", customerKey);
-          request.setAttribute("orderName", orderName);
-          request.setAttribute("memberName", member.getMemberName());
-          request.setAttribute("memberTel", member.getMemberTel());
+          request.setAttribute("errorCode", errorCode);
+          request.setAttribute("errorMessage", errorMessage);
 
-          return "member/memberPayments";
+          return "member/memberPaymentsFailure";
         }
-
-        errorCode = "CANNOT_FIND_CART_ITEMS";
-        errorMessage = "장바구니에 상품이 존재하지 않습니다.";
+        errorCode = "CANNOT_FIND_VALUE_INFO";
+        errorMessage = "가격정보가 존재하지 않습니다.";
 
         request.setAttribute("errorCode", errorCode);
         request.setAttribute("errorMessage", errorMessage);
@@ -687,6 +692,10 @@ public class memberController {
 
   @RequestMapping("memberPaymentsSuccess")
   public String memberPaymentsSuccess() throws Exception {
+    String memberId = (String) session.getAttribute("memberId");
+
+    cartDao.deleteCartByMember(memberId);
+
     return "member/memberPaymentsSuccess";
   }
 
