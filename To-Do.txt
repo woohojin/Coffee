@@ -1,26 +1,19 @@
-주문번호 (231130_L6vn7TzA / YYMMDD + UUID)
 개인정보처리 기간에 맞게 삭제
 historymapper insert 수정 필요
-결제기록을 저장하는 테이블도 필요할듯
 엑셀 저장 컬럼 수정
 메인페이지
 machine_detail 이미지에 연락처 추가
 다올커피로고 이미지
 이메일 변경
-memberIntercepter에 memberPayments 추가
-Cookie 자동로그인 cookie가 없는데 db에는 남아있는 경우 예외처리
-Cart 이미지
 어드민 회원 가맹점 코드 추가
 
-제품 이미지명 AA0001_thumbnail, AA0001_detail
 
-https://www.tosspayments.com/
+
+
+
+
 
 모바일 반응형 웹
-
-예외처리
-1. int nullPointException = Integer 사용 / null을 따로 처리하기
-2. String.isEmpty() = String이 null값 일 때 NullPointerException을 발생시킴
 
 어드민 검색 쿼리문 업데이트 필요
 장바구니에 선택 주문 추가

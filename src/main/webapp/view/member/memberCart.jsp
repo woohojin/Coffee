@@ -38,9 +38,25 @@
         <tbody>
         <c:forEach var="c" items="${ list }" varStatus="status">
           <tr>
-            <td class="member_cart_image">
-              <img src="${ pageContext.request.contextPath }/view/files/${ c.productFile }" alt=""/>
-            </td>
+            <c:choose>
+              <c:when test="${ c.productType == 0 }">
+                <td class="member_cart_image">
+                  <img src="${ pageContext.request.contextPath }/view/files/bean/${ c.productFile }" alt=""/>
+                </td>
+              </c:when>
+
+              <c:when test="${ c.productType == 1 }">
+                <td class="member_cart_image">
+                  <img src="${ pageContext.request.contextPath }/view/files/mix/${ c.productFile }" alt=""/>
+                </td>
+              </c:when>
+
+              <c:when test="${ c.productType == 2 }">
+                <td class="member_cart_image">
+                  <img src="${ pageContext.request.contextPath }/view/files/cafe/${ c.productFile }" alt=""/>
+                </td>
+              </c:when>
+            </c:choose>
             <td class="member_cart_info">
               <p>${ c.productName }</p>
             </td>

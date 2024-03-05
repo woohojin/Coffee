@@ -338,6 +338,8 @@ public class memberController {
 
             String token = sha256.encrypt(encryptKey);
 
+            cookieDao.cookieDelete(memberId);
+
             int num = cookieDao.cookieInsert(memberId, token);
 
             if(num > 0) {
