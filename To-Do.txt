@@ -1,5 +1,3 @@
-개인정보처리 기간에 맞게 삭제
-historymapper insert 수정 필요
 엑셀 저장 컬럼 수정
 메인페이지
 machine_detail 이미지에 연락처 추가
