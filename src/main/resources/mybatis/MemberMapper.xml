@@ -22,7 +22,6 @@
         <id column="member_disable_date" property="memberDisableDate" />
         <id column="member_modifier_name" property="memberModifierName" />
         <id column="member_modified_date" property="memberModifiedDate" />
-        <id column="member_withdrawal_date" property="memberWithdrawalDate" />
     </resultMap>
 
     <insert id="memberInsert" parameterType="member">
@@ -30,7 +29,7 @@
                                    #{memberTel, typeHandler=handler.EncryptionTypeHandler}, #{memberCompanyTel}, #{memberAddress, typeHandler=handler.EncryptionTypeHandler},
                                    #{memberDetailAddress, typeHandler=handler.EncryptionTypeHandler}, #{memberDeliveryAddress, typeHandler=handler.EncryptionTypeHandler},
                                    #{memberDetailDeliveryAddress, typeHandler=handler.EncryptionTypeHandler}, #{memberEmail, typeHandler=handler.EncryptionTypeHandler},
-                                   #{memberFile}, 0000, 0, NOW(), null, null, null)
+                                   #{memberFile}, null, 0, NOW(), 0, null, null, null)
     </insert>
 
     <select id="rownumSet" parameterType="int" resultType="int">
@@ -38,14 +37,14 @@
     </select>
 
     <select id="memberCount" parameterType="map" resultType="int">
-        select count(*) from member where NOT member_id = "admin"
+        select count(*) from member
     </select>
 
     <select id="memberList" parameterType="map" resultMap="memberMap">
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" order by member_tier ) b
+          where order by member_tier ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -53,7 +52,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-        where NOT member_id = "admin") b;
+          ) b;
     </select>
 
     <select id="memberSelectOne" parameterType="map" resultMap="memberMap">
@@ -76,7 +75,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" order by member_company_name ) b
+          where order by member_company_name ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -84,7 +83,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" order by member_company_name desc ) b
+          where order by member_company_name desc ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -92,7 +91,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" order by member_fran_code ) b
+          where order by member_fran_code ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -100,7 +99,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" order by member_fran_code desc ) b
+          where order by member_fran_code desc ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -108,7 +107,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" order by member_id ) b
+          where order by member_id ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -116,7 +115,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" order by member_id desc ) b
+          where order by member_id desc ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -124,7 +123,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" order by member_name ) b
+          where order by member_name ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -132,7 +131,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" order by member_name desc ) b
+          where order by member_name desc ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -140,7 +139,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" order by member_tel ) b
+          where order by member_tel ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -148,7 +147,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" order by member_tel desc ) b
+          where order by member_tel desc ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -156,7 +155,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" order by member_company_tel ) b
+          where order by member_company_tel ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -164,7 +163,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" order by member_company_tel desc ) b
+          where order by member_company_tel desc ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -172,7 +171,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" order by member_tier ) b
+          where order by member_tier ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -180,7 +179,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" order by member_tier desc ) b
+          where order by member_tier desc ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -188,7 +187,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" order by member_date ) b
+          where order by member_date ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -196,7 +195,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" order by member_date desc ) b
+          where order by member_date desc ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -204,7 +203,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" order by member_disable ) b
+          where order by member_disable ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -212,7 +211,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" order by member_disable desc ) b
+          where order by member_disable desc ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -220,7 +219,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" and member_company_name LIKE CONCAT('%',#{searchText},'%')) b
+          where member_company_name LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -228,15 +227,24 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" and member_fran_code LIKE CONCAT('%',#{searchText},'%')) b
+          where member_fran_code LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
     </select>
 
-    <select id="memberSearchListByMemberId" parameterType="map" resultMap="memberMap">
+  <select id="memberSearchListByMemberFranCodeByNull" parameterType="map" resultMap="memberMap">
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" and member_id LIKE CONCAT('%',#{searchText},'%')) b
+          where member_fran_code IS NULL ) b
+        where b.rownum between #{start} and #{end};
+  </select>
+
+
+  <select id="memberSearchListByMemberId" parameterType="map" resultMap="memberMap">
+        select * from (
+          select @rownum := @rownum + 1 as rownum,
+          a.* from member a, (select @rownum := 0) tmp
+          where member_id LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -244,7 +252,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" and member_name LIKE CONCAT('%',#{searchText},'%')) b
+          where member_name LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -252,7 +260,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" and member_tel LIKE CONCAT('%',#{searchText},'%')) b
+          where member_tel LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -260,7 +268,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" and member_company_tel LIKE CONCAT('%',#{searchText},'%')) b
+          where member_company_tel LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -268,7 +276,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" and member_tier LIKE CONCAT('%',#{searchText},'%')) b
+          where member_tier LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -276,7 +284,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where NOT member_id = "admin" and member_disable LIKE CONCAT('%',#{searchText},'%')) b
+          where member_disable LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -286,6 +294,10 @@
 
     <update id="memberTierUpdate" parameterType="map">
         update member set member_tier = #{memberTier} where member_id = #{memberId}
+    </update>
+
+    <update id="memberFranCodeUpdate" parameterType="map">
+      update member set member_fran_code = #{memberFranCode} where member_id = #{memberId}
     </update>
 
     <update id="memberUpdate" parameterType="member">
@@ -315,12 +327,12 @@
     select * from (
         select @rownum := @rownum + 1 as rownum,
         a.* from member_withdrawal a, (select @rownum := 0) tmp
-        where NOT member_id = "admin" ) b
+        ) b
     where b.rownum between #{start} and #{end};
   </select>
 
   <select id="memberWithdrawalCount" parameterType="map" resultType="int">
-    select count(*) from member_withdrawal where NOT member_id = "admin"
+    select count(*) from member_withdrawal
   </select>
 
   <select id="memberDisableSelectOne" parameterType="map" resultMap="memberMap">
