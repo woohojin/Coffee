@@ -932,6 +932,38 @@ public class adminController {
     return "alert";
   }
 
+  @RequestMapping("memberFranCodeUpdate")
+  public String memberFranCodeUpdate() throws Exception {
+    Integer memberTier = (Integer) session.getAttribute("memberTier");
+    if(memberTier == null) {
+      memberTier = 0;
+    }
+
+    List<Member> list;
+
+    if(memberTier == 9) {
+      list = memberDao.memberSearchListByMemberFranCodeByNull(1, 32);
+      request.setAttribute("list", list);
+    }
+
+    request.setAttribute("memberTier", memberTier);
+
+    return "admin/memberFranCodeUpdate";
+  }
+
+  @RequestMapping("memberFranCodeUpdatePro")
+  public String memberFranCodeUpdatePro(String memberId, String memberFranCode) throws Exception {
+    memberDao.memberFranCodeUpdate(memberId, memberFranCode);
+
+    String url = "/admin/memberFranCodeUpdate";
+    String msg ="멤버 가맹점코드 수정 성공";
+
+    request.setAttribute("url", url);
+    request.setAttribute("msg", msg);
+
+    return "alert";
+  }
+
   @RequestMapping("memberDisableUpdate")
   public String memberDisableUpdate() throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");

@@ -19,7 +19,7 @@ public class memberDAO {
     private static Map map = new HashMap<>();
 
     public int memberInsert(Member member) {
-        int num = session.insert(NS+"memberInsert", member);
+        int num = session.insert(NS + "memberInsert", member);
         return num;
     }
 
@@ -233,6 +233,14 @@ public class memberDAO {
         return list;
     }
 
+    public List<Member> memberSearchListByMemberFranCodeByNull(int pageInt, int limit) {
+        map.clear();
+        map.put("start", (pageInt - 1) * limit + 1);
+        map.put("end", (pageInt * limit));
+        List<Member> list = session.selectList(NS + "memberSearchListByMemberFranCodeByNull", map);
+        return list;
+    }
+
     public List<Member> memberSearchListByMemberId(int pageInt, int limit, String searchText) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
@@ -292,6 +300,13 @@ public class memberDAO {
         map.put("memberId", memberId);
         map.put("memberTier", memberTier);
         session.update(NS + "memberTierUpdate", map);
+    }
+
+    public void memberFranCodeUpdate(String memberId, String memberFranCode) {
+        map.clear();
+        map.put("memberId", memberId);
+        map.put("memberFranCode", memberFranCode);
+        session.update(NS + "memberFranCodeUpdate", map);
     }
 
     public void memberTempPasswordUpdate(String memberId, String memberTempPassword) {

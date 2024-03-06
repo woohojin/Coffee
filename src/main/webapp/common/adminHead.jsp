@@ -31,6 +31,9 @@
               <a href="${ pageContext.request.contextPath }/admin/memberTierUpdate">회원 등급 수정</a>
             </li>
             <li>
+              <a href="${ pageContext.request.contextPath }/admin/memberFranCodeUpdate">회원 가맹점코드 수정</a>
+            </li>
+            <li>
               <a href="${ pageContext.request.contextPath }/admin/memberDisableUpdate">회원 비활성화 수정</a>
             </li>
             <li>
