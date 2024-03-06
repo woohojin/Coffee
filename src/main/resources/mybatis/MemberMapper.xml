@@ -44,7 +44,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where order by member_tier ) b
+          order by member_tier ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -75,7 +75,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where order by member_company_name ) b
+          order by member_company_name ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -83,7 +83,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where order by member_company_name desc ) b
+          order by member_company_name desc ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -91,7 +91,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where order by member_fran_code ) b
+          order by member_fran_code ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -99,7 +99,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where order by member_fran_code desc ) b
+          order by member_fran_code desc ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -107,7 +107,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where order by member_id ) b
+          order by member_id ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -115,7 +115,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where order by member_id desc ) b
+          order by member_id desc ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -123,7 +123,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where order by member_name ) b
+          order by member_name ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -131,7 +131,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where order by member_name desc ) b
+          order by member_name desc ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -139,7 +139,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where order by member_tel ) b
+          order by member_tel ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -147,7 +147,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where order by member_tel desc ) b
+          order by member_tel desc ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -155,7 +155,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where order by member_company_tel ) b
+          order by member_company_tel ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -163,7 +163,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where order by member_company_tel desc ) b
+          order by member_company_tel desc ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -171,7 +171,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where order by member_tier ) b
+          order by member_tier ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -179,7 +179,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where order by member_tier desc ) b
+          order by member_tier desc ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -187,7 +187,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where order by member_date ) b
+          order by member_date ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -195,7 +195,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where order by member_date desc ) b
+          order by member_date desc ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -203,7 +203,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where order by member_disable ) b
+          order by member_disable ) b
         where b.rownum between #{start} and #{end};
     </select>
 
@@ -211,7 +211,7 @@
         select * from (
           select @rownum := @rownum + 1 as rownum,
           a.* from member a, (select @rownum := 0) tmp
-          where order by member_disable desc ) b
+          order by member_disable desc ) b
         where b.rownum between #{start} and #{end};
     </select>
 

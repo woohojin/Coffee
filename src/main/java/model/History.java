@@ -14,6 +14,7 @@ public class History {
   String deliveryAddress;
   String detailDeliveryAddress;
   int productGrinding;
+  int totalPrice;
 
   public String getOrderId() {
     return orderId;
@@ -117,5 +118,13 @@ public class History {
 
   public void setProductGrinding(int productGrinding) {
     this.productGrinding = productGrinding;
+  }
+
+  public int getTotalPrice() {
+    return totalPrice;
+  }
+
+  public void setTotalPrice(int totalPrice) {
+    this.totalPrice = totalPrice;
   }
 }

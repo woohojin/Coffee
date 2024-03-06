@@ -27,8 +27,8 @@
             <input type="text" name="endDate" id="datepickerEnd" class="datepicker" value="${ requestScope.endDate }" />
           </div>
           <div>
-            <label for="historyCode">주문번호</label>
-            <input type="text" id="historyCode" name="historyCode" value="${ requestScope.historyCode }">
+            <label for="orderId">주문번호</label>
+            <input type="text" id="orderId" name="orderId" value="${ requestScope.orderId }">
             <label for="memberId">아이디</label>
             <input type="text" id="memberId" name="memberId" value="${ requestScope.memberId }">
           </div>
@@ -79,25 +79,19 @@
                   </th>
                   <th class="product_code" onclick="orderBy(this)">
                     <div class="asc">
-                      <span>제품번호</span>
+                      <span>제품코드</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
                   <th class="product_name" onclick="orderBy(this)">
                     <div class="asc">
-                      <span>제품이름</span>
-                      <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
-                    </div>
-                  </th>
-                  <th class="product_unit" onclick="orderBy(this)">
-                    <div class="asc">
-                      <span>용량</span>
+                      <span>제품명</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
                   <th class="product_price" onclick="orderBy(this)">
                     <div class="asc">
-                      <span>가격</span>
+                      <span>제품가격</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
@@ -107,14 +101,15 @@
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="product_grinding" onclick="orderBy(this)">
+<%--                  <th class="product_grinding" onclick="orderBy(this)">--%>
+<%--                    <div class="asc">--%>
+<%--                      <span>분쇄상태</span>--%>
+<%--                    </div>--%>
+<%--                  </th>--%>
+                  <th class="product_price" onclick="orderBy(this)">
                     <div class="asc">
-                      <span>분쇄상태</span>
-                    </div>
-                  </th>
-                  <th class="product_price">
-                    <div class="asc">
-                      <span>합계</span>
+                      <span>제품합가격</span>
+                      <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
                   <th class="delivery_address" onclick="orderBy(this)">
@@ -125,13 +120,13 @@
                   </th>
                   <th class="order_date" onclick="orderBy(this)">
                     <div class="asc">
-                      <span>주문날짜</span>
+                      <span>주문일</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="member_request">
+                  <th class="total_price">
                     <div class="asc">
-                      <span>요청사항</span>
+                      <span>총합계</span>
                     </div>
                   </th>
                 </tr>
@@ -140,7 +135,7 @@
                 <c:forEach var="h" items="${ list }" varStatus="status">
                   <tr>
                     <td>
-                      <p>${ h.historyCode }</p>
+                      <p>${ h.orderId }</p>
                     </td>
                     <td>
                       <p>${ h.memberId }</p>
@@ -152,22 +147,19 @@
                       <p>${ h.productName }</p>
                     </td>
                     <td>
-                      <p>${ h.productUnit }</p>
-                    </td>
-                    <td>
                       <p><fmt:formatNumber value="${ h.productPrice}" pattern="#,###" /></p>
                     </td>
                     <td>
                       <p>${ h.quantity }</p>
                     </td>
-                    <td>
-                      <p>
-                        ${ h.productGrinding }
-                        <c:if test="${ h.productGrinding == 0 }">(원두)</c:if>
-                          <c:if test="${ h.productGrinding == 1 }">(핸드드립)</c:if>
-                          <c:if test="${ h.productGrinding == 2 }">(에스프레소)</c:if>
-                      </p>
-                    </td>
+<%--                    <td>--%>
+<%--                      <p>--%>
+<%--                        ${ h.productGrinding }--%>
+<%--                        <c:if test="${ h.productGrinding == 0 }">(원두)</c:if>--%>
+<%--                          <c:if test="${ h.productGrinding == 1 }">(핸드드립)</c:if>--%>
+<%--                          <c:if test="${ h.productGrinding == 2 }">(에스프레소)</c:if>--%>
+<%--                      </p>--%>
+<%--                    </td>--%>
                     <td>
                       <p><fmt:formatNumber value="${ h.productPrice * h.quantity }" pattern="#,###" /></p>
                     </td>
@@ -179,7 +171,7 @@
                       <p>${ h.orderDate }</p>
                     </td>
                     <td>
-                      <p>${ h.memberRequest }</p>
+                      <p>${ h.totalPrice }</p>
                     </td>
                   </tr>
                 </c:forEach>

@@ -648,11 +648,10 @@ public class memberController {
               history.setMemberName(member.getMemberName());
               history.setMemberFranCode(member.getMemberFranCode());
               history.setProductCode(cart.getProductCode());
-              history.setProductName(cart.getProductName());
               history.setQuantity(cart.getQuantity());
-              history.setProductPrice(cart.getProductPrice());
               history.setDeliveryAddress(member.getMemberDeliveryAddress());
               history.setDetailDeliveryAddress(member.getMemberDetailDeliveryAddress());
+              history.setTotalPrice(totalPrice);
 
               historyDao.historyInsert(history);
               productNames.add(cart.getProductName());
