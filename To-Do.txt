@@ -3,7 +3,7 @@
 machine_detail 이미지에 연락처 추가
 다올커피로고 이미지
 이메일 변경
-
+memberMapper 쿼리문 점검 필요함
 
 
 
