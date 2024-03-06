@@ -20,7 +20,6 @@ public class Member {
     String memberDisableDate;
     String memberModifierName;
     String memberModifiedDate;
-    String memberWithdrawalDate;
 
     public String getMemberId() {
         return memberId;
@@ -174,14 +173,6 @@ public class Member {
         this.memberModifiedDate = memberModifiedDate;
     }
 
-    public String getMemberWithdrawalDate() {
-        return memberWithdrawalDate;
-    }
-
-    public void setMemberWithdrawalDate(String memberWithdrawalDate) {
-        this.memberWithdrawalDate = memberWithdrawalDate;
-    }
-
     @Override
     public String toString() {
         return "Member{" +
@@ -204,7 +195,6 @@ public class Member {
                 ", memberDisableDate='" + memberDisableDate + '\'' +
                 ", memberModifierName='" + memberModifierName + '\'' +
                 ", memberModifiedDate='" + memberModifiedDate + '\'' +
-                ", memberWithdrawalDate='" + memberWithdrawalDate + '\'' +
                 '}';
     }
 }
