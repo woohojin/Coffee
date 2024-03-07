@@ -65,6 +65,9 @@
             <mvc:mapping path="/member/memberHistory" />
             <mvc:mapping path="/member/memberMyPage" />
             <mvc:mapping path="/member/memberProfile" />
+            <mvc:mapping path="/member/memberPayments" />
+            <mvc:mapping path="/member/memberPaymentsSuccess" />
+            <mvc:mapping path="/member/memberPaymentsFailure" />
 
             <bean class="service.interceptor.loginInterceptor" />
 
