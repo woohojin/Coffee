@@ -10,6 +10,7 @@ public class Cart {
   int productSoldOut;
   int quantity;
   int productGrinding;
+  int productType;
 
   public String getMemberId() {
     return memberId;
@@ -83,18 +84,11 @@ public class Cart {
     this.productGrinding = productGrinding;
   }
 
-  @Override
-  public String toString() {
-    return "Cart{" +
-      "memberId='" + memberId + '\'' +
-      ", productCode='" + productCode + '\'' +
-      ", productName='" + productName + '\'' +
-      ", productFile='" + productFile + '\'' +
-      ", productUnit='" + productUnit + '\'' +
-      ", productPrice=" + productPrice +
-      ", productSoldOut=" + productSoldOut +
-      ", quantity=" + quantity +
-      ", productGrinding=" + productGrinding +
-      '}';
+  public int getProductType() {
+    return productType;
+  }
+
+  public void setProductType(int productType) {
+    this.productType = productType;
   }
 }
