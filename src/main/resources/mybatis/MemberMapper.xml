@@ -42,7 +42,7 @@
 
     <select id="memberList" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           order by member_tier ) b
         where b.rownum between #{start} and #{end};
@@ -50,7 +50,7 @@
 
     <select id="memberListAll" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           ) b;
     </select>
@@ -73,7 +73,7 @@
 
     <select id="memberListByMemberCompanyName" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           order by member_company_name ) b
         where b.rownum between #{start} and #{end};
@@ -81,7 +81,7 @@
 
     <select id="memberListDescByMemberCompanyName" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           order by member_company_name desc ) b
         where b.rownum between #{start} and #{end};
@@ -89,7 +89,7 @@
 
     <select id="memberListByMemberFranCode" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           order by member_fran_code ) b
         where b.rownum between #{start} and #{end};
@@ -97,7 +97,7 @@
 
     <select id="memberListDescByMemberFranCode" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           order by member_fran_code desc ) b
         where b.rownum between #{start} and #{end};
@@ -105,7 +105,7 @@
 
     <select id="memberListByMemberId" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           order by member_id ) b
         where b.rownum between #{start} and #{end};
@@ -113,7 +113,7 @@
 
     <select id="memberListDescByMemberId" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           order by member_id desc ) b
         where b.rownum between #{start} and #{end};
@@ -121,7 +121,7 @@
 
     <select id="memberListByMemberName" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           order by member_name ) b
         where b.rownum between #{start} and #{end};
@@ -129,7 +129,7 @@
 
     <select id="memberListDescByMemberName" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           order by member_name desc ) b
         where b.rownum between #{start} and #{end};
@@ -137,7 +137,7 @@
 
     <select id="memberListByMemberTel" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           order by member_tel ) b
         where b.rownum between #{start} and #{end};
@@ -145,7 +145,7 @@
 
     <select id="memberListDescByMemberTel" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           order by member_tel desc ) b
         where b.rownum between #{start} and #{end};
@@ -153,7 +153,7 @@
 
     <select id="memberListByMemberCompanyTel" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           order by member_company_tel ) b
         where b.rownum between #{start} and #{end};
@@ -161,7 +161,7 @@
 
     <select id="memberListDescByMemberCompanyTel" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           order by member_company_tel desc ) b
         where b.rownum between #{start} and #{end};
@@ -169,7 +169,7 @@
 
     <select id="memberListByMemberTier" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           order by member_tier ) b
         where b.rownum between #{start} and #{end};
@@ -177,7 +177,7 @@
 
     <select id="memberListDescByMemberTier" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           order by member_tier desc ) b
         where b.rownum between #{start} and #{end};
@@ -185,7 +185,7 @@
 
     <select id="memberListByMemberDate" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           order by member_date ) b
         where b.rownum between #{start} and #{end};
@@ -193,7 +193,7 @@
 
     <select id="memberListDescByMemberDate" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           order by member_date desc ) b
         where b.rownum between #{start} and #{end};
@@ -201,7 +201,7 @@
 
     <select id="memberListByMemberDisable" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           order by member_disable ) b
         where b.rownum between #{start} and #{end};
@@ -209,7 +209,7 @@
 
     <select id="memberListDescByMemberDisable" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           order by member_disable desc ) b
         where b.rownum between #{start} and #{end};
@@ -217,7 +217,7 @@
 
     <select id="memberSearchListByMemberCompanyName" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           where member_company_name LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
@@ -225,7 +225,7 @@
 
     <select id="memberSearchListByMemberFranCode" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           where member_fran_code LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
@@ -233,7 +233,7 @@
 
   <select id="memberSearchListByMemberFranCodeByNull" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           where member_fran_code IS NULL ) b
         where b.rownum between #{start} and #{end};
@@ -242,7 +242,7 @@
 
   <select id="memberSearchListByMemberId" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           where member_id LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
@@ -250,7 +250,7 @@
 
     <select id="memberSearchListByMemberName" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           where member_name LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
@@ -258,7 +258,7 @@
 
     <select id="memberSearchListByMemberTel" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           where member_tel LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
@@ -266,7 +266,7 @@
 
     <select id="memberSearchListByMemberCompanyTel" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           where member_company_tel LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
@@ -274,7 +274,7 @@
 
     <select id="memberSearchListByMemberTier" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           where member_tier LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
@@ -282,7 +282,7 @@
 
     <select id="memberSearchListByMemberDisable" parameterType="map" resultMap="memberMap">
         select * from (
-          select @rownum := @rownum + 1 as rownum,
+          select ( @rownum := @rownum + 1 ) as rownum,
           a.* from member a, (select @rownum := 0) tmp
           where member_disable LIKE CONCAT('%',#{searchText},'%')) b
         where b.rownum between #{start} and #{end};
@@ -325,7 +325,7 @@
 
   <select id="memberWithdrawalList" parameterType="map" resultMap="memberMap">
     select * from (
-        select @rownum := @rownum + 1 as rownum,
+        select ( @rownum := @rownum + 1 ) as rownum,
         a.* from member_withdrawal a, (select @rownum := 0) tmp
         ) b
     where b.rownum between #{start} and #{end};
