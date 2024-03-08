@@ -10,6 +10,7 @@
         <id column="member_fran_code" property="memberFranCode" />
         <id column="product_code" property="productCode" />
         <id column="product_grinding" property="productGrinding" />
+        <id column="product_price" property="productPrice" />
         <id column="quantity" property="quantity" />
         <id column="order_date" property="orderDate" />
         <id column="delivery_address" property="deliveryAddress" />
