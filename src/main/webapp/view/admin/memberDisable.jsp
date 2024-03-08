@@ -20,11 +20,6 @@
           <div style="justify-content: center;">
             <label for="memberId" style="flex: none;">아이디</label>
             <input type="text" id="memberId" name="memberId" value="">
-            <label for="memberDisable" style="flex: none;">비활성화 여부</label>
-            <select id="memberDisable" name="memberDisable">
-              <option value="0">0 (계정 활성화)</option>
-              <option value="1">1 (계정 비활성화)</option>
-            </select>
           </div>
         </form>
       </div>
@@ -120,12 +115,6 @@
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="member_disable" onclick="orderBy(this)">
-                    <div class="asc">
-                      <span>비활성화</span>
-                      <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
-                    </div>
-                  </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -168,9 +157,6 @@
                     </td>
                     <td>
                       <p>${ m.memberDate }</p>
-                    </td>
-                    <td>
-                      <p>${ m.memberDisable }</p>
                     </td>
                   </tr>
                 </c:forEach>

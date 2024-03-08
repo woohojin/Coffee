@@ -974,7 +974,7 @@ public class adminController {
     List<Member> list;
 
     if(memberTier == 9) {
-      list = memberDao.memberSearchListByMemberDisable(1, 32, "1");
+      list = memberDao.memberSearchListByMemberDisable(1, 32);
       request.setAttribute("list", list);
     }
 
@@ -984,18 +984,18 @@ public class adminController {
   }
 
   @RequestMapping("memberDisableUpdatePro")
-  public String memberDisableUpdatePro(String memberId, int memberDisable) throws Exception {
+  public String memberDisableUpdatePro(String memberId) throws Exception {
     Member member = memberDao.memberSelectOne(memberId);
     Member disabledMember = memberDao.memberDisableSelectOne(memberId);
 
     if(member != null) {
       memberDao.memberDisable(memberId);
       memberDao.memberDelete(memberId);
-      memberDao.updateDisableDate(memberId);
+      memberDao.updateDisabledDate(memberId);
     } else if(disabledMember != null) {
       memberDao.memberEnable(memberId);
       memberDao.disabledMemberDelete(memberId);
-      memberDao.updateDisableDateToNull(memberId);
+      memberDao.updateDisabledDateToNull(memberId);
     }
 
     String url = "/admin/memberDisableUpdate";
@@ -1247,7 +1247,6 @@ public class adminController {
       row.createCell(colNum++).setCellValue(member.getMemberEmail());
       row.createCell(colNum++).setCellValue(member.getMemberFranCode());
       row.createCell(colNum++).setCellValue(member.getMemberDate());
-      row.createCell(colNum++).setCellValue(member.getMemberDisable());
     }
 
     ServletOutputStream outputStream = response.getOutputStream();

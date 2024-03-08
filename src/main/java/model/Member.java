@@ -16,7 +16,6 @@ public class Member {
     String memberFranCode;
     Integer memberTier;
     String memberDate;
-    Integer memberDisable;
     String memberDisableDate;
     String memberModifierName;
     String memberModifiedDate;
@@ -140,14 +139,6 @@ public class Member {
 
     public void setMemberDate(String memberDate) {
         this.memberDate = memberDate;
-    }
-
-    public Integer getMemberDisable() {
-        return memberDisable;
-    }
-
-    public void setMemberDisable(Integer memberDisable) {
-        this.memberDisable = memberDisable;
     }
 
     public String getMemberDisableDate() {

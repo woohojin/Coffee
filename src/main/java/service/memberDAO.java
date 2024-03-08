@@ -286,11 +286,10 @@ public class memberDAO {
         return list;
     }
 
-    public List<Member> memberSearchListByMemberDisable(int pageInt, int limit, String searchText) {
+    public List<Member> memberSearchListByMemberDisable(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        map.put("searchText", searchText);
         List<Member> list = session.selectList(NS + "memberSearchListByMemberDisable", map);
         return list;
     }
@@ -348,11 +347,11 @@ public class memberDAO {
     }
 
     public void memberDisable(String memberId) {
-        session.update(NS + "memberDisable", memberId);
+        session.insert(NS + "memberDisable", memberId);
     }
 
     public void memberEnable(String memberId) {
-        session.update(NS + "memberDisable", memberId);
+        session.insert(NS + "memberDisable", memberId);
     }
 
     public void memberDelete(String memberId) {
@@ -363,12 +362,12 @@ public class memberDAO {
         session.delete(NS + "disabledMemberDelete", memberId);
     }
 
-    public void updateDisableDate(String memberId) {
-        session.update(NS + "updateDisableDate", memberId);
+    public void updateDisabledDate(String memberId) {
+        session.update(NS + "updateDisabledDate", memberId);
     }
 
-    public void updateDisableDateToNull(String memberId) {
-        session.update(NS + "updateDisableDateToNull", memberId);
+    public void updateDisabledDateToNull(String memberId) {
+        session.update(NS + "updateDisabledDateToNull", memberId);
     }
 
 }

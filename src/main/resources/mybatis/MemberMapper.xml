@@ -22,6 +22,7 @@
         <id column="member_disable_date" property="memberDisableDate" />
         <id column="member_modifier_name" property="memberModifierName" />
         <id column="member_modified_date" property="memberModifiedDate" />
+        <id column="member_withdrawal_date" property="memberWithdrawalDate" />
     </resultMap>
 
     <insert id="memberInsert" parameterType="member">
@@ -29,7 +30,7 @@
                                    #{memberTel, typeHandler=handler.EncryptionTypeHandler}, #{memberCompanyTel}, #{memberAddress, typeHandler=handler.EncryptionTypeHandler},
                                    #{memberDetailAddress, typeHandler=handler.EncryptionTypeHandler}, #{memberDeliveryAddress, typeHandler=handler.EncryptionTypeHandler},
                                    #{memberDetailDeliveryAddress, typeHandler=handler.EncryptionTypeHandler}, #{memberEmail, typeHandler=handler.EncryptionTypeHandler},
-                                   #{memberFile}, null, 0, NOW(), 0, null, null, null)
+                                   #{memberFile}, null, 0, NOW(), null, null, null)
     </insert>
 
     <select id="rownumSet" parameterType="int" resultType="int">
@@ -283,8 +284,7 @@
     <select id="memberSearchListByMemberDisable" parameterType="map" resultMap="memberMap">
         select * from (
           select ( @rownum := @rownum + 1 ) as rownum,
-          a.* from member a, (select @rownum := 0) tmp
-          where member_disable LIKE CONCAT('%',#{searchText},'%')) b
+          a.* from member_disabled a, (select @rownum := 0) tmp ) b
         where b.rownum between #{start} and #{end};
     </select>
 
