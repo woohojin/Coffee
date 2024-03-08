@@ -27,10 +27,6 @@
             <span class="response-label">주문번호</span>
             <span id="orderId" class="response-text"></span>
           </div>
-          <div class="flex justify-between">
-            <span class="response-label">paymentKey</span>
-            <span id="paymentKey" class="response-text"></span>
-          </div>
           <div class="flex-column align-center w-100 max-w-540">
             <div class="button-group">
               <a class="payments_btn primary" href="${ pageContext.request.contextPath }/board/main">메인화면으로 이동</a>
@@ -49,7 +45,6 @@
       const orderId = urlParams.get("orderId");
       const amount = urlParams.get("amount");
 
-      const paymentKeyElement = document.getElementById("paymentKey");
       const orderIdElement = document.getElementById("orderId");
       const amountElement = document.getElementById("amount");
 
@@ -90,7 +85,6 @@
       const confirmPaymentButton = document.getElementById('confirmPaymentButton');
       confirmPaymentButton.addEventListener('click', confirmPayment);
 
-      paymentKeyElement.textContent = paymentKey;
       orderIdElement.textContent = orderId;
       amountElement.textContent = amount + `원`;
   </script>
