@@ -147,7 +147,7 @@
                       <p>${ h.productName }</p>
                     </td>
                     <td>
-                      <p><fmt:formatNumber value="${ h.productPrice}" pattern="#,###" /></p>
+                      <p><fmt:formatNumber value="${ h.productPrice }" pattern="#,###" /></p>
                     </td>
                     <td>
                       <p>${ h.quantity }</p>
@@ -171,7 +171,7 @@
                       <p>${ h.orderDate }</p>
                     </td>
                     <td>
-                      <p>${ h.totalPrice }</p>
+                      <p><fmt:formatNumber value="${ h.totalPrice }" pattern="#,###" /></p>
                     </td>
                   </tr>
                 </c:forEach>
