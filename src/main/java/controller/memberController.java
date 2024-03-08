@@ -640,33 +640,18 @@ public class memberController {
 
           if(list != null) {
             for (Cart cart : list) {
-              History history = new History();
-
-              history.setOrderId(orderId);
-              history.setMemberTier(member.getMemberTier());
-              history.setMemberId(memberId);
-              history.setMemberName(member.getMemberName());
-              history.setMemberFranCode(member.getMemberFranCode());
-              history.setProductCode(cart.getProductCode());
-              history.setQuantity(cart.getQuantity());
-              history.setDeliveryAddress(member.getMemberDeliveryAddress());
-              history.setDetailDeliveryAddress(member.getMemberDetailDeliveryAddress());
-              history.setTotalPrice(totalPrice);
-
-              historyDao.historyInsert(history);
               productNames.add(cart.getProductName());
             }
 
             String orderName = productNames.get(0) + " 외 " + (productNames.size() - 1) + "건";
 
-            request.setAttribute("orderId", orderId);
-            request.setAttribute("customerKey", customerKey);
+            session.setAttribute("orderId", orderId);
+            session.setAttribute("customerKey", customerKey);
             request.setAttribute("orderName", orderName);
             request.setAttribute("member", member);
 
             return "member/memberPayments";
           }
-
           errorCode = "CANNOT_FIND_CART_ITEMS";
           errorMessage = "장바구니에 상품이 존재하지 않습니다.";
 
@@ -695,9 +680,63 @@ public class memberController {
   public String memberPaymentsSuccess() throws Exception {
     String memberId = (String) session.getAttribute("memberId");
 
-    cartDao.deleteCartByMember(memberId);
+    String errorCode = "CANNOT_FIND_MEMBER_ID";
+    String errorMessage = "로그인 후 결제를 진행해주세요.";
 
-    return "member/memberPaymentsSuccess";
+    if(memberId != null) {
+      Member member = memberDao.memberSelectOne(memberId);
+      if (member != null) {
+        String orderId = (String) session.getAttribute("orderId");
+
+        final Integer totalPrice = (Integer) session.getAttribute("totalPrice");
+
+        if (totalPrice != null) {
+          List<Cart> list = cartDao.cartSelectMember(memberId);
+
+          if (list != null) {
+            for (Cart cart : list) {
+              History history = new History();
+
+              history.setOrderId(orderId);
+              history.setMemberTier(member.getMemberTier());
+              history.setMemberId(memberId);
+              history.setMemberName(member.getMemberName());
+              history.setMemberFranCode(member.getMemberFranCode());
+              history.setProductCode(cart.getProductCode());
+              history.setQuantity(cart.getQuantity());
+              history.setDeliveryAddress(member.getMemberDeliveryAddress());
+              history.setDetailDeliveryAddress(member.getMemberDetailDeliveryAddress());
+              history.setTotalPrice(totalPrice);
+
+              historyDao.historyInsert(history);
+            }
+            cartDao.deleteCartByMember(memberId);
+            session.removeAttribute("orderId");
+            session.removeAttribute("totalPrice");
+
+            return "member/memberPaymentsSuccess";
+          }
+          errorCode = "CANNOT_FIND_CART_ITEMS";
+          errorMessage = "장바구니에 상품이 존재하지 않습니다.";
+
+          request.setAttribute("errorCode", errorCode);
+          request.setAttribute("errorMessage", errorMessage);
+
+          return "member/memberPaymentsFailure";
+        }
+        errorCode = "CANNOT_FIND_VALUE_INFO";
+        errorMessage = "가격정보가 존재하지 않습니다.";
+
+        request.setAttribute("errorCode", errorCode);
+        request.setAttribute("errorMessage", errorMessage);
+
+        return "member/memberPaymentsFailure";
+      }
+    }
+    request.setAttribute("errorCode", errorCode);
+    request.setAttribute("errorMessage", errorMessage);
+
+    return "member/memberPaymentsFailure";
   }
 
   @RequestMapping("memberPaymentsFailure")

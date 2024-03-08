@@ -20,7 +20,7 @@
       const button = document.getElementById("payment-request-button");
 
       const widgetClientKey = "test_ck_yZqmkKeP8gNW0G14QzkBrbQRxB9l";
-      const customerKey = "${ requestScope.customerKey }";
+      const customerKey = "${ sessionScope.customerKey }";
       const paymentWidget = PaymentWidget(widgetClientKey, customerKey);
 
       const paymentMethodWidget = paymentWidget.renderPaymentMethods(
@@ -42,7 +42,7 @@
         // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
         // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
         paymentWidget.requestPayment({
-          orderId: "${ requestScope.orderId }",
+          orderId: "${ sessionScope.orderId }",
           orderName: "${ requestScope.orderName }",
           successUrl: window.location.origin + "${ pageContext.request.contextPath }" +"/member/memberPaymentsSuccess",
           failUrl: window.location.origin + "${ pageContext.request.contextPath }" + "/member/memberPaymentsFailure",
