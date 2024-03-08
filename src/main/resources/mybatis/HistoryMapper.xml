@@ -11,6 +11,7 @@
         <id column="product_code" property="productCode" />
         <id column="product_grinding" property="productGrinding" />
         <id column="product_price" property="productPrice" />
+        <id column="product_name" property="productName" />
         <id column="quantity" property="quantity" />
         <id column="order_date" property="orderDate" />
         <id column="delivery_address" property="deliveryAddress" />
@@ -19,7 +20,7 @@
     </resultMap>
 
     <insert id="historyInsert" parameterType="history">
-        insert into order_history values (#{orderId}, #{memberTier}, #{memberId}, #{memberName}, #{memberFranCode}, #{productCode}, #{quantity},
+        insert into order_history values (NULL, #{orderId}, #{memberTier}, #{memberId}, #{memberName}, #{memberFranCode}, #{productCode}, #{quantity},
                                           0, NOW(), #{deliveryAddress}, #{detailDeliveryAddress}, #{totalPrice})
     </insert>
 
