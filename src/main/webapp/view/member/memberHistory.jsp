@@ -40,29 +40,29 @@
           </tr>
           </thead>
           <tbody>
-          <c:forEach var="c" items="${ list }" varStatus="status">
+          <c:forEach var="h" items="${ list }" varStatus="status">
             <tr>
               <td>
-                <p>${ c.historyCode }</p>
+                <p>${ h.orderId }</p>
               </td>
               <td class="member_cart_image">
-                <img src="${ pageContext.request.contextPath }/view/board/files/${ c.productFile }" alt=""/>
+                <img src="${ pageContext.request.contextPath }/view/board/files/${ h.productCode }/${ h.productFile }" alt=""/>
               </td>
               <td>
-                <p>${ c.productName } ${ c.productUnit }</p>
+                <p>${ h.productName }</p>
               </td>
               <td>
-                <p>${ c.quantity }</p>
+                <p>${ h.quantity }</p>
               </td>
               <td>
-                <p><fmt:formatNumber value="${ c.productPrice * c.quantity }" pattern="#,###" /> 원</p>
+                <p><fmt:formatNumber value="${ h.productPrice * h.quantity }" pattern="#,###" /> 원</p>
               </td>
               <td>
-                <p>${ c.deliveryAddress }</p>
-                <p>${ c.detailDeliveryAddress }</p>
+                <p>${ h.deliveryAddress }</p>
+                <p>${ h.detailDeliveryAddress }</p>
               </td>
               <td>
-                <p>${ c.orderDate }</p>
+                <p>${ h.orderDate }</p>
               </td>
             </tr>
           </c:forEach>

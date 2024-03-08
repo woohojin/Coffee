@@ -41,19 +41,19 @@
             <c:choose>
               <c:when test="${ c.productType == 0 }">
                 <td class="member_cart_image">
-                  <img src="${ pageContext.request.contextPath }/view/files/bean/${ c.productFile }" alt=""/>
+                  <img src="${ pageContext.request.contextPath }/view/files/bean/${ c.productCode }/${ c.productFile }" alt=""/>
                 </td>
               </c:when>
 
               <c:when test="${ c.productType == 1 }">
                 <td class="member_cart_image">
-                  <img src="${ pageContext.request.contextPath }/view/files/mix/${ c.productFile }" alt=""/>
+                  <img src="${ pageContext.request.contextPath }/view/files/mix/${ c.productCode }/${ c.productFile }" alt=""/>
                 </td>
               </c:when>
 
               <c:when test="${ c.productType == 2 }">
                 <td class="member_cart_image">
-                  <img src="${ pageContext.request.contextPath }/view/files/cafe/${ c.productFile }" alt=""/>
+                  <img src="${ pageContext.request.contextPath }/view/files/cafe/${ c.productCode }/${ c.productFile }" alt=""/>
                 </td>
               </c:when>
             </c:choose>
