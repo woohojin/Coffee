@@ -1180,11 +1180,16 @@ public class adminController {
 
     Row headerRow = sheet.createRow(0);
     headerRow.createCell(0).setCellValue("제품번호");
-    headerRow.createCell(1).setCellValue("종류");
-    headerRow.createCell(2).setCellValue("제품이름");
+    headerRow.createCell(1).setCellValue("제품종류");
+    headerRow.createCell(2).setCellValue("제품명");
     headerRow.createCell(3).setCellValue("가격");
     headerRow.createCell(4).setCellValue("단위");
     headerRow.createCell(5).setCellValue("등급");
+    headerRow.createCell(6).setCellValue("품절여부");
+    headerRow.createCell(7).setCellValue("등록자");
+    headerRow.createCell(8).setCellValue("등록일");
+    headerRow.createCell(9).setCellValue("수정자");
+    headerRow.createCell(10).setCellValue("수정일");
 
     int rowNum = 1;
     for (Product product : productList) {
@@ -1196,6 +1201,11 @@ public class adminController {
       row.createCell(colNum++).setCellValue(product.getProductPrice());
       row.createCell(colNum++).setCellValue(product.getProductUnit());
       row.createCell(colNum++).setCellValue(product.getProductTier());
+      row.createCell(colNum++).setCellValue(product.getProductSoldOut());
+      row.createCell(colNum++).setCellValue(product.getProductRegisterName());
+      row.createCell(colNum++).setCellValue(product.getProductRegisterDate());
+      row.createCell(colNum++).setCellValue(product.getProductModifierName());
+      row.createCell(colNum++).setCellValue(product.getProductModifierDate());
     }
 
     ServletOutputStream outputStream = response.getOutputStream();
@@ -1229,7 +1239,9 @@ public class adminController {
     headerRow.createCell(9).setCellValue("이메일");
     headerRow.createCell(10).setCellValue("가맹점코드");
     headerRow.createCell(11).setCellValue("가입일");
-    headerRow.createCell(12).setCellValue("비활성화");
+    headerRow.createCell(12).setCellValue("비활성화일");
+    headerRow.createCell(13).setCellValue("수정자");
+    headerRow.createCell(14).setCellValue("수정일");
 
     int rowNum = 1;
     for (Member member : memberList) {
@@ -1247,6 +1259,9 @@ public class adminController {
       row.createCell(colNum++).setCellValue(member.getMemberEmail());
       row.createCell(colNum++).setCellValue(member.getMemberFranCode());
       row.createCell(colNum++).setCellValue(member.getMemberDate());
+      row.createCell(colNum++).setCellValue(member.getMemberDisableDate());
+      row.createCell(colNum++).setCellValue(member.getMemberModifierName());
+      row.createCell(colNum++).setCellValue(member.getMemberModifierDate());
     }
 
     ServletOutputStream outputStream = response.getOutputStream();
@@ -1254,51 +1269,58 @@ public class adminController {
     workbook.close();
     outputStream.close();
   }
-//
-//  @RequestMapping("excelHistoryDownload")
-//  public void excelHistoryDownload(HttpServletResponse response) throws IOException {
-//    List<History> historyList = historyDao.historyListAll();
-//
-//    String excelFileName = "historyList.xlsx";
-//
-//    response.setContentType("application/vnd.ms-excel");
-//    response.setHeader("Content-Disposition", "attachment; filename=" + excelFileName);
-//
-//    Workbook workbook = new XSSFWorkbook();
-//    Sheet sheet = workbook.createSheet("주문기록");
-//
-//    Row headerRow = sheet.createRow(0);
-//    headerRow.createCell(0).setCellValue("주문번호");
-//    headerRow.createCell(1).setCellValue("아이디");
-//    headerRow.createCell(2).setCellValue("제품번호");
-//    headerRow.createCell(3).setCellValue("제품이름");
-//    headerRow.createCell(4).setCellValue("용량");
-//    headerRow.createCell(5).setCellValue("가격");
-//    headerRow.createCell(6).setCellValue("수량");
-//    headerRow.createCell(7).setCellValue("합계");
-//    headerRow.createCell(8).setCellValue("주문일");
-//    headerRow.createCell(9).setCellValue("배송지");
-//
-//    int rowNum = 1;
-//    for (History history : historyList) {
-//      Row row = sheet.createRow(rowNum++);
-//      int colNum = 0;
-//      row.createCell(colNum++).setCellValue(history.getHistoryCode());
-//      row.createCell(colNum++).setCellValue(history.getMemberId());
-//      row.createCell(colNum++).setCellValue(history.getProductCode());
-//      row.createCell(colNum++).setCellValue(history.getProductName());
-//      row.createCell(colNum++).setCellValue(history.getProductUnit());
-//      row.createCell(colNum++).setCellValue(history.getProductPrice());
-//      row.createCell(colNum++).setCellValue(history.getQuantity());
-//      row.createCell(colNum++).setCellValue(Integer.valueOf(history.getProductPrice())  * Integer.valueOf(history.getQuantity()));
-//      row.createCell(colNum++).setCellValue(history.getOrderDate());
-//      row.createCell(colNum++).setCellValue(history.getDeliveryAddress() + " " + history.getDetailDeliveryAddress());
-//    }
-//
-//    ServletOutputStream outputStream = response.getOutputStream();
-//    workbook.write(outputStream);
-//    workbook.close();
-//    outputStream.close();
-//  }
+
+  @RequestMapping("excelHistoryDownload")
+  public void excelHistoryDownload(HttpServletResponse response) throws IOException {
+    List<History> historyList = historyDao.historyListAll();
+
+    String excelFileName = "historyList.xlsx";
+
+    response.setContentType("application/vnd.ms-excel");
+    response.setHeader("Content-Disposition", "attachment; filename=" + excelFileName);
+
+    Workbook workbook = new XSSFWorkbook();
+    Sheet sheet = workbook.createSheet("주문기록");
+
+    Row headerRow = sheet.createRow(0);
+
+    headerRow.createCell(0).setCellValue("주문번호");
+    headerRow.createCell(1).setCellValue("회원등급");
+    headerRow.createCell(2).setCellValue("아이디");
+    headerRow.createCell(3).setCellValue("주문자명");
+    headerRow.createCell(4).setCellValue("가맹점코드");
+    headerRow.createCell(5).setCellValue("제품번호");
+    headerRow.createCell(6).setCellValue("제품이름");
+    headerRow.createCell(7).setCellValue("수량");
+    headerRow.createCell(8).setCellValue("용량");
+    headerRow.createCell(9).setCellValue("가격");
+    headerRow.createCell(10).setCellValue("합계");
+    headerRow.createCell(11).setCellValue("주문일");
+    headerRow.createCell(12).setCellValue("배송지");
+
+    int rowNum = 1;
+    for (History history : historyList) {
+      Row row = sheet.createRow(rowNum++);
+      int colNum = 0;
+      row.createCell(colNum++).setCellValue(history.getOrderId());
+      row.createCell(colNum++).setCellValue(history.getMemberTier());
+      row.createCell(colNum++).setCellValue(history.getMemberId());
+      row.createCell(colNum++).setCellValue(history.getMemberName());
+      row.createCell(colNum++).setCellValue(history.getMemberFranCode());
+      row.createCell(colNum++).setCellValue(history.getProductCode());
+      row.createCell(colNum++).setCellValue(history.getProductName());
+      row.createCell(colNum++).setCellValue(history.getQuantity());
+      row.createCell(colNum++).setCellValue(history.getProductUnit());
+      row.createCell(colNum++).setCellValue(history.getProductPrice());
+      row.createCell(colNum++).setCellValue(history.getTotalPrice());
+      row.createCell(colNum++).setCellValue(history.getOrderDate());
+      row.createCell(colNum++).setCellValue(history.getDeliveryAddress() + " " + history.getDetailDeliveryAddress());
+    }
+
+    ServletOutputStream outputStream = response.getOutputStream();
+    workbook.write(outputStream);
+    workbook.close();
+    outputStream.close();
+  }
 
 }
