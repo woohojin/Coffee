@@ -248,7 +248,8 @@ public class memberController {
     String msg = "이미 있는 아이디 입니다.";
     String url = "/member/memberSignUp";
 
-    String memberId = member.getMemberId();
+    String memberId = member.getMemberId().toLowerCase();
+    member.setMemberId(memberId);
     Member mem = memberDao.memberSelectOne(memberId);
 
     String filePath = request.getServletContext().getRealPath("/") + "view/files/";
