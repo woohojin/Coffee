@@ -228,7 +228,7 @@
   border-bottom: 1px solid var(--grayLine);
 }
 .member_cart_image img {
-  background-color: gray;
+  background-color: rgb(128, 128, 128); <!-- gray color -->
   width: 80px;
 }
 
@@ -255,8 +255,8 @@
   font-size: 17px;
 }
 .member_cart_order {
-  position: absolute;
-  top: 141px;
+  position: fixed;
+  top: 295px;
   width: 250px;
   margin-bottom: 371px;
 }
