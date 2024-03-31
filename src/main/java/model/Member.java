@@ -18,7 +18,7 @@ public class Member {
     String memberDate;
     String memberDisableDate;
     String memberModifierName;
-    String memberModifiedDate;
+    String memberModifierDate;
     String memberWithdrawalDate; // 모델에서만 필요함
 
     public String getMemberId() {
@@ -157,12 +157,12 @@ public class Member {
         this.memberModifierName = memberModifierName;
     }
 
-    public String getMemberModifiedDate() {
-        return memberModifiedDate;
+    public String getMemberModifierDate() {
+        return memberModifierDate;
     }
 
-    public void setMemberModifiedDate(String memberModifiedDate) {
-        this.memberModifiedDate = memberModifiedDate;
+    public void setMemberModifierDate(String memberModifierDate) {
+        this.memberModifierDate = memberModifierDate;
     }
 
     public String getMemberWithdrawalDate() {

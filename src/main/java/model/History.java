@@ -8,6 +8,7 @@ public class History {
   String memberFranCode;
   String productCode;
   String productName;
+  String productUnit;
   int productPrice;
   int quantity;
   String orderDate;
@@ -70,6 +71,14 @@ public class History {
 
   public void setProductName(String productName) {
     this.productName = productName;
+  }
+
+  public String getProductUnit() {
+    return productUnit;
+  }
+
+  public void setProductUnit(String productUnit) {
+    this.productUnit = productUnit;
   }
 
   public int getProductPrice() {

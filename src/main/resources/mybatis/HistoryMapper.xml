@@ -12,6 +12,7 @@
         <id column="product_grinding" property="productGrinding" />
         <id column="product_price" property="productPrice" />
         <id column="product_name" property="productName" />
+        <id column="product_unit" property="productUnit" />
         <id column="quantity" property="quantity" />
         <id column="order_date" property="orderDate" />
         <id column="delivery_address" property="deliveryAddress" />
@@ -45,7 +46,7 @@
 
     <select id="historyListAll" parameterType="map" resultMap="historyMap">
         select * from (
-        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_price,
+        select @rownum := @rownum + 1 as rownum, b.product_name, b.product_price, b.product_unit,
         a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c;
     </select>
 
