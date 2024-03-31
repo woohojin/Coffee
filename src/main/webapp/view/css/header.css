@@ -33,6 +33,7 @@ header {
 .hd_gnb figure {
   justify-content: center;
 }
+
 .hd_gnb figure a img {
   width: 140px;
 }
@@ -222,4 +223,11 @@ header {
 }
 .hd_lnb_list ul li a {
   font-size: 15px;
+}
+
+@media (max-width: 1400px) {
+  .hd_gnb figure {
+    justify-content: flex-start;
+    margin-left: 50px;
+  }
 }

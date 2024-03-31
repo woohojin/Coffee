@@ -3,18 +3,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DaCOFFEE <sitemesh:write property='title'/></title>
-    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/reset.css" />
-    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/datepicker.css" />
-    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/font.css" />
-    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/main.css" />
-    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/common.css" />
-    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/header.css" />
-    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/board.css" />
-    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/form.css" />
-    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/footer.css" />
-    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/payments.css" />
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/reset.css?v=1.0" />
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/datepicker.css?v=1.0" />
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/font.css?v=1.0" />
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/main.css?v=1.0" />
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/common.css?v=1.0" />
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/header.css?v=1.0" />
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/board.css?v=1.0" />
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/form.css?v=1.0" />
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/footer.css?v=1.0" />
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/payments.css?v=1.0" />
 
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>

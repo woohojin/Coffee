@@ -38,3 +38,11 @@
     position: absolute;
     vertical-align: top;
 }
+
+@media (max-width: 1400px) {
+    .main_product_list ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
