@@ -4,7 +4,6 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DaCOFFEE <sitemesh:write property='title'/></title>
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/reset.css?v=1.0" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/datepicker.css?v=1.0" />
@@ -12,7 +11,7 @@
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/main.css?v=1.0" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/common.css?v=1.0" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/header.css?v=1.0" />
-    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/board.css?v=1.0" />
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/board.css?v=1.1" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/form.css?v=1.0" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/footer.css?v=1.0" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/payments.css?v=1.0" />

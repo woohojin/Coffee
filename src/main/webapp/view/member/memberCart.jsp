@@ -11,10 +11,13 @@
         <h1>장바구니</h1>
       </a>
     </div>
-    <div class="member_cart_wrap">
-      <c:if test="${ cartCount < 1 }">
+    <c:if test="${ cartCount < 1 }">
+      <div class="member_cart_no_product">
         장바구니에 담은 상품이 없습니다.
-      </c:if>
+      </div>
+    </c:if>
+
+    <div class="member_cart_wrap">
       <c:if test="${ cartCount >= 1}">
       <table class="member_cart">
         <colgroup>
@@ -71,7 +74,7 @@
               >
                 <input type="hidden" name="productCode" value="${ c.productCode }"/>
                 <input type="hidden" name="status" class="status${ status.index }" value="" />
-                <input type="text" name="quantity" class="member_cart_quantity_input input${ status.index }" value="${ c.quantity }" required readonly />
+                <input type="text" name="quantity" class="member_cart_quantity_input input${ status.index }" value="${ c.quantity }" required />
                 <div class="member_cart_quantity_btn">
                   <button type="button" class="up_btn" onclick="increaseCartQuantity(${ status.index })">
                     <img src="${ pageContext.request.contextPath }/view/image/triangle-up.png" alt="" />

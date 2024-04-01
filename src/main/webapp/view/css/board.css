@@ -203,6 +203,10 @@
   border: 1px solid var(--grayLine);
   border-radius: 3px;
 }
+.member_cart_no_product {
+  display: flex;
+  justify-content: center;
+}
 .member_cart_wrap {
   display: flex;
   justify-content: center;
@@ -400,4 +404,29 @@
 .terms_textarea td {
   font-weight: 400;
   font-size: 12px;
+}
+
+@media (max-width: 1400px) {
+  .member_cart_wrap {
+    justify-content: normal;
+  }
+  .member_cart {
+    margin-left: 70px;
+  }
+}
+
+@media (max-width: 1080px) {
+  .member_cart {
+    margin-left: 55px;
+  }
+  .member_cart th,
+  .member_cart td {
+    width: 90px;
+  }
+  .member_cart_quantity_btn {
+    right: -9px;
+  }
+  .member_cart_form {
+    width: 40px;
+  }
 }

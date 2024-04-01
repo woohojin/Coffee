@@ -1,4 +1,3 @@
-엑셀 저장 컬럼 수정
 메인페이지
 machine_detail 이미지에 연락처 추가
 이메일 변경
@@ -14,7 +13,6 @@ machine_detail 이미지에 연락처 추가
 어드민 검색 쿼리문 업데이트 필요
 장바구니에 선택 주문 추가
 thumbnail 이미지 공백 제거 / productList에서 정렬이 안맞는거처럼 보임
-main 페이지 대신 index페이지로 옮겨 초기 접속시 url에 컨트롤러 경로를 띄우지 않도록
 pagination 수정 필요
 product 테이블 컬럼에 배송비 계산 여부 추가
 memberCartPro 가격계산하는부분은 따로 빼기
