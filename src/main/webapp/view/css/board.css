@@ -232,7 +232,7 @@
   border-bottom: 1px solid var(--grayLine);
 }
 .member_cart_image img {
-  background-color: rgb(128, 128, 128); <!-- gray color -->
+  background-color: rgb(128, 128, 128); /* gray color */
   width: 80px;
 }
 
