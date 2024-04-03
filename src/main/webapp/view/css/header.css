@@ -82,7 +82,7 @@ header {
   margin-right: 15px;
 }
 .hd_gnb_menu > ul > li > a {
-  font-size: 15px;
+  font-size: 17 px;
 }
 .hd_gnb_menu > ul > li > a > img {
   width: 37px;
@@ -222,7 +222,7 @@ header {
   margin-right: 30px;
 }
 .hd_lnb_list ul li a {
-  font-size: 15px;
+  font-size: 17px;
 }
 
 @media (max-width: 1400px) {
