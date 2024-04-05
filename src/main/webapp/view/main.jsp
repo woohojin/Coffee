@@ -117,9 +117,9 @@
 
     <c:when test="${ sessionScope.memberTier == 0 }">
       <div class="denied-text">
-        <p><spring:eval expression="@environment.getProperty('DENIED_TEXT1')" /></p>
+        <p>로그인을 진행하시거나</p>
         <br/>
-        <p><spring:eval expression="@environment.getProperty('DENIED_TEXT2')" /></p>
+        <p>최초 회원가입 진행 후에 1566-0904로 연락 부탁드립니다.</p>
       </div>
     </c:when>
   </c:choose>
