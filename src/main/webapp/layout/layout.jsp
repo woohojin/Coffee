@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/datepicker.css?v=1.0" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/font.css?v=1.0" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/main.css?v=1.0" />
-    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/common.css?v=1.0" />
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/common.css?v=1.1" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/header.css?v=1.0" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/board.css?v=1.1" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/form.css?v=1.0" />

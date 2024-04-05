@@ -59,6 +59,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+#index_page .denied-text {
   margin-top: 250px;
 }
 
