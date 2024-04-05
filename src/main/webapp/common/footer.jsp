@@ -36,7 +36,7 @@
         <p>이메일 : coffeedaall@gmail.com</p>
       </li>
       <li>
-        <p>전화번호 : 032-233-7400</p>
+        <p>전화번호 : 1566-0904</p>
       </li>
       <li class="copyright">
         <p>COPYRIGHT ⓒ 다올커피, All Rights Reserved.</p>

@@ -2,6 +2,8 @@
          pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 
 <body>
   <main id="product_detail_page">
@@ -10,7 +12,7 @@
         <div class="denied-text">
           <p>로그인을 진행하시거나</p>
           <br/>
-          <p>초기 회원가입 진행 후에 032-233-7400 으로 연락 부탁드립니다.</p>
+          <p>초기 회원가입 진행 후에 1566-0904 으로 연락 부탁드립니다.</p>
         </div>
       </c:when>
 
