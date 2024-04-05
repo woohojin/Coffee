@@ -29,9 +29,9 @@
         <c:choose>
           <c:when test="${ requestScope.memberTier == '0' }">
             <div class="denied-text">
-              <p>로그인을 진행하시거나</p>
+              <p><spring:eval expression="@environment.getProperty('DENIED_TEXT1')" /></p>
               <br/>
-              <p>초기 회원가입 진행 후에 1566-0904 으로 연락 부탁드립니다.</p>
+              <p><spring:eval expression="@environment.getProperty('DENIED_TEXT2')" /></p>
             </div>
           </c:when>
           <c:when test="${ requestScope.memberTier == '0' && requestScope.productCount == 0 }">
