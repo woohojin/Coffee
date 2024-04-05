@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 
@@ -116,9 +117,9 @@
 
     <c:when test="${ sessionScope.memberTier == 0 }">
       <div class="denied-text">
-        <p>로그인을 진행하시거나</p>
+        <p><spring:eval expression="@environment.getProperty('DENIED_TEXT1')" /></p>
         <br/>
-        <p>초기 회원가입 진행 후에 1566-0904 으로 연락 부탁드립니다.</p>
+        <p><spring:eval expression="@environment.getProperty('DENIED_TEXT2')" /></p>
       </div>
     </c:when>
   </c:choose>
