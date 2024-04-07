@@ -56,7 +56,7 @@
 
     <update id="productUpdate" parameterType="product">
         update product set product_code = #{productCode}, product_type = #{productType}, product_name = #{productName}, product_unit = #{productUnit}, product_price = #{productPrice},
-                           product_tier = #{productTier}, product_file = #{productFile}, product_modifier_name = #{productModifierName}, product_modifier_date = NOW()
+                           product_tier = #{productTier}, product_file = #{productFile}, product_sold_out = #{productSoldOut}, product_modifier_name = #{productModifierName}, product_modifier_date = NOW()
                        where product_code = #{existProductCode}
     </update>
 

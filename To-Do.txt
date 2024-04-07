@@ -6,8 +6,8 @@ favicon.ico 추가
 
 
 
-모바일 반응형 웹
 
+어드민페이지 0,1,2와 같은 것들 전부 변경(productType, memberTier, productTier, productSoldout 등)
 로그인 페이지 아이디에 focus 추가
 jsp에 spring eval로 application.properties에 있는 한글 텍스트 적용시 한글 깨짐
 어드민페이지 권한 부족 부분 검색 및 업데이트 부분은 미포함 되어있음

@@ -79,14 +79,13 @@
             </select>
           </li>
           <li>
-            <label>수정자 : </label>
-            <input
-              name="productModifierName"
-              class="product_modifier_name"
-              type="text"
-              required
-            />
+            <label>제품 품절 여부 : </label>
+            <select name="productSoldOut" class="product_sold_out" required style="width: 193px">
+              <option value="0" ${ requestScope.product.productSoldOut == 0 ? 'selected' : '' }>0 - 품절 X</option>
+              <option value="1" ${ requestScope.product.productSoldOut == 1 ? 'selected' : '' }>1 - 품절 O</option>
+            </select>
           </li>
+          <div id="additional_fields"></div>
           <li>
             <label>제품 파일 : </label>
             <input
@@ -96,7 +95,15 @@
               multiple="multiple"
             />
           </li>
-          <div id="additional_fields"></div>
+          <li>
+            <label>수정자 : </label>
+            <input
+              name="productModifierName"
+              class="product_modifier_name"
+              type="text"
+              required
+            />
+          </li>
           <li>
             <div class="submit">
               <input type="submit" value="게시물 작성" class="submit_btn" />
