@@ -899,7 +899,7 @@ public class memberController {
   public String memberProfilePro(Member member, String memberExistingPassword) throws Exception {
     String memberId = (String) session.getAttribute("memberId");
 
-    Member existingMember = memberDao.memberSelectOne(memberId); //기존 회원 정보
+    Member existingMember = memberDao.memberSelectOne(memberId); // 기존 회원 정보
     member.setMemberId(memberId); // 사용자가 임의로 변경하는 것을 막기 위함
 
     String url = "/member/memberProfile";

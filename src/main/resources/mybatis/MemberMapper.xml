@@ -318,6 +318,16 @@
         where member_id = #{memberId}
     </update>
 
+  <update id="memberAdminUpdate" parameterType="member">
+    update member set member_name = #{memberName, typeHandler=handler.EncryptionTypeHandler}, member_company_name = #{memberCompanyName},
+                      member_tel = #{memberTel, typeHandler=handler.EncryptionTypeHandler}, member_company_tel = #{memberCompanyTel},
+                      member_address = #{memberAddress, typeHandler=handler.EncryptionTypeHandler}, member_detail_address = #{memberDetailAddress, typeHandler=handler.EncryptionTypeHandler},
+                      member_delivery_address = #{memberDeliveryAddress, typeHandler=handler.EncryptionTypeHandler}, member_detail_delivery_address = #{memberDetailDeliveryAddress, typeHandler=handler.EncryptionTypeHandler},
+                      member_email = #{memberEmail, typeHandler=handler.EncryptionTypeHandler}, member_fran_code = #{memberFranCode}, member_tier = #{memberTier},
+                      member_modifier_name = #{memberModifierName}, member_modifier_date = NOW()
+    where member_id = #{memberId}
+  </update>
+
     <insert id="memberWithdrawal" parameterType="String">
         insert into member_withdrawal (member_id, member_company_name, member_tel, member_company_tel, member_withdrawal_date)
         select member_id, member_company_name, member_tel, member_company_tel, NOW() from member where member_id = #{memberId}

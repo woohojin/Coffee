@@ -323,6 +323,10 @@ public class memberDAO {
         session.update(NS + "memberUpdateNotPassword", member);
     }
 
+    public void memberAdminUpdate(Member member) {
+        session.update(NS + "memberAdminUpdate", member);
+    }
+
     public int memberWithdrawal(String memberId) {
         int num = session.insert(NS + "memberWithdrawal", memberId);
         return num;

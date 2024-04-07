@@ -515,6 +515,33 @@ public class adminController {
     return "admin/memberList";
   }
 
+  @RequestMapping("memberUpdate")
+  public String memberUpdate(String memberId) throws Exception {
+    Member member = memberDao.memberSelectOne(memberId);
+
+    request.setAttribute("member", member);
+
+    return "admin/memberUpdate";
+  }
+
+  @RequestMapping("memberUpdatePro")
+  public String memberUpdatePro(Member member) throws Exception {
+
+    String url = "/admin/memberList";
+    String msg = "회원 정보가 수정되었습니다.";
+
+    if(member != null) {
+      memberDao.memberAdminUpdate(member);
+    } else {
+      msg = "회원 정보가 존재하지 않습니다.";
+    }
+
+    request.setAttribute("url", url);
+    request.setAttribute("msg", msg);
+
+    return "alert";
+  }
+
   @RequestMapping("memberSearch")
   public String memberSearch() throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");

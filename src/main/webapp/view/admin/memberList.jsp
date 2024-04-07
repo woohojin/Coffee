@@ -159,7 +159,7 @@
                       <p>${ m.memberFranCode }</p>
                     </td>
                     <td>
-                      <p>${ m.memberId }</p>
+                      <a href="${ pageContext.request.contextPath }/admin/memberUpdate?memberId=${ m.memberId }" target="blank">${ m.memberId }</a>
                     </td>
                     <td>
                       <p>${ m.memberName }</p>

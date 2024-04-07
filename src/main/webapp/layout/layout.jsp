@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>DaCOFFEE <sitemesh:write property='title'/></title>
+    <title>다올커피 <sitemesh:write property='title'/></title>
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/reset.css?v=1.0" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/datepicker.css?v=1.0" />
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/font.css?v=1.0" />

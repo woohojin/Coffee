@@ -4,12 +4,14 @@
 <html>
 <head>
   <meta charset="UTF-8" />
-  <title>DaCOFFEE <sitemesh:write property='title'/></title>
-  <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/reset.css" />
-  <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/datepicker.css" />
-  <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/font.css" />
-  <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/common.css" />
-  <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/admin.css" />
+  <title>다올커피 <sitemesh:write property='title'/></title>
+  <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/reset.css?v=1.0" />
+  <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/datepicker.css?v=1.0" />
+  <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/font.css?v=1.0" />
+  <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/common.css?v=1.1" />
+  <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/form.css?v=1.0" />
+  <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/admin.css?v=1.0" />
+
   <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
