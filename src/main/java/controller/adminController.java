@@ -1078,7 +1078,7 @@ public class adminController {
           productDao.mixInsert(product);
         }
 
-//        if(productType == 2) {
+//        if(productType == 2) { // cafe 제품에 필요한 데이터 컬럼은 product 테이블에 전부 있어서 비활성화
 //          product.setCafeRegisterName(product.getProductRegisterName());
 //          productDao.cafeInsert(product);
 //        }
@@ -1089,6 +1089,105 @@ public class adminController {
       }
     } else {
       msg = "이미 존재하는 제품입니다.";
+    }
+
+    request.setAttribute("msg", msg);
+    request.setAttribute("url", url);
+
+    return "alert";
+  }
+
+
+  @RequestMapping("productUpdate")
+  public String productUpdate(@RequestParam(name = "productCode") String productCode) {
+
+    Product product = productDao.productSelectOne(productCode);
+
+    // 제품 타입을 확인 하고 제품 타입에 맞는 데이터 가져와서 jsp에 제공하기
+
+    request.setAttribute("product", product);
+    request.setAttribute("existProductCode", productCode);
+
+    return "admin/productUpdate";
+  }
+
+  @RequestMapping("productUpdatePro")
+  public String productUpdatePro(MultipartHttpServletRequest files, Product product) throws Exception {
+    String msg = "제품 수정에 실패하였습니다.";
+    String url = "/admin/productUpdate";
+
+    Image image = new Image();
+    String productCode = product.getProductCode();
+    int productType = product.getProductType();
+
+    String filePath = request.getServletContext().getRealPath("/") + "view/files/bean/" + productCode;
+
+    if(productType == 1) {
+      filePath = request.getServletContext().getRealPath("/") + "view/files/mix/" + productCode;
+    }
+
+    if(productType == 2) {
+      filePath = request.getServletContext().getRealPath("/") + "view/files/cafe/" + productCode;
+    }
+
+    String fileName;
+    File uploadPath = new File(filePath);
+
+    if (!uploadPath.exists()) {
+      uploadPath.mkdirs(); // 경로가 없으면 생성
+    }
+
+    List<MultipartFile> fileList = files.getFiles("files");
+
+    Product check = productDao.productSelectOne(productCode);
+
+    if (check != null) {
+      if (fileList.size() > 0) {
+        for(int i = 0; i < fileList.size(); i++) {
+          fileName = fileList.get(i).getOriginalFilename();
+          File file = new File(filePath, fileName);
+
+          image.setProductCode(productCode);
+          image.setFileName(fileName);
+          image.setFileModifierName(product.getProductModifierName());
+          imageDao.updateProductImage(image);
+
+          if(fileName.contains("thumbnail")) {
+            product.setProductFile(fileName);
+          }
+
+          try {
+            fileList.get(i).transferTo(file);
+          } catch (IllegalStateException e) {
+            e.printStackTrace();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+
+        productDao.productUpdate(product);
+
+        if(productType == 0) {
+          product.setBeanModifierName(product.getProductModifierName());
+          productDao.beanUpdate(product);
+        }
+
+        if(productType == 1) {
+          product.setMixModifierName(product.getProductModifierName());
+          productDao.mixUpdate(product);
+        }
+
+//        if(productType == 2) { // cafe 제품에 필요한 데이터 컬럼은 product 테이블에 전부 있어서 비활성화
+//          product.setCafeRegisterName(product.getProductRegisterName());
+//          productDao.cafeInsert(product);
+//        }
+
+        msg = "제품 수정에 성공하였습니다.";
+      } else {
+        msg = "업로드 된 파일이 없습니다.";
+      }
+    } else {
+      msg = "제품이 존재하지 않습니다.";
     }
 
     request.setAttribute("msg", msg);

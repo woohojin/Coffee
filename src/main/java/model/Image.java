@@ -2,6 +2,7 @@ package model;
 
 public class Image {
   String productCode;
+  String existProductCode; // admin productUpdate
   String fileName;
   String fileRegisterName;
   String fileRegisterDate;
@@ -14,6 +15,14 @@ public class Image {
 
   public void setProductCode(String productCode) {
     this.productCode = productCode;
+  }
+
+  public String getExistProductCode() {
+    return existProductCode;
+  }
+
+  public void setExistProductCode(String existProductCode) {
+    this.existProductCode = existProductCode;
   }
 
   public String getFileName() {

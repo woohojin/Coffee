@@ -16,6 +16,11 @@
         insert into product_image values (#{productCode}, #{fileName}, #{fileRegisterName}, now(), null, null)
     </insert>
 
+    <update id="updateProductImage" parameterType="image">
+        update product_image set product_code = #{productCode}, file_name = #{fileName}, file_modifier_name = #{fileModifierName}, file_modifier_date = NOW()
+                             where product_code = #{existProductCode})
+    </update>
+
     <select id="selectProductImage" parameterType="map" resultMap="imageMap">
         select * from product_image where product_code = #{productCode}
     </select>

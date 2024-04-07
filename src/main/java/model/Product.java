@@ -2,6 +2,7 @@ package model;
 
 public class Product {
     String productCode;
+    String existProductCode; // admin productUpdate
     int productType;
     String productName;
     int productPrice;
@@ -20,6 +21,14 @@ public class Product {
 
     public void setProductCode(String productCode) {
         this.productCode = productCode;
+    }
+
+    public String getExistProductCode() {
+        return existProductCode;
+    }
+
+    public void setExistProductCode(String existProductCode) {
+        this.existProductCode = existProductCode;
     }
 
     public int getProductType() {
@@ -110,7 +119,7 @@ public class Product {
         this.productModifierDate = productModifierDate;
     }
 
-    //bean
+//bean
 
     String beanCountry;
     String beanSpecies;

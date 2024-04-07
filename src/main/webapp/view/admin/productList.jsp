@@ -151,7 +151,7 @@
                       <p>${ p.productType }</p>
                     </td>
                     <td>
-                      <p>${ p.productCode }</p>
+                      <a href="${ pageContext.request.contextPath }/admin/productUpdate?productCode=${ p.productCode }">${ p.productCode }</a>
                     </td>
                     <td>
                       <p>${ p.productName }</p>

@@ -22,13 +22,28 @@ public class productDAO {
         return num;
     }
 
+    public int productUpdate(Product product) {
+        int num = session.update(NS + "productUpdate", product);
+        return num;
+    }
+
     public int beanInsert(Product product) {
         int num = session.insert(NS + "beanInsert", product);
         return num;
     }
 
+    public int beanUpdate(Product product) {
+        int num = session.update(NS + "beanUpdate", product);
+        return num;
+    }
+
     public int mixInsert(Product product) {
         int num = session.insert(NS + "mixInsert", product);
+        return num;
+    }
+
+    public int mixUpdate(Product product) {
+        int num = session.update(NS + "mixUpdate", product);
         return num;
     }
 

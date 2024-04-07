@@ -11,7 +11,7 @@
       </a>
     </div>
     <form
-      action="${ pageContext.request.contextPath }/admin/productUploadPro"
+      action="${ pageContext.request.contextPath }/admin/productUpdatePro"
       method="post"
       enctype="multipart/form-data"
     >
@@ -20,9 +20,9 @@
           <li>
             <label>제품 종류 : </label>
             <select name="productType" class="product_type" required>
-              <option value="0">원두</option>
-              <option value="1">커피믹스</option>
-              <option value="2">카페용품</option>
+              <option value="0" ${ requestScope.product.productType == 0 ? 'selected' : '' }>원두</option>
+              <option value="1" ${ requestScope.product.productType == 1 ? 'selected' : '' }>커피믹스</option>
+              <option value="2" ${ requestScope.product.productType == 2 ? 'selected' : '' }>카페용품</option>
             </select>
           </li>
           <li>
@@ -31,6 +31,7 @@
               name="productCode"
               class="product_code"
               type="text"
+              value="${ requestScope.product.productCode }"
               required
             />
           </li>
@@ -40,6 +41,7 @@
               name="productName"
               class="product_name"
               type="text"
+              value="${ requestScope.product.productName }"
               required
             />
           </li>
@@ -49,6 +51,7 @@
               name="productPrice"
               class="product_price"
               type="text"
+              value="${ requestScope.product.productPrice }"
               required
               placeholder="숫자만 입력"
               oninput="numberInputCheck(this)"
@@ -60,6 +63,7 @@
               name="productUnit"
               class="product_unit"
               type="text"
+              value="${ requestScope.product.productUnit }"
               required
               placeholder="예) 1box / 800g * 12개입"
             />
@@ -67,17 +71,17 @@
           <li>
             <label>제품 등급 : </label>
             <select name="productTier" class="product_tier" required>
-              <option value="0">0 - 비활성화</option>
-              <option value="1">1 - 임대고객(카페용품은 전부 등급 1)</option>
-              <option value="2">2 - 비임대고객</option>
-              <option value="3">3 - 카페고객</option>
+              <option value="0" ${ requestScope.product.productTier == 0 ? 'selected' : '' }>0 - 비활성화</option>
+              <option value="1" ${ requestScope.product.productTier == 1 ? 'selected' : '' }>1 - 임대고객(카페용품은 전부 등급 1)</option>
+              <option value="2" ${ requestScope.product.productTier == 2 ? 'selected' : '' }>2 - 비임대고객</option>
+              <option value="3" ${ requestScope.product.productTier == 3 ? 'selected' : '' }>3 - 카페고객</option>
             </select>
           </li>
           <li>
-            <label>등록자 : </label>
+            <label>수정자 : </label>
             <input
-              name="productRegisterName"
-              class="product_register_name"
+              name="productModifierName"
+              class="product_modifier_name"
               type="text"
               required
             />
@@ -116,23 +120,23 @@
         let additionalField = document.createElement('ul');
         additionalField.innerHTML = '<li>' +
           '<label>품종 : </label>' +
-          '<input type="text" name="beanSpecies"  required />' +
+          '<input type="text" name="beanSpecies" value="${ requestScope.product.beanSpecies }"  required />' +
           '</li>' +
           '<li>' +
           '<label>제조사 : </label>' +
-          '<input type="text" name="beanCompany" required />' +
+          '<input type="text" name="beanCompany" value="${ requestScope.product.beanCompany }" required />' +
           '</li>' +
           '<li>' +
           '<label>제조연월일 : </label>' +
-          '<input type="text" name="beanManufacturingDate" required />' +
+          '<input type="text" name="beanManufacturingDate" value="${ requestScope.product.beanManufacturingDate }" required />' +
           '</li>' +
           '<li>' +
           '<label>소비기한 : </label>' +
-          '<input type="text" name="beanUseByDate" required />' +
+          '<input type="text" name="beanUseByDate" value="${ requestScope.product.beanUseByDate }" required />' +
           '</li>' +
           '<li>' +
           '<label>원재료명 :  </label>' +
-          '<input type="text" name="beanRawMaterials" required />' +
+          '<input type="text" name="beanRawMaterials" value="${ requestScope.product.beanRawMaterials }" required />' +
           '</li>';
 
         additionalFields.appendChild(additionalField);
@@ -140,13 +144,13 @@
       else if(productType.value === '1') { // 믹스커피
         let additionalField = document.createElement('ul');
         additionalField.innerHTML = '<li>' +
-                                      '<label>제조사 : </label>' +
-                                      '<input type="text" name="mixCompany" required />' +
-                                    '</li>' +
-                                    '<li>' +
-                                      '<label>소비기한 : </label>' +
-                                      '<input type="text" name="mixUseByDate" required />' +
-                                    '</li>';
+          '<label>제조사 : </label>' +
+          '<input type="text" name="mixCompany" value="${ requestScope.product.mixCompany }" required />' +
+          '</li>' +
+          '<li>' +
+          '<label>소비기한 : </label>' +
+          '<input type="text" name="mixUseByDate" value="${ requestScope.product.mixUseByDate }" required />' +
+          '</li>';
 
         additionalFields.appendChild(additionalField);
       }

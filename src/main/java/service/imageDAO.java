@@ -26,6 +26,11 @@ public class imageDAO {
     return num;
   }
 
+  public int updateProductImage(Image image) {
+    int num = session.update(NS + "updateProductImage", image);
+    return num;
+  }
+
   public List<Image> selectProductImage(String productCode) {
     List<Image> list = session.selectList(NS + "selectProductImage", productCode);
     return list;
