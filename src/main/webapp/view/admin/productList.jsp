@@ -151,7 +151,7 @@
                       <p>${ p.productType }</p>
                     </td>
                     <td>
-                      <a href="${ pageContext.request.contextPath }/admin/productUpdate?productCode=${ p.productCode }">${ p.productCode }</a>
+                      <a href="${ pageContext.request.contextPath }/admin/productUpdate?productCode=${ p.productCode }" target="blank">${ p.productCode }</a>
                     </td>
                     <td>
                       <p>${ p.productName }</p>

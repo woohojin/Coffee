@@ -18,7 +18,7 @@
 
     <update id="updateProductImage" parameterType="image">
         update product_image set product_code = #{productCode}, file_name = #{fileName}, file_modifier_name = #{fileModifierName}, file_modifier_date = NOW()
-                             where product_code = #{existProductCode})
+                             where product_code = #{existProductCode}
     </update>
 
     <select id="selectProductImage" parameterType="map" resultMap="imageMap">

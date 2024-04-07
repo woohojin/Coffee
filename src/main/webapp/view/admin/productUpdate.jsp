@@ -15,6 +15,7 @@
       method="post"
       enctype="multipart/form-data"
     >
+      <input name="existProductCode" type="text" value="${ requestScope.product.existProductCode }" hidden>
       <div class="product_form center">
         <ul>
           <li>
@@ -93,7 +94,6 @@
               class="file"
               type="file"
               multiple="multiple"
-              required
             />
           </li>
           <div id="additional_fields"></div>
@@ -120,23 +120,23 @@
         let additionalField = document.createElement('ul');
         additionalField.innerHTML = '<li>' +
           '<label>품종 : </label>' +
-          '<input type="text" name="beanSpecies" value="${ requestScope.product.beanSpecies }"  required />' +
+          '<input type="text" name="beanSpecies" value="${ requestScope.bean.beanSpecies }"  required />' +
           '</li>' +
           '<li>' +
           '<label>제조사 : </label>' +
-          '<input type="text" name="beanCompany" value="${ requestScope.product.beanCompany }" required />' +
+          '<input type="text" name="beanCompany" value="${ requestScope.bean.beanCompany }" required />' +
           '</li>' +
           '<li>' +
           '<label>제조연월일 : </label>' +
-          '<input type="text" name="beanManufacturingDate" value="${ requestScope.product.beanManufacturingDate }" required />' +
+          '<input type="text" name="beanManufacturingDate" value="${ requestScope.bean.beanManufacturingDate }" required />' +
           '</li>' +
           '<li>' +
           '<label>소비기한 : </label>' +
-          '<input type="text" name="beanUseByDate" value="${ requestScope.product.beanUseByDate }" required />' +
+          '<input type="text" name="beanUseByDate" value="${ requestScope.bean.beanUseByDate }" required />' +
           '</li>' +
           '<li>' +
           '<label>원재료명 :  </label>' +
-          '<input type="text" name="beanRawMaterials" value="${ requestScope.product.beanRawMaterials }" required />' +
+          '<input type="text" name="beanRawMaterials" value="${ requestScope.bean.beanRawMaterials }" required />' +
           '</li>';
 
         additionalFields.appendChild(additionalField);
@@ -145,11 +145,11 @@
         let additionalField = document.createElement('ul');
         additionalField.innerHTML = '<li>' +
           '<label>제조사 : </label>' +
-          '<input type="text" name="mixCompany" value="${ requestScope.product.mixCompany }" required />' +
+          '<input type="text" name="mixCompany" value="${ requestScope.mix.mixCompany }" required />' +
           '</li>' +
           '<li>' +
           '<label>소비기한 : </label>' +
-          '<input type="text" name="mixUseByDate" value="${ requestScope.product.mixUseByDate }" required />' +
+          '<input type="text" name="mixUseByDate" value="${ requestScope.mix.mixUseByDate }" required />' +
           '</li>';
 
         additionalFields.appendChild(additionalField);

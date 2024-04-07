@@ -1102,11 +1102,20 @@ public class adminController {
   public String productUpdate(@RequestParam(name = "productCode") String productCode) {
 
     Product product = productDao.productSelectOne(productCode);
+    int productType = product.getProductType();
 
-    // 제품 타입을 확인 하고 제품 타입에 맞는 데이터 가져와서 jsp에 제공하기
+    if(productType == 0) { // bean (cafe는 테이블이 없음)
+      Product bean = productDao.beanSelectOne(productCode);
+      request.setAttribute("bean", bean);
+    }
+    if(productType == 1) { // mix
+      Product mix = productDao.mixSelectOne(productCode);
+      request.setAttribute("mix", mix);
+    }
+
+    product.setExistProductCode(productCode);
 
     request.setAttribute("product", product);
-    request.setAttribute("existProductCode", productCode);
 
     return "admin/productUpdate";
   }
@@ -1114,7 +1123,7 @@ public class adminController {
   @RequestMapping("productUpdatePro")
   public String productUpdatePro(MultipartHttpServletRequest files, Product product) throws Exception {
     String msg = "제품 수정에 실패하였습니다.";
-    String url = "/admin/productUpdate";
+    String url = "/admin/productList";
 
     Image image = new Image();
     String productCode = product.getProductCode();
@@ -1140,6 +1149,7 @@ public class adminController {
     List<MultipartFile> fileList = files.getFiles("files");
 
     Product check = productDao.productSelectOne(productCode);
+    product.setProductFile(check.getProductFile());
 
     if (check != null) {
       if (fileList.size() > 0) {
@@ -1147,21 +1157,21 @@ public class adminController {
           fileName = fileList.get(i).getOriginalFilename();
           File file = new File(filePath, fileName);
 
-          image.setProductCode(productCode);
-          image.setFileName(fileName);
-          image.setFileModifierName(product.getProductModifierName());
-          imageDao.updateProductImage(image);
-
           if(fileName.contains("thumbnail")) {
             product.setProductFile(fileName);
           }
 
-          try {
+          if(!fileName.isEmpty()) {
+            image.setProductCode(productCode);
+            image.setFileName(fileName);
+            image.setFileModifierName(product.getProductModifierName());
+
+            if(file.exists() && file.delete()) {
+              System.out.println("File is deleted.");
+            }
+
+            imageDao.updateProductImage(image);
             fileList.get(i).transferTo(file);
-          } catch (IllegalStateException e) {
-            e.printStackTrace();
-          } catch (IOException e) {
-            e.printStackTrace();
           }
         }
 
