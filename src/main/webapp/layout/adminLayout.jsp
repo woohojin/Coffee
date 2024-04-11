@@ -4,6 +4,7 @@
 <html>
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" href="${ pageContext.request.contextPath }/view/image/favicon.ico" type="image/x-icon">
   <title>다올커피 <sitemesh:write property='title'/></title>
   <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/reset.css?v=1.0" />
   <link rel="stylesheet" href="${ pageContext.request.contextPath }/view/css/datepicker.css?v=1.0" />

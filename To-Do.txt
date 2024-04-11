@@ -1,7 +1,5 @@
 메인페이지
 이메일 변경
-favicon.ico 추가
-
 
 
 
@@ -31,7 +29,6 @@ productGrinding이 다를 경우 카트 제품 여러개로
 이미 로그인 상태에서 재로그인시 cookie duplicate error
 로그저장
 대시보드
-admin 제품 정보 수정
 adminController memberTier -> memberId to tier
 admin 클릭시 복사
 회원가입 사업자 개인 카테고리
