@@ -16,6 +16,9 @@ body {
 a {
   color: black;
 }
+td a {
+  color: var(--mainColor);
+}
 
 .admin_page_wrap {
   position: relative;

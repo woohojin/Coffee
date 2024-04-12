@@ -7,7 +7,7 @@
   <div class="admin_page_wrap">
     <div class="page_head">
       <a href="">
-        <h1>제품 등록</h1>
+        <h1>제품 수정</h1>
       </a>
     </div>
     <form
@@ -106,7 +106,7 @@
           </li>
           <li>
             <div class="submit">
-              <input type="submit" value="게시물 작성" class="submit_btn" />
+              <input type="submit" value="수정하기" class="submit_btn" />
             </div>
           </li>
         </ul>

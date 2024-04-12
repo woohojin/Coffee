@@ -24,6 +24,19 @@ public class historyDAO {
     return num;
   }
 
+  public int historyFranCodeUpdate(String existMemberFranCode, String memberFranCode) {
+    map.clear();
+    map.put("existMemberFranCode", existMemberFranCode);
+    map.put("memberFranCode", memberFranCode);
+    int num = session.update(NS + "historyFranCodeUpdate", map);
+    return num;
+  }
+
+  public int historyUpdate(History history) {
+    int num = session.update(NS + "historyUpdate", history);
+    return num;
+  }
+
   public void rownumSet() {
     session.selectOne(NS + "rownumSet");
   }
@@ -277,10 +290,10 @@ public class historyDAO {
     return list;
   }
 
-  public History historySelectOne(String memberId, String historyCode) {
+  public History historySelectOne(String orderId, String productCode) {
     map.clear();
-    map.put("memberId", memberId);
-    map.put("historyCode", historyCode);
+    map.put("orderId", orderId);
+    map.put("productCode", productCode);
     History history = session.selectOne(NS + "historySelectOne", map);
     return history;
   }

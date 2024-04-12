@@ -20,12 +20,24 @@
         <id column="detail_delivery_address" property="detailDeliveryAddress" />
         <id column="total_price" property="totalPrice" />
         <id column="delivery_code" property="deliveryCode" />
+        <id column="history_modifier_name" property="historyModifierName" />
+        <id column="history_modifier_date" property="historyModifierDate" />
     </resultMap>
 
     <insert id="historyInsert" parameterType="history">
         insert into order_history values (NULL, #{orderId}, #{memberTier}, #{memberId}, #{memberName}, #{memberCompanyName}, #{memberFranCode}, #{productCode}, #{quantity},
-                                          0, NOW(), #{deliveryAddress}, #{detailDeliveryAddress}, #{totalPrice}, NULL)
+                                          0, NOW(), #{deliveryAddress}, #{detailDeliveryAddress}, #{totalPrice}, NULL, NULL, NULL)
     </insert>
+
+    <update id="historyFranCodeUpdate" parameterType="map">
+        update order_history set member_fran_code = #{memberFranCode} where member_fran_code = #{existMemberFranCode}
+    </update>
+
+    <update id="historyUpdate" parameterType="map">
+        update order_history set member_fran_code = #{memberFranCode}, member_name = #{memberName}, member_company_name = #{memberCompanyName},
+                                 delivery_address = #{deliveryAddress}, detail_delivery_address = #{detailDeliveryAddress}, delivery_code = #{deliveryCode},
+                                 history_modifier_name = #{historyModifierName}, history_modifier_date = NOW() where product_code = #{productCode}
+    </update>
 
     <select id="rownumSet" parameterType="int" resultType="int">
         set @rownum := 0
@@ -43,7 +55,7 @@
         select * from (
         select @rownum := @rownum + 1 as rownum, b.product_name, b.product_price,
         a.* from order_history a inner join product b on a.product_code = b.product_code, (select @rownum := 0) tmp ) c
-        where c.rownum between #{start} and #{end};
+        where c.rownum between #{start} and #{end} order by order_num desc;
     </select>
 
     <select id="historyListAll" parameterType="map" resultMap="historyMap">
@@ -236,7 +248,7 @@
 
     <select id="historySelectList" parameterType="String" resultMap="historyMap">
         select order_history.*, product.product_name, product.product_unit, product.product_price
-        from order_history inner join product on order_history.product_code = product.product_code
+        from order_history inner join product on order_history.product_code = product.product_code order by order_num desc
     </select>
 
     <select id="historySelectMember" parameterType="String" resultMap="historyMap">
@@ -245,10 +257,10 @@
         where order_history.member_id = #{memberId}
     </select>
 
-    <select id="historySelectOne" parameterType="String" resultMap="historyMap">
+    <select id="historySelectOne" parameterType="map" resultMap="historyMap">
         select order_history.*, product.product_name, product.product_unit, product.product_price, product.product_file
         from order_history inner join product on order_history.product_code = product.product_code
-        where order_history.member_id = #{memberId} and order_history.order_id = #{orderId}
+        where order_history.order_id = #{orderId} and order_history.product_code = #{productCode}
     </select>
 
     <select id="historySelectDate" parameterType="String" resultMap="historyMap">

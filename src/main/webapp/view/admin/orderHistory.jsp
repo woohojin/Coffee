@@ -80,6 +80,11 @@
                       <span>가맹점코드</span>
                     </div>
                   </th>
+                  <th class="member_name" onclick="orderBy(this)">
+                    <div class="asc">
+                      <span>이름</span>
+                    </div>
+                  </th>
                   <th class="member_company_name" onclick="orderBy(this)">
                     <div class="asc">
                       <span>업체명</span>
@@ -137,6 +142,11 @@
                       <span>총합계</span>
                     </div>
                   </th>
+                  <th class="history_modifier_name">
+                    <div class="asc">
+                      <span>수정자</span>
+                    </div>
+                  </th>
                   <th class="delivery_code">
                     <div class="asc">
                       <span>송장번호</span>
@@ -148,10 +158,13 @@
                 <c:forEach var="h" items="${ list }" varStatus="status">
                   <tr>
                     <td>
-                      <p>${ h.orderId }</p>
+                      <a href="${ pageContext.request.contextPath }/admin/orderHistoryUpdate?orderId=${ h.orderId }&&productCode=${ h.productCode }" target="blank">${ h.orderId }</a>
                     </td>
                     <td>
                       <p>${ h.memberFranCode }</p>
+                    </td>
+                    <td>
+                      <p>${ h.memberName }</p>
                     </td>
                     <td>
                       <p>${ h.memberCompanyName }</p>
@@ -190,6 +203,9 @@
                       <p><fmt:formatNumber value="${ h.totalPrice }" pattern="#,###" /></p>
                     </td>
                     <td>
+                      <p>${ h.historyModifierName }</p>
+                    </td>
+                    <td>
                       <p>${ h.deliveryCode }</p>
                     </td>
                   </tr>
@@ -205,7 +221,7 @@
       </ul>
     </div>
   </div>
-  
+
   <div class="pagination_wrap center">
     <div class="pagination">
       <c:if test="${ pageNum >= 3}">
@@ -242,7 +258,7 @@
           </c:choose>
         </c:forEach>
       </c:if>
-      
+
       <c:if test="${ pageNum < end - 3 }">
         <c:choose>
           <c:when test="${ requestScope.searchText == null}">
@@ -327,7 +343,7 @@
 
       let startDateCompare = new Date(startDateArr[0], parseInt(startDateArr[1])-1, startDateArr[2]);
       let endDateCompare = new Date(endDateArr[0], parseInt(endDateArr[1])-1, endDateArr[2]);
-      
+
       if(startDateCompare.getTime() > endDateCompare.getTime()) {
         alert("시작날짜가 종료날짜보다 앞설 수 없습니다.");
         return false;

@@ -18,6 +18,8 @@ public class History {
   int productGrinding;
   int totalPrice;
   String deliveryCode;
+  String historyModifierName;
+  String historyModifierDate;
 
   public String getOrderId() {
     return orderId;
@@ -153,5 +155,21 @@ public class History {
 
   public void setDeliveryCode(String deliveryCode) {
     this.deliveryCode = deliveryCode;
+  }
+
+  public String getHistoryModifierName() {
+    return historyModifierName;
+  }
+
+  public void setHistoryModifierName(String historyModifierName) {
+    this.historyModifierName = historyModifierName;
+  }
+
+  public String getHistoryModifierDate() {
+    return historyModifierDate;
+  }
+
+  public void setHistoryModifierDate(String historyModifierDate) {
+    this.historyModifierDate = historyModifierDate;
   }
 }

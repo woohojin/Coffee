@@ -530,11 +530,15 @@ public class adminController {
     String url = "/admin/memberList";
     String msg = "회원 정보가 수정되었습니다.";
 
-    if(member != null) {
-      memberDao.memberAdminUpdate(member);
-    } else {
-      msg = "회원 정보가 존재하지 않습니다.";
-    }
+    String memberId = member.getMemberId();
+    Member existMember = memberDao.memberSelectOne(memberId); // 업데이트 전 회원 정보
+    String existMemberFranCode = existMember.getMemberFranCode(); // 업데이트 전 가맹점코드
+
+    memberDao.memberAdminUpdate(member);
+
+    Member updatedMember = memberDao.memberSelectOne(memberId); // 업데이트 후 회원 정보
+    String memberFranCode = updatedMember.getMemberFranCode(); // 업데이트 후 가맹점 코드
+    historyDao.historyFranCodeUpdate(existMemberFranCode, memberFranCode); // 주문 기록에 있는 변경된 가맹점코드 전부 업데이트
 
     request.setAttribute("url", url);
     request.setAttribute("msg", msg);
@@ -819,6 +823,34 @@ public class adminController {
     request.setAttribute("pageInt", pageInt);
 
     return "admin/orderHistory";
+  }
+
+  @RequestMapping("orderHistoryUpdate")
+  public String orderHistoryUpdate(String orderId, String productCode) throws Exception {
+    History history = historyDao.historySelectOne(orderId, productCode);
+
+    request.setAttribute("history", history);
+
+    return "admin/orderHistoryUpdate";
+  }
+
+  @RequestMapping("orderHistoryUpdatePro")
+  public String orderHistoryUpdatePro(History history) throws Exception {
+
+    String msg = "주문 기록이 수정되었습니다.";
+    String url = "/admin/orderHistory";
+
+    int num = historyDao.historyUpdate(history);
+
+    if(num == 0) {
+      msg = "주문 기록 수정에 실패했습니다.";
+      url = "/admin/orderHistory";
+    }
+
+    request.setAttribute("msg", msg);
+    request.setAttribute("url", url);
+
+    return "alert";
   }
 
   @RequestMapping("historySearch")
