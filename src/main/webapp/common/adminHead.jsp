@@ -13,6 +13,9 @@
               <a href="${ pageContext.request.contextPath }/admin/orderHistory">주문 기록</a>
             </li>
             <li>
+              <a href="${ pageContext.request.contextPath }/admin/memberList">회원 리스트</a>
+            </li>
+            <li>
               <a href="${ pageContext.request.contextPath }/admin/productList">제품 리스트</a>
             </li>
 <%--            <li>--%>
@@ -23,9 +26,6 @@
             </li>
             <li>
               <a href="${ pageContext.request.contextPath }/admin/productDelete">제품 삭제</a>
-            </li>
-            <li>
-              <a href="${ pageContext.request.contextPath }/admin/memberList">회원 리스트</a>
             </li>
 <%--            <li>--%>
 <%--              <a href="${ pageContext.request.contextPath }/admin/memberTierUpdate">회원 등급 수정</a>--%>
