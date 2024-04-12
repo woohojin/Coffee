@@ -23,8 +23,12 @@
           <div>
             <label for="datepickerStart">시작일</label>
             <input type="text" name="startDate" id="datepickerStart" class="datepicker" value="${ requestScope.startDate }" />
+            <img src="${ pageContext.request.contextPath }/view/image/calendar.png"
+            style="position: absolute; width: 17px; left: 219px; top: 3px;" class="datepickerStartButton" />
             <label for="datepickerEnd">종료일</label>
             <input type="text" name="endDate" id="datepickerEnd" class="datepicker" value="${ requestScope.endDate }" />
+            <img src="${ pageContext.request.contextPath }/view/image/calendar.png"
+            style="position: absolute; width: 17px; right: 4px; top: 3px;" class="datepickerEndButton" />
           </div>
           <div>
             <label for="orderId">주문번호</label>
@@ -71,10 +75,14 @@
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>
-                  <th class="member_id" onclick="orderBy(this)">
+                  <th class="member_fran_code" onclick="orderBy(this)">
                     <div class="asc">
-                      <span>아이디</span>
-                      <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
+                      <span>가맹점코드</span>
+                    </div>
+                  </th>
+                  <th class="member_company_name" onclick="orderBy(this)">
+                    <div class="asc">
+                      <span>업체명</span>
                     </div>
                   </th>
                   <th class="product_code" onclick="orderBy(this)">
@@ -129,6 +137,11 @@
                       <span>총합계</span>
                     </div>
                   </th>
+                  <th class="delivery_code">
+                    <div class="asc">
+                      <span>송장번호</span>
+                    </div>
+                  </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -138,7 +151,10 @@
                       <p>${ h.orderId }</p>
                     </td>
                     <td>
-                      <p>${ h.memberId }</p>
+                      <p>${ h.memberFranCode }</p>
+                    </td>
+                    <td>
+                      <p>${ h.memberCompanyName }</p>
                     </td>
                     <td>
                       <p>${ h.productCode }</p>
@@ -173,6 +189,9 @@
                     <td>
                       <p><fmt:formatNumber value="${ h.totalPrice }" pattern="#,###" /></p>
                     </td>
+                    <td>
+                      <p>${ h.deliveryCode }</p>
+                    </td>
                   </tr>
                 </c:forEach>
                 </tbody>
@@ -197,7 +216,7 @@
             >&laquo;</a
             >
           </c:when>
-          <c:when test="${requestScope.searchText != null}">
+          <c:when test="${ requestScope.searchText != null }">
             <a
               href="${ pageContext.request.contextPath }/admin/historyListSearch?pageNum=${ pageNum - 3 }&&searchText=${ requestScope.searchText }"
             >&laquo;</a
@@ -208,13 +227,13 @@
       <c:if test="${ historySearchCount != 0 }">
         <c:forEach var="p" begin="${ start }" end="${ end }">
           <c:choose>
-            <c:when test="${requestScope.searchText == null}">
+            <c:when test="${ requestScope.searchText == null }">
               <a
                 href="${ pageContext.request.contextPath }/admin/historyList?pageNum=${ p }"
               >${ p }</a
               >
             </c:when>
-            <c:when test="${requestScope.searchText != null}">
+            <c:when test="${ requestScope.searchText != null }">
               <a
                 href="${ pageContext.request.contextPath }/admin/historyListSearch?pageNum=${ p }&&searchText=${ requestScope.searchText }"
               >${ p }</a
@@ -322,4 +341,7 @@
   }
 </script>
 <script src="${ pageContext.request.contextPath }/view/js/datepicker.js"></script>
+<script>
+  let calendarPath = "${ pageContext.request.contextPath }/view/image/calendar.png";
+</script>
 </body>

@@ -5,6 +5,7 @@ public class History {
   int memberTier;
   String memberId;
   String memberName;
+  String memberCompanyName;
   String memberFranCode;
   String productCode;
   String productName;
@@ -16,6 +17,7 @@ public class History {
   String detailDeliveryAddress;
   int productGrinding;
   int totalPrice;
+  String deliveryCode;
 
   public String getOrderId() {
     return orderId;
@@ -47,6 +49,14 @@ public class History {
 
   public void setMemberName(String memberName) {
     this.memberName = memberName;
+  }
+
+  public String getMemberCompanyName() {
+    return memberCompanyName;
+  }
+
+  public void setMemberCompanyName(String memberCompanyName) {
+    this.memberCompanyName = memberCompanyName;
   }
 
   public String getMemberFranCode() {
@@ -135,5 +145,13 @@ public class History {
 
   public void setTotalPrice(int totalPrice) {
     this.totalPrice = totalPrice;
+  }
+
+  public String getDeliveryCode() {
+    return deliveryCode;
+  }
+
+  public void setDeliveryCode(String deliveryCode) {
+    this.deliveryCode = deliveryCode;
   }
 }

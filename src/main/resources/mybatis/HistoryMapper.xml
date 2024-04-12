@@ -7,6 +7,7 @@
         <id column="member_tier" property="memberTier" />
         <id column="member_id" property="memberId" />
         <id column="member_name" property="memberName" />
+        <id column="member_company_name" property="memberCompanyName" />
         <id column="member_fran_code" property="memberFranCode" />
         <id column="product_code" property="productCode" />
         <id column="product_grinding" property="productGrinding" />
@@ -18,11 +19,12 @@
         <id column="delivery_address" property="deliveryAddress" />
         <id column="detail_delivery_address" property="detailDeliveryAddress" />
         <id column="total_price" property="totalPrice" />
+        <id column="delivery_code" property="deliveryCode" />
     </resultMap>
 
     <insert id="historyInsert" parameterType="history">
-        insert into order_history values (NULL, #{orderId}, #{memberTier}, #{memberId}, #{memberName}, #{memberFranCode}, #{productCode}, #{quantity},
-                                          0, NOW(), #{deliveryAddress}, #{detailDeliveryAddress}, #{totalPrice})
+        insert into order_history values (NULL, #{orderId}, #{memberTier}, #{memberId}, #{memberName}, #{memberCompanyName}, #{memberFranCode}, #{productCode}, #{quantity},
+                                          0, NOW(), #{deliveryAddress}, #{detailDeliveryAddress}, #{totalPrice}, NULL)
     </insert>
 
     <select id="rownumSet" parameterType="int" resultType="int">

@@ -18,6 +18,8 @@ $(function(){
 $(function() {
     let $datepickerStart = $('#datepickerStart');
     let $datepickerEnd = $('#datepickerEnd');
+    let $datepickerStartButton = $('.datepickerStartButton');
+    let $datepickerEndButton = $('.datepickerEndButton');
 
     $('.member_history_form').on("submit", function() {
         let startDate = $datepickerStart.val();
@@ -28,8 +30,6 @@ $(function() {
         let startDateCompare = new Date(startDateArr[0], parseInt(startDateArr[1])-1, startDateArr[2]);
         let endDateCompare = new Date(endDateArr[0], parseInt(endDateArr[1])-1, endDateArr[2]);
 
-        console.log(startDateCompare.getTime());
-        console.log(endDateCompare.getTime());
         if(startDateCompare.getTime() > endDateCompare.getTime()) {
             alert("시작날짜가 종료날짜보다 앞설 수 없습니다.");
             return false;
@@ -37,4 +37,15 @@ $(function() {
             return true;
         }
     });
+
+    $datepickerStartButton.click(function() { // 달력 아이콘 클릭 시 input을 클릭하는 것과 똑같은 동작 하도록
+        $datepickerStart.focus().trigger("click");
+    })
+    $datepickerEndButton.click(function() { // 달력 아이콘 클릭 시 input을 클릭하는 것과 똑같은 동작 하도록
+        $datepickerEnd.focus().trigger("click");
+    })
 });
+
+$(function() {
+
+})
