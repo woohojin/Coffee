@@ -35,7 +35,7 @@
           <div>
             <label for="memberTel">전화번호</label>
             <input type="text" id="memberTel" name="memberTel" value="${ requestScope.memberTel }">
-            <label for="memberCompanyTel">회사번호</label>
+            <label for="memberCompanyTel">업체번호</label>
             <input type="text" id="memberCompanyTel" name="memberCompanyTel" value="${ requestScope.memberCompanyTel }">
           </div>
           <div class="last">
@@ -113,7 +113,7 @@
                   </th>
                   <th class="member_company_tel" onclick="orderBy(this)">
                     <div class="asc">
-                      <span>회사번호</span>
+                      <span>업체번호</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>

@@ -189,7 +189,7 @@
         
         <tr>
           <th>
-            <label for="member_company_name">회사명</label>
+            <label for="member_company_name">업체명</label>
           </th>
           <td>
             <input
@@ -203,7 +203,7 @@
         </tr>
         <tr>
           <th>
-            <label for="member_company_tel">회사 연락처</label>
+            <label for="member_company_tel">업체 연락처</label>
           </th>
           <td>
             <input
