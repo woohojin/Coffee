@@ -853,6 +853,15 @@ public class adminController {
     return "alert";
   }
 
+  @RequestMapping("orderHistoryDelete")
+  public String orderHistoryDelete(String orderId, String productCode) throws Exception {
+
+    request.setAttribute("orderId", orderId);
+    request.setAttribute("productCode", productCode);
+
+    return "/admin/orderHistoryDelete";
+  }
+
   @RequestMapping("historySearch")
   public String historySearch() throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");

@@ -108,7 +108,10 @@
             />
           </li>
           <li>
-            <div class="submit">
+            <div class="submit" style="justify-content: space-between">
+              <div class="input_btn">
+                <a href="${ pageContext.request.contextPath }/admin/orderHistoryDelete?orderId=${ requestScope.history.orderId }&&productCode=${ requestScope.history.productCode }">삭제하기</a>
+              </div>
               <input type="submit" value="수정하기" class="submit_btn" />
             </div>
           </li>
@@ -118,13 +121,4 @@
     </form>
   </div>
 </main>
-<script>
-  const numberRegex = /[^0-9]/g;
-
-  function numberInputCheck(object) {
-    const inputText = object.value;
-    const numberInputCheck = inputText.replace(numberRegex, "");
-    object.value = numberInputCheck;
-  }
-</script>
 </body>
