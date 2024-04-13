@@ -46,6 +46,7 @@
               name="confirmDelete"
               class="confirm_delete"
               type="text"
+              placeholder="주문번호를 똑같이 입력해주세요.예)240413_a5B23lPd"
               required
             >
           </li>

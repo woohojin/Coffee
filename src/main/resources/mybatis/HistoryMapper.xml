@@ -39,6 +39,10 @@
                                  history_modifier_name = #{historyModifierName}, history_modifier_date = NOW() where product_code = #{productCode}
     </update>
 
+    <delete id="historyDelete" parameterType="String">
+        delete from history where order_id = #{orderId} and product_code = #{productCode}
+    </delete>
+
     <select id="rownumSet" parameterType="int" resultType="int">
         set @rownum := 0
     </select>

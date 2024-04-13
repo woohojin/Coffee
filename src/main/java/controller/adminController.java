@@ -862,6 +862,30 @@ public class adminController {
     return "/admin/orderHistoryDelete";
   }
 
+  @RequestMapping("orderHistoryDeletePro")
+  public String orderHistoryDeletePro(String orderId, String productCode, String confirmDelete) throws Exception {
+
+    String msg = "주문 기록 삭제에 성공했습니다.";
+    String url = "/admin/orderHistory";
+
+    if(orderId.equals(confirmDelete)) {
+      int num = historyDao.historyDelete(orderId, productCode);
+
+      if(num == 0) {
+        msg = "주문 기록 삭제에 실패했습니다.";
+        url = "/admin/orderHistory";
+      }
+    } else {
+      msg = "주문번호와 일치하지 않습니다.";
+      url = "/admin/orderHistory";
+    }
+
+    request.setAttribute("msg", msg);
+    request.setAttribute("url", url);
+
+    return "alert";
+  }
+
   @RequestMapping("historySearch")
   public String historySearch() throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");

@@ -37,6 +37,14 @@ public class historyDAO {
     return num;
   }
 
+  public int historyDelete(String orderId, String productCode) {
+    map.clear();
+    map.put("orderId", orderId);
+    map.put("productCode", productCode);
+    int num = session.delete(NS + "historyDelete", map);
+    return num;
+  }
+
   public void rownumSet() {
     session.selectOne(NS + "rownumSet");
   }
