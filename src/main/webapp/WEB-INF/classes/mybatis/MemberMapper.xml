@@ -53,7 +53,7 @@
       select * from (
         select ( @rownum := @rownum + 1 ) as rownum,
         a.* from member a, (select @rownum := 0) tmp
-        order by member_tier ) b
+        where member_tier != 0 order by member_tier ) b
       where b.rownum between #{start} and #{end};
   </select>
 
