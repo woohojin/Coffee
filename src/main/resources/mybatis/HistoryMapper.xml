@@ -40,7 +40,7 @@
     </update>
 
     <delete id="historyDelete" parameterType="String">
-        delete from history where order_id = #{orderId} and product_code = #{productCode}
+        delete from order_history where order_id = #{orderId} and product_code = #{productCode}
     </delete>
 
     <select id="rownumSet" parameterType="int" resultType="int">
