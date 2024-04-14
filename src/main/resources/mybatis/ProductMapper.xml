@@ -22,9 +22,8 @@
         <result column="bean_country" property="beanCountry" />
         <result column="bean_species" property="beanSpecies" />
         <result column="bean_company" property="beanCompany" />
-        <result column="bean_manufacturing_date" property="beanManufacturingDate" />
         <result column="bean_use_by_date" property="beanUseByDate" />
-        <result column="bean_raw_materials" property="beanRawMaterials" />
+        <result column="bean_country" property="beanCountry" />
         <result column="bean_register_name" property="beanRegisterName" />
         <result column="bean_register_date" property="beanRegisterName" />
         <result column="bean_register_name" property="beanModifierName" />
@@ -61,12 +60,12 @@
     </update>
 
     <insert id="beanInsert" parameterType="product">
-        insert into bean values (#{productCode}, #{beanSpecies}, #{beanCompany}, #{beanManufacturingDate}, #{beanUseByDate}, #{beanRawMaterials}, #{beanRegisterName}, NOW(), null, null)
+        insert into bean values (#{productCode}, #{beanSpecies}, #{beanCompany}, #{beanUseByDate}, #{beanCountry}, #{beanRegisterName}, NOW(), null, null)
     </insert>
 
     <update id="beanUpdate" parameterType="product">
-        update bean set product_code = #{productCode}, bean_species = #{beanSpecies}, bean_company = #{beanCompany}, bean_manufacturing_date = #{beanManufacturingDate},
-                        bean_use_by_date = #{beanUseByDate}, bean_raw_materials = #{beanRawMaterials}, bean_modifier_name = #{beanModifierName}, bean_modifier_date = NOW()
+        update bean set product_code = #{productCode}, bean_species = #{beanSpecies}, bean_company = #{beanCompany},
+                        bean_use_by_date = #{beanUseByDate}, bean_country = #{beanCountry}, bean_modifier_name = #{beanModifierName}, bean_modifier_date = NOW()
                     where product_code = #{existProductCode}
     </update>
 

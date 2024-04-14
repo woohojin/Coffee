@@ -127,23 +127,19 @@
         let additionalField = document.createElement('ul');
         additionalField.innerHTML = '<li>' +
           '<label>품종 : </label>' +
-          '<input type="text" name="beanSpecies" value="${ requestScope.bean.beanSpecies }"  required />' +
+          '<input type="text" name="beanSpecies" value="${ requestScope.bean.beanSpecies }" required />' +
           '</li>' +
           '<li>' +
           '<label>제조사 : </label>' +
           '<input type="text" name="beanCompany" value="${ requestScope.bean.beanCompany }" required />' +
           '</li>' +
           '<li>' +
-          '<label>제조연월일 : </label>' +
-          '<input type="text" name="beanManufacturingDate" value="${ requestScope.bean.beanManufacturingDate }" required />' +
-          '</li>' +
-          '<li>' +
           '<label>소비기한 : </label>' +
           '<input type="text" name="beanUseByDate" value="${ requestScope.bean.beanUseByDate }" required />' +
           '</li>' +
           '<li>' +
-          '<label>원재료명 :  </label>' +
-          '<input type="text" name="beanRawMaterials" value="${ requestScope.bean.beanRawMaterials }" required />' +
+          '<label>원산지 : </label>' +
+          '<input type="text" name="beanRawMaterials" value="${ requestScope.bean.beanCountry }" required />' +
           '</li>';
 
         additionalFields.appendChild(additionalField);

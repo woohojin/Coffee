@@ -25,10 +25,10 @@
           <div class="product_detail_wrap">
             <div class="product_detail">
               <div class="product_detail_img">
-                <img src="${ pageContext.request.contextPath }/view/files/bean/${ product.productCode }/${ product.productFile }" alt="" />
+                <img src="${ pageContext.request.contextPath }/view/files/bean/${ requestScope.product.productCode }/${ requestScope.product.productFile }" alt="" />
               </div>
               <div class="product_info">
-                <h1>${ product.productName }</h1>
+                <h1>${ requestScope.product.productName }</h1>
                 <table>
                   <tbody>
                   <tr>
@@ -36,15 +36,15 @@
                       <span>식품유형</span>
                     </th>
                     <td>
-                      <span>원두커피</span>
+                      <span>원두커피 100%</span>
                     </td>
                   </tr>
                   <tr>
                     <th>
-                      <span>원재료명</span>
+                      <span>원산지</span>
                     </th>
                     <td>
-                      <span>${ product.beanRawMaterials }</span>
+                      <span>${ requestScope.product.beanCountry }</span>
                     </td>
                   </tr>
                   <tr>
@@ -52,7 +52,7 @@
                       <span>품종</span>
                     </th>
                     <td>
-                      <span>${ product.beanSpecies }</span>
+                      <span>${ requestScope.product.beanSpecies }</span>
                     </td>
                   </tr>
                   <tr>
@@ -60,15 +60,7 @@
                       <span>제조사</span>
                     </th>
                     <td>
-                      <span>${ product.beanCompany }</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>
-                      <span>제조연월일</span>
-                    </th>
-                    <td>
-                      <span>${ product.beanManufacturingDate }</span>
+                      <span>${ requestScope.product.beanCompany }</span>
                     </td>
                   </tr>
                   <tr>
@@ -76,7 +68,7 @@
                       <span>소비기한</span>
                     </th>
                     <td>
-                      <span>${ product.beanUseByDate }</span>
+                      <span>${ requestScope.product.beanUseByDate }</span>
                     </td>
                   </tr>
                   <tr>
@@ -84,7 +76,7 @@
                       <span>용량</span>
                     </th>
                     <td>
-                      <span>${ product.productUnit }</span>
+                      <span>${ requestScope.product.productUnit }</span>
                     </td>
                   </tr>
                   <tr>
@@ -100,7 +92,7 @@
                       <span>가격</span>
                     </th>
                     <td>
-                      <span class="product_default_price"><fmt:formatNumber value="${ product.productPrice }" pattern="#,###" /> 원</span>
+                      <span class="product_default_price"><fmt:formatNumber value="${ requestScope.product.productPrice }" pattern="#,###" /> 원</span>
                     </td>
                   </tr>
                   </tbody>
@@ -111,7 +103,7 @@
                         method="post"
                         accept-charset = "UTF-8"
                   >
-                    <p>${ product.productName } ${ product.productUnit }</p>
+                    <p>${ requestScope.product.productName } ${ requestScope.product.productUnit }</p>
                     <div class="product_quantity">
                       <input type="text" class="product_quantity_input" value="1" name="quantity" readonly />
                       <div class="product_quantity_btn">
@@ -123,7 +115,7 @@
                         </button>
                       </div>
                       <div class="product_quantity_price center">
-                        <fmt:formatNumber value="${ product.productPrice }" pattern="#,###" /> 원
+                        <fmt:formatNumber value="${ requestScope.product.productPrice }" pattern="#,###" /> 원
                       </div>
                     </div>
                     <div class="product_additional">
@@ -142,13 +134,13 @@
                         <option value="CA0520">대한제당 스틱설탕 5g x 100개입 (+2,000원)</option>
                       </select>
                     </div>
-                    <c:if test="${ product.productSoldOut == 1 }">
+                    <c:if test="${ requestScope.product.productSoldOut == 1 }">
                       <br/>
                       Sold Out
                     </c:if>
-                    <c:if test="${ product.productSoldOut != 1 }">
+                    <c:if test="${ requestScope.product.productSoldOut != 1 }">
                       <div class="product_quantity_submit">
-                        <input type="hidden" value="${ product.productCode }" name="productCode">
+                        <input type="hidden" value="${ requestScope.product.productCode }" name="productCode">
                         <input type="submit" value="장바구니에 담기" class="submit_btn" />
                       </div>
                     </c:if>
@@ -173,7 +165,7 @@
                 </ul>
               </div>
               <div class="product_detail_content_wrap">
-                <img src="${ pageContext.request.contextPath }/view/files/bean/${ product.productCode }/${ requestScope.detailmageName }" alt="" />
+                <img src="${ pageContext.request.contextPath }/view/files/bean/${ requestScope.product.productCode }/${ requestScope.detailmageName }" alt="" />
               </div>
             </li>
             <li>

@@ -124,11 +124,9 @@ public class Product {
     String beanCountry;
     String beanSpecies;
     String beanCompany;
-    String beanManufacturingDate;
     String beanUseByDate;
-    String beanRawMaterials;
     String beanRegisterName;
-    String beanRegitsterDate;
+    String beanRegisterDate;
     String beanModifierName;
     String beanModifierDate;
 
@@ -156,28 +154,12 @@ public class Product {
         this.beanCompany = beanCompany;
     }
 
-    public String getBeanManufacturingDate() {
-        return beanManufacturingDate;
-    }
-
-    public void setBeanManufacturingDate(String beanManufacturingDate) {
-        this.beanManufacturingDate = beanManufacturingDate;
-    }
-
     public String getBeanUseByDate() {
         return beanUseByDate;
     }
 
     public void setBeanUseByDate(String beanUseByDate) {
         this.beanUseByDate = beanUseByDate;
-    }
-
-    public String getBeanRawMaterials() {
-        return beanRawMaterials;
-    }
-
-    public void setBeanRawMaterials(String beanRawMaterials) {
-        this.beanRawMaterials = beanRawMaterials;
     }
 
     public String getBeanRegisterName() {
@@ -188,12 +170,12 @@ public class Product {
         this.beanRegisterName = beanRegisterName;
     }
 
-    public String getBeanRegitsterDate() {
-        return beanRegitsterDate;
+    public String getBeanRegisterDate() {
+        return beanRegisterDate;
     }
 
-    public void setBeanRegitsterDate(String beanRegitsterDate) {
-        this.beanRegitsterDate = beanRegitsterDate;
+    public void setBeanRegisterDate(String beanRegisterDate) {
+        this.beanRegisterDate = beanRegisterDate;
     }
 
     public String getBeanModifierName() {
@@ -335,11 +317,9 @@ public class Product {
                 ", beanCountry='" + beanCountry + '\'' +
                 ", beanSpecies='" + beanSpecies + '\'' +
                 ", beanCompany='" + beanCompany + '\'' +
-                ", beanManufacturingDate='" + beanManufacturingDate + '\'' +
                 ", beanUseByDate='" + beanUseByDate + '\'' +
-                ", beanRawMaterials='" + beanRawMaterials + '\'' +
                 ", beanRegisterName='" + beanRegisterName + '\'' +
-                ", beanRegitsterDate='" + beanRegitsterDate + '\'' +
+                ", beanRegisterDate='" + beanRegisterDate + '\'' +
                 ", beanModifierName='" + beanModifierName + '\'' +
                 ", beanModifierDate='" + beanModifierDate + '\'' +
                 ", mixCompany='" + mixCompany + '\'' +
