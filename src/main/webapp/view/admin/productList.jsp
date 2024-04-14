@@ -83,7 +83,7 @@
                   </th>
                   <th class="product_code" onclick="orderBy(this)">
                     <div class="asc">
-                      <span>제품번호</span>
+                      <span>제품코드</span>
                       <img src="${ pageContext.request.contextPath }/view/image/down-arrow.png" />
                     </div>
                   </th>

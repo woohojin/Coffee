@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="product">
+    <resultMap type="product" id="productMap">
+        <id column="product_code" property="productCode" />
+        <result column="product_type" property="productType" />
+        <result column="product_name" property="productName" />
+        <result column="product_price" property="productPrice" />
+        <result column="product_unit" property="productUnit" />
+        <result column="product_tier" property="productTier" />
+        <result column="product_file" property="productFile" />
+        <result column="product_sold_out" property="productSoldOut" />
+        <result column="product_register_name" property="productRegisterName" />
+        <result column="product_register_date" property="productRegisterDate" />
+        <result column="product_modifier_name" property="productModifierName" />
+        <result column="product_modifier_date" property="productModifierDate" />
+
+        <!-- bean -->
+
+        <result column="bean_country" property="beanCountry" />
+        <result column="bean_species" property="beanSpecies" />
+        <result column="bean_company" property="beanCompany" />
+        <result column="bean_manufacturing_date" property="beanManufacturingDate" />
+        <result column="bean_use_by_date" property="beanUseByDate" />
+        <result column="bean_raw_materials" property="beanRawMaterials" />
+        <result column="bean_register_name" property="beanRegisterName" />
+        <result column="bean_register_date" property="beanRegisterName" />
+        <result column="bean_register_name" property="beanModifierName" />
+        <result column="bean_modifier_date" property="beanModifierDate" />
+
+        <!-- mix -->
+
+        <result column="mix_company" property="mixCompany" />
+        <result column="mix_use_by_date" property="mixUseByDate" />
+        <result column="mix_register_name" property="mixRegisterName" />
+        <result column="mix_register_date" property="mixRegisterDate" />
+        <result column="mix_modifier_name" property="mixModifierName" />
+        <result column="mix_modifier_date" property="mixModifierDate" />
+
+        <!-- cafe -->
+
+        <result column="cafe_company" property="cafeCompany" />
+        <result column="cafe_register_name" property="cafeRegisterName" />
+        <result column="cafe_register_date" property="cafeRegisterDate" />
+        <result column="cafe_modifier_name" property="cafeModifierName" />
+        <result column="cafe_modifier_date" property="cafeModifierDate" />
+
+    </resultMap>
+
+    <insert id="productInsert" parameterType="product">
+        insert into product values (#{productCode}, #{productType}, #{productName}, #{productPrice}, #{productUnit}, #{productTier}, #{productFile}, 0,
+                                    #{productRegisterName}, NOW(), null, null)
+    </insert>
+
+    <update id="productUpdate" parameterType="product">
+        update product set product_code = #{productCode}, product_type = #{productType}, product_name = #{productName}, product_unit = #{productUnit}, product_price = #{productPrice},
+                           product_tier = #{productTier}, product_file = #{productFile}, product_sold_out = #{productSoldOut}, product_modifier_name = #{productModifierName}, product_modifier_date = NOW()
+                       where product_code = #{existProductCode}
+    </update>
+
+    <insert id="beanInsert" parameterType="product">
+        insert into bean values (#{productCode}, #{beanSpecies}, #{beanCompany}, #{beanManufacturingDate}, #{beanUseByDate}, #{beanRawMaterials}, #{beanRegisterName}, NOW(), null, null)
+    </insert>
+
+    <update id="beanUpdate" parameterType="product">
+        update bean set product_code = #{productCode}, bean_species = #{beanSpecies}, bean_company = #{beanCompany}, bean_manufacturing_date = #{beanManufacturingDate},
+                        bean_use_by_date = #{beanUseByDate}, bean_raw_materials = #{beanRawMaterials}, bean_modifier_name = #{beanModifierName}, bean_modifier_date = NOW()
+                    where product_code = #{existProductCode}
+    </update>
+
+    <insert id="mixInsert" parameterType="product">
+        insert into mix values (#{productCode}, #{mixCompany}, #{mixUseByDate}, #{mixRegisterName}, NOW(), null, null)
+    </insert>
+
+    <update id="mixUpdate" parameterType="product">
+        update mix set product_code = #{productCode}, mix_company = #{mixCompany}, mix_use_by_date = #{mixUseByDate},
+                       mix_modifier_name = #{mixModifierName}, mix_modifier_date = NOW()
+    </update>
+
+    <insert id="cafeInsert" parameterType="product">
+        insert into cafe values (#{productCode}, #{cafeCompany}, #{cafeRegisterName}, NOW(), null, null)
+    </insert>
+
+    <delete id="productDelete" parameterType="String">
+        delete from product where product_code = #{productCode}
+    </delete>
+
+    <delete id="beanDelete" parameterType="String">
+        delete from bean where product_code = #{productCode}
+    </delete>
+
+    <delete id="mixDelete" parameterType="String">
+        delete from mix where product_code = #{productCode}
+    </delete>
+
+    <delete id="cafeDelete" parameterType="String">
+        delete from cafe where product_code = #{productCode}
+    </delete>
+
+    <update id="productSoldoutUpdate" parameterType="map">
+        update product set product_sold_out = #{productSoldOut} where product_code = #{productCode}
+    </update>
+
+    <select id="productCountByTierByProductType" parameterType="map" resultType="int">
+        select count(*) from product where product_tier = #{memberTier} and product_type = #{productType}
+    </select>
+
+    <select id="productCount" parameterType="map" resultType="int">
+        select count(*) from product
+    </select>
+
+    <select id="productListAll" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_code ) b;
+    </select>
+
+    <select id="productSelectOne" parameterType="String" resultMap="productMap">
+        select * from product where product_code = #{productCode}
+    </select>
+
+    <select id="beanSelectOne" parameterType="String" resultMap="productMap">
+        select product.*, bean.* from bean inner join product on bean.product_code = product.product_code where product.product_code = #{productCode}
+    </select>
+
+    <select id="mixSelectOne" parameterType="String" resultMap="productMap">
+        select product.*, mix.* from mix inner join product on mix.product_code = product.product_code where product.product_code = #{productCode}
+    </select>
+
+    <select id="cafeSelectOne" parameterType="String" resultMap="productMap">
+        select product.*, cafe.* from cafe inner join product on cafe.product_code = product.product_code where product.product_code = #{productCode}
+    </select>
+
+    <select id="productSearchCountByTier" parameterType="map" resultType="int">
+        select count(*) from product where product_tier = #{memberTier} and product_name LIKE CONCAT('%',#{searchText},'%')
+    </select>
+
+    <select id="productSearchCount" parameterType="String" resultType="int">
+        select count(*) from product where product_name LIKE CONCAT('%',#{searchText},'%')
+    </select>
+
+    <select id="rownumSet" parameterType="int" resultType="int">
+        set @rownum := 0
+    </select>
+
+    <select id="productListByMemberTierByProductType" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_tier = #{memberTier} and product_type = #{productType} order by product_code ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchList" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_name LIKE CONCAT('%',#{searchText},'%') order by product_code) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchListByMemberTier" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_tier = #{memberTier}
+        and product_name LIKE CONCAT('%',#{searchText},'%') order by product_code) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchListByProductCode" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_code LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchListByProductName" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_name LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchListByProductType" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_type LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchListByProductPrice" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_price LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchListByProductUnit" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_unit LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchListByProductCountry" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_country LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchListByProductSpecies" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_species LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchListByProductCompany" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_company LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchListByProductTier" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_tier LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productSearchListByProductSoldOut" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        where product_sold_out LIKE CONCAT('%',#{searchText},'%')) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productList" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_code ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListDesc" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_code desc ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListByProductCode" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_code ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListDescByProductCode" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+       order by product_code desc ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListByProductType" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_type ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListDescByProductType" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rowrownum := @rowrownum + 1 as rowrownum,
+        a.* from product a, (select @rowrownum := 0) tmp
+        order by product_type desc ) b
+        where b.rowrownum between #{start} and #{end};
+    </select>
+
+    <select id="productListByProductName" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_name ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListDescByProductName" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_name desc ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListByProductPrice" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_price ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListDescByProductPrice" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+         order by product_price desc ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListByProductUnit" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_unit ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListDescByProductUnit" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_unit desc ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListByProductCountry" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_country ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListDescByProductCountry" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_country desc ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListByProductSpecies" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_species ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListDescByProductSpecies" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_species desc ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListByProductCompany" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_company ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListDescByProductCompany" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_company desc ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListByProductTier" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_tier ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListDescByProductTier" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_tier desc ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListByProductSoldOut" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_sold_out ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+    <select id="productListDescByProductSoldOut" parameterType="map" resultMap="productMap">
+        select * from (
+        select @rownum := @rownum + 1 as rownum,
+        a.* from product a, (select @rownum := 0) tmp
+        order by product_sold_out desc ) b
+        where b.rownum between #{start} and #{end};
+    </select>
+
+</mapper>

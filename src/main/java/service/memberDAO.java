@@ -32,6 +32,16 @@ public class memberDAO {
         return num;
     }
 
+    public int checkMember(String memberId) {
+        int num = session.selectOne(NS + "checkMember", memberId);
+        return num;
+    }
+
+    public int checkDisabledMember(String memberId) {
+        int num = session.selectOne(NS + "checkDisabledMember", memberId);
+        return num;
+    }
+
     public List<Member> memberList(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
@@ -355,7 +365,7 @@ public class memberDAO {
     }
 
     public void memberEnable(String memberId) {
-        session.insert(NS + "memberDisable", memberId);
+        session.insert(NS + "memberEnable", memberId);
     }
 
     public void memberDelete(String memberId) {

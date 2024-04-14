@@ -1080,11 +1080,17 @@ public class adminController {
     Member member = memberDao.memberSelectOne(memberId);
     Member disabledMember = memberDao.memberDisableSelectOne(memberId);
 
-    if(member != null) {
+    int checkMember = memberDao.checkMember(memberId);
+    int checkDisabledMember = memberDao.checkDisabledMember(memberId);
+
+    System.out.println(checkMember + "checkMember");
+    System.out.println(checkDisabledMember + "checkDisabledMember");
+
+    if(checkMember > 0) {
       memberDao.memberDisable(memberId);
       memberDao.memberDelete(memberId);
       memberDao.updateDisabledDate(memberId);
-    } else if(disabledMember != null) {
+    } else if(checkDisabledMember > 0) {
       memberDao.memberEnable(memberId);
       memberDao.disabledMemberDelete(memberId);
       memberDao.updateDisabledDateToNull(memberId);

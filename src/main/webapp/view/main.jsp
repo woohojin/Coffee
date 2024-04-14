@@ -115,11 +115,19 @@
       </div>
     </c:when>
 
-    <c:when test="${ sessionScope.memberTier == 0 }">
+    <c:when test="${ sessionScope.memberId == null }">
       <div class="denied-text">
         <p>로그인을 진행하시거나</p>
         <br/>
         <p>최초 회원가입 진행 후에 1566-0904로 연락 부탁드립니다.</p>
+      </div>
+    </c:when>
+
+    <c:when test="${ sessionScope.memberId != null && sessionScope.memberTier == 0 }">
+      <div class="denied-text">
+        <p>가입 승인 대기중입니다.</p>
+        <br/>
+        <p>문의사항이 있으시면 1566-0904로 연락 부탁드립니다.</p>
       </div>
     </c:when>
   </c:choose>
@@ -177,4 +185,14 @@
 <%--  </div>--%>
   </main>
   <script src="${ pageContext.request.contextPath }/view/js/slider.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const memberId = "${ sessionScope.memberId }";
+      const memberTier = ${ sessionScope.memberTier };
+
+      if(memberId.length > 0 && memberTier === 0) {
+        alert("현재 가입 승인 대기중입니다.");
+      }
+    });
+  </script>
 </body>
