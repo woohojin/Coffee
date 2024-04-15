@@ -542,7 +542,10 @@ public class adminController {
 
     Member updatedMember = memberDao.memberSelectOne(memberId); // 업데이트 후 회원 정보
     String memberFranCode = updatedMember.getMemberFranCode(); // 업데이트 후 가맹점 코드
-    historyDao.historyFranCodeUpdate(existMemberFranCode, memberFranCode); // 주문 기록에 있는 변경된 가맹점코드 전부 업데이트
+  
+    if(!existMemberFranCode.equals(memberFranCode)) {
+      historyDao.historyFranCodeUpdate(existMemberFranCode, memberFranCode); // 주문 기록에 있는 변경된 가맹점코드 전부 업데이트
+    }
 
     request.setAttribute("url", url);
     request.setAttribute("msg", msg);
