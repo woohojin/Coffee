@@ -99,15 +99,6 @@
             />
           </li>
           <li>
-            <label>수정자 : </label>
-            <input
-              name="historyModifierName"
-              class="history_modifier_name"
-              type="text"
-              required
-            />
-          </li>
-          <li>
             <div class="submit" style="justify-content: space-between">
               <div class="input_btn">
                 <a href="${ pageContext.request.contextPath }/admin/orderHistoryDelete?orderId=${ requestScope.history.orderId }&&productCode=${ requestScope.history.productCode }">삭제하기</a>

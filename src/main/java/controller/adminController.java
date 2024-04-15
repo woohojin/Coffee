@@ -526,6 +526,9 @@ public class adminController {
 
   @RequestMapping("memberUpdatePro")
   public String memberUpdatePro(Member member) throws Exception {
+    String adminId = (String) session.getAttribute("memberId");
+    Member admin = memberDao.memberSelectOne(adminId);
+    String adminName = admin.getMemberName();
 
     String url = "/admin/memberList";
     String msg = "회원 정보가 수정되었습니다.";
@@ -534,6 +537,7 @@ public class adminController {
     Member existMember = memberDao.memberSelectOne(memberId); // 업데이트 전 회원 정보
     String existMemberFranCode = existMember.getMemberFranCode(); // 업데이트 전 가맹점코드
 
+    member.setMemberModifierName(adminName);
     memberDao.memberAdminUpdate(member);
 
     Member updatedMember = memberDao.memberSelectOne(memberId); // 업데이트 후 회원 정보
@@ -836,10 +840,14 @@ public class adminController {
 
   @RequestMapping("orderHistoryUpdatePro")
   public String orderHistoryUpdatePro(History history) throws Exception {
+    String adminId = (String) session.getAttribute("memberId");
+    Member admin = memberDao.memberSelectOne(adminId);
+    String adminName = admin.getMemberName();
 
     String msg = "주문 기록이 수정되었습니다.";
     String url = "/admin/orderHistory";
 
+    history.setHistoryModifierName(adminName);
     int num = historyDao.historyUpdate(history);
 
     if(num == 0) {
@@ -1112,6 +1120,10 @@ public class adminController {
 
   @RequestMapping("productUploadPro")
   public String productUploadPro(MultipartHttpServletRequest files, Product product) throws Exception {
+    String adminId = (String) session.getAttribute("memberId");
+    Member admin = memberDao.memberSelectOne(adminId);
+    String adminName = admin.getMemberName();
+
     String msg = "제품 등록에 실패하였습니다.";
     String url = "/admin/productUpload";
 
@@ -1148,7 +1160,7 @@ public class adminController {
 
           image.setProductCode(productCode);
           image.setFileName(fileName);
-          image.setFileRegisterName(product.getProductRegisterName());
+          image.setFileRegisterName(adminName);
           imageDao.insertProductImage(image);
 
           if(fileName.contains("thumbnail")) {
@@ -1164,15 +1176,16 @@ public class adminController {
           }
         }
 
+        product.setProductRegisterName(adminName);
         productDao.productInsert(product);
 
         if(productType == 0) {
-          product.setBeanRegisterName(product.getProductRegisterName());
+          product.setBeanRegisterName(adminName);
           productDao.beanInsert(product);
         }
 
         if(productType == 1) {
-          product.setMixRegisterName(product.getProductRegisterName());
+          product.setMixRegisterName(adminName);
           productDao.mixInsert(product);
         }
 
@@ -1220,6 +1233,10 @@ public class adminController {
 
   @RequestMapping("productUpdatePro")
   public String productUpdatePro(MultipartHttpServletRequest files, Product product) throws Exception {
+    String adminId = (String) session.getAttribute("memberId");
+    Member admin = memberDao.memberSelectOne(adminId);
+    String adminName = admin.getMemberName();
+
     String msg = "제품 수정에 실패하였습니다.";
     String url = "/admin/productList";
 
@@ -1262,7 +1279,7 @@ public class adminController {
           if(!fileName.isEmpty()) {
             image.setProductCode(productCode);
             image.setFileName(fileName);
-            image.setFileModifierName(product.getProductModifierName());
+            image.setFileModifierName(adminName);
 
             if(file.exists() && file.delete()) {
               System.out.println("File is deleted.");
@@ -1273,15 +1290,16 @@ public class adminController {
           }
         }
 
+        product.setProductModifierName(adminName);
         productDao.productUpdate(product);
 
         if(productType == 0) {
-          product.setBeanModifierName(product.getProductModifierName());
+          product.setBeanModifierName(adminName);
           productDao.beanUpdate(product);
         }
 
         if(productType == 1) {
-          product.setMixModifierName(product.getProductModifierName());
+          product.setMixModifierName(adminName);
           productDao.mixUpdate(product);
         }
 

@@ -96,15 +96,6 @@
             />
           </li>
           <li>
-            <label>수정자 : </label>
-            <input
-              name="productModifierName"
-              class="product_modifier_name"
-              type="text"
-              required
-            />
-          </li>
-          <li>
             <div class="submit">
               <input type="submit" value="수정하기" class="submit_btn" />
             </div>

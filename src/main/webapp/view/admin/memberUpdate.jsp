@@ -236,21 +236,6 @@
             />
           </td>
         </tr>
-        <tr>
-          <th>
-            <label for="member_modifier_name">수정자</label>
-          </th>
-          <td>
-            <input
-              name="memberModifierName"
-              id="member_modifier_name"
-              type="text"
-              value="${ member.memberModifierName }"
-              spellcheck="false"
-              required
-            />
-          </td>
-        </tr>
         </tbody>
       </table>
       <div class="signup">

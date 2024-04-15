@@ -74,15 +74,6 @@
             </select>
           </li>
           <li>
-            <label>등록자 : </label>
-            <input
-              name="productRegisterName"
-              class="product_register_name"
-              type="text"
-              required
-            />
-          </li>
-          <li>
             <label>제품 파일 : </label>
             <input
               name="files"

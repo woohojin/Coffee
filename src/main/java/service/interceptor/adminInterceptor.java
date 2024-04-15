@@ -10,6 +10,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 
 public class adminInterceptor implements HandlerInterceptor {
 
@@ -26,14 +27,14 @@ public class adminInterceptor implements HandlerInterceptor {
     HttpSession session = request.getSession();
 
     propertySources.addLast(new ResourcePropertySource("classpath:application.properties"));
-    String ADMIN_ID = environment.getProperty("ADMIN_ID");
+    String[] ADMIN_ID = environment.getProperty("ADMIN_ID").split(",");
 
     String memberId = (String) session.getAttribute("memberId");
 
-    if (memberId == null || !memberId.equals(ADMIN_ID)) { // 멤버 아이디가 없거나 관리자 아이디가 아닌 경우
+    if (memberId == null || !Arrays.asList(ADMIN_ID).contains(memberId)) { // 멤버 아이디가 없거나 관리자 아이디가 아닌 경우
       response.sendRedirect(request.getContextPath() + "/member/memberSignIn");
       return false;
-    } else if (memberId.equals(ADMIN_ID)) {
+    } else if (Arrays.asList(ADMIN_ID).contains(memberId)) {
       return true;
     }
 
