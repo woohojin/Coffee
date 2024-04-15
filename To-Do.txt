@@ -1,15 +1,15 @@
 메인페이지
 이메일 변경
-어드민 수정자 각 어드민 아이디별로 자동 입력
+어드민 검색 쿼리문 업데이트 필요
 
 
 
+수정테이블 생성
 페이지 사용 중 세션 만료시 재로그인 후 해당 페이지로 이동
 어드민페이지 0,1,2와 같은 것들 전부 변경(productType, memberTier, productTier, productSoldout 등)
 로그인 페이지 아이디에 focus 추가
 jsp에 spring eval로 application.properties에 있는 한글 텍스트 적용시 한글 깨짐
 어드민페이지 권한 부족 부분 검색 및 업데이트 부분은 미포함 되어있음
-어드민 검색 쿼리문 업데이트 필요
 장바구니에 선택 주문 추가
 thumbnail 이미지 공백 제거 / productList에서 정렬이 안맞는거처럼 보임
 pagination 수정 필요
@@ -19,7 +19,6 @@ productDetail 추가 상품 여러개로 선택가능하게 구현
 memberDisabled 수정 필요(disabledMemberList 등)
 footer 및 제품 상세페이지 등 레이아웃 일치
 전체 레이아웃 수정
-환불테이블 필요
 order 테이블도 필요해보임 (현재 주문 상태, 주문번호 등)
 장바구니/결제 및 주문기록에 현금영수증, 세금계산서 추가
 주문기록에 세금계산서 현금영수증 + 프론트에서 선택 후 form 생성
@@ -36,7 +35,6 @@ admin 클릭시 복사
 택배 크롤링
 컨트롤러 세분화
 html formatting
-jquery 제거
 검색 최소 2글자 부터
 css 정리 분류부터 다시
 jstl도 이후에 정리
