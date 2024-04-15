@@ -1,9 +1,10 @@
 메인페이지
 이메일 변경
 어드민 검색 쿼리문 업데이트 필요
+회원가입 아이디 중복확인
 
 
-
+이메일 인증 js xhr -> fetch로
 수정테이블 생성
 페이지 사용 중 세션 만료시 재로그인 후 해당 페이지로 이동
 어드민페이지 0,1,2와 같은 것들 전부 변경(productType, memberTier, productTier, productSoldout 등)
