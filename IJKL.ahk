@@ -1,12 +1,12 @@
-; #NoTrayIcon
+﻿; #NoTrayIcon
 
-SetCapsLockState, AlwaysOff
+SetCapsLockState("AlwaysOff")
 
 ; Ctrl::Alt
 ; Alt::Ctrl
-^q::WinClose, A
+^q::WinClose("A")
 
-#If GetKeyState("Capslock","P")
+#HotIf GetKeyState("Capslock","P")
 	i::Up
 	j::Left
 	k::Down
@@ -30,6 +30,6 @@ SetCapsLockState, AlwaysOff
 	n::Home
 	m::End
 
-#If
+#HotIf
 
-^F10::Send CtrlUp
+^F10::Send("CtrlUp")
