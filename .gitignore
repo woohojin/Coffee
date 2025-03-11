@@ -38,9 +38,9 @@
 # .idea/artifacts
 # .idea/compiler.xml
 # .idea/jarRepositories.xml
-# .idea/modules.xml
+# .idea/org.daCoffee.module.xml
 # .idea/*.iml
-# .idea/modules
+# .idea/org.daCoffee.module
 # *.iml
 # *.ipr
 
@@ -84,7 +84,7 @@ fabric.properties
 # Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
 
 # *.iml
-# modules.xml
+# org.daCoffee.module.xml
 # .idea/misc.xml
 # *.ipr
 
@@ -168,7 +168,11 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,java,intellij  
 *.MF
-src/main/resources/application.properties
-src/main/webapp/WEB-INF/classes/application.properties
 target
 target/*
+
+# Private Files
+config/secrets.properties
+*.secrets.properties
+secrets.properties
+src/main/webapp/WEB-INF/classes/application.properties

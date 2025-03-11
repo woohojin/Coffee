@@ -8,17 +8,17 @@
 
     <typeAliases>
 
-        <typeAlias type="model.Product" alias="product" />
-        <typeAlias type="model.Member" alias="member" />
-        <typeAlias type="model.CookieDTO" alias="cookie" />
-        <typeAlias type="model.Cart" alias="cart" />
-        <typeAlias type="model.History" alias="history" />
-        <typeAlias type="model.Image" alias="image" />
+        <typeAlias type="org.daCoffee.model.Product" alias="product" />
+        <typeAlias type="org.daCoffee.model.Member" alias="member" />
+        <typeAlias type="org.daCoffee.model.CookieDTO" alias="cookie" />
+        <typeAlias type="org.daCoffee.model.Cart" alias="cart" />
+        <typeAlias type="org.daCoffee.model.History" alias="history" />
+        <typeAlias type="org.daCoffee.model.Image" alias="image" />
 
     </typeAliases>
 
 <!--    <typeHandlers>-->
-<!--        <typeHandler handler="handler.EncryptionTypeHandler"/>-->
+<!--        <typeHandler org.daCoffee.handler="org.daCoffee.handler.EncryptionTypeHandler"/>-->
 <!--    </typeHandlers>-->
 
     <mappers><!-- sql 구문 -->

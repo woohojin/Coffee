@@ -5,11 +5,11 @@
         </encoder>
     </appender>
 
-    <logger name="org.springframework" level="INFO" />
+    <logger name="org.springframework" level="DEBUG" />
     <logger name="org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor" level="DEBUG" />
     <logger name="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" level="WARN" />
 
-    <root level="DEBUG">
+    <root level="TRACE">
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>

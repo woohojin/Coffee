@@ -4,16 +4,16 @@
 <mapper namespace="member">
   <resultMap type="member" id="memberMap">
       <id column="member_id" property="memberId" />
-      <id column="member_name" property="memberName" typeHandler="handler.EncryptionTypeHandler"/>
+      <id column="member_name" property="memberName" typeHandler="org.daCoffee.handler.EncryptionTypeHandler"/>
       <id column="member_company_name" property="memberCompanyName" />
       <id column="member_password" property="memberPassword" />
-      <id column="member_tel" property="memberTel" typeHandler="handler.EncryptionTypeHandler"/>
+      <id column="member_tel" property="memberTel" typeHandler="org.daCoffee.handler.EncryptionTypeHandler"/>
       <id column="member_company_tel" property="memberCompanyTel" />
-      <id column="member_address" property="memberAddress" typeHandler="handler.EncryptionTypeHandler"/>
-      <id column="member_detail_address" property="memberDetailAddress" typeHandler="handler.EncryptionTypeHandler"/>
-      <id column="member_delivery_address" property="memberDeliveryAddress" typeHandler="handler.EncryptionTypeHandler"/>
-      <id column="member_detail_delivery_address" property="memberDetailDeliveryAddress" typeHandler="handler.EncryptionTypeHandler"/>
-      <id column="member_email" property="memberEmail" typeHandler="handler.EncryptionTypeHandler"/>
+      <id column="member_address" property="memberAddress" typeHandler="org.daCoffee.handler.EncryptionTypeHandler"/>
+      <id column="member_detail_address" property="memberDetailAddress" typeHandler="org.daCoffee.handler.EncryptionTypeHandler"/>
+      <id column="member_delivery_address" property="memberDeliveryAddress" typeHandler="org.daCoffee.handler.EncryptionTypeHandler"/>
+      <id column="member_detail_delivery_address" property="memberDetailDeliveryAddress" typeHandler="org.daCoffee.handler.EncryptionTypeHandler"/>
+      <id column="member_email" property="memberEmail" typeHandler="org.daCoffee.handler.EncryptionTypeHandler"/>
       <id column="member_file" property="memberFile" />
       <id column="member_fran_code" property="memberFranCode" />
       <id column="member_tier" property="memberTier" />
@@ -26,10 +26,10 @@
   </resultMap>
 
   <insert id="memberInsert" parameterType="member">
-      insert into member values (#{memberId}, #{memberName, typeHandler=handler.EncryptionTypeHandler}, #{memberCompanyName}, #{memberPassword},
-                                 #{memberTel, typeHandler=handler.EncryptionTypeHandler}, #{memberCompanyTel}, #{memberAddress, typeHandler=handler.EncryptionTypeHandler},
-                                 #{memberDetailAddress, typeHandler=handler.EncryptionTypeHandler}, #{memberDeliveryAddress, typeHandler=handler.EncryptionTypeHandler},
-                                 #{memberDetailDeliveryAddress, typeHandler=handler.EncryptionTypeHandler}, #{memberEmail, typeHandler=handler.EncryptionTypeHandler},
+      insert into member values (#{memberId}, #{memberName, typeHandler=org.daCoffee.handler.EncryptionTypeHandler}, #{memberCompanyName}, #{memberPassword},
+                                 #{memberTel, typeHandler=org.daCoffee.handler.EncryptionTypeHandler}, #{memberCompanyTel}, #{memberAddress, typeHandler=org.daCoffee.handler.EncryptionTypeHandler},
+                                 #{memberDetailAddress, typeHandler=org.daCoffee.handler.EncryptionTypeHandler}, #{memberDeliveryAddress, typeHandler=org.daCoffee.handler.EncryptionTypeHandler},
+                                 #{memberDetailDeliveryAddress, typeHandler=org.daCoffee.handler.EncryptionTypeHandler}, #{memberEmail, typeHandler=org.daCoffee.handler.EncryptionTypeHandler},
                                  #{memberFile}, null, 0, NOW(), null, null, null)
   </insert>
 
@@ -73,11 +73,11 @@
   </select>
 
 <select id="memberFindId" parameterType="map" resultMap="memberMap">
-      select member_id from member where member_name = #{memberName} and member_email = #{memberEmail, typeHandler=handler.EncryptionTypeHandler}
+      select member_id from member where member_name = #{memberName} and member_email = #{memberEmail, typeHandler=org.daCoffee.handler.EncryptionTypeHandler}
   </select>
 
   <select id="memberFindPassword" parameterType="map" resultType="String">
-      select member_password from member where member_id = #{memberId} and member_email = #{memberEmail, typeHandler=handler.EncryptionTypeHandler}
+      select member_password from member where member_id = #{memberId} and member_email = #{memberEmail, typeHandler=org.daCoffee.handler.EncryptionTypeHandler}
   </select>
 
   <select id="memberListByMemberCompanyName" parameterType="map" resultMap="memberMap">
@@ -309,29 +309,29 @@
   </update>
 
   <update id="memberUpdate" parameterType="member">
-      update member set member_name = #{memberName, typeHandler=handler.EncryptionTypeHandler}, member_company_name = #{memberCompanyName}, member_password = #{memberPassword},
-                        member_tel = #{memberTel, typeHandler=handler.EncryptionTypeHandler}, member_company_tel = #{memberCompanyTel},
-                        member_address = #{memberAddress, typeHandler=handler.EncryptionTypeHandler}, member_detail_address = #{memberDetailAddress, typeHandler=handler.EncryptionTypeHandler},
-                        member_delivery_address = #{memberDeliveryAddress, typeHandler=handler.EncryptionTypeHandler}, member_detail_delivery_address = #{memberDetailDeliveryAddress, typeHandler=handler.EncryptionTypeHandler},
-                        member_email = #{memberEmail, typeHandler=handler.EncryptionTypeHandler}, member_file = #{memberFile}
+      update member set member_name = #{memberName, typeHandler=org.daCoffee.handler.EncryptionTypeHandler}, member_company_name = #{memberCompanyName}, member_password = #{memberPassword},
+                        member_tel = #{memberTel, typeHandler=org.daCoffee.handler.EncryptionTypeHandler}, member_company_tel = #{memberCompanyTel},
+                        member_address = #{memberAddress, typeHandler=org.daCoffee.handler.EncryptionTypeHandler}, member_detail_address = #{memberDetailAddress, typeHandler=org.daCoffee.handler.EncryptionTypeHandler},
+                        member_delivery_address = #{memberDeliveryAddress, typeHandler=org.daCoffee.handler.EncryptionTypeHandler}, member_detail_delivery_address = #{memberDetailDeliveryAddress, typeHandler=org.daCoffee.handler.EncryptionTypeHandler},
+                        member_email = #{memberEmail, typeHandler=org.daCoffee.handler.EncryptionTypeHandler}, member_file = #{memberFile}
       where member_id = #{memberId}
   </update>
 
   <update id="memberUpdateNotPassword" parameterType="member">
-      update member set member_name = #{memberName, typeHandler=handler.EncryptionTypeHandler}, member_company_name = #{memberCompanyName},
-                        member_tel = #{memberTel, typeHandler=handler.EncryptionTypeHandler}, member_company_tel = #{memberCompanyTel},
-                        member_address = #{memberAddress, typeHandler=handler.EncryptionTypeHandler},  member_detail_address = #{memberDetailAddress, typeHandler=handler.EncryptionTypeHandler},
-                        member_delivery_address = #{memberDeliveryAddress,typeHandler=handler.EncryptionTypeHandler}, member_detail_delivery_address = #{memberDetailDeliveryAddress, typeHandler=handler.EncryptionTypeHandler},
-                        member_email = #{memberEmail, typeHandler=handler.EncryptionTypeHandler}, member_file = #{memberFile}
+      update member set member_name = #{memberName, typeHandler=org.daCoffee.handler.EncryptionTypeHandler}, member_company_name = #{memberCompanyName},
+                        member_tel = #{memberTel, typeHandler=org.daCoffee.handler.EncryptionTypeHandler}, member_company_tel = #{memberCompanyTel},
+                        member_address = #{memberAddress, typeHandler=org.daCoffee.handler.EncryptionTypeHandler},  member_detail_address = #{memberDetailAddress, typeHandler=org.daCoffee.handler.EncryptionTypeHandler},
+                        member_delivery_address = #{memberDeliveryAddress,typeHandler=org.daCoffee.handler.EncryptionTypeHandler}, member_detail_delivery_address = #{memberDetailDeliveryAddress, typeHandler=org.daCoffee.handler.EncryptionTypeHandler},
+                        member_email = #{memberEmail, typeHandler=org.daCoffee.handler.EncryptionTypeHandler}, member_file = #{memberFile}
       where member_id = #{memberId}
   </update>
 
 <update id="memberAdminUpdate" parameterType="member">
-  update member set member_name = #{memberName, typeHandler=handler.EncryptionTypeHandler}, member_company_name = #{memberCompanyName},
-                    member_tel = #{memberTel, typeHandler=handler.EncryptionTypeHandler}, member_company_tel = #{memberCompanyTel},
-                    member_address = #{memberAddress, typeHandler=handler.EncryptionTypeHandler}, member_detail_address = #{memberDetailAddress, typeHandler=handler.EncryptionTypeHandler},
-                    member_delivery_address = #{memberDeliveryAddress, typeHandler=handler.EncryptionTypeHandler}, member_detail_delivery_address = #{memberDetailDeliveryAddress, typeHandler=handler.EncryptionTypeHandler},
-                    member_email = #{memberEmail, typeHandler=handler.EncryptionTypeHandler}, member_fran_code = #{memberFranCode}, member_tier = #{memberTier},
+  update member set member_name = #{memberName, typeHandler=org.daCoffee.handler.EncryptionTypeHandler}, member_company_name = #{memberCompanyName},
+                    member_tel = #{memberTel, typeHandler=org.daCoffee.handler.EncryptionTypeHandler}, member_company_tel = #{memberCompanyTel},
+                    member_address = #{memberAddress, typeHandler=org.daCoffee.handler.EncryptionTypeHandler}, member_detail_address = #{memberDetailAddress, typeHandler=org.daCoffee.handler.EncryptionTypeHandler},
+                    member_delivery_address = #{memberDeliveryAddress, typeHandler=org.daCoffee.handler.EncryptionTypeHandler}, member_detail_delivery_address = #{memberDetailDeliveryAddress, typeHandler=org.daCoffee.handler.EncryptionTypeHandler},
+                    member_email = #{memberEmail, typeHandler=org.daCoffee.handler.EncryptionTypeHandler}, member_fran_code = #{memberFranCode}, member_tier = #{memberTier},
                     member_modifier_name = #{memberModifierName}, member_modifier_date = NOW()
   where member_id = #{memberId}
 </update>

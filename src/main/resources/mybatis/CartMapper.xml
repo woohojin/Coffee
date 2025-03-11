@@ -49,7 +49,7 @@
         from cart inner join product on cart.product_code = product.product_code where cart.member_id = #{memberId} and cart.product_code = #{productCode};
     </select>
 
-    <select id="cartSumPrice" parameterType="String" resultType="String">
+    <select id="cartSumPrice" parameterType="map" resultType="int">
         select sum(cart.quantity * product.product_price)
         from cart inner join product on cart.product_code = product.product_code where cart.member_id = #{memberId} and not product.product_sold_out = 1;
     </select>

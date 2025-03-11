@@ -13,7 +13,7 @@
               <div class="hd_logo_wrap">
                 <figure>
                   <a href="${ pageContext.request.contextPath }/board/main">
-                    <img src="${ pageContext.request.contextPath }/view/image/logo.png" />
+                    <img src="${ pageContext.request.contextPath }/image/logo.png" />
                   </a>
                 </figure>
               </div>
@@ -27,7 +27,7 @@
                   />
                 </form>
                 <a href="" class="search_icon" onclick="return searchSubmit()">
-                  <img src="${ pageContext.request.contextPath }/view/image/search.png" alt="" />
+                  <img src="${ pageContext.request.contextPath }/image/search.png" alt="" />
                 </a>
               </div>
               <div class="hd_gnb_menu">
@@ -76,7 +76,7 @@
                           </c:if>
                         </span>
                       </div>
-                      <img src="${ pageContext.request.contextPath }/view/image/cart.png" alt="" />
+                      <img src="${ pageContext.request.contextPath }/image/cart.png" alt="" />
                     </a>
                     <div class="background-fadeout" style="display: none; background-color: inherit;"></div>
                     <div class="hd_gnb_member_cart" style="max-height: 0;">
@@ -86,7 +86,7 @@
                         </div>
                         <div>
                           <a class="cart_close_btn">
-                            <img src="${ pageContext.request.contextPath }/view/image/close.png"  alt=""/>
+                            <img src="${ pageContext.request.contextPath }/image/close.png"  alt=""/>
                           </a>
                         </div>
                       </div>
@@ -94,19 +94,19 @@
                         <c:choose>
                             <c:when test="${ product.productType == 0 }">
                                 <a href="${ pageContext.request.contextPath }/board/beanDetail?productCode=${ product.productCode }">
-                                    <img src="${ pageContext.request.contextPath }/view/files/bean/${ product.productCode }/${ product.productFile }"  alt=""/>
+                                    <img src="${ pageContext.request.contextPath }/files/bean/${ product.productCode }/${ product.productFile }"  alt=""/>
                                 </a>
                             </c:when>
 
                             <c:when test="${ product.productType == 1 }">
                                 <a href="${ pageContext.request.contextPath }/board/mixDetail?productCode=${ product.productCode }">
-                                    <img src="${ pageContext.request.contextPath }/view/files/mix/${ product.productCode }/${ product.productFile }" alt="" />
+                                    <img src="${ pageContext.request.contextPath }/files/mix/${ product.productCode }/${ product.productFile }" alt="" />
                                 </a>
                             </c:when>
 
                             <c:when test="${ product.productType == 2 }">
                                 <a href="${ pageContext.request.contextPath }/board/cafeDetail?productCode=${ product.productCode }">
-                                    <img src="${ pageContext.request.contextPath }/view/files/cafe/${ product.productCode }/${ product.productFile }" alt="" />
+                                    <img src="${ pageContext.request.contextPath }/files/cafe/${ product.productCode }/${ product.productFile }" alt="" />
                                 </a>
                             </c:when>
                         </c:choose>
@@ -153,7 +153,7 @@
 <%--              <div class="hd_lnb_menu">--%>
 <%--                <div class="hd_lnb_dropdown_wrap">--%>
 <%--                  <a class="hd_lnb_dropdown_icon">--%>
-<%--                    <img src="${ pageContext.request.contextPath }/view/image/menu.png" alt="" />--%>
+<%--                    <img src="${ pageContext.request.contextPath }/image/menu.png" alt="" />--%>
 <%--                  </a>--%>
 <%--                  <div class="hd_lnb_dropdown" style="height: 0;">--%>
 <%--                    <ul>--%>
