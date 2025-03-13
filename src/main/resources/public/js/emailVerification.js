@@ -7,7 +7,7 @@ const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+")
 function verifyEmail() {
   let memberEmail = document.querySelector('.member_email').value;
 
-  if(emailRegex.test(memberEmail) == false) {
+  if(emailRegex.test(memberEmail) === false) {
     alert("이메일 형식이 올바르지 않습니다.");
     return;
     }
@@ -18,6 +18,11 @@ function verifyEmail() {
     let xhr = new XMLHttpRequest();
     xhr.open('POST', '../member/verifyEmail', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    let csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    let csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+    xhr.setRequestHeader(csrfHeader, csrfToken);
+
     xhr.onreadystatechange = function() {
       if (xhr.readyState === XMLHttpRequest.DONE) {
         if (xhr.status === 200) {
@@ -36,7 +41,7 @@ function verifyEmail() {
           }, 60000);
 
         } else {
-          console.error('요청 실패');
+          console.error('요청 실패 :', xhr.status);
         }
       }
     };

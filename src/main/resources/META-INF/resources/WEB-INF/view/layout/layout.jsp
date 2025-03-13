@@ -4,6 +4,8 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <link rel="icon" href="${ pageContext.request.contextPath }/image/favicon.ico" type="image/x-icon">
     <title>다올커피 <sitemesh:write property='title'/></title>
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/css/reset.css?v=1.0" />

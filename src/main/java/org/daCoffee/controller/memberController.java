@@ -920,22 +920,30 @@ public class memberController {
     return "member/memberHistory";
   }
 
-  @PostMapping("verifyEmail")
   @ResponseBody
+  @PostMapping(value = "verifyEmail", produces = "application/json")
   public Map<String, Object> verifyEmail(String memberEmail) throws Exception {
     Map<String, Object> map = new HashMap<>();
 
-    String code = getRandomPassword(6);
-    String subject = "다올커피 - 이메일 인증번호가 도착했습니다.";
-    String main = "회원님의 이메일 인증번호는";
+    try{
+      String code = getRandomPassword(6);
+      String subject = "다올커피 - 이메일 인증번호가 도착했습니다.";
+      String main = "회원님의 이메일 인증번호는";
 
-    sendEmail(memberEmail, subject, main, code);
+      sendEmail(memberEmail, subject, main, code);
 
-    session.setAttribute("storedVerifyCode", code);
+      session.setAttribute("storedVerifyCode", code);
 
-    map.clear();
-    map.put("code", code);
+      map.clear();
+      map.put("code", code);
 
+    } catch (Exception e) {
+      LOGGER.error("이메일 전송 실패 : ", e);
+      map.put("error", "이메일 전송 실패 : " + e.getMessage());
+      return map;
+    }
+
+    LOGGER.debug("응답 : {}", map);
     return map;
   }
 
