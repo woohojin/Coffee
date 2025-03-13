@@ -10,12 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class historyDAO {
+public class HistoryDAO {
 
   @Autowired
   SqlSessionTemplate session;
 
-  private final static String NS = "history.";
+  private final static String NS = "org.daCoffee.service.HistoryDAO.";
   private static Map map = new HashMap<>();
 
   public int historyInsert(History history) {

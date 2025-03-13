@@ -2,14 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="image">
+<mapper namespace="org.daCoffee.service.ImageDAO">
     <resultMap type="image" id="imageMap">
         <id column="product_code" property="productCode" />
-        <id column="file_name" property="fileName" />
-        <id column="file_register_name" property="fileRegisterName" />
-        <id column="file_register_date" property="fileRegisterDate" />
-        <id column="file_modifier_name" property="fileModifierName" />
-        <id column="file_modifier_date" property="fileModifierDate" />
+        <result column="file_name" property="fileName" />
+        <result column="file_register_name" property="fileRegisterName" />
+        <result column="file_register_date" property="fileRegisterDate" />
+        <result column="file_modifier_name" property="fileModifierName" />
+        <result column="file_modifier_date" property="fileModifierDate" />
     </resultMap>
 
     <insert id="insertProductImage" parameterType="image">

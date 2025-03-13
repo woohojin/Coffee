@@ -13,6 +13,7 @@
       class="member_signup_form"
       onsubmit="return passwordInputCheck(this)"
     >
+      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
       <p>회원 정보</p>
       <table class="member_signup_form_info">
         <tbody>

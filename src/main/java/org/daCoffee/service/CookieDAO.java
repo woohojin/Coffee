@@ -3,18 +3,18 @@ package org.daCoffee.service;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.daCoffee.model.CookieDTO;
+import org.daCoffee.model.Cookie;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
 @Component
-public class cookieDAO {
+public class CookieDAO {
     @Autowired
     SqlSessionTemplate session;
 
-    private final static String NS = "cookie.";
+    private final static String NS = "org.daCoffee.service.CookieDAO.";
     private static Map map = new HashMap<>();
 
     public int cookieInsert(String memberId, String token) {
@@ -25,8 +25,8 @@ public class cookieDAO {
         return num;
     }
 
-    public CookieDTO cookieSelectOne(String memberId) {
-        CookieDTO cookie = session.selectOne(NS + "cookieSelectOne", memberId);
+    public Cookie cookieSelectOne(String memberId) {
+        Cookie cookie = session.selectOne(NS + "cookieSelectOne", memberId);
         return cookie;
     }
 

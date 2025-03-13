@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 import org.daCoffee.model.Member;
 
 @Component
-public class memberDAO {
+public class MemberDAO {
     @Autowired
     SqlSessionTemplate session;
 
-    private final static String NS = "member.";
+    private final static String NS = "org.daCoffee.service.MemberDAO.";
     private static Map map = new HashMap<>();
 
     public int memberInsert(Member member) {

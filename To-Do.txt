@@ -3,12 +3,12 @@
 어드민 검색 쿼리문 업데이트 필요
 회원가입 아이디 중복확인
 
-
-AES_KEY 제대로 주입 받고 있는지 확인해야함
-회원가입이 제대로 진행되지 않음
+로그인 csrf
 사업자정보확인 버튼 페이지 리다이렉션 위치가 잘못됨
 sitemesh 레이아웃인 common 폴더 내의 jsp만 webapp에 있어서 디렉토리 변경 필요
 회원가입 이메일 인증시 enter 누르면 인증번호 발송으로 되도록 변경
+application.properties랑 secrets.properties의 디렉토리 동일하게 바꾸기
+DAO파일들 디렉토리 변경 Service 폴더에 있을게 아닌듯
 이메일 인증 js xhr -> fetch로
 수정테이블 생성
 페이지 사용 중 세션 만료시 재로그인 후 해당 페이지로 이동
@@ -56,6 +56,4 @@ tomcat 9.0.64
 
 https://www.erdcloud.com/d/ifkt7zHppbaMgXAyF
 
-아이콘 저작권
-
-아쉬운거는 변수명 등 정할 때 memberTierUpdate가 아니라 updateMemberTier와 같은 동사가 앞으로 왔으면 좋았을 것
+변수명 등 정할 때 memberTierUpdate가 아니라 updateMemberTier와 같은 동사가 앞으로 왔으면 좋았을 것

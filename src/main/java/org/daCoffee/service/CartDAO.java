@@ -10,12 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class cartDAO {
+public class CartDAO {
 
   @Autowired
   SqlSessionTemplate session;
 
-  private final static String NS = "cart.";
+  private final static String NS = "org.daCoffee.service.CartDAO.";
   private static Map map = new HashMap<>();
 
   public int cartInsert(Cart cart) {

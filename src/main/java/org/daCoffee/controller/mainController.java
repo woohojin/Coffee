@@ -1,11 +1,13 @@
 package org.daCoffee.controller;
 
 import org.daCoffee.model.Cart;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import org.daCoffee.service.imageDAO;
-import org.daCoffee.service.productDAO;
-import org.daCoffee.service.memberDAO;
-import org.daCoffee.service.cartDAO;
+import org.daCoffee.service.ImageDAO;
+import org.daCoffee.service.ProductDAO;
+import org.daCoffee.service.MemberDAO;
+import org.daCoffee.service.CartDAO;
 import org.daCoffee.model.Product;
 
 import java.io.*;
@@ -27,20 +29,22 @@ import org.springframework.ui.Model;
 @RequestMapping("/board/")
 public class mainController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(mainController.class);
+
     @Autowired
     private DataSource ds;
 
     @Autowired
-    productDAO productDao;
+    ProductDAO productDao;
 
     @Autowired
-    memberDAO memberDao;
+    MemberDAO memberDao;
 
     @Autowired
-    cartDAO cartDao;
+    CartDAO cartDao;
 
     @Autowired
-    imageDAO imageDao;
+    ImageDAO imageDao;
 
     HttpServletRequest request;
     Model m;
@@ -56,13 +60,13 @@ public class mainController {
     @RequestMapping("main")
     public String main() throws Exception {
 
-//        try{
-//            Connection conn = (Connection) ds.getConnection();
-//            System.out.println("Success : " + conn);
-//        } catch (Exception ex) {
-//            System.out.println("Failed to Connect DB");
-//            ex.printStackTrace();
-//        }
+        try{
+            Connection conn = (Connection) ds.getConnection();
+            System.out.println("Success : " + conn);
+        } catch (Exception e) {
+            System.out.println("Failed to Connect DB");
+            LOGGER.error(e.getMessage());
+        }
 
         Integer memberTier = (Integer) session.getAttribute("memberTier");
         String memberId = (String) session.getAttribute("memberId");

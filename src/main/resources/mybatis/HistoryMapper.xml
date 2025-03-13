@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="history">
+<mapper namespace="org.daCoffee.service.HistoryDAO">
     <resultMap type="history" id="historyMap">
         <id column="order_id" property="orderId" />
-        <id column="member_tier" property="memberTier" />
-        <id column="member_id" property="memberId" />
-        <id column="member_name" property="memberName" />
-        <id column="member_company_name" property="memberCompanyName" />
-        <id column="member_fran_code" property="memberFranCode" />
-        <id column="product_code" property="productCode" />
-        <id column="product_grinding" property="productGrinding" />
-        <id column="product_price" property="productPrice" />
-        <id column="product_name" property="productName" />
-        <id column="product_unit" property="productUnit" />
-        <id column="quantity" property="quantity" />
-        <id column="order_date" property="orderDate" />
-        <id column="delivery_address" property="deliveryAddress" />
-        <id column="detail_delivery_address" property="detailDeliveryAddress" />
-        <id column="total_price" property="totalPrice" />
-        <id column="delivery_code" property="deliveryCode" />
-        <id column="history_modifier_name" property="historyModifierName" />
-        <id column="history_modifier_date" property="historyModifierDate" />
+        <result column="member_tier" property="memberTier" />
+        <result column="member_result" property="memberId" />
+        <result column="member_name" property="memberName" />
+        <result column="member_company_name" property="memberCompanyName" />
+        <result column="member_fran_code" property="memberFranCode" />
+        <result column="product_code" property="productCode" />
+        <result column="product_grinding" property="productGrinding" />
+        <result column="product_price" property="productPrice" />
+        <result column="product_name" property="productName" />
+        <result column="product_unit" property="productUnit" />
+        <result column="quantity" property="quantity" />
+        <result column="order_date" property="orderDate" />
+        <result column="delivery_address" property="deliveryAddress" />
+        <result column="detail_delivery_address" property="detailDeliveryAddress" />
+        <result column="total_price" property="totalPrice" />
+        <result column="delivery_code" property="deliveryCode" />
+        <result column="history_modifier_name" property="historyModifierName" />
+        <result column="history_modifier_date" property="historyModifierDate" />
     </resultMap>
 
     <insert id="historyInsert" parameterType="history">

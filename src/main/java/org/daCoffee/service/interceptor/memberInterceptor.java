@@ -1,15 +1,14 @@
 package org.daCoffee.service.interceptor;
 
 import org.daCoffee.model.Member;
-import org.daCoffee.model.CookieDTO;
+import org.daCoffee.model.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
-import org.daCoffee.service.cartDAO;
-import org.daCoffee.service.cookieDAO;
-import org.daCoffee.service.memberDAO;
+import org.daCoffee.service.CartDAO;
+import org.daCoffee.service.CookieDAO;
+import org.daCoffee.service.MemberDAO;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,14 +16,14 @@ import javax.servlet.http.HttpSession;
 public class memberInterceptor implements HandlerInterceptor {
 
   @Autowired
-  memberDAO memberDao;
+  MemberDAO memberDao;
   @Autowired
-  cookieDAO cookieDao;
+  CookieDAO cookieDao;
   @Autowired
-  cartDAO cartDao;
+  CartDAO cartDao;
 
   Member member;
-  CookieDTO cookieDTO;
+  Cookie cookie;
 
   String cookieDBToken; // DB에서 가져온 토큰
   String cookieToken; // 쿠키에서 가져온 토큰
@@ -37,10 +36,10 @@ public class memberInterceptor implements HandlerInterceptor {
   @Override
   public boolean preHandle(HttpServletRequest request,HttpServletResponse response, Object handler) throws Exception {
     HttpSession session = request.getSession();
-    Cookie[] cookies = request.getCookies();
+    javax.servlet.http.Cookie[] cookies = request.getCookies();
 
     if(cookies != null) {
-      for(Cookie cookie: cookies) {
+      for(javax.servlet.http.Cookie cookie: cookies) {
         if(cookie.getName().equals("memberId")) {
           memberCookieId = cookie.getValue();
           member = memberDao.memberSelectOne(memberCookieId);
@@ -50,12 +49,12 @@ public class memberInterceptor implements HandlerInterceptor {
 
             if(isDisabled < 1) {
               memberTier = member.getMemberTier();
-              cookieDTO = cookieDao.cookieSelectOne(memberId);
-              cookieDBToken = cookieDTO.getToken();
+              this.cookie = cookieDao.cookieSelectOne(memberId);
+              cookieDBToken = this.cookie.getToken();
             } else {
               cookieDBToken = "";
-              Cookie cookieId = new Cookie("memberId", null);
-              Cookie cookieToken = new Cookie("token", null);
+              javax.servlet.http.Cookie cookieId = new javax.servlet.http.Cookie("memberId", null);
+              javax.servlet.http.Cookie cookieToken = new javax.servlet.http.Cookie("token", null);
               cookieId.setMaxAge(0); // 0초 = 쿠키 삭제
               cookieId.setPath("/");
               cookieToken.setMaxAge(0);

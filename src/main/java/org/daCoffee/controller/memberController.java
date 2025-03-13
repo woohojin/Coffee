@@ -4,7 +4,6 @@ import org.daCoffee.module.UUIDGenerateModule;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -18,11 +17,6 @@ import org.daCoffee.model.PaymentsRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.mail.MailException;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
@@ -34,8 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -61,19 +53,19 @@ public class memberController {
   private Environment env;
 
   @Autowired
-  productDAO productDao;
+  ProductDAO productDao;
 
   @Autowired
-  memberDAO memberDao;
+  MemberDAO memberDao;
 
   @Autowired
-  cartDAO cartDao;
+  CartDAO cartDao;
 
   @Autowired
-  cookieDAO cookieDao;
+  CookieDAO cookieDao;
 
   @Autowired
-  historyDAO historyDao;
+  HistoryDAO historyDao;
 
   @Autowired
   private ResourceLoader resourceLoader;
@@ -187,12 +179,19 @@ public class memberController {
       return "alert";
     }
 
-    String msg = "이미 있는 아이디 입니다.";
+    String msg = "회원 가입 중 문제가 발생 했습니다. 다시 시도해주세요.";
     String url = "/member/memberSignUp";
 
     String memberId = member.getMemberId().toLowerCase();
     member.setMemberId(memberId);
-    Member mem = memberDao.memberSelectOne(memberId);
+
+    Member mem = null;
+
+    try{
+      mem = memberDao.memberSelectOne(memberId);
+    } catch (Exception e) {
+      LOGGER.error(e.getMessage());
+    }
 
     String filePath = request.getServletContext().getRealPath("/") + "view/files/";
     String fileName = file.getOriginalFilename();
@@ -203,28 +202,28 @@ public class memberController {
       uploadPath.mkdirs(); // 경로가 없으면 생성
     }
 
-    if(mem == null) {
-      member.setMemberPassword(passwordEncoder.encode(member.getMemberPassword()));
+    try{
+      if(mem == null) {
+        member.setMemberPassword(passwordEncoder.encode(member.getMemberPassword()));
 
-      String memberCompanyName = member.getMemberCompanyName();
-      String memberCompanyTel = member.getMemberCompanyTel();
-      String memberFile = member.getMemberFile();
+        String memberCompanyName = member.getMemberCompanyName();
+        String memberCompanyTel = member.getMemberCompanyTel();
+        String memberFile = member.getMemberFile();
 
-      if(memberFile != null && !memberFile.trim().isEmpty()) {
-        file.transferTo(uploadFile);
-      } else {
-        member.setMemberFile(null);
-      }
+        if(memberFile != null && !memberFile.trim().isEmpty()) {
+          file.transferTo(uploadFile);
+        } else {
+          member.setMemberFile(null);
+        }
 
-      if(memberCompanyName != null && memberCompanyName.trim().isEmpty()) {
-        member.setMemberCompanyName(null);
-      }
+        if(memberCompanyName != null && memberCompanyName.trim().isEmpty()) {
+          member.setMemberCompanyName(null);
+        }
 
-      if(memberCompanyTel != null && memberCompanyTel.trim().isEmpty()) {
-        member.setMemberCompanyTel(null);
-      }
+        if(memberCompanyTel != null && memberCompanyTel.trim().isEmpty()) {
+          member.setMemberCompanyTel(null);
+        }
 
-      try{
         int num = memberDao.memberInsert(member);
 
         if (num > 0) {
@@ -234,10 +233,15 @@ public class memberController {
           msg = "회원가입을 실패 했습니다.";
           url = "/member/memberSignUp";
         }
-      } catch (Exception e) {
-        LOGGER.error("Signup has error", e);
+      } else {
+        msg = "이미 있는 아이디 입니다.";
+        url = "/member/memberSignUp";
       }
+    } catch (Exception e) {
+      LOGGER.error("Error is occurred :", e);
     }
+
+
 
     request.setAttribute("msg", msg);
     request.setAttribute("url", url);
@@ -696,7 +700,7 @@ public class memberController {
   public ResponseEntity<Object> memberPaymentsConfirm(@RequestBody PaymentsRequest paymentsRequest) throws Exception {
     try{
       String widgetSecretKey = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6";
-      String encodedSecretKey = "Basic " + java.util.Base64.getEncoder().encodeToString((widgetSecretKey + ":").getBytes());
+      String encodedSecretKey = "Basic " + Base64.getEncoder().encodeToString((widgetSecretKey + ":").getBytes());
 
       String apiUrl = "https://api.tosspayments.com/v1/payments/confirm";
 
@@ -708,7 +712,7 @@ public class memberController {
       ResponseEntity<Map<String, Object>> responseEntity = new RestTemplate().exchange(
               apiUrl,
               HttpMethod.POST,
-              new org.springframework.http.HttpEntity<>(paymentsRequest, headers),
+              new HttpEntity<>(paymentsRequest, headers),
               new ParameterizedTypeReference<Map<String, Object>>() {
               }
       );

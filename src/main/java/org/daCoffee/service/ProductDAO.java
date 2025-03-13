@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class productDAO {
+public class ProductDAO {
     @Autowired
     SqlSessionTemplate session;
 
-    private final static String NS = "product.";
+    private final static String NS = "org.daCoffee.service.ProductDAO.";
     private static Map map = new HashMap<>();
 
     public int productInsert(Product product) {

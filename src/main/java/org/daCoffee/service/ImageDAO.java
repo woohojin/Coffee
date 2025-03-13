@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class imageDAO {
+public class ImageDAO {
   @Autowired
   SqlSessionTemplate session;
 
-  private final static String NS = "image.";
+  private final static String NS = "org.daCoffee.service.ImageDAO.";
   private static Map map = new HashMap<>();
 
   public int insertProductImage(Image image) {

@@ -32,22 +32,22 @@ import java.util.List;
 public class adminController {
 
   @Autowired
-  productDAO productDao;
+  ProductDAO productDao;
 
   @Autowired
-  memberDAO memberDao;
+  MemberDAO memberDao;
 
   @Autowired
-  cartDAO cartDao;
+  CartDAO cartDao;
 
   @Autowired
-  historyDAO historyDao;
+  HistoryDAO historyDao;
 
   @Autowired
-  cookieDAO cookieDao;
+  CookieDAO cookieDao;
 
   @Autowired
-  imageDAO imageDao;
+  ImageDAO imageDao;
 
   HttpServletRequest request;
   HttpServletResponse response;

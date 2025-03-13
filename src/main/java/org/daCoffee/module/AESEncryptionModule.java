@@ -1,45 +1,38 @@
 package org.daCoffee.module;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.GenericXmlApplicationContext;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.MutablePropertySources;
-import org.springframework.core.io.support.ResourcePropertySource;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 
-@Component
 public class AESEncryptionModule {
-
     private final String AES_ALGORITHM = "AES";
     private final String AES_MODE = "AES/ECB/PKCS5Padding";
 
-    @Value("${AES_KEY}")
+    private static final Logger LOGGER = LoggerFactory.getLogger(AESEncryptionModule.class);
     private String AES_KEY;
 
-    @PostConstruct
-    public void init() {
-        System.out.println("AES_KEY from @Value: " + AES_KEY);
-        if (AES_KEY == null) {
-            throw new IllegalStateException("AES_KEY is null on initialization");
-        }
+    // mybatis에서 인스턴스화를 진행하기 위해서 기본 생성자가 필요하기에 있음
+    public AESEncryptionModule() {
+    }
+
+    // EncryptionTypeHandler에서 키를 가져오기 위해 AES_KEY 변수가 private여서 setter를 사용함
+    public void setAesKey(String aesKey) {
+      if (aesKey == null || aesKey.isEmpty()) {
+        throw new IllegalArgumentException("AES_KEY cannot be null or empty");
+      }
+      this.AES_KEY = aesKey;
     }
 
     public String encrypt(String data) throws Exception {
-        System.out.println("Encrypting data: " + data);
-        if (data == null) {
-            throw new IllegalArgumentException("Data to encrypt cannot be null");
-        }
-        if (AES_KEY == null) {
-            throw new IllegalStateException("AES_KEY is null during encryption");
-        }
+      LOGGER.info("Encrypting data: {}", data);
 
-        Cipher cipher = Cipher.getInstance(AES_MODE);
+      if (data == null) {
+          throw new IllegalArgumentException("Data to encrypt cannot be null");
+      }
+
+      Cipher cipher = Cipher.getInstance(AES_MODE);
         SecretKeySpec secretKeySpec = new SecretKeySpec(AES_KEY.getBytes(), AES_ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
         byte[] encryptedBytes = cipher.doFinal(data.getBytes());

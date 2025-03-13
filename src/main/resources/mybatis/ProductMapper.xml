@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="product">
+<mapper namespace="org.daCoffee.service.ProductDAO">
     <resultMap type="product" id="productMap">
         <id column="product_code" property="productCode" />
         <result column="product_type" property="productType" />
