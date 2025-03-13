@@ -224,14 +224,18 @@ public class memberController {
         member.setMemberCompanyTel(null);
       }
 
-      int num = memberDao.memberInsert(member);
+      try{
+        int num = memberDao.memberInsert(member);
 
-      if (num > 0) {
-        msg = memberId + "님의 가입이 완료되었습니다.";
-        url = "/member/memberSignIn";
-      } else {
-        msg = "회원가입을 실패 했습니다.";
-        url = "/member/memberSignUp";
+        if (num > 0) {
+          msg = memberId + "님의 가입이 완료되었습니다.";
+          url = "/member/memberSignIn";
+        } else {
+          msg = "회원가입을 실패 했습니다.";
+          url = "/member/memberSignUp";
+        }
+      } catch (Exception e) {
+        LOGGER.error("Signup has error", e);
       }
     }
 
