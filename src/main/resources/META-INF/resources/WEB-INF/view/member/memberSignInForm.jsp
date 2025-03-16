@@ -10,6 +10,7 @@
       method="post"
       class="member_signin_form"
     >
+      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
       <table>
         <tbody>
         <tr>

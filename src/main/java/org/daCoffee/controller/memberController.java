@@ -241,8 +241,6 @@ public class memberController {
       LOGGER.error("Error is occurred :", e);
     }
 
-
-
     request.setAttribute("msg", msg);
     request.setAttribute("url", url);
 
@@ -254,7 +252,7 @@ public class memberController {
     return "member/memberSignInForm";
   }
 
-  @RequestMapping("memberSignInPro")
+  @PostMapping("memberSignInPro")
   public String memberSignInPro(String memberId, String memberPassword, String autoLogin) throws Exception {
 
     //Context 생성
@@ -266,7 +264,7 @@ public class memberController {
 
     propertySources.addLast(new ResourcePropertySource("classpath:application.properties"));
 
-    String keyString = environment.getProperty("CookieLogin");
+    String keyString = environment.getProperty("SECRET_CookieLogin");
 
     SHA256 sha256 = new SHA256();
 
@@ -275,6 +273,7 @@ public class memberController {
 
     Member member = memberDao.memberSelectOne(memberId);
     int isDisabled = memberDao.disabledMemberSelectOne(memberId);
+
     if(member != null) {
       if(isDisabled < 1) {
         if(passwordEncoder.matches(memberPassword, member.getMemberPassword())) {
@@ -304,7 +303,7 @@ public class memberController {
               response.addCookie(cookieToken);
             }
           }
-          return "anchor";
+          return "redirect:/board/main";
         } else {
           msg = "비밀번호가 틀립니다.";
         }
