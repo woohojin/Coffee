@@ -2,7 +2,10 @@ package org.daCoffee.service.interceptor;
 
 import org.daCoffee.model.Member;
 import org.daCoffee.model.Cookie;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.daCoffee.service.CartDAO;
 import org.daCoffee.service.CookieDAO;
@@ -13,7 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+@Component
 public class memberInterceptor implements HandlerInterceptor {
+
+  private static Logger LOGGER = LoggerFactory.getLogger(memberInterceptor.class);
 
   @Autowired
   MemberDAO memberDao;

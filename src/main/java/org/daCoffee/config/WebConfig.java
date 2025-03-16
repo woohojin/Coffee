@@ -5,6 +5,7 @@ import org.daCoffee.service.interceptor.memberInterceptor;
 import org.daCoffee.service.interceptor.adminInterceptor;
 import org.sitemesh.builder.SiteMeshFilterBuilder;
 import org.sitemesh.config.ConfigurableSiteMeshFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,16 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+  @Autowired
+  private loginInterceptor loginInterceptor;
+
+  @Autowired
+  private memberInterceptor memberInterceptor;
+
+  @Autowired
+  private adminInterceptor adminInterceptor;
+
 
   @Bean
   public InternalResourceViewResolver viewResolver() {
@@ -53,7 +64,7 @@ public class WebConfig implements WebMvcConfigurer {
 
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
-    registry.addInterceptor(new loginInterceptor())
+    registry.addInterceptor(loginInterceptor)
       .addPathPatterns("/member/memberWithdrawal",
         "/member/memberHistory",
         "/member/memberMyPage",
@@ -61,9 +72,9 @@ public class WebConfig implements WebMvcConfigurer {
         "/member/memberPayments",
         "/member/memberPaymentsSuccess",
         "/member/memberPaymentsFailure");
-    registry.addInterceptor(new memberInterceptor())
+    registry.addInterceptor(memberInterceptor)
       .addPathPatterns("/**");
-    registry.addInterceptor(new adminInterceptor())
+    registry.addInterceptor(adminInterceptor)
       .addPathPatterns("/admin/**");
   }
 }
