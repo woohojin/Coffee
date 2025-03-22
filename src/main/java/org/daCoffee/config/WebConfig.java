@@ -17,14 +17,18 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-  @Autowired
-  private loginInterceptor loginInterceptor;
+  private final loginInterceptor loginInterceptor;
+
+  private final memberInterceptor memberInterceptor;
+
+  private final adminInterceptor adminInterceptor;
 
   @Autowired
-  private memberInterceptor memberInterceptor;
-
-  @Autowired
-  private adminInterceptor adminInterceptor;
+  public WebConfig(org.daCoffee.service.interceptor.loginInterceptor loginInterceptor, org.daCoffee.service.interceptor.memberInterceptor memberInterceptor, org.daCoffee.service.interceptor.adminInterceptor adminInterceptor) {
+    this.loginInterceptor = loginInterceptor;
+    this.memberInterceptor = memberInterceptor;
+    this.adminInterceptor = adminInterceptor;
+  }
 
 
   @Bean

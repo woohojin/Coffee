@@ -11,8 +11,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProductDAO {
+    private final SqlSessionTemplate session;
+
     @Autowired
-    SqlSessionTemplate session;
+    public ProductDAO(SqlSessionTemplate session) {
+        this.session = session;
+    }
 
     private final static String NS = "org.daCoffee.service.ProductDAO.";
     private static Map map = new HashMap<>();

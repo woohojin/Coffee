@@ -18,8 +18,6 @@ public class loginInterceptor implements HandlerInterceptor {
     HttpSession session = request.getSession();
     memberSessionId = (String) session.getAttribute("memberId");
 
-
-
     if(memberSessionId == null) {
       String msg = "로그인이 되어있지 않습니다.";
       String url = "/member/memberSignIn";

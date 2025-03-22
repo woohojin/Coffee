@@ -28,23 +28,19 @@ import org.springframework.ui.Model;
 @Controller
 @RequestMapping("/board/")
 public class mainController {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(mainController.class);
+    private final DataSource ds;
+    private final ProductDAO productDao;
+    private final CartDAO cartDao;
+    private final ImageDAO imageDao;
 
     @Autowired
-    private DataSource ds;
-
-    @Autowired
-    ProductDAO productDao;
-
-    @Autowired
-    MemberDAO memberDao;
-
-    @Autowired
-    CartDAO cartDao;
-
-    @Autowired
-    ImageDAO imageDao;
+    public mainController(DataSource ds, ProductDAO productDao, CartDAO cartDao, ImageDAO imageDao) {
+    this.ds = ds;
+    this.productDao = productDao;
+    this.cartDao = cartDao;
+    this.imageDao = imageDao;
+    }
 
     @RequestMapping("main")
     public String main(HttpSession session) throws Exception {

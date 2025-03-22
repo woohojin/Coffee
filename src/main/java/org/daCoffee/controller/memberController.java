@@ -45,37 +45,20 @@ import java.util.*;
 @RequestMapping("/member/")
 @PropertySource("classpath:application.properties")
 public class memberController {
-
-  @Autowired
-  private DataSource ds;
-
-  @Autowired
-  private Environment env;
-
-  @Autowired
-  ProductDAO productDao;
-
-  @Autowired
-  MemberDAO memberDao;
-
-  @Autowired
-  CartDAO cartDao;
-
-  @Autowired
-  CookieDAO cookieDao;
-
-  @Autowired
-  HistoryDAO historyDao;
-
-  @Autowired
-  private ResourceLoader resourceLoader;
-
-  @Autowired
-  private PasswordEncoder passwordEncoder;
-
+  private final MemberDAO memberDao;
+  private final CartDAO cartDao;
+  private final CookieDAO cookieDao;
+  private final HistoryDAO historyDao;
+  private final PasswordEncoder passwordEncoder;
   private final MailService mailService;
 
-  public memberController(MailService mailService) {
+  @Autowired
+  public memberController(MemberDAO memberDao, CartDAO cartDao, CookieDAO cookieDao, HistoryDAO historyDao, PasswordEncoder passwordEncoder, MailService mailService) {
+    this.memberDao = memberDao;
+    this.cartDao = cartDao;
+    this.cookieDao = cookieDao;
+    this.historyDao = historyDao;
+    this.passwordEncoder = passwordEncoder;
     this.mailService = mailService;
   }
 

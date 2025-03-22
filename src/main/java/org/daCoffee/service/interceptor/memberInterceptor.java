@@ -21,12 +21,16 @@ public class memberInterceptor implements HandlerInterceptor {
 
   private static Logger LOGGER = LoggerFactory.getLogger(memberInterceptor.class);
 
+  private final MemberDAO memberDao;
+  private final CookieDAO cookieDao;
+  private final CartDAO cartDao;
+
   @Autowired
-  MemberDAO memberDao;
-  @Autowired
-  CookieDAO cookieDao;
-  @Autowired
-  CartDAO cartDao;
+  public memberInterceptor(MemberDAO memberDao, CookieDAO cookieDao, CartDAO cartDao) {
+    this.memberDao = memberDao;
+    this.cookieDao = cookieDao;
+    this.cartDao = cartDao;
+  }
 
   Member member;
   Cookie cookie;

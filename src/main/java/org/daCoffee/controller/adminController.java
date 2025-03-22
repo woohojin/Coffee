@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -30,26 +29,19 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin/")
 public class adminController {
-
-  @Autowired
-  ProductDAO productDao;
-
-  @Autowired
-  MemberDAO memberDao;
-
-  @Autowired
-  CartDAO cartDao;
-
-  @Autowired
-  HistoryDAO historyDao;
-
-  @Autowired
-  CookieDAO cookieDao;
-
-  @Autowired
-  ImageDAO imageDao;
-
+  private final ProductDAO productDao;
+  private final MemberDAO memberDao;
+  private final HistoryDAO historyDao;
+  private final ImageDAO imageDao;
   private static final Logger LOGGER = LoggerFactory.getLogger(adminController.class);
+
+  @Autowired
+  public adminController(ProductDAO productDao, MemberDAO memberDao, HistoryDAO historyDao, ImageDAO imageDao) {
+    this.productDao = productDao;
+    this.memberDao = memberDao;
+    this.historyDao = historyDao;
+    this.imageDao = imageDao;
+  }
 
   @RequestMapping("dashboard")
   public String index() throws Exception {

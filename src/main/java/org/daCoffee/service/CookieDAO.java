@@ -11,8 +11,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CookieDAO {
+    private final SqlSessionTemplate session;
+
     @Autowired
-    SqlSessionTemplate session;
+    public CookieDAO(SqlSessionTemplate session) {
+        this.session = session;
+    }
 
     private final static String NS = "org.daCoffee.service.CookieDAO.";
     private static Map map = new HashMap<>();

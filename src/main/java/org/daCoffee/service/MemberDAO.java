@@ -12,8 +12,12 @@ import org.daCoffee.model.Member;
 
 @Component
 public class MemberDAO {
+    private final SqlSessionTemplate session;
+
     @Autowired
-    SqlSessionTemplate session;
+    public MemberDAO(SqlSessionTemplate session) {
+        this.session = session;
+    }
 
     private final static String NS = "org.daCoffee.service.MemberDAO.";
     private static Map map = new HashMap<>();

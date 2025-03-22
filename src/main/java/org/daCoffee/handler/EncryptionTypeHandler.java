@@ -24,6 +24,7 @@ public class EncryptionTypeHandler extends BaseTypeHandler<String> {
   // 키를 직접적으로 가져오는 이유는 Spring에서 관리 시 encryptionTypeHandler가 String 타입 컬럼에 전체 적용된다는 문제가 있어서 직접 인스턴스화 하고 관리하도록 함
   // Application.properties에 있는 AES_KEY는 secrets.properties에서 가져오는데 Spring에서 주입해주는 것이라 Spring에서 관리하지 않는 EncryptionTypeHandler는 AES_KEY를 주입 받을 수 없으므로
   // 직접 secrets.properties에 있는 SECRET_AES_KEY를 가져오게 되었음
+
   // static을 사용하는 이유는 Mybatis에서 EncryptionTypeHandler를 과도하게 불러오는 현상 때문에 정적으로 만들어 하나의 인스턴스로 모든 컬럼을 암호화 하게 만들기 위함임
   // 하지만 여전히 과도하게 불러오는 현상이 있지만 횟수가 많지 않아 성능에 영향을 주지 않을거라 판단.
   static {
