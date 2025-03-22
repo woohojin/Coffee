@@ -79,20 +79,6 @@ public class memberController {
     this.mailService = mailService;
   }
 
-  HttpServletRequest request;
-  HttpServletResponse response;
-  Model m;
-  HttpSession session;
-
-
-  @ModelAttribute
-  void init(HttpServletRequest request, Model m, HttpServletResponse response) {
-    this.request = request;
-    this.m = m;
-    this.session = request.getSession();
-    this.response = response;
-  }
-
   private static final Logger LOGGER = LoggerFactory.getLogger(memberController.class);
 
   //암호화 SHA256
@@ -155,7 +141,7 @@ public class memberController {
   }
 
   @RequestMapping("memberSignUpPro")
-  public String memberSignUpPro(@RequestParam("file") MultipartFile file, Member member) throws Exception {
+  public String memberSignUpPro(HttpServletRequest request, HttpSession session, @RequestParam("file") MultipartFile file, Member member) throws Exception {
 
     String verifyCode = request.getParameter("verifyCode");
     String storedVerifyCode = (String) session.getAttribute("storedVerifyCode");
@@ -253,7 +239,7 @@ public class memberController {
   }
 
   @PostMapping("memberSignInPro")
-  public String memberSignInPro(String memberId, String memberPassword, String autoLogin) throws Exception {
+  public String memberSignInPro(HttpServletRequest request, HttpSession session, HttpServletResponse response, String memberId, String memberPassword, String autoLogin) throws Exception {
 
     //Context 생성
     ConfigurableApplicationContext context = new GenericXmlApplicationContext();
@@ -321,7 +307,7 @@ public class memberController {
   }
 
   @RequestMapping("memberLogout")
-  public String memberLogout() throws Exception {
+  public String memberLogout(HttpServletRequest request, HttpSession session, HttpServletResponse response) throws Exception {
     String memberId = (String) session.getAttribute("memberId");
 
     Cookie cookieId = new Cookie("memberId", null);
@@ -352,7 +338,7 @@ public class memberController {
   }
 
   @RequestMapping("memberWithdrawalPro")
-  public String memberWithdrawalPro(String memberPassword) throws Exception {
+  public String memberWithdrawalPro(HttpServletRequest request, HttpSession session, HttpServletResponse response, String memberPassword) throws Exception {
     String memberId = (String) session.getAttribute("memberId");
     Member member = memberDao.memberSelectOne(memberId);
 
@@ -386,7 +372,7 @@ public class memberController {
   }
 
   @RequestMapping("memberCart")
-  public String memberCart() throws Exception {
+  public String memberCart(HttpServletRequest request, HttpSession session) throws Exception {
     String memberId = (String) session.getAttribute("memberId");
 
     int productType = 0; // 원두
@@ -463,7 +449,7 @@ public class memberController {
   }
 
   @RequestMapping("memberCartPro")
-  public String memberCartPro() throws Exception {
+  public String memberCartPro(HttpServletRequest request, HttpSession session) throws Exception {
     int status = 9;
     String statusParam = request.getParameter("status");
 
@@ -568,7 +554,7 @@ public class memberController {
   }
 
   @RequestMapping("memberPayments")
-  public String memberPayments() throws Exception {
+  public String memberPayments(HttpServletRequest request, HttpSession session) throws Exception {
     String memberId = (String) session.getAttribute("memberId");
 
     UUIDGenerateModule uuidGenerateModule = new UUIDGenerateModule();
@@ -627,7 +613,7 @@ public class memberController {
   }
 
   @RequestMapping("memberPaymentsSuccess")
-  public String memberPaymentsSuccess() throws Exception {
+  public String memberPaymentsSuccess(HttpServletRequest request, HttpSession session) throws Exception {
     String memberId = (String) session.getAttribute("memberId");
 
     String errorCode = "CANNOT_FIND_MEMBER_ID";
@@ -733,7 +719,7 @@ public class memberController {
   }
 
   @RequestMapping("memberFindAccount")
-  public String memberFindAccount(@RequestParam(value = "findType", required = false, defaultValue = "id") String findType) throws Exception {
+  public String memberFindAccount(HttpServletRequest request, @RequestParam(value = "findType", required = false, defaultValue = "id") String findType) throws Exception {
     int isFind = 0;
 
     request.setAttribute("isFind", isFind);
@@ -743,7 +729,7 @@ public class memberController {
   }
 
   @RequestMapping("memberFindAccountPro")
-  public String memberFindAccountPro() throws Exception {
+  public String memberFindAccountPro(HttpServletRequest request, HttpSession session) throws Exception {
     String verifyCode = request.getParameter("verifyCode");
     String storedVerifyCode = (String) session.getAttribute("storedVerifyCode");
 
@@ -834,7 +820,7 @@ public class memberController {
   }
 
   @RequestMapping("memberProfile")
-  public String memberProfile() throws Exception {
+  public String memberProfile(HttpServletRequest request, HttpSession session) throws Exception {
     String memberId = (String) session.getAttribute("memberId");
 
     Member member = memberDao.memberSelectOne(memberId);
@@ -845,7 +831,7 @@ public class memberController {
   }
 
   @RequestMapping("memberProfilePro")
-  public String memberProfilePro(Member member, String memberExistingPassword) throws Exception {
+  public String memberProfilePro(HttpServletRequest request, HttpSession session, Member member, String memberExistingPassword) throws Exception {
     String memberId = (String) session.getAttribute("memberId");
 
     Member existingMember = memberDao.memberSelectOne(memberId); // 기존 회원 정보
@@ -874,7 +860,7 @@ public class memberController {
   }
 
   @RequestMapping("memberHistory")
-  public String memberHistory() throws Exception {
+  public String memberHistory(HttpServletRequest request, HttpSession session) throws Exception {
     String memberId = (String) session.getAttribute("memberId");
 
     LocalDate now = LocalDate.now();
@@ -911,7 +897,7 @@ public class memberController {
   }
 
   @RequestMapping("memberHistoryPro")
-  public String memberHistoryPro() throws Exception {
+  public String memberHistoryPro(HttpServletRequest request, HttpSession session) throws Exception {
     String memberId = (String) session.getAttribute("memberId");
     String startDate = request.getParameter("startDate");
     String endDate = request.getParameter("endDate");
@@ -929,7 +915,7 @@ public class memberController {
 
   @ResponseBody
   @PostMapping(value = "verifyEmail", produces = "application/json")
-  public Map<String, Object> verifyEmail(String memberEmail) throws Exception {
+  public Map<String, Object> verifyEmail(HttpSession session, String memberEmail) throws Exception {
     Map<String, Object> map = new HashMap<>();
 
     try{

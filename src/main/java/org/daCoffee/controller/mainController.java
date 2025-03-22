@@ -46,19 +46,8 @@ public class mainController {
     @Autowired
     ImageDAO imageDao;
 
-    HttpServletRequest request;
-    Model m;
-    HttpSession session;
-
-    @ModelAttribute
-    void init(HttpServletRequest request, Model m) {
-        this.request = request;
-        this.m = m;
-        this.session = request.getSession();
-    }
-
     @RequestMapping("main")
-    public String main() throws Exception {
+    public String main(HttpSession session) throws Exception {
 
         try{
             Connection conn = (Connection) ds.getConnection();
@@ -91,7 +80,7 @@ public class mainController {
     }
 
     @RequestMapping("product")
-    public String product(@RequestParam(value = "pageType", defaultValue = "bean") String pageType) throws Exception {
+    public String product(HttpServletRequest request, HttpSession session, @RequestParam(value = "pageType", defaultValue = "bean") String pageType) throws Exception {
         Integer memberTier = (Integer) session.getAttribute("memberTier");
         if(memberTier == null) {
             memberTier = 0;
@@ -162,7 +151,7 @@ public class mainController {
     }
 
     @RequestMapping("beanDetail")
-    public String beanDetail(String productCode) throws Exception {
+    public String beanDetail(HttpServletRequest request, HttpSession session, String productCode) throws Exception {
         Integer memberTier = (Integer) session.getAttribute("memberTier");
         if(memberTier == null) {
             memberTier = 0;
@@ -189,7 +178,7 @@ public class mainController {
     }
 
     @RequestMapping("mixDetail")
-    public String mixDetail(String productCode) throws Exception {
+    public String mixDetail(HttpServletRequest request, HttpSession session, String productCode) throws Exception {
         Integer memberTier = (Integer) session.getAttribute("memberTier");
         if(memberTier == null) {
             memberTier = 0;
@@ -216,7 +205,7 @@ public class mainController {
     }
 
     @RequestMapping("cafeDetail")
-    public String cafeDetail(String productCode) throws Exception {
+    public String cafeDetail(HttpServletRequest request, HttpSession session, String productCode) throws Exception {
         Integer memberTier = (Integer) session.getAttribute("memberTier");
         if(memberTier == null) {
             memberTier = 0;
@@ -249,7 +238,7 @@ public class mainController {
 
     @PostMapping("productDetailPro")
     @ResponseBody
-    public Map<String, Object> productDetailPro(@RequestParam(value = "additionalProducts", required = false) List<String> additionalProductsCodes, Cart cart) throws Exception {
+    public Map<String, Object> productDetailPro(HttpServletRequest request, HttpSession session, @RequestParam(value = "additionalProducts", required = false) List<String> additionalProductsCodes, Cart cart) throws Exception {
         Map<String, Object> map = new HashMap<>();
 
         String msg = "장바구니 추가 실패";
@@ -322,7 +311,7 @@ public class mainController {
     }
 
     @RequestMapping("productSearch")
-    public String productSearch() throws Exception {
+    public String productSearch(HttpServletRequest request, HttpSession session) throws Exception {
         Integer memberTier = (Integer) session.getAttribute("memberTier");
         if(memberTier == null) {
             memberTier = 0;
@@ -414,7 +403,7 @@ public class mainController {
 //    }
 
     @RequestMapping("fileDownload")
-    public void fileDownload(HttpServletResponse response) {
+    public void fileDownload(HttpServletRequest request, HttpServletResponse response) {
         try {
             String filePath = request.getServletContext().getRealPath("/") + "view/files/"; // 다운로드할 파일 경로
             String fileName = request.getParameter("fileName");

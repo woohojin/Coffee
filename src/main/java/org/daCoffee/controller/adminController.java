@@ -49,19 +49,6 @@ public class adminController {
   @Autowired
   ImageDAO imageDao;
 
-  HttpServletRequest request;
-  HttpServletResponse response;
-  Model m;
-  HttpSession session;
-
-  @ModelAttribute
-  void init(HttpServletRequest request, Model m, HttpServletResponse response) {
-    this.request = request;
-    this.m = m;
-    this.session = request.getSession();
-    this.response = response;
-  }
-
   private static final Logger LOGGER = LoggerFactory.getLogger(adminController.class);
 
   @RequestMapping("dashboard")
@@ -71,7 +58,7 @@ public class adminController {
   }
 
   @RequestMapping("productList")
-  public String productList() throws Exception {
+  public String productList(HttpServletRequest request, HttpSession session) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
@@ -119,7 +106,7 @@ public class adminController {
   }
 
   @RequestMapping("productListPro")
-  public String productListPro() throws Exception {
+  public String productListPro(HttpServletRequest request, HttpSession session) throws Exception {
     String columnName = request.getParameter("columnName");
     String orderBy = request.getParameter("orderBy");
 
@@ -212,7 +199,7 @@ public class adminController {
   }
 
   @RequestMapping("productSearch")
-  public String productSearch() throws Exception {
+  public String productSearch(HttpServletRequest request, HttpSession session) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
@@ -302,7 +289,7 @@ public class adminController {
 
 
   @RequestMapping("productSoldOutUpdate")
-  public String productSoldOutUpdate() throws Exception {
+  public String productSoldOutUpdate(HttpServletRequest request, HttpSession session) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
@@ -351,7 +338,7 @@ public class adminController {
 
 
   @RequestMapping("productSoldOutUpdatePro")
-  public String productSoldOutUpdatePro(String productCode, int productSoldOut) throws Exception {
+  public String productSoldOutUpdatePro(HttpServletRequest request, HttpSession session, String productCode, int productSoldOut) throws Exception {
 
     productDao.productSoldOutUpdate(productCode, productSoldOut);
 
@@ -365,7 +352,7 @@ public class adminController {
   }
 
   @RequestMapping("memberList")
-  public String memberList() throws Exception {
+  public String memberList(HttpServletRequest request, HttpSession session) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
@@ -415,7 +402,7 @@ public class adminController {
   }
 
   @RequestMapping("memberListPro")
-  public String memberListPro() throws Exception {
+  public String memberListPro(HttpServletRequest request, HttpSession session) throws Exception {
     String columnName = request.getParameter("columnName");
     String orderBy = request.getParameter("orderBy");
 
@@ -516,7 +503,7 @@ public class adminController {
   }
 
   @RequestMapping("memberUpdate")
-  public String memberUpdate(String memberId) throws Exception {
+  public String memberUpdate(HttpServletRequest request, HttpSession session, String memberId) throws Exception {
     Member member = memberDao.memberSelectOne(memberId);
 
     request.setAttribute("member", member);
@@ -525,7 +512,7 @@ public class adminController {
   }
 
   @RequestMapping("memberUpdatePro")
-  public String memberUpdatePro(Member member) throws Exception {
+  public String memberUpdatePro(HttpServletRequest request, HttpSession session, Member member) throws Exception {
     String adminId = (String) session.getAttribute("memberId");
     Member admin = memberDao.memberSelectOne(adminId);
     String adminName = admin.getMemberName();
@@ -554,7 +541,7 @@ public class adminController {
   }
 
   @RequestMapping("memberSearch")
-  public String memberSearch() throws Exception {
+  public String memberSearch(HttpServletRequest request, HttpSession session) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
@@ -634,7 +621,7 @@ public class adminController {
   }
 
   @RequestMapping("memberWithdrawalList")
-  public String memberWithdrawalList() throws Exception {
+  public String memberWithdrawalList(HttpServletRequest request, HttpSession session) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
@@ -684,7 +671,7 @@ public class adminController {
   }
 
   @RequestMapping("orderHistory")
-  public String orderHistory() throws Exception {
+  public String orderHistory(HttpServletRequest request, HttpSession session) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
@@ -732,7 +719,7 @@ public class adminController {
   }
 
   @RequestMapping("orderHistoryPro")
-  public String orderHistoryPro() throws Exception {
+  public String orderHistoryPro(HttpServletRequest request, HttpSession session) throws Exception {
     String columnName = request.getParameter("columnName");
     String orderBy = request.getParameter("orderBy");
 
@@ -833,7 +820,7 @@ public class adminController {
   }
 
   @RequestMapping("orderHistoryUpdate")
-  public String orderHistoryUpdate(String orderId, String productCode) throws Exception {
+  public String orderHistoryUpdate(HttpServletRequest request, HttpSession session, String orderId, String productCode) throws Exception {
     History history = historyDao.historySelectOne(orderId, productCode);
 
     request.setAttribute("history", history);
@@ -842,7 +829,7 @@ public class adminController {
   }
 
   @RequestMapping("orderHistoryUpdatePro")
-  public String orderHistoryUpdatePro(History history) throws Exception {
+  public String orderHistoryUpdatePro(HttpServletRequest request, HttpSession session, History history) throws Exception {
     String adminId = (String) session.getAttribute("memberId");
     Member admin = memberDao.memberSelectOne(adminId);
     String adminName = admin.getMemberName();
@@ -865,7 +852,7 @@ public class adminController {
   }
 
   @RequestMapping("orderHistoryDelete")
-  public String orderHistoryDelete(String orderId, String productCode) throws Exception {
+  public String orderHistoryDelete(HttpServletRequest request, HttpSession session, String orderId, String productCode) throws Exception {
 
     request.setAttribute("orderId", orderId);
     request.setAttribute("productCode", productCode);
@@ -874,7 +861,7 @@ public class adminController {
   }
 
   @RequestMapping("orderHistoryDeletePro")
-  public String orderHistoryDeletePro(String orderId, String productCode, String confirmDelete) throws Exception {
+  public String orderHistoryDeletePro(HttpServletRequest request, String orderId, String productCode, String confirmDelete) throws Exception {
 
     String msg = "주문 기록 삭제에 성공했습니다.";
     String url = "/admin/orderHistory";
@@ -898,7 +885,7 @@ public class adminController {
   }
 
   @RequestMapping("historySearch")
-  public String historySearch() throws Exception {
+  public String historySearch(HttpServletRequest request, HttpSession session) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
@@ -1001,7 +988,7 @@ public class adminController {
   }
 
   @RequestMapping("memberTierUpdate")
-  public String memberTierUpdate() throws Exception {
+  public String memberTierUpdate(HttpServletRequest request, HttpSession session) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
@@ -1020,7 +1007,7 @@ public class adminController {
   }
 
   @RequestMapping("memberTierUpdatePro")
-  public String memberTierUpdatePro(String memberId, int memberTier) throws Exception {
+  public String memberTierUpdatePro(HttpServletRequest request, String memberId, int memberTier) throws Exception {
 
     LOGGER.info(memberId, memberTier);
 
@@ -1068,7 +1055,7 @@ public class adminController {
 //  }
 
   @RequestMapping("memberDisableUpdate")
-  public String memberDisableUpdate() throws Exception {
+  public String memberDisableUpdate(HttpServletRequest request, HttpSession session) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
@@ -1087,7 +1074,7 @@ public class adminController {
   }
 
   @RequestMapping("memberDisableUpdatePro")
-  public String memberDisableUpdatePro(String memberId) throws Exception {
+  public String memberDisableUpdatePro(HttpServletRequest request, String memberId) throws Exception {
     Member member = memberDao.memberSelectOne(memberId);
     Member disabledMember = memberDao.memberDisableSelectOne(memberId);
 
@@ -1122,7 +1109,7 @@ public class adminController {
   }
 
   @RequestMapping("productUploadPro")
-  public String productUploadPro(MultipartHttpServletRequest files, Product product) throws Exception {
+  public String productUploadPro(HttpServletRequest request, HttpSession session, MultipartHttpServletRequest files, Product product) throws Exception {
     String adminId = (String) session.getAttribute("memberId");
     Member admin = memberDao.memberSelectOne(adminId);
     String adminName = admin.getMemberName();
@@ -1213,7 +1200,7 @@ public class adminController {
 
 
   @RequestMapping("productUpdate")
-  public String productUpdate(@RequestParam(name = "productCode") String productCode) {
+  public String productUpdate(HttpServletRequest request, @RequestParam(name = "productCode") String productCode) {
 
     Product product = productDao.productSelectOne(productCode);
     int productType = product.getProductType();
@@ -1235,7 +1222,7 @@ public class adminController {
   }
 
   @RequestMapping("productUpdatePro")
-  public String productUpdatePro(MultipartHttpServletRequest files, Product product) throws Exception {
+  public String productUpdatePro(HttpServletRequest request, HttpSession session, MultipartHttpServletRequest files, Product product) throws Exception {
     String adminId = (String) session.getAttribute("memberId");
     Member admin = memberDao.memberSelectOne(adminId);
     String adminName = admin.getMemberName();
@@ -1326,7 +1313,7 @@ public class adminController {
   }
 
   @RequestMapping("productDelete")
-  public String productDelete() throws Exception {
+  public String productDelete(HttpServletRequest request, HttpSession session) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
@@ -1374,7 +1361,7 @@ public class adminController {
   }
 
   @RequestMapping("productDeletePro")
-  public String productDeletePro(String productCode) throws Exception {
+  public String productDeletePro(HttpServletRequest request, HttpSession session, String productCode) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
