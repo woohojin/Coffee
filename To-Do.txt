@@ -4,7 +4,6 @@
 회원가입 아이디 중복확인
 
 
-SecurityConfig.java WebSecurityConfigurerAdapter는 deprecated됨
 추후에 Lombok 라이브러리 추가
 사용자에게 정보를 표시하는 경우 Model 사용(일회성인 경우)
 사업자정보확인 버튼 페이지 리다이렉션 위치가 잘못됨

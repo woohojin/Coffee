@@ -12,9 +12,9 @@ import org.daCoffee.service.CookieDAO;
 import org.daCoffee.service.MemberDAO;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Component
 public class memberInterceptor implements HandlerInterceptor {
@@ -46,10 +46,10 @@ public class memberInterceptor implements HandlerInterceptor {
   @Override
   public boolean preHandle(HttpServletRequest request,HttpServletResponse response, Object handler) throws Exception {
     HttpSession session = request.getSession();
-    javax.servlet.http.Cookie[] cookies = request.getCookies();
+    jakarta.servlet.http.Cookie[] cookies = request.getCookies();
 
     if(cookies != null) {
-      for(javax.servlet.http.Cookie cookie: cookies) {
+      for(jakarta.servlet.http.Cookie cookie: cookies) {
         if(cookie.getName().equals("memberId")) {
           memberCookieId = cookie.getValue();
           member = memberDao.memberSelectOne(memberCookieId);
@@ -63,8 +63,8 @@ public class memberInterceptor implements HandlerInterceptor {
               cookieDBToken = this.cookie.getToken();
             } else {
               cookieDBToken = "";
-              javax.servlet.http.Cookie cookieId = new javax.servlet.http.Cookie("memberId", null);
-              javax.servlet.http.Cookie cookieToken = new javax.servlet.http.Cookie("token", null);
+              jakarta.servlet.http.Cookie cookieId = new jakarta.servlet.http.Cookie("memberId", null);
+              jakarta.servlet.http.Cookie cookieToken = new jakarta.servlet.http.Cookie("token", null);
               cookieId.setMaxAge(0); // 0초 = 쿠키 삭제
               cookieId.setPath("/");
               cookieToken.setMaxAge(0);
