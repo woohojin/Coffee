@@ -4,7 +4,6 @@
 회원가입 아이디 중복확인
 
 
-memberController에 있는 암호화 관련 메소드들 memberController에서 외부파일로 모듈화 하기
 SecurityConfig.java WebSecurityConfigurerAdapter는 deprecated됨
 추후에 Lombok 라이브러리 추가
 사용자에게 정보를 표시하는 경우 Model 사용(일회성인 경우)
