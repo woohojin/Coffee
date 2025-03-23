@@ -1,10 +1,5 @@
 package org.daCoffee.module;
 
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.GenericXmlApplicationContext;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.MutablePropertySources;
-import org.springframework.core.io.support.ResourcePropertySource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

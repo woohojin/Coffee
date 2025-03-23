@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import org.daCoffee.service.ImageDAO;
 import org.daCoffee.service.ProductDAO;
-import org.daCoffee.service.MemberDAO;
 import org.daCoffee.service.CartDAO;
 import org.daCoffee.model.Product;
 
@@ -23,7 +22,6 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 
 @Controller
 @RequestMapping("/board/")

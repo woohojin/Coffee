@@ -19,17 +19,10 @@ import javax.sql.DataSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfig.class);
-    private final UserDetailsService userDetailsService;
-    private final DataSource dataSource;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    public SecurityConfig(UserDetailsService userDetailsService, DataSource dataSource) {
-        this.userDetailsService = userDetailsService;
-        this.dataSource = dataSource;
     }
 
     @Override
