@@ -2,6 +2,7 @@ package org.daCoffee.controller;
 
 import org.daCoffee.module.UUIDGenerateModule;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
@@ -43,7 +44,6 @@ import java.util.*;
 
 @Controller
 @RequestMapping("/member/")
-@PropertySource("classpath:application.properties")
 public class memberController {
   private final MemberDAO memberDao;
   private final CartDAO cartDao;
@@ -51,6 +51,9 @@ public class memberController {
   private final HistoryDAO historyDao;
   private final PasswordEncoder passwordEncoder;
   private final MailService mailService;
+
+  @Value("${COOKIE_LOGIN}")
+  private String COOKIE_LOGIN;
 
   @Autowired
   public memberController(MemberDAO memberDao, CartDAO cartDao, CookieDAO cookieDao, HistoryDAO historyDao, PasswordEncoder passwordEncoder, MailService mailService) {
@@ -111,12 +114,10 @@ public class memberController {
     mailService.sendEmail(toEmail, subject, main, code);
   }
 
-
   @RequestMapping("memberTerms")
   public String memberTerms() throws Exception {
     return "member/memberTerms";
   }
-
 
   @RequestMapping("memberSignUp")
   public String memberSignUp() throws Exception {
@@ -223,18 +224,6 @@ public class memberController {
 
   @PostMapping("memberSignInPro")
   public String memberSignInPro(HttpServletRequest request, HttpSession session, HttpServletResponse response, String memberId, String memberPassword, String autoLogin) throws Exception {
-
-    //Context 생성
-    ConfigurableApplicationContext context = new GenericXmlApplicationContext();
-    //Environment 생성
-    ConfigurableEnvironment environment = context.getEnvironment();
-    //PropertySource 다 가져오기
-    MutablePropertySources propertySources = environment.getPropertySources();
-
-    propertySources.addLast(new ResourcePropertySource("classpath:application.properties"));
-
-    String keyString = environment.getProperty("SECRET_CookieLogin");
-
     SHA256 sha256 = new SHA256();
 
     String msg = "";
@@ -253,7 +242,7 @@ public class memberController {
           url = "/board/main";
 
           if(autoLogin != null) {
-            String encryptKey = member.getMemberId() + keyString;
+            String encryptKey = member.getMemberId() + COOKIE_LOGIN;
 
             String token = sha256.encrypt(encryptKey);
 

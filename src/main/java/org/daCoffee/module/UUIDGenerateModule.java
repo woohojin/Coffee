@@ -5,6 +5,7 @@ import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.io.support.ResourcePropertySource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -14,6 +15,9 @@ import java.util.UUID;
 
 @Component
 public class UUIDGenerateModule {
+
+    @Value("${SECRET_TOSS_CUSTOMER_KEY}")
+    private String TOSS_CUSTOMER_KEY;
 
     public String generateOrderId() throws Exception {
         UUID randomUUID = UUID.randomUUID();
@@ -31,20 +35,9 @@ public class UUIDGenerateModule {
     }
 
     public String generateCustomerKey(String memberId) throws Exception {
+        String customString = memberId + TOSS_CUSTOMER_KEY;
 
-        //Context 생성
-        ConfigurableApplicationContext context = new GenericXmlApplicationContext();
-        //Environment 생성
-        ConfigurableEnvironment environment = context.getEnvironment();
-        //PropertySource 다 가져오기
-        MutablePropertySources propertySources = environment.getPropertySources();
-
-        propertySources.addLast(new ResourcePropertySource("classpath:application.properties"));
-
-        String keyString = environment.getProperty("TOSS_CUSTOMER_KEY");
-        String customString = memberId + keyString;
-
-        assert keyString != null;
+        assert TOSS_CUSTOMER_KEY != null;
         UUID customUUID = UUID.nameUUIDFromBytes(customString.getBytes(StandardCharsets.UTF_8));
         String UUIDWithoutHyphens = customUUID.toString().replace("-","");
         String UUID8Digits = UUIDWithoutHyphens.substring(0, 8);

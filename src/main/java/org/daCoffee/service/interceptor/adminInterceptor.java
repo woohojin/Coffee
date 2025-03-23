@@ -5,6 +5,7 @@ import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.io.support.ResourcePropertySource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -16,31 +17,22 @@ import java.util.Arrays;
 @Component
 public class adminInterceptor implements HandlerInterceptor {
 
-  //Context 생성
-  ConfigurableApplicationContext context = new GenericXmlApplicationContext();
-  //Environment 생성
-  ConfigurableEnvironment environment = context.getEnvironment();
-  //PropertySource 다 가져오기
-  MutablePropertySources propertySources = environment.getPropertySources();
+  //Spring이 자동으로 ","로 split해서 배열로 주입됨
+  @Value("${SECRET_ADMIN_ID}")
+  private String[] ADMIN_ID;
 
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
     throws Exception {
     HttpSession session = request.getSession();
 
-    propertySources.addLast(new ResourcePropertySource("classpath:application.properties"));
-    String[] ADMIN_ID = environment.getProperty("ADMIN_ID").split(",");
-
     String memberId = (String) session.getAttribute("memberId");
 
     if (memberId == null || !Arrays.asList(ADMIN_ID).contains(memberId)) { // 멤버 아이디가 없거나 관리자 아이디가 아닌 경우
       response.sendRedirect(request.getContextPath() + "/member/memberSignIn");
       return false;
-    } else if (Arrays.asList(ADMIN_ID).contains(memberId)) {
-      return true;
     }
-
-    return false;
+    return true;
   }
 
 }
