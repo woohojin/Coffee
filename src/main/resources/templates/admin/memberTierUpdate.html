@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{adminLayout}">
+  <body layout:fragment="content">
+    <main id="admin_page">
+      <div class="admin_page_wrap">
+        <div class="page_head">
+          <a th:href="@{/admin/memberTierUpdate}">
+            <h1>멤버 등급 수정</h1>
+          </a>
+        </div>
+        <div class="search_form_wrap center">
+          <div class="inline_wrap">
+            <form th:action="@{/admin/memberTierUpdatePro}" method="post">
+              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+              <div class="list">
+                <ul class="center">
+                  <div th:switch="${memberTier}">
+                    <div th:case="'9'" th:if="${memberTier != '9'}">
+                      <p>권한이 부족합니다.</p>
+                    </div>
+                    <div th:case="*" th:if="${memberTier == '9' and memberCount == 0}">
+                      <p>회원을 찾을 수 없습니다.</p>
+                    </div>
+                    <div th:case="*" th:if="${memberTier == '9'}">
+                      <div th:if="${memberSearchCount != 0 or memberCount != 0}">
+                        <table class="list">
+                          <thead>
+                          <tr>
+                            <th class="member_tier" th:onclick="'orderBy(this)'">
+                              <div class="asc">
+                                <span>등급</span>
+                                <img th:src="@{/image/down-arrow.png}" alt="" />
+                              </div>
+                            </th>
+                            <th class="member_id" th:onclick="'orderBy(this)'">
+                              <div class="asc">
+                                <span>아이디</span>
+                                <img th:src="@{/image/down-arrow.png}" alt="" />
+                              </div>
+                            </th>
+                            <th class="member_name" th:onclick="'orderBy(this)'">
+                              <div class="asc">
+                                <span>이름</span>
+                                <img th:src="@{/image/down-arrow.png}" alt="" />
+                              </div>
+                            </th>
+                            <th class="member_company_name" th:onclick="'orderBy(this)'">
+                              <div class="asc">
+                                <span>업체명</span>
+                                <img th:src="@{/image/down-arrow.png}" alt="" />
+                              </div>
+                            </th>
+                            <th class="member_tel" th:onclick="'orderBy(this)'">
+                              <div class="asc">
+                                <span>전화번호</span>
+                                <img th:src="@{/image/down-arrow.png}" alt="" />
+                              </div>
+                            </th>
+                            <th class="member_company_tel" th:onclick="'orderBy(this)'">
+                              <div class="asc">
+                                <span>회사번호</span>
+                                <img th:src="@{/image/down-arrow.png}" alt="" />
+                              </div>
+                            </th>
+                            <th class="member_address" th:onclick="'orderBy(this)'">
+                              <div class="asc">
+                                <span>주소</span>
+                                <img th:src="@{/image/down-arrow.png}" alt="" />
+                              </div>
+                            </th>
+                            <th class="member_file" th:onclick="'orderBy(this)'">
+                              <div class="asc">
+                                <span>파일</span>
+                                <img th:src="@{/image/down-arrow.png}" alt="" />
+                              </div>
+                            </th>
+                            <th class="member_date" th:onclick="'orderBy(this)'">
+                              <div class="asc">
+                                <span>가입일</span>
+                                <img th:src="@{/image/down-arrow.png}" alt="" />
+                              </div>
+                            </th>
+                            <th>
+                              <div class="asc">
+                                <span>등급 설정</span>
+                              </div>
+                            </th>
+                            <th>
+                              <div class="asc">
+                                <span>업데이트</span>
+                              </div>
+                            </th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr th:each="m : ${list}">
+                            <td><p th:text="${m.memberTier}"></p></td>
+                            <td><p th:text="${m.memberId}"></p></td>
+                            <td><p th:text="${m.memberName}"></p></td>
+                            <td><p th:text="${m.memberCompanyName}"></p></td>
+                            <td><p th:text="${m.memberTel}"></p></td>
+                            <td><p th:text="${m.memberCompanyTel}"></p></td>
+                            <td>
+                              <p th:text="${m.memberAddress}"></p>
+                              <p th:text="${m.memberDetailAddress}"></p>
+                            </td>
+                            <td>
+                              <a style="color: var(--mainColor);"
+                                 th:onclick="|fileDownload('${m.memberFile}', '${m.memberId}')|"
+                                 th:text="${m.memberFile}"></a>
+                            </td>
+                            <td><p th:text="${m.memberDate}"></p></td>
+                            <td>
+                              <select id="memberTier" name="memberTier">
+                                <option value="0">0 (권한없음)</option>
+                                <option value="1">1 (머신임대고객)</option>
+                                <option value="2">2 (머신비임대고객)</option>
+                              </select>
+                              <input type="hidden" name="memberId" th:value="${m.memberId}" />
+                            </td>
+                            <td>
+                              <div class="signup">
+                                <input type="submit" value="업데이트" class="btn" />
+                              </div>
+                            </td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </ul>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script type="text/javascript" th:inline="javascript">
+      /*<![CDATA[*/
+      function orderBy(element) {
+        // 정렬 로직 (별도 구현 필요)
+        console.log("Order by: " + element.className);
+      }
+
+      function fileDownload(fileName, memberId) {
+        // 파일 다운로드 로직 (별도 구현 필요)
+        console.log("Download file: " + fileName + " for member: " + memberId);
+      }
+      /*]]>*/
+    </script>
+  </body>
+</html>

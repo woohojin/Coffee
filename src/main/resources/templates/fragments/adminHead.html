@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <header th:fragment="adminHeader">
+    <div id="hd_wrap" class="center">
+      <div class="hd_lnb">
+        <div class="hd_lnb_list">
+          <ul>
+            <li>
+              <a th:href="@{/admin/orderHistory}">주문 기록</a>
+            </li>
+            <li>
+              <a th:href="@{/admin/memberList}">회원 리스트</a>
+            </li>
+            <li>
+              <a th:href="@{/admin/memberTierUpdate}">회원 승인 요청</a>
+            </li>
+            <li>
+              <a th:href="@{/admin/productList}">제품 리스트</a>
+            </li>
+            <!-- <li>
+                <a th:href="@{/admin/productSoldOutUpdate}">제품 품절 수정</a>
+            </li> -->
+            <li>
+              <a th:href="@{/admin/productUpload}">제품 등록</a>
+            </li>
+            <li>
+              <a th:href="@{/admin/productDelete}">제품 삭제</a>
+            </li>
+            <!-- <li>
+                <a th:href="@{/admin/memberFranCodeUpdate}">회원 가맹점코드 수정</a>
+            </li> -->
+            <li>
+              <a th:href="@{/admin/memberDisableUpdate}">회원 비활성화 수정</a>
+            </li>
+            <li>
+              <a th:href="@{/admin/memberWithdrawalList}">탈퇴 회원 리스트</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </header>
+</html>

@@ -53,9 +53,6 @@ public class mainController {
 
         Integer memberTier = (Integer) session.getAttribute("memberTier");
         String memberId = (String) session.getAttribute("memberId");
-        if(memberTier == null) {
-            memberTier = 0;
-        }
 
         session.setAttribute("memberId", memberId);
         session.setAttribute("memberTier", memberTier);

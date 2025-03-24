@@ -21,13 +21,15 @@ public class CustomErrorHandler implements ErrorController {
     Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
     Object message = request.getAttribute(RequestDispatcher.ERROR_MESSAGE);
     Object exception = request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
+    Object requestUri = request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI);
 
     Object sessionStatus = session.getAttribute("errorStatus");
     Object sessionMessage = session.getAttribute("errorMessage");
 
     logger.info("Error occurred: Status = {}, Message = {}, Exception = {}, URI = {}, Session Status = {}, Session Message = {}",
-      status, message, exception, request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI), sessionStatus, sessionMessage);
+      status, message, exception, requestUri, sessionStatus, sessionMessage);
 
+    // 상태 코드 처리
     if (status != null) {
       int statusCode = Integer.parseInt(status.toString());
       model.addAttribute("statusCode", statusCode);
@@ -40,14 +42,16 @@ public class CustomErrorHandler implements ErrorController {
       model.addAttribute("error", "Unknown");
     }
 
-    model.addAttribute("message", message != null ? message : sessionMessage != null ? sessionMessage : "Unknown error");
-    model.addAttribute("exception", exception != null ? exception.toString() : "N/A");
-    model.addAttribute("requestUri", request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI));
+    // 메시지 처리
+    model.addAttribute("message", message != null ? message : sessionMessage != null ? sessionMessage : "알 수 없는 에러");
+    model.addAttribute("exception", exception != null ? exception.toString() : "없음");
+    model.addAttribute("requestUri", requestUri != null ? requestUri : "N/A");
+    model.addAttribute("requestMethod", request.getMethod() != null ? request.getMethod() : "N/A");
 
     // 세션 데이터 정리
     session.removeAttribute("errorStatus");
     session.removeAttribute("errorMessage");
 
-    return "error"; // error.jsp로 렌더링
+    return "error"; // error.html로 렌더링
   }
 }

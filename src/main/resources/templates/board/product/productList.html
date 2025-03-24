@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<body layout:fragment="content">
+<main id="product_page">
+  <div class="product_wrap">
+    <div class="page_head">
+      <a>
+        <h1 th:switch="${pageType}">
+          <span th:case="'bean'">원두 커피</span>
+          <span th:case="'mix'">믹스 커피</span>
+          <span th:case="'cafe'">카페 용품</span>
+          <span th:case="'machine'">임대 머신</span>
+        </h1>
+      </a>
+    </div>
+    <div class="product">
+      <ul class="center">
+        <div th:switch="${memberTier}">
+          <div th:case="'0'" class="denied-text">
+            <p>로그인을 진행하시거나</p>
+            <br/>
+            <p>최초 회원가입 진행 후에 1566-0904로 연락 부탁드립니다.</p>
+          </div>
+          <div th:case="*" th:if="${memberTier != '0' and productCount == 0}">
+            <p>제품을 찾을 수 없습니다.</p>
+          </div>
+          <div th:case="*" th:if="${memberTier != '0'}">
+            <div th:if="${productSearchCount > 0 or productCount > 0}">
+              <li th:each="p : ${list}">
+                <div th:if="${p.productSoldOut == 1}" class="sold_out">Sold Out</div>
+                <div th:switch="${p.productType}">
+                  <div th:case="0">
+                    <a th:href="@{/board/beanDetail(productCode=${p.productCode})}">
+                      <img th:src="@{/files/bean/{code}/{file}(code=${p.productCode}, file=${p.productFile})}" alt="" />
+                    </a>
+                    <div>
+                      <a th:href="@{/board/beanDetail(productCode=${p.productCode})}" th:text="${p.productName}"></a>
+                      <p th:text="${#numbers.formatInteger(p.productPrice, 3, 'COMMA') + ' 원'}"></p>
+                    </div>
+                  </div>
+                  <div th:case="1">
+                    <a th:href="@{/board/mixDetail(productCode=${p.productCode})}">
+                      <img th:src="@{/files/mix/{code}/{file}(code=${p.productCode}, file=${p.productFile})}" alt="" />
+                    </a>
+                    <div>
+                      <a th:href="@{/board/mixDetail(productCode=${p.productCode})}" th:text="${p.productName}"></a>
+                      <p th:text="${#numbers.formatInteger(p.productPrice, 3, 'COMMA') + ' 원'}"></p>
+                    </div>
+                  </div>
+                  <div th:case="2">
+                    <a th:href="@{/board/cafeDetail(productCode=${p.productCode})}">
+                      <img th:src="@{/files/cafe/{code}/{file}(code=${p.productCode}, file=${p.productFile})}" alt="" />
+                    </a>
+                    <div>
+                      <a th:href="@{/board/cafeDetail(productCode=${p.productCode})}" th:text="${p.productName}"></a>
+                      <p th:text="${#numbers.formatInteger(p.productPrice, 3, 'COMMA') + ' 원'}"></p>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </div>
+            <div th:if="${productSearchCount == 0}">
+              <p>검색결과를 찾을 수 없습니다.</p>
+            </div>
+          </div>
+        </div>
+      </ul>
+    </div>
+  </div>
+
+  <div class="pagination_wrap center">
+    <div class="pagination">
+      <div th:if="${pageNum >= 3}">
+        <a th:if="${searchText == null}" th:href="@{/board/product(pageNum=${pageNum - 3})}">«</a>
+        <a th:unless="${searchText == null}" th:href="@{/board/productSearch(pageNum=${pageNum - 3}, searchText=${searchText})}">«</a>
+      </div>
+      <div th:if="${productSearchCount > 0}">
+        <a th:each="p : ${#numbers.sequence(start, end)}"
+           th:href="${searchText == null} ? @{/board/product(pageNum=${p})} : @{/board/productSearch(pageNum=${p}, searchText=${searchText})}"
+           th:text="${p}"></a>
+      </div>
+      <div th:if="${pageNum < end - 3}">
+        <a th:if="${searchText == null}" th:href="@{/board/product(pageNum=${pageNum + 3})}">»</a>
+        <a th:unless="${searchText == null}" th:href="@{/board/productSearch(pageNum=${pageNum + 3}, searchText=${searchText})}">»</a>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>

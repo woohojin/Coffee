@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+  <body layout:fragment="content">
+    <main id="product_detail_page">
+      <div class="product_detail_wrap">
+        <div class="product_detail">
+          <div class="machine_image">
+            <img th:src="@{/image/machine_detail.png}" alt="" />
+          </div>
+        </div>
+      </div>
+    </main>
+    <script th:src="@{/js/addToCart.js}"></script>
+    <script th:src="@{/js/scrollMove.js}"></script>
+  </body>
+</html>

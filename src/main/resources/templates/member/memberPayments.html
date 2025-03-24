@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+  <body layout:fragment="content">
+    <main>
+      <div class="wrapper w-100">
+        <div class="max-w-540 w-100">
+          <div id="payment-method" class="w-100"></div>
+          <div id="agreement" class="w-100"></div>
+          <div class="payments_btn-wrapper w-100">
+            <button id="payment-request-button" class="payments_btn primary w-100">결제하기</button>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script type="text/javascript" th:inline="javascript">
+      const contextPath = /*[[${#httpServletRequest.contextPath}]]*/ '';
+      const button = document.getElementById("payment-request-button");
+      const widgetClientKey = "test_ck_yZqmkKeP8gNW0G14QzkBrbQRxB9l";
+      const customerKey = /*[[${session.customerKey}]]*/ '';
+      const paymentWidget = PaymentWidget(widgetClientKey, customerKey);
+
+      const paymentMethodWidget = paymentWidget.renderPaymentMethods(
+        "#payment-method",
+        {
+          value: /*[[${session.totalPrice}]]*/ 0,
+          currency: "KRW",
+          country: "KR"
+        },
+        { variantKey: "DEFAULT" }
+      );
+
+      paymentWidget.renderAgreement(
+        "#agreement",
+        { variantKey: "AGREEMENT" }
+      );
+
+      button.addEventListener("click", function () {
+        paymentWidget.requestPayment({
+          orderId: /*[[${session.orderId}]]*/ '',
+          orderName: /*[[${orderName}]]*/ '',
+          successUrl: window.location.origin + contextPath + "/member/memberPaymentsSuccess",
+          failUrl: window.location.origin + contextPath + "/member/memberPaymentsFailure",
+          customerName: /*[[${member.memberName}]]*/ '',
+          customerMobilePhone: /*[[${member.memberTel}]]*/ ''
+        });
+      });
+    </script>
+  </body>
+</html>

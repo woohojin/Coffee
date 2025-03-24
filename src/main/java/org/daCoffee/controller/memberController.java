@@ -5,6 +5,11 @@ import org.daCoffee.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.daCoffee.service.*;
@@ -184,6 +189,18 @@ public class memberController {
           Integer memberTier = member.getMemberTier();
           session.setAttribute("memberId", memberId);
           session.setAttribute("memberTier", memberTier);
+
+          LOGGER.info("memberTier : {}", session.getAttribute("memberTier"));
+
+          List<SimpleGrantedAuthority> authorities = memberTier == 9 ?
+            Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")) :
+            Collections.emptyList();
+          Authentication auth = new UsernamePasswordAuthenticationToken(memberId, null, authorities);
+          SecurityContextHolder.getContext().setAuthentication(auth);
+
+          SecurityContext context = SecurityContextHolder.createEmptyContext();
+          context.setAuthentication(auth);
+          session.setAttribute("SPRING_SECURITY_CONTEXT", context);
 
           url = "/board/main";
 

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{adminLayout}">
+  <head>
+    <meta charset="UTF-8">
+    <title>제품 삭제</title>
+  </head>
+  <body layout:fragment="content">
+    <main id="admin_page">
+      <div class="admin_page_wrap">
+        <div class="page_head">
+          <a th:href="@{/admin/productDelete}">
+            <h1>제품 삭제</h1>
+          </a>
+        </div>
+        <div class="search_form_wrap center">
+          <div class="inline_wrap">
+            <form class="search_form" th:action="@{/admin/productDeletePro}" method="post" style="max-height: 35px">
+              <div style="justify-content: center;">
+                <label for="productCode" style="flex: none;">제품 번호</label>
+                <input type="text" id="productCode" name="productCode" th:value="${productCode}">
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="btn_wrap center">
+          <div class="btn">
+            <a onclick="submit()">삭제</a>
+          </div>
+        </div>
+        <div class="list">
+          <ul class="center">
+            <div th:switch="${memberTier}">
+              <p th:case="'9'" th:unless="${productCount == 0}"> <!-- memberTier가 9이고 productCount가 0이 아닌 경우 -->
+              <div th:if="${productSearchCount != 0 || productCount != 0}">
+                <table class="list">
+                  <thead>
+                  <tr>
+                    <th class="product_type" onclick="orderBy(this)">
+                      <div class="asc">
+                        <span>제품타입</span>
+                        <img th:src="@{/image/down-arrow.png}" />
+                      </div>
+                    </th>
+                    <th class="product_code" onclick="orderBy(this)">
+                      <div class="asc">
+                        <span>제품번호</span>
+                        <img th:src="@{/image/down-arrow.png}" />
+                      </div>
+                    </th>
+                    <th class="product_name" onclick="orderBy(this)">
+                      <div class="asc">
+                        <span>제품이름</span>
+                        <img th:src="@{/image/down-arrow.png}" />
+                      </div>
+                    </th>
+                    <th class="product_unit" onclick="orderBy(this)">
+                      <div class="asc">
+                        <span>용량</span>
+                        <img th:src="@{/image/down-arrow.png}" />
+                      </div>
+                    </th>
+                    <th class="product_price" onclick="orderBy(this)">
+                      <div class="asc">
+                        <span>금액</span>
+                        <img th:src="@{/image/down-arrow.png}" />
+                      </div>
+                    </th>
+                    <th class="product_tier" onclick="orderBy(this)">
+                      <div class="asc">
+                        <span>등급</span>
+                        <img th:src="@{/image/down-arrow.png}" />
+                      </div>
+                    </th>
+                    <th class="product_sold_out" onclick="orderBy(this)">
+                      <div class="asc">
+                        <span>품절</span>
+                        <img th:src="@{/image/down-arrow.png}" />
+                      </div>
+                    </th>
+                    <th class="product_file">
+                      <div class="asc">
+                        <span>파일명</span>
+                      </div>
+                    </th>
+                    <th class="product_register_name">
+                      <div class="asc">
+                        <span>등록자</span>
+                      </div>
+                    </th>
+                    <th class="product_register_date">
+                      <div class="asc">
+                        <span>등록일</span>
+                      </div>
+                    </th>
+                    <th class="product_modifier_name">
+                      <div class="asc">
+                        <span>수정자</span>
+                      </div>
+                    </th>
+                    <th class="product_modifier_date">
+                      <div class="asc">
+                        <span>수정일</span>
+                      </div>
+                    </th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr th:each="p : ${list}">
+                    <td><p th:text="${p.productType}"></p></td>
+                    <td><p th:text="${p.productCode}"></p></td>
+                    <td><p th:text="${p.productName}"></p></td>
+                    <td><p th:text="${p.productUnit}"></p></td>
+                    <td><p th:text="${#numbers.formatInteger(p.productPrice, 3, 'COMMA')} + ' 원'"></p></td>
+                    <td><p th:text="${p.productTier}"></p></td>
+                    <td><p th:text="${p.productSoldOut}"></p></td>
+                    <td><p th:text="${p.productFile}"></p></td>
+                    <td><p th:text="${p.productRegisterName}"></p></td>
+                    <td><p th:text="${p.productRegisterDate}"></p></td>
+                    <td><p th:text="${p.productModifierName}"></p></td>
+                    <td><p th:text="${p.productModifierDate}"></p></td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p th:if="${productSearchCount == 0}">검색결과를 찾을 수 없습니다.</p>
+              </p>
+              <p th:case="'9'" th:if="${productCount == 0}">제품을 찾을 수 없습니다.</p>
+              <p th:case="*">권한이 부족합니다.</p>
+            </div>
+          </ul>
+        </div>
+
+        <div class="pagination_wrap center">
+          <div class="pagination">
+            <div th:if="${pageNum >= 3}">
+              <a th:if="${searchText == null}" th:href="@{/admin/memberList(pageNum=${pageNum - 3})}">«</a>
+              <a th:unless="${searchText == null}" th:href="@{/admin/memberListSearch(pageNum=${pageNum - 3}, searchText=${searchText})}">«</a>
+            </div>
+            <div th:if="${memberSearchCount != 0}">
+              <div th:if="${searchText == null}">
+                <a th:each="p : ${#numbers.sequence(start, end)}"
+                   th:href="@{/admin/memberList(pageNum=${p})}"
+                   th:text="${p}"></a>
+              </div>
+              <div th:unless="${searchText == null}">
+                <a th:each="p : ${#numbers.sequence(start, end)}"
+                   th:href="@{/admin/memberListSearch(pageNum=${p}, searchText=${searchText})}"
+                   th:text="${p}"></a>
+              </div>
+            </div>
+            <div th:if="${pageNum < end - 3}">
+              <a th:if="${searchText == null}" th:href="@{/admin/memberList(pageNum=${pageNum + 3})}">»</a>
+              <a th:unless="${searchText == null}" th:href="@{/admin/memberListSearch(pageNum=${pageNum + 3}, searchText=${searchText})}">»</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      function submit() {
+        const form = document.querySelector(".search_form");
+        if (confirm("제품이 삭제됩니다. 진행하시겠습니까?") === true) {
+          form.submit();
+          return true;
+        } else {
+          return false;
+        }
+      }
+    </script>
+  </body>
+</html>

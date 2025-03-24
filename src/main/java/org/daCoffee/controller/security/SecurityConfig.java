@@ -27,15 +27,13 @@ public class SecurityConfig {
         http
           .securityMatcher("/**")
           .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/member/**", "/board/**", "/css/**", "/image/**", "/js/**", "/favicon.ico", "/error").permitAll() // 인증 없이 접근 가능
+            .requestMatchers("/member/**", "/board/**", "/css/**", "/image/**", "/js/**", "/favicon.ico", "/error", "/META-INF/resources/WEB-INF/view/**").permitAll() // 인증 없이 접근 가능, error.jsp가 있는건 sitemesh가 error.jsp를 필터링 하기 때문
+            .requestMatchers("/admin/**").hasRole("ADMIN")
             .anyRequest().authenticated()
-          )
-          .formLogin(form -> form
-            .loginPage("/member/memberSignIn") // 로그인 페이지 URL 설정
           )
           .logout(logout -> logout
             .logoutRequestMatcher(new AntPathRequestMatcher("/member/memberLogout"))
-            .logoutUrl("/member/memberLogout") // 로그아웃 URL 설정
+            .logoutUrl("/member/memberLogout")
             .deleteCookies("JSESSIONID", "memberId", "token")
             .clearAuthentication(true)
             .invalidateHttpSession(true)
