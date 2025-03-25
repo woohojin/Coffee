@@ -121,7 +121,10 @@
                             <p>${ m.memberDetailAddress }</p>
                           </td>
                           <td>
-                            <a style="color: var(--mainColor);" onclick="fileDownload('${ m.memberFile }','${ m.memberId }')">${ m.memberFile }</a>
+                            <a style="color: var(--mainColor);" th:data-file="${m.memberFile}" th:data-filename="${m.memberId}"
+                               onclick="fileDownload(this.getAttribute('data-file'), this.getAttribute('data-filename'))">
+                                ${ m.memberFile }
+                            </a>
                           </td>
                           <td>
                             <p>${ m.memberDate }</p>

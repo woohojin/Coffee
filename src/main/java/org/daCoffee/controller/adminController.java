@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -50,7 +51,7 @@ public class adminController {
   }
 
   @RequestMapping("productList")
-  public String productList(HttpServletRequest request, HttpSession session) throws Exception {
+  public String productList(HttpServletRequest request, HttpSession session, Model model) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
@@ -72,7 +73,7 @@ public class adminController {
       productDao.rownumSet();
       List<Product> list = productDao.productList(pageInt, limit);
       productCount = productDao.productCount();
-      request.setAttribute("list", list);
+      model.addAttribute("list", list);
     }
 
     int start = (pageInt - 1) / bottomLine * bottomLine + 1;
@@ -85,20 +86,20 @@ public class adminController {
       end = productCount;
     }
 
-    request.setAttribute("memberTier", memberTier);
-    request.setAttribute("productCount", productCount);
-    request.setAttribute("pageNum", pageNum);
-    request.setAttribute("start", start);
-    request.setAttribute("end", end);
-    request.setAttribute("bottomLine", bottomLine);
-    request.setAttribute("maxPage", maxPage);
-    request.setAttribute("pageInt", pageInt);
+    model.addAttribute("memberTier", memberTier);
+    model.addAttribute("productCount", productCount);
+    model.addAttribute("pageNum", pageNum);
+    model.addAttribute("start", start);
+    model.addAttribute("end", end);
+    model.addAttribute("bottomLine", bottomLine);
+    model.addAttribute("maxPage", maxPage);
+    model.addAttribute("pageInt", pageInt);
 
     return "admin/productList";
   }
 
   @RequestMapping("productListPro")
-  public String productListPro(HttpServletRequest request, HttpSession session) throws Exception {
+  public String productListPro(HttpServletRequest request, HttpSession session, Model model) throws Exception {
     String columnName = request.getParameter("columnName");
     String orderBy = request.getParameter("orderBy");
 
@@ -164,7 +165,7 @@ public class adminController {
       }
 
       productCount = productDao.productCount();
-      request.setAttribute("list", list);
+      model.addAttribute("list", list);
     }
 
     int start = (pageInt - 1) / bottomLine * bottomLine + 1;
@@ -176,22 +177,22 @@ public class adminController {
     if (end > productCount) {
       end = productCount;
     }
-    request.setAttribute("memberTier", memberTier);
-    request.setAttribute("productCount", productCount);
-    request.setAttribute("columnName", columnName);
-    request.setAttribute("orderBy", orderBy);
-    request.setAttribute("pageNum", pageNum);
-    request.setAttribute("start", start);
-    request.setAttribute("end", end);
-    request.setAttribute("bottomLine", bottomLine);
-    request.setAttribute("maxPage", maxPage);
-    request.setAttribute("pageInt", pageInt);
+    model.addAttribute("memberTier", memberTier);
+    model.addAttribute("productCount", productCount);
+    model.addAttribute("columnName", columnName);
+    model.addAttribute("orderBy", orderBy);
+    model.addAttribute("pageNum", pageNum);
+    model.addAttribute("start", start);
+    model.addAttribute("end", end);
+    model.addAttribute("bottomLine", bottomLine);
+    model.addAttribute("maxPage", maxPage);
+    model.addAttribute("pageInt", pageInt);
 
     return "admin/productList";
   }
 
   @RequestMapping("productSearch")
-  public String productSearch(HttpServletRequest request, HttpSession session) throws Exception {
+  public String productSearch(HttpServletRequest request, HttpSession session, Model model) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
@@ -217,7 +218,7 @@ public class adminController {
       for(String param : array) {
         if(!request.getParameter(param).isEmpty()) {
           searchText = request.getParameter(param);
-          request.setAttribute(param, searchText);
+          model.addAttribute(param, searchText);
           productDao.rownumSet();
           switch(param) {
             case "productCode":
@@ -266,22 +267,22 @@ public class adminController {
       end = productCount;
     }
 
-    request.setAttribute("memberTier", memberTier);
-    request.setAttribute("productCount", productCount);
-    request.setAttribute("list", list);
-    request.setAttribute("pageNum", pageNum);
-    request.setAttribute("start", start);
-    request.setAttribute("end", end);
-    request.setAttribute("bottomLine", bottomLine);
-    request.setAttribute("maxPage", maxPage);
-    request.setAttribute("pageInt", pageInt);
+    model.addAttribute("memberTier", memberTier);
+    model.addAttribute("productCount", productCount);
+    model.addAttribute("list", list);
+    model.addAttribute("pageNum", pageNum);
+    model.addAttribute("start", start);
+    model.addAttribute("end", end);
+    model.addAttribute("bottomLine", bottomLine);
+    model.addAttribute("maxPage", maxPage);
+    model.addAttribute("pageInt", pageInt);
 
     return "admin/productList";
   }
 
 
   @RequestMapping("productSoldOutUpdate")
-  public String productSoldOutUpdate(HttpServletRequest request, HttpSession session) throws Exception {
+  public String productSoldOutUpdate(HttpServletRequest request, HttpSession session, Model model) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
@@ -303,7 +304,7 @@ public class adminController {
       productDao.rownumSet();
       List<Product> list = productDao.productList(pageInt, limit);
       productCount = productDao.productCount();
-      request.setAttribute("list", list);
+      model.addAttribute("list", list);
     }
 
     int start = (pageInt - 1) / bottomLine * bottomLine + 1;
@@ -316,35 +317,35 @@ public class adminController {
       end = productCount;
     }
 
-    request.setAttribute("memberTier", memberTier);
-    request.setAttribute("productCount", productCount);
-    request.setAttribute("pageNum", pageNum);
-    request.setAttribute("start", start);
-    request.setAttribute("end", end);
-    request.setAttribute("bottomLine", bottomLine);
-    request.setAttribute("maxPage", maxPage);
-    request.setAttribute("pageInt", pageInt);
+    model.addAttribute("memberTier", memberTier);
+    model.addAttribute("productCount", productCount);
+    model.addAttribute("pageNum", pageNum);
+    model.addAttribute("start", start);
+    model.addAttribute("end", end);
+    model.addAttribute("bottomLine", bottomLine);
+    model.addAttribute("maxPage", maxPage);
+    model.addAttribute("pageInt", pageInt);
 
     return "admin/productSoldOutUpdate";
   }
 
 
   @RequestMapping("productSoldOutUpdatePro")
-  public String productSoldOutUpdatePro(HttpServletRequest request, HttpSession session, String productCode, int productSoldOut) throws Exception {
+  public String productSoldOutUpdatePro(HttpServletRequest request, HttpSession session, Model model, String productCode, int productSoldOut) throws Exception {
 
     productDao.productSoldOutUpdate(productCode, productSoldOut);
 
     String url = "/admin/productSoldOutUpdate";
     String msg ="제품 품절 수정 성공";
 
-    request.setAttribute("url", url);
-    request.setAttribute("msg", msg);
+    model.addAttribute("url", url);
+    model.addAttribute("msg", msg);
 
     return "alert";
   }
 
   @RequestMapping("memberList")
-  public String memberList(HttpServletRequest request, HttpSession session) throws Exception {
+  public String memberList(HttpServletRequest request, HttpSession session, Model model) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
@@ -367,7 +368,7 @@ public class adminController {
       List<Member> list = memberDao.memberList(pageInt, limit);
       LOGGER.info(list.toString());
       memberCount = memberDao.memberCount();
-      request.setAttribute("list", list);
+      model.addAttribute("list", list);
       LOGGER.info(list.toString());
     }
 
@@ -381,20 +382,20 @@ public class adminController {
       end = memberCount;
     }
 
-    request.setAttribute("memberTier", memberTier);
-    request.setAttribute("memberCount", memberCount);
-    request.setAttribute("pageNum", pageNum);
-    request.setAttribute("start", start);
-    request.setAttribute("end", end);
-    request.setAttribute("bottomLine", bottomLine);
-    request.setAttribute("maxPage", maxPage);
-    request.setAttribute("pageInt", pageInt);
+    model.addAttribute("memberTier", memberTier);
+    model.addAttribute("memberCount", memberCount);
+    model.addAttribute("pageNum", pageNum);
+    model.addAttribute("start", start);
+    model.addAttribute("end", end);
+    model.addAttribute("bottomLine", bottomLine);
+    model.addAttribute("maxPage", maxPage);
+    model.addAttribute("pageInt", pageInt);
 
     return "admin/memberList";
   }
 
   @RequestMapping("memberListPro")
-  public String memberListPro(HttpServletRequest request, HttpSession session) throws Exception {
+  public String memberListPro(HttpServletRequest request, HttpSession session, Model model) throws Exception {
     String columnName = request.getParameter("columnName");
     String orderBy = request.getParameter("orderBy");
 
@@ -468,7 +469,7 @@ public class adminController {
       }
 
       memberCount = memberDao.memberCount();
-      request.setAttribute("list", list);
+      model.addAttribute("list", list);
     }
 
     int start = (pageInt - 1) / bottomLine * bottomLine + 1;
@@ -480,31 +481,31 @@ public class adminController {
     if (end > memberCount) {
       end = memberCount;
     }
-    request.setAttribute("memberTier", memberTier);
-    request.setAttribute("memberCount", memberCount);
-    request.setAttribute("columnName", columnName);
-    request.setAttribute("orderBy", orderBy);
-    request.setAttribute("pageNum", pageNum);
-    request.setAttribute("start", start);
-    request.setAttribute("end", end);
-    request.setAttribute("bottomLine", bottomLine);
-    request.setAttribute("maxPage", maxPage);
-    request.setAttribute("pageInt", pageInt);
+    model.addAttribute("memberTier", memberTier);
+    model.addAttribute("memberCount", memberCount);
+    model.addAttribute("columnName", columnName);
+    model.addAttribute("orderBy", orderBy);
+    model.addAttribute("pageNum", pageNum);
+    model.addAttribute("start", start);
+    model.addAttribute("end", end);
+    model.addAttribute("bottomLine", bottomLine);
+    model.addAttribute("maxPage", maxPage);
+    model.addAttribute("pageInt", pageInt);
 
     return "admin/memberList";
   }
 
   @RequestMapping("memberUpdate")
-  public String memberUpdate(HttpServletRequest request, HttpSession session, String memberId) throws Exception {
+  public String memberUpdate(Model model, String memberId) throws Exception {
     Member member = memberDao.memberSelectOne(memberId);
 
-    request.setAttribute("member", member);
+    model.addAttribute("member", member);
 
     return "admin/memberUpdate";
   }
 
   @RequestMapping("memberUpdatePro")
-  public String memberUpdatePro(HttpServletRequest request, HttpSession session, Member member) throws Exception {
+  public String memberUpdatePro(HttpSession session, Model model, Member member) throws Exception {
     String adminId = (String) session.getAttribute("memberId");
     Member admin = memberDao.memberSelectOne(adminId);
     String adminName = admin.getMemberName();
@@ -526,14 +527,14 @@ public class adminController {
       historyDao.historyFranCodeUpdate(existMemberFranCode, memberFranCode); // 주문 기록에 있는 변경된 가맹점코드 전부 업데이트
     }
 
-    request.setAttribute("url", url);
-    request.setAttribute("msg", msg);
+    model.addAttribute("url", url);
+    model.addAttribute("msg", msg);
 
     return "alert";
   }
 
   @RequestMapping("memberSearch")
-  public String memberSearch(HttpServletRequest request, HttpSession session) throws Exception {
+  public String memberSearch(HttpServletRequest request, HttpSession session, Model model) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
@@ -559,7 +560,7 @@ public class adminController {
       for(String param : array) {
         if(!request.getParameter(param).isEmpty()) {
           searchText = request.getParameter(param);
-          request.setAttribute(param, searchText);
+          model.addAttribute(param, searchText);
           memberDao.rownumSet();
           switch(param) {
             case "memberCompanyName":
@@ -599,21 +600,21 @@ public class adminController {
       end = memberCount;
     }
 
-    request.setAttribute("memberTier", memberTier);
-    request.setAttribute("memberCount", memberCount);
-    request.setAttribute("list", list);
-    request.setAttribute("pageNum", pageNum);
-    request.setAttribute("start", start);
-    request.setAttribute("end", end);
-    request.setAttribute("bottomLine", bottomLine);
-    request.setAttribute("maxPage", maxPage);
-    request.setAttribute("pageInt", pageInt);
+    model.addAttribute("memberTier", memberTier);
+    model.addAttribute("memberCount", memberCount);
+    model.addAttribute("list", list);
+    model.addAttribute("pageNum", pageNum);
+    model.addAttribute("start", start);
+    model.addAttribute("end", end);
+    model.addAttribute("bottomLine", bottomLine);
+    model.addAttribute("maxPage", maxPage);
+    model.addAttribute("pageInt", pageInt);
 
     return "admin/memberList";
   }
 
   @RequestMapping("memberWithdrawalList")
-  public String memberWithdrawalList(HttpServletRequest request, HttpSession session) throws Exception {
+  public String memberWithdrawalList(HttpServletRequest request, HttpSession session, Model model) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
@@ -636,7 +637,7 @@ public class adminController {
       List<Member> list = memberDao.memberWithdrawalList(pageInt, limit);
       LOGGER.info(list.toString());
       memberCount = memberDao.memberWithdrawalCount();
-      request.setAttribute("list", list);
+      model.addAttribute("list", list);
       LOGGER.info(list.toString());
     }
 
@@ -650,20 +651,20 @@ public class adminController {
       end = memberCount;
     }
 
-    request.setAttribute("memberTier", memberTier);
-    request.setAttribute("memberCount", memberCount);
-    request.setAttribute("pageNum", pageNum);
-    request.setAttribute("start", start);
-    request.setAttribute("end", end);
-    request.setAttribute("bottomLine", bottomLine);
-    request.setAttribute("maxPage", maxPage);
-    request.setAttribute("pageInt", pageInt);
+    model.addAttribute("memberTier", memberTier);
+    model.addAttribute("memberCount", memberCount);
+    model.addAttribute("pageNum", pageNum);
+    model.addAttribute("start", start);
+    model.addAttribute("end", end);
+    model.addAttribute("bottomLine", bottomLine);
+    model.addAttribute("maxPage", maxPage);
+    model.addAttribute("pageInt", pageInt);
 
     return "admin/memberWithdrawalList";
   }
 
   @RequestMapping("orderHistory")
-  public String orderHistory(HttpServletRequest request, HttpSession session) throws Exception {
+  public String orderHistory(HttpServletRequest request, HttpSession session, Model model) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
@@ -685,7 +686,7 @@ public class adminController {
       historyDao.rownumSet();
       List<History> list = historyDao.historyList(pageInt, limit);
       historyCount = historyDao.historyCount();
-      request.setAttribute("list", list);
+      model.addAttribute("list", list);
     }
 
     int start = (pageInt - 1) / bottomLine * bottomLine + 1;
@@ -698,20 +699,20 @@ public class adminController {
       end = historyCount;
     }
 
-    request.setAttribute("memberTier", memberTier);
-    request.setAttribute("historyCount", historyCount);
-    request.setAttribute("pageNum", pageNum);
-    request.setAttribute("start", start);
-    request.setAttribute("end", end);
-    request.setAttribute("bottomLine", bottomLine);
-    request.setAttribute("maxPage", maxPage);
-    request.setAttribute("pageInt", pageInt);
+    model.addAttribute("memberTier", memberTier);
+    model.addAttribute("historyCount", historyCount);
+    model.addAttribute("pageNum", pageNum);
+    model.addAttribute("start", start);
+    model.addAttribute("end", end);
+    model.addAttribute("bottomLine", bottomLine);
+    model.addAttribute("maxPage", maxPage);
+    model.addAttribute("pageInt", pageInt);
 
     return "admin/orderHistory";
   }
 
   @RequestMapping("orderHistoryPro")
-  public String orderHistoryPro(HttpServletRequest request, HttpSession session) throws Exception {
+  public String orderHistoryPro(HttpServletRequest request, HttpSession session, Model model) throws Exception {
     String columnName = request.getParameter("columnName");
     String orderBy = request.getParameter("orderBy");
 
@@ -785,7 +786,7 @@ public class adminController {
       }
 
       historyCount = historyDao.historyCount();
-      request.setAttribute("list", list);
+      model.addAttribute("list", list);
     }
 
     int start = (pageInt - 1) / bottomLine * bottomLine + 1;
@@ -797,31 +798,31 @@ public class adminController {
     if (end > historyCount) {
       end = historyCount;
     }
-    request.setAttribute("memberTier", memberTier);
-    request.setAttribute("historyCount", historyCount);
-    request.setAttribute("columnName", columnName);
-    request.setAttribute("orderBy", orderBy);
-    request.setAttribute("pageNum", pageNum);
-    request.setAttribute("start", start);
-    request.setAttribute("end", end);
-    request.setAttribute("bottomLine", bottomLine);
-    request.setAttribute("maxPage", maxPage);
-    request.setAttribute("pageInt", pageInt);
+    model.addAttribute("memberTier", memberTier);
+    model.addAttribute("historyCount", historyCount);
+    model.addAttribute("columnName", columnName);
+    model.addAttribute("orderBy", orderBy);
+    model.addAttribute("pageNum", pageNum);
+    model.addAttribute("start", start);
+    model.addAttribute("end", end);
+    model.addAttribute("bottomLine", bottomLine);
+    model.addAttribute("maxPage", maxPage);
+    model.addAttribute("pageInt", pageInt);
 
     return "admin/orderHistory";
   }
 
   @RequestMapping("orderHistoryUpdate")
-  public String orderHistoryUpdate(HttpServletRequest request, HttpSession session, String orderId, String productCode) throws Exception {
+  public String orderHistoryUpdate(HttpServletRequest request, HttpSession session, Model model, String orderId, String productCode) throws Exception {
     History history = historyDao.historySelectOne(orderId, productCode);
 
-    request.setAttribute("history", history);
+    model.addAttribute("history", history);
 
     return "admin/orderHistoryUpdate";
   }
 
   @RequestMapping("orderHistoryUpdatePro")
-  public String orderHistoryUpdatePro(HttpServletRequest request, HttpSession session, History history) throws Exception {
+  public String orderHistoryUpdatePro(HttpServletRequest request, HttpSession session, Model model, History history) throws Exception {
     String adminId = (String) session.getAttribute("memberId");
     Member admin = memberDao.memberSelectOne(adminId);
     String adminName = admin.getMemberName();
@@ -837,23 +838,23 @@ public class adminController {
       url = "/admin/orderHistory";
     }
 
-    request.setAttribute("msg", msg);
-    request.setAttribute("url", url);
+    model.addAttribute("msg", msg);
+    model.addAttribute("url", url);
 
     return "alert";
   }
 
   @RequestMapping("orderHistoryDelete")
-  public String orderHistoryDelete(HttpServletRequest request, HttpSession session, String orderId, String productCode) throws Exception {
+  public String orderHistoryDelete(HttpServletRequest request, HttpSession session, Model model, String orderId, String productCode) throws Exception {
 
-    request.setAttribute("orderId", orderId);
-    request.setAttribute("productCode", productCode);
+    model.addAttribute("orderId", orderId);
+    model.addAttribute("productCode", productCode);
 
     return "/admin/orderHistoryDelete";
   }
 
   @RequestMapping("orderHistoryDeletePro")
-  public String orderHistoryDeletePro(HttpServletRequest request, String orderId, String productCode, String confirmDelete) throws Exception {
+  public String orderHistoryDeletePro(HttpServletRequest request, Model model, String orderId, String productCode, String confirmDelete) throws Exception {
 
     String msg = "주문 기록 삭제에 성공했습니다.";
     String url = "/admin/orderHistory";
@@ -870,14 +871,14 @@ public class adminController {
       url = "/admin/orderHistory";
     }
 
-    request.setAttribute("msg", msg);
-    request.setAttribute("url", url);
+    model.addAttribute("msg", msg);
+    model.addAttribute("url", url);
 
     return "alert";
   }
 
   @RequestMapping("historySearch")
-  public String historySearch(HttpServletRequest request, HttpSession session) throws Exception {
+  public String historySearch(HttpServletRequest request, HttpSession session, Model model) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
@@ -917,42 +918,42 @@ public class adminController {
         searchText1 = request.getParameter(arrayList.get(1));
         if(!startDate.isEmpty() && !endDate.isEmpty()) {
           list = historyDao.historySearchListByHistoryCodeAndMemberIdWithOrderDate(pageInt, limit, searchText, searchText1 ,startDate, endDate);
-          request.setAttribute("startDate", startDate);
-          request.setAttribute("endDate", endDate);
-          request.setAttribute("historyCode", searchText);
-          request.setAttribute("memberId", searchText1);
+          model.addAttribute("startDate", startDate);
+          model.addAttribute("endDate", endDate);
+          model.addAttribute("historyCode", searchText);
+          model.addAttribute("memberId", searchText1);
         } else {
           list = historyDao.historySearchListByHistoryCodeAndMemberId(pageInt, limit, searchText, searchText1);
-          request.setAttribute("historyCode", searchText);
-          request.setAttribute("memberId", searchText1);
+          model.addAttribute("historyCode", searchText);
+          model.addAttribute("memberId", searchText1);
         }
       } else if (arrayList.size() == 1) {
         searchText = request.getParameter(arrayList.get(0));
         if(arrayList.get(0) == "historyCode") {
           if(!startDate.isEmpty() && !endDate.isEmpty()) {
             list = historyDao.historySearchListByHistoryCodeWithOrderDate(pageInt, limit, searchText, startDate, endDate);
-            request.setAttribute("startDate", startDate);
-            request.setAttribute("endDate", endDate);
-            request.setAttribute("historyCode", searchText);
+            model.addAttribute("startDate", startDate);
+            model.addAttribute("endDate", endDate);
+            model.addAttribute("historyCode", searchText);
           } else {
             list = historyDao.historySearchListByHistoryCode(pageInt, limit, searchText);
-            request.setAttribute("historyCode", searchText);
+            model.addAttribute("historyCode", searchText);
           }
         } else if(arrayList.get(0) == "memberId") {
           if(!startDate.isEmpty() && !endDate.isEmpty()) {
             list = historyDao.historySearchListByMemberIdWithOrderDate(pageInt, limit, searchText, startDate, endDate);
-            request.setAttribute("startDate", startDate);
-            request.setAttribute("endDate", endDate);
-            request.setAttribute("memberId", searchText);
+            model.addAttribute("startDate", startDate);
+            model.addAttribute("endDate", endDate);
+            model.addAttribute("memberId", searchText);
           } else {
             list = historyDao.historySearchListByMemberId(pageInt, limit, searchText);
-            request.setAttribute("memberId", searchText);
+            model.addAttribute("memberId", searchText);
           }
         }
       } else if(!startDate.isEmpty() && !endDate.isEmpty()) {
         list = historyDao.historySearchListByOrderDate(pageInt, limit, startDate, endDate);
-        request.setAttribute("startDate", startDate);
-        request.setAttribute("endDate", endDate);
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
       }
     }
 
@@ -966,21 +967,21 @@ public class adminController {
       end = historyCount;
     }
 
-    request.setAttribute("memberTier", memberTier);
-    request.setAttribute("historyCount", historyCount);
-    request.setAttribute("list", list);
-    request.setAttribute("pageNum", pageNum);
-    request.setAttribute("start", start);
-    request.setAttribute("end", end);
-    request.setAttribute("bottomLine", bottomLine);
-    request.setAttribute("maxPage", maxPage);
-    request.setAttribute("pageInt", pageInt);
+    model.addAttribute("memberTier", memberTier);
+    model.addAttribute("historyCount", historyCount);
+    model.addAttribute("list", list);
+    model.addAttribute("pageNum", pageNum);
+    model.addAttribute("start", start);
+    model.addAttribute("end", end);
+    model.addAttribute("bottomLine", bottomLine);
+    model.addAttribute("maxPage", maxPage);
+    model.addAttribute("pageInt", pageInt);
 
     return "admin/orderHistory";
   }
 
   @RequestMapping("memberTierUpdate")
-  public String memberTierUpdate(HttpServletRequest request, HttpSession session) throws Exception {
+  public String memberTierUpdate(HttpServletRequest request, HttpSession session, Model model) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
@@ -990,16 +991,19 @@ public class adminController {
 
     if(memberTier == 9) {
       list = memberDao.memberSearchListByMemberTier(1, 32, "0");
-      request.setAttribute("list", list);
+      model.addAttribute("list", list);
     }
 
-    request.setAttribute("memberTier", memberTier);
+    Integer memberCount = memberDao.memberCount();
+
+    model.addAttribute("memberCount", memberCount);
+    model.addAttribute("memberTier", memberTier);
 
     return "admin/memberTierUpdate";
   }
 
   @RequestMapping("memberTierUpdatePro")
-  public String memberTierUpdatePro(HttpServletRequest request, String memberId, int memberTier) throws Exception {
+  public String memberTierUpdatePro(HttpServletRequest request, Model model, String memberId, int memberTier) throws Exception {
 
     LOGGER.info(memberId, memberTier);
 
@@ -1008,8 +1012,8 @@ public class adminController {
     String url = "/admin/memberTierUpdate";
     String msg ="멤버 등급 수정 성공";
 
-    request.setAttribute("url", url);
-    request.setAttribute("msg", msg);
+    model.addAttribute("url", url);
+    model.addAttribute("msg", msg);
 
     return "alert";
   }
@@ -1025,10 +1029,10 @@ public class adminController {
 //
 //    if(memberTier == 9) {
 //      list = memberDao.memberSearchListByMemberFranCodeByNull(1, 32);
-//      request.setAttribute("list", list);
+//      model.addAttribute()("list", list);
 //    }
 //
-//    request.setAttribute("memberTier", memberTier);
+//    model.addAttribute()("memberTier", memberTier);
 //
 //    return "admin/memberFranCodeUpdate";
 //  }
@@ -1040,14 +1044,14 @@ public class adminController {
 //    String url = "/admin/memberFranCodeUpdate";
 //    String msg ="멤버 가맹점코드 수정 성공";
 //
-//    request.setAttribute("url", url);
-//    request.setAttribute("msg", msg);
+//    model.addAttribute()("url", url);
+//    model.addAttribute()("msg", msg);
 //
 //    return "alert";
 //  }
 
   @RequestMapping("memberDisableUpdate")
-  public String memberDisableUpdate(HttpServletRequest request, HttpSession session) throws Exception {
+  public String memberDisableUpdate(HttpServletRequest request, HttpSession session, Model model) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
@@ -1057,16 +1061,16 @@ public class adminController {
 
     if(memberTier == 9) {
       list = memberDao.memberSearchListByMemberDisable(1, 32);
-      request.setAttribute("list", list);
+      model.addAttribute("list", list);
     }
 
-    request.setAttribute("memberTier", memberTier);
+    model.addAttribute("memberTier", memberTier);
 
     return "admin/memberDisable";
   }
 
   @RequestMapping("memberDisableUpdatePro")
-  public String memberDisableUpdatePro(HttpServletRequest request, String memberId) throws Exception {
+  public String memberDisableUpdatePro(HttpServletRequest request, Model model, String memberId) throws Exception {
     Member member = memberDao.memberSelectOne(memberId);
     Member disabledMember = memberDao.memberDisableSelectOne(memberId);
 
@@ -1089,8 +1093,8 @@ public class adminController {
     String url = "/admin/memberDisableUpdate";
     String msg = "멤버 비활성화 상태 수정 성공";
 
-    request.setAttribute("url", url);
-    request.setAttribute("msg", msg);
+    model.addAttribute("url", url);
+    model.addAttribute("msg", msg);
 
     return "alert";
   }
@@ -1101,7 +1105,7 @@ public class adminController {
   }
 
   @RequestMapping("productUploadPro")
-  public String productUploadPro(HttpServletRequest request, HttpSession session, MultipartHttpServletRequest files, Product product) throws Exception {
+  public String productUploadPro(HttpServletRequest request, HttpSession session, Model model, MultipartHttpServletRequest files, Product product) throws Exception {
     String adminId = (String) session.getAttribute("memberId");
     Member admin = memberDao.memberSelectOne(adminId);
     String adminName = admin.getMemberName();
@@ -1184,37 +1188,37 @@ public class adminController {
       msg = "이미 존재하는 제품입니다.";
     }
 
-    request.setAttribute("msg", msg);
-    request.setAttribute("url", url);
+    model.addAttribute("msg", msg);
+    model.addAttribute("url", url);
 
     return "alert";
   }
 
 
   @RequestMapping("productUpdate")
-  public String productUpdate(HttpServletRequest request, @RequestParam(name = "productCode") String productCode) {
+  public String productUpdate(HttpServletRequest request, Model model, @RequestParam(name = "productCode") String productCode) {
 
     Product product = productDao.productSelectOne(productCode);
     int productType = product.getProductType();
 
     if(productType == 0) { // bean (cafe는 테이블이 없음)
       Product bean = productDao.beanSelectOne(productCode);
-      request.setAttribute("bean", bean);
+      model.addAttribute("bean", bean);
     }
     if(productType == 1) { // mix
       Product mix = productDao.mixSelectOne(productCode);
-      request.setAttribute("mix", mix);
+      model.addAttribute("mix", mix);
     }
 
     product.setExistProductCode(productCode);
 
-    request.setAttribute("product", product);
+    model.addAttribute("product", product);
 
     return "admin/productUpdate";
   }
 
   @RequestMapping("productUpdatePro")
-  public String productUpdatePro(HttpServletRequest request, HttpSession session, MultipartHttpServletRequest files, Product product) throws Exception {
+  public String productUpdatePro(HttpServletRequest request, HttpSession session, Model model, MultipartHttpServletRequest files, Product product) throws Exception {
     String adminId = (String) session.getAttribute("memberId");
     Member admin = memberDao.memberSelectOne(adminId);
     String adminName = admin.getMemberName();
@@ -1298,14 +1302,14 @@ public class adminController {
       msg = "제품이 존재하지 않습니다.";
     }
 
-    request.setAttribute("msg", msg);
-    request.setAttribute("url", url);
+    model.addAttribute("msg", msg);
+    model.addAttribute("url", url);
 
     return "alert";
   }
 
   @RequestMapping("productDelete")
-  public String productDelete(HttpServletRequest request, HttpSession session) throws Exception {
+  public String productDelete(HttpServletRequest request, HttpSession session, Model model) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
@@ -1327,7 +1331,7 @@ public class adminController {
       productDao.rownumSet();
       List<Product> list = productDao.productList(pageInt, limit);
       productCount = productDao.productCount();
-      request.setAttribute("list", list);
+      model.addAttribute("list", list);
     }
 
     int start = (pageInt - 1) / bottomLine * bottomLine + 1;
@@ -1340,20 +1344,20 @@ public class adminController {
       end = productCount;
     }
 
-    request.setAttribute("memberTier", memberTier);
-    request.setAttribute("productCount", productCount);
-    request.setAttribute("pageNum", pageNum);
-    request.setAttribute("start", start);
-    request.setAttribute("end", end);
-    request.setAttribute("bottomLine", bottomLine);
-    request.setAttribute("maxPage", maxPage);
-    request.setAttribute("pageInt", pageInt);
+    model.addAttribute("memberTier", memberTier);
+    model.addAttribute("productCount", productCount);
+    model.addAttribute("pageNum", pageNum);
+    model.addAttribute("start", start);
+    model.addAttribute("end", end);
+    model.addAttribute("bottomLine", bottomLine);
+    model.addAttribute("maxPage", maxPage);
+    model.addAttribute("pageInt", pageInt);
 
     return "admin/productDelete";
   }
 
   @RequestMapping("productDeletePro")
-  public String productDeletePro(HttpServletRequest request, HttpSession session, String productCode) throws Exception {
+  public String productDeletePro(HttpServletRequest request, HttpSession session, Model model, String productCode) throws Exception {
     Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
@@ -1367,8 +1371,8 @@ public class adminController {
       msg = "제품 삭제에 성공했습니다.";
     }
 
-    request.setAttribute("msg", msg);
-    request.setAttribute("url", url);
+    model.addAttribute("msg", msg);
+    model.addAttribute("url", url);
 
     return "alert";
   }
