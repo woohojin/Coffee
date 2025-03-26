@@ -132,25 +132,25 @@
 
         <div class="pagination_wrap center">
           <div class="pagination">
-            <div th:if="${pageNum >= 3}">
-              <a th:if="${searchText == null}" th:href="@{/admin/memberList(pageNum=${pageNum - 3})}">«</a>
-              <a th:unless="${searchText == null}" th:href="@{/admin/memberListSearch(pageNum=${pageNum - 3}, searchText=${searchText})}">«</a>
+            <div th:if="${pageInt >= 3}">
+              <a th:if="${searchText == null}" th:href="@{/admin/memberList(pageInt=${pageInt - 3})}">«</a>
+              <a th:unless="${searchText == null}" th:href="@{/admin/memberListSearch(pageInt=${pageInt - 3}, searchText=${searchText})}">«</a>
             </div>
             <div th:if="${memberSearchCount != 0}">
               <div th:if="${searchText == null}">
                 <a th:each="p : ${#numbers.sequence(start, end)}"
-                   th:href="@{/admin/memberList(pageNum=${p})}"
+                   th:href="@{/admin/memberList(pageInt=${p})}"
                    th:text="${p}"></a>
               </div>
               <div th:unless="${searchText == null}">
                 <a th:each="p : ${#numbers.sequence(start, end)}"
-                   th:href="@{/admin/memberListSearch(pageNum=${p}, searchText=${searchText})}"
+                   th:href="@{/admin/memberListSearch(pageInt=${p}, searchText=${searchText})}"
                    th:text="${p}"></a>
               </div>
             </div>
-            <div th:if="${pageNum < end - 3}">
-              <a th:if="${searchText == null}" th:href="@{/admin/memberList(pageNum=${pageNum + 3})}">»</a>
-              <a th:unless="${searchText == null}" th:href="@{/admin/memberListSearch(pageNum=${pageNum + 3}, searchText=${searchText})}">»</a>
+            <div th:if="${pageInt < end - 3}">
+              <a th:if="${searchText == null}" th:href="@{/admin/memberList(pageInt=${pageInt + 3})}">»</a>
+              <a th:unless="${searchText == null}" th:href="@{/admin/memberListSearch(pageInt=${pageInt + 3}, searchText=${searchText})}">»</a>
             </div>
           </div>
         </div>
@@ -166,6 +166,37 @@
         } else {
           return false;
         }
+      }
+
+      window.onload = function() {
+        const columnNameInput = document.getElementById("columnName");
+        const orderByInput = document.getElementById("orderBy");
+
+        const columnNameInputValue = columnNameInput.value;
+        const orderByInputValue = orderByInput.value;
+
+        const columnNameElement = document.querySelector("." + columnNameInputValue).firstElementChild;
+        const imgElement = columnNameElement.lastElementChild;
+
+        if(orderByInputValue === "asc") {
+          columnNameElement.className = "asc";
+          imgElement.src = "${ pageContext.request.contextPath }/image/down-arrow.png";
+        } else if(orderByInputValue === "desc") {
+          columnNameElement.className = "desc";
+          imgElement.src = "${ pageContext.request.contextPath }/image/up-arrow.png";
+        }
+      }
+
+      function orderBy(object) {
+        const columnName = object.className;
+        const currentOrderBy = object.firstElementChild.className;
+        const orderBy = (currentOrderBy === "asc") ? "desc" : "asc";
+        const form = document.getElementById("orderByForm");
+
+        form.querySelector('input[name="columnName"]').value = columnName;
+        form.querySelector('input[name="orderBy"]').value = orderBy;
+
+        form.submit();
       }
     </script>
   </body>
