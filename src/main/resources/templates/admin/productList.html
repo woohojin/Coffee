@@ -1,275 +1,242 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{adminLayout}">
-  <head>
-    <meta charset="UTF-8">
-    <title>제품 리스트</title>
-  </head>
-  <body layout:fragment="content">
-    <main id="admin_page">
-      <div class="admin_page_wrap">
-        <div class="page_head">
-          <a th:href="@{/admin/productSoldOutUpdate}">
-            <h1>제품 리스트</h1>
-          </a>
-        </div>
-        <div class="excel_download">
-          <a th:href="@{/admin/excelProductDownload}">제품 엑셀 다운로드</a>
-        </div>
-        <div class="search_form_wrap center">
-          <div class="inline_wrap">
-            <form class="search_form" th:action="@{/admin/productSearch}" method="post" style="max-height: 35px">
-              <div>
-                <label for="productCode">제품 번호</label>
-                <input type="text" id="productCode" name="productCode" th:value="${productCode}">
-                <label for="productName">제품 이름</label>
-                <input type="text" id="productName" name="productName" th:value="${productName}">
-              </div>
-              <div>
-                <label for="productType">제품 타입</label>
-                <input type="text" id="productType" name="productType" th:value="${productType}">
-                <label for="productPrice">금액</label>
-                <input type="text" id="productPrice" name="productPrice" th:value="${productPrice}">
-              </div>
-              <div>
-                <label for="productUnit">용량</label>
-                <input type="text" id="productUnit" name="productUnit" th:value="${productUnit}">
-              </div>
-              <div>
-                <label for="productTier">등급</label>
-                <input type="text" id="productTier" name="productTier" th:value="${productTier}">
-                <label for="productSoldOut">품절</label>
-                <input type="text" id="productSoldOut" name="productSoldOut" th:value="${productSoldOut}">
-              </div>
-            </form>
-            <div class="collapse" onclick="expand(this)">
-              <img th:src="@{/image/down-arrow.png}" />
-            </div>
+<head>
+  <meta charset="UTF-8">
+  <title>제품 리스트</title>
+</head>
+<body layout:fragment="content">
+<main id="admin_page">
+  <div class="admin_page_wrap">
+    <div class="page_head">
+      <a th:href="@{/admin/productList}">
+        <h1>제품 리스트</h1>
+      </a>
+    </div>
+    <div class="excel_download">
+      <a th:href="@{/admin/excelProductDownload}">제품 엑셀 다운로드</a>
+    </div>
+    <div class="search_form_wrap center">
+      <div class="inline_wrap">
+        <form class="search_form" th:action="@{/admin/productSearch}" method="post" style="max-height: 35px">
+          <div>
+            <label for="productCode">제품 번호</label>
+            <input type="text" id="productCode" name="productCode" th:value="${productCode}">
+            <label for="productName">제품 이름</label>
+            <input type="text" id="productName" name="productName" th:value="${productName}">
           </div>
-        </div>
-        <div class="btn_wrap center">
-          <div class="btn">
-            <a onclick="submit()">검색</a>
+          <div>
+            <label for="productType">제품 타입</label>
+            <input type="text" id="productType" name="productType" th:value="${productType}">
+            <label for="productPrice">금액</label>
+            <input type="text" id="productPrice" name="productPrice" th:value="${productPrice}">
           </div>
-        </div>
-        <div class="list">
-          <ul class="center">
-            <div th:if="${memberTier != 9}">
-              <p>권한이 부족합니다.</p>
-            </div>
-            <div th:if="${memberTier == 9 and productCount == 0}">
-              <p>제품을 찾을 수 없습니다.</p>
-            </div>
-            <div th:if="${memberTier == 9 and productCount != 0}">
-              <form th:action="@{/admin/productSoldOutUpdatePro}" method="post">
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                <div th:if="${productSearchCount != 0 || productCount != 0}">
-                  <table class="list">
-                    <thead>
-                    <tr>
-                      <th class="product_type" onclick="orderBy(this)">
-                        <div class="asc">
-                          <span>제품타입</span>
-                          <img th:src="@{/image/down-arrow.png}" />
-                        </div>
-                      </th>
-                      <th class="product_code" onclick="orderBy(this)">
-                        <div class="asc">
-                          <span>제품코드</span>
-                          <img th:src="@{/image/down-arrow.png}" />
-                        </div>
-                      </th>
-                      <th class="product_name" onclick="orderBy(this)">
-                        <div class="asc">
-                          <span>제품이름</span>
-                          <img th:src="@{/image/down-arrow.png}" />
-                        </div>
-                      </th>
-                      <th class="product_unit" onclick="orderBy(this)">
-                        <div class="asc">
-                          <span>용량</span>
-                          <img th:src="@{/image/down-arrow.png}" />
-                        </div>
-                      </th>
-                      <th class="product_price" onclick="orderBy(this)">
-                        <div class="asc">
-                          <span>금액</span>
-                          <img th:src="@{/image/down-arrow.png}" />
-                        </div>
-                      </th>
-                      <th class="product_tier" onclick="orderBy(this)">
-                        <div class="asc">
-                          <span>등급</span>
-                          <img th:src="@{/image/down-arrow.png}" />
-                        </div>
-                      </th>
-                      <th class="product_sold_out" onclick="orderBy(this)">
-                        <div class="asc">
-                          <span>품절</span>
-                          <img th:src="@{/image/down-arrow.png}" />
-                        </div>
-                      </th>
-                      <th class="product_file">
-                        <div class="asc">
-                          <span>파일명</span>
-                        </div>
-                      </th>
-                      <th class="product_register_name">
-                        <div class="asc">
-                          <span>등록자</span>
-                        </div>
-                      </th>
-                      <th class="product_register_date">
-                        <div class="asc">
-                          <span>등록일</span>
-                        </div>
-                      </th>
-                      <th class="product_modifier_name">
-                        <div class="asc">
-                          <span>수정자</span>
-                        </div>
-                      </th>
-                      <th class="product_modifier_date">
-                        <div class="asc">
-                          <span>수정일</span>
-                        </div>
-                      </th>
-                      <th>
-                        <div class="asc">
-                          <span>품절 설정</span>
-                        </div>
-                      </th>
-                      <th>
-                        <div class="asc">
-                          <span>업데이트</span>
-                        </div>
-                      </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="p : ${list}">
-                      <td><p th:text="${p.productType}"></p></td>
-                      <td>
-                        <a th:href="@{/admin/productUpdate(productCode=${p.productCode})}" target="_blank" th:text="${p.productCode}"></a>
-                      </td>
-                      <td><p th:text="${p.productName}"></p></td>
-                      <td><p th:text="${p.productUnit}"></p></td>
-                      <td><p th:text="${#numbers.formatInteger(p.productPrice, 3, 'COMMA')} + ' 원'"></p></td>
-                      <td><p th:text="${p.productTier}"></p></td>
-                      <td><p th:text="${p.productSoldOut}"></p></td>
-                      <td><p th:text="${p.productFile}"></p></td>
-                      <td><p th:text="${p.productRegisterName}"></p></td>
-                      <td><p th:text="${p.productRegisterDate}"></p></td>
-                      <td><p th:text="${p.productModifierName}"></p></td>
-                      <td><p th:text="${p.productModifierDate}"></p></td>
-                      <td>
-                        <select name="productSoldOut">
-                          <option value="Y" th:selected="${p.productSoldOut == 'Y'}">Y (품절)</option>
-                          <option value="N" th:selected="${p.productSoldOut == 'N'}">N (재고 있음)</option>
-                        </select>
-                        <input type="hidden" name="productCode" th:value="${p.productCode}" />
-                      </td>
-                      <td>
-                        <div class="signup">
-                          <input type="submit" value="업데이트" class="btn" />
-                        </div>
-                      </td>
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <p th:if="${productSearchCount == 0}">검색결과를 찾을 수 없습니다.</p>
-              </form>
-            </div>
-          </ul>
-        </div>
-
-        <div class="pagination_wrap center">
-          <div class="pagination">
-            <th:block th:if="${pageInt >= 3}">
-              <a th:if="${searchText == null}" th:href="@{/admin/productSoldOutUpdate(pageInt=${pageInt - 3})}">«</a>
-              <a th:unless="${searchText == null}" th:href="@{/admin/productListSearch(pageInt=${pageInt - 3}, searchText=${searchText})}">«</a>
-            </th:block>
-            <th:block th:if="${productSearchCount != 0 || productCount != 0}">
-              <th:block th:each="p : ${#numbers.sequence(start, end)}">
-                <a th:if="${searchText == null}" th:href="@{/admin/productSoldOutUpdate(pageInt=${p})}" th:text="${p}"></a>
-                <a th:unless="${searchText == null}" th:href="@{/admin/productListSearch(pageInt=${p}, searchText=${searchText})}" th:text="${p}"></a>
-              </th:block>
-            </th:block>
-            <th:block th:if="${pageInt < end - 3}">
-              <a th:if="${searchText == null}" th:href="@{/admin/productSoldOutUpdate(pageInt=${pageInt + 3})}">»</a>
-              <a th:unless="${searchText == null}" th:href="@{/admin/productListSearch(pageInt=${pageInt + 3}, searchText=${searchText})}">»</a>
-            </th:block>
+          <div>
+            <label for="productUnit">용량</label>
+            <input type="text" id="productUnit" name="productUnit" th:value="${productUnit}">
           </div>
+          <div>
+            <label for="productTier">등급</label>
+            <input type="text" id="productTier" name="productTier" th:value="${productTier}">
+            <label for="productSoldOut">품절</label>
+            <input type="text" id="productSoldOut" name="productSoldOut" th:value="${productSoldOut}">
+          </div>
+        </form>
+        <div class="collapse" onclick="expand(this)">
+          <img th:src="@{/image/down-arrow.png}" />
         </div>
       </div>
-    </main>
+    </div>
+    <div class="btn_wrap center">
+      <div class="btn">
+        <a onclick="submit()">검색</a>
+      </div>
+    </div>
+    <div class="list">
+      <ul class="center">
+        <li th:if="${memberTier != 9}">
+          <p>권한이 부족합니다.</p>
+        </li>
+        <li th:if="${memberTier == 9 and productCount == 0}">
+          <p>제품을 찾을 수 없습니다.</p>
+        </li>
+        <li th:if="${memberTier == 9 and productCount != 0}">
+          <div th:if="${productSearchCount != 0 || productCount != 0}">
+            <form th:action="@{/admin/productListPro}" method="post" id="orderByForm">
+              <input id="columnName" type="hidden" name="columnName" th:value="${columnName}"/>
+              <input id="orderBy" type="hidden" name="orderBy" th:value="${orderBy}"/>
+            </form>
+            <table class="list">
+              <thead>
+              <tr>
+                <th class="product_type" onclick="orderBy(this)">
+                  <div class="asc">
+                    <span>제품타입</span>
+                    <img th:src="@{/image/down-arrow.png}" />
+                  </div>
+                </th>
+                <th class="product_code" onclick="orderBy(this)">
+                  <div class="asc">
+                    <span>제품코드</span>
+                    <img th:src="@{/image/down-arrow.png}" />
+                  </div>
+                </th>
+                <th class="product_name" onclick="orderBy(this)">
+                  <div class="asc">
+                    <span>제품이름</span>
+                    <img th:src="@{/image/down-arrow.png}" />
+                  </div>
+                </th>
+                <th class="product_unit" onclick="orderBy(this)">
+                  <div class="asc">
+                    <span>용량</span>
+                    <img th:src="@{/image/down-arrow.png}" />
+                  </div>
+                </th>
+                <th class="product_price" onclick="orderBy(this)">
+                  <div class="asc">
+                    <span>금액</span>
+                    <img th:src="@{/image/down-arrow.png}" />
+                  </div>
+                </th>
+                <th class="product_tier" onclick="orderBy(this)">
+                  <div class="asc">
+                    <span>등급</span>
+                    <img th:src="@{/image/down-arrow.png}" />
+                  </div>
+                </th>
+                <th class="product_sold_out" onclick="orderBy(this)">
+                  <div class="asc">
+                    <span>품절</span>
+                    <img th:src="@{/image/down-arrow.png}" />
+                  </div>
+                </th>
+                <th class="product_file">
+                  <div class="asc">
+                    <span>파일명</span>
+                  </div>
+                </th>
+                <th class="product_register_name">
+                  <div class="asc">
+                    <span>등록자</span>
+                  </div>
+                </th>
+                <th class="product_register_date">
+                  <div class="asc">
+                    <span>등록일</span>
+                  </div>
+                </th>
+                <th class="product_modifier_name">
+                  <div class="asc">
+                    <span>수정자</span>
+                  </div>
+                </th>
+                <th class="product_modifier_date">
+                  <div class="asc">
+                    <span>수정일</span>
+                  </div>
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="p : ${list}">
+                <td><p th:text="${p.productType}"></p></td>
+                <td>
+                  <a th:href="@{/admin/productUpdate(productCode=${p.productCode})}" target="_blank" th:text="${p.productCode}"></a>
+                </td>
+                <td><p th:text="${p.productName}"></p></td>
+                <td><p th:text="${p.productUnit}"></p></td>
+                <td><p th:text="${#numbers.formatInteger(p.productPrice, 3, 'COMMA')} + ' 원'"></p></td>
+                <td><p th:text="${p.productTier}"></p></td>
+                <td><p th:text="${p.productSoldOut}"></p></td>
+                <td><p th:text="${p.productFile}"></p></td>
+                <td><p th:text="${p.productRegisterName}"></p></td>
+                <td><p th:text="${p.productRegisterDate}"></p></td>
+                <td><p th:text="${p.productModifierName}"></p></td>
+                <td><p th:text="${p.productModifierDate}"></p></td>
+              </tr>
+              </tbody>
+            </table>
+            <p th:if="${productSearchCount == 0}">검색결과를 찾을 수 없습니다。</p>
+          </div>
+        </li>
+      </ul>
+    </div>
 
-    <script>
-      window.onload = function() {
-        const columnNameInput = document.getElementById("columnName");
-        const orderByInput = document.getElementById("orderBy");
+    <div class="pagination_wrap center">
+      <div class="pagination">
+        <th:block th:if="${pageInt >= 3}">
+          <a th:if="${searchText == null}" th:href="@{/admin/productList(pageInt=${pageInt - 3})}">«</a>
+          <a th:unless="${searchText == null}" th:href="@{/admin/productListSearch(pageInt=${pageInt - 3}, searchText=${searchText})}">«</a>
+        </th:block>
+        <th:block th:if="${productSearchCount != 0 || productCount != 0}">
+          <th:block th:each="p : ${#numbers.sequence(start, end)}">
+            <a th:if="${searchText == null}" th:href="@{/admin/productList(pageInt=${p})}" th:text="${p}"></a>
+            <a th:unless="${searchText == null}" th:href="@{/admin/productListSearch(pageInt=${p}, searchText=${searchText})}" th:text="${p}"></a>
+          </th:block>
+        </th:block>
+        <th:block th:if="${pageInt < end - 3}">
+          <a th:if="${searchText == null}" th:href="@{/admin/productList(pageInt=${pageInt + 3})}">»</a>
+          <a th:unless="${searchText == null}" th:href="@{/admin/productListSearch(pageInt=${pageInt + 3}, searchText=${searchText})}">»</a>
+        </th:block>
+      </div>
+    </div>
+  </div>
+</main>
 
-        if (columnNameInput && orderByInput) {
-          const columnNameInputValue = columnNameInput.value;
-          const orderByInputValue = orderByInput.value;
+<script>
+  window.onload = function() {
+    const columnNameInput = document.getElementById("columnName");
+    const orderByInput = document.getElementById("orderBy");
 
-          const columnNameElement = document.querySelector("." + columnNameInputValue).firstElementChild;
-          const imgElement = columnNameElement.lastElementChild;
+    if (columnNameInput && orderByInput) {
+      const columnNameInputValue = columnNameInput.value;
+      const orderByInputValue = orderByInput.value;
 
-          if (orderByInputValue === "asc") {
-            columnNameElement.className = "asc";
-            imgElement.src = "/image/down-arrow.png";
-          } else if (orderByInputValue === "desc") {
-            columnNameElement.className = "desc";
-            imgElement.src = "/image/up-arrow.png";
-          }
-        }
+      const columnNameElement = document.querySelector("." + columnNameInputValue).firstElementChild;
+      const imgElement = columnNameElement.lastElementChild;
+
+      if (orderByInputValue === "asc") {
+        columnNameElement.className = "asc";
+        imgElement.src = "/image/down-arrow.png";
+      } else if (orderByInputValue === "desc") {
+        columnNameElement.className = "desc";
+        imgElement.src = "/image/up-arrow.png";
       }
+    }
+  }
 
-      function orderBy(object) {
-        const columnName = object.className;
-        const currentOrderBy = object.firstElementChild.className;
-        const orderByValue = (currentOrderBy === "asc") ? "desc" : "asc";
-        const form = document.createElement("form");
-        form.method = "post";
-        form.action = "/admin/productSoldOutUpdatePro";
+  function orderBy(object) {
+    const columnName = object.className;
+    const currentOrderBy = object.firstElementChild.className;
+    const orderByValue = (currentOrderBy === "asc") ? "desc" : "asc";
+    const form = document.getElementById("orderByForm");
 
-        const columnNameInput = document.createElement("input");
-        columnNameInput.type = "hidden";
-        columnNameInput.name = "columnName";
-        columnNameInput.value = columnName;
+    form.querySelector('input[name="columnName"]').value = columnName;
+    form.querySelector('input[name="orderBy"]').value = orderByValue;
 
-        const orderByInput = document.createElement("input");
-        orderByInput.type = "hidden";
-        orderByInput.name = "orderBy";
-        orderByInput.value = orderByValue;
+    form.submit();
+  }
 
-        form.appendChild(columnNameInput);
-        form.appendChild(orderByInput);
-        document.body.appendChild(form);
-        form.submit();
-      }
+  function expand(object) {
+    const form = document.querySelector(".search_form");
+    const img = object.firstElementChild;
+    const state = object.className;
 
-      function expand(object) {
-        const form = document.querySelector(".search_form");
-        const img = object.firstElementChild;
-        const state = object.className;
+    if (state === "collapse") {
+      form.style.maxHeight = "200px";
+      object.className = "expand";
+      img.src = "/image/up-arrow.png";
+    } else if (state === "expand") {
+      form.style.maxHeight = "35px";
+      object.className = "collapse";
+      img.src = "/image/down-arrow.png";
+    }
+  }
 
-        if (state === "collapse") {
-          form.style.maxHeight = "200px";
-          object.className = "expand";
-          img.src = "/image/up-arrow.png";
-        } else if (state === "expand") {
-          form.style.maxHeight = "35px";
-          object.className = "collapse";
-          img.src = "/image/down-arrow.png";
-        }
-      }
-
-      function submit() {
-        const form = document.querySelector(".search_form");
-        form.submit();
-      }
-    </script>
-  </body>
+  function submit() {
+    const form = document.querySelector(".search_form");
+    form.submit();
+  }
+</script>
+</body>
 </html>

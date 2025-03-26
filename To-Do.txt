@@ -4,10 +4,10 @@
 회원가입 아이디 중복확인
 
 
+productUpdate 수정 필요
 추후에 Lombok 라이브러리 추가
 사용자에게 정보를 표시하는 경우 Model 사용(일회성인 경우)
 사업자정보확인 버튼 페이지 리다이렉션 위치가 잘못됨
-sitemesh 레이아웃인 common 폴더 내의 jsp만 webapp에 있어서 디렉토리 변경 필요
 회원가입 이메일 인증시 enter 누르면 인증번호 발송으로 되도록 변경
 application.properties랑 secrets.properties의 디렉토리 동일하게 바꾸기
 DAO파일들 디렉토리 변경 Service 폴더에 있을게 아닌듯
@@ -30,7 +30,6 @@ footer 및 제품 상세페이지 등 레이아웃 일치
 order 테이블도 필요해보임 (현재 주문 상태, 주문번호 등)
 장바구니/결제 및 주문기록에 현금영수증, 세금계산서 추가
 주문기록에 세금계산서 현금영수증 + 프론트에서 선택 후 form 생성
-검색시 pagination 갯수
 productGrinding이 다를 경우 카트 제품 여러개로
 로그인 상태에선 memberSignIn 페이지 접속 안되게
 이미 로그인 상태에서 재로그인시 cookie duplicate error

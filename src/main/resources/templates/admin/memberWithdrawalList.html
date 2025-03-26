@@ -70,24 +70,24 @@
         <div class="pagination_wrap center">
           <div class="pagination">
             <div th:if="${pageInt >= 3}">
-              <a th:if="${searchText == null}" th:href="@{/admin/memberList(pageInt=${pageInt - 3})}">«</a>
-              <a th:unless="${searchText == null}" th:href="@{/admin/memberListSearch(pageInt=${pageInt - 3}, searchText=${searchText})}">«</a>
+              <a th:if="${searchText == null}" th:href="@{/admin/memberWithdrawalList(pageInt=${pageInt - 3})}">«</a>
+              <a th:unless="${searchText == null}" th:href="@{/admin/memberWithdrawalListSearch(pageInt=${pageInt - 3}, searchText=${searchText})}">«</a>
             </div>
             <div th:if="${memberSearchCount != 0}">
               <div th:if="${searchText == null}">
                 <a th:each="p : ${#numbers.sequence(start, end)}"
-                   th:href="@{/admin/memberList(pageInt=${p})}"
+                   th:href="@{/admin/memberWithdrawalList(pageInt=${p})}"
                    th:text="${p}"></a>
               </div>
               <div th:unless="${searchText == null}">
                 <a th:each="p : ${#numbers.sequence(start, end)}"
-                   th:href="@{/admin/memberListSearch(pageInt=${p}, searchText=${searchText})}"
+                   th:href="@{/admin/memberWithdrawalListSearch(pageInt=${p}, searchText=${searchText})}"
                    th:text="${p}"></a>
               </div>
             </div>
             <div th:if="${pageInt < end - 3}">
-              <a th:if="${searchText == null}" th:href="@{/admin/memberList(pageInt=${pageInt + 3})}">»</a>
-              <a th:unless="${searchText == null}" th:href="@{/admin/memberListSearch(pageInt=${pageInt + 3}, searchText=${searchText})}">»</a>
+              <a th:if="${searchText == null}" th:href="@{/admin/memberWithdrawalList(pageInt=${pageInt + 3})}">»</a>
+              <a th:unless="${searchText == null}" th:href="@{/admin/memberWithdrawalListSearch(pageInt=${pageInt + 3}, searchText=${searchText})}">»</a>
             </div>
           </div>
         </div>
