@@ -216,7 +216,8 @@ public class adminController {
 
     if(memberTier == 9) {
       for(String param : array) {
-        if(!request.getParameter(param).isEmpty()) {
+        String parameter = request.getParameter(param);
+        if(parameter != null && !parameter.isEmpty()) {
           searchText = request.getParameter(param);
           model.addAttribute(param, searchText);
           productDao.rownumSet();
@@ -908,7 +909,8 @@ public class adminController {
       historyCount = historyDao.historyCount();
 
       for(String param : array) {
-        if(!request.getParameter(param).isEmpty()) {
+        String parameter = request.getParameter(param);
+        if(parameter != null && !parameter.isEmpty()) {
           arrayList.add(param);
         }
       }
