@@ -51,7 +51,6 @@
                 </div>
               </div>
               <div class="hd_gnb_member_cart_info">
-                <!-- Null 안전 처리 추가 -->
                 <th:block th:if="${product != null}">
                   <a th:href="@{/board/beanDetail(productCode=${product.productCode})}" th:if="${product.productType == 0}">
                     <img th:src="@{/files/bean/{code}/{file}(code=${product.productCode}, file=${product.productFile})}" alt="" />
@@ -72,12 +71,11 @@
                     <a th:href="@{/board/cafeDetail(productCode=${product.productCode})}" th:if="${product.productType == 2}">
                       <p class="cart_product_name" th:text="${product.productName ?: 'Empty'}">Empty</p>
                     </a>
-                    <p class="cart_product_unit" th:text="${product.unit ?: 'Empty'}">Empty</p>
-                    <p class="cart_quantity" th:text="${product.quantity ?: 'Empty'}">Empty</p>
-                    <p class="cart_product_price" th:text="${product.price ?: 'Empty'}">Empty</p>
+                    <p class="cart_product_unit" th:text="${product.productUnit ?: 'Empty'}">Empty</p>
+                    <p class="cart_quantity">Empty</p>
+                    <p class="cart_product_price" th:text="${product.productPrice ?: 'Empty'}">Empty</p>
                   </div>
                 </th:block>
-                <!-- product가 null일 경우 기본 표시 -->
                 <th:block th:unless="${product != null}">
                   <div class="hd_gnb_member_cart_text">
                     <p class="cart_product_name">Empty</p>
