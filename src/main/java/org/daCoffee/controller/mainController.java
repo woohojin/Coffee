@@ -3,6 +3,7 @@ package org.daCoffee.controller;
 import org.daCoffee.model.Cart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.daCoffee.service.ImageDAO;
 import org.daCoffee.service.ProductDAO;
@@ -71,7 +72,7 @@ public class mainController {
     }
 
     @RequestMapping("product")
-    public String product(HttpServletRequest request, HttpSession session, @RequestParam(value = "pageType", defaultValue = "bean") String pageType) throws Exception {
+    public String product(HttpServletRequest request, HttpSession session, Model model, @RequestParam(value = "pageType", defaultValue = "bean") String pageType) throws Exception {
         Integer memberTier = (Integer) session.getAttribute("memberTier");
         if(memberTier == null) {
             memberTier = 0;
@@ -97,7 +98,7 @@ public class mainController {
                 productDao.rownumSet();
                 List<Product> list = productDao.productListByMemberTierByProductType(pageInt, limit, memberTier, productType);
                 productCount = productDao.productCountByTierByProductType(memberTier, productType);
-                request.setAttribute("list", list);
+                model.addAttribute("list", list);
             }
 
             if(pageType.equals("mix")) {
@@ -105,7 +106,7 @@ public class mainController {
                 productDao.rownumSet();
                 List<Product> list = productDao.productListByMemberTierByProductType(pageInt, limit, memberTier, productType);
                 productCount = productDao.productCountByTierByProductType(memberTier, productType);
-                request.setAttribute("list", list);
+                model.addAttribute("list", list);
             }
 
             if(pageType.equals("cafe")) {
@@ -114,7 +115,7 @@ public class mainController {
                 productDao.rownumSet();
                 List<Product> list = productDao.productListByMemberTierByProductType(pageInt, limit, memberTier, productType);
                 productCount = productDao.productCountByTierByProductType(memberTier, productType);
-                request.setAttribute("list", list);
+                model.addAttribute("list", list);
             }
         }
 
@@ -128,15 +129,14 @@ public class mainController {
             end = productCount;
         }
 
-        request.setAttribute("pageType", pageType);
-        request.setAttribute("memberTier", memberTier);
-        request.setAttribute("productCount", productCount);
-        request.setAttribute("pageNum", pageNum);
-        request.setAttribute("start", start);
-        request.setAttribute("end", end);
-        request.setAttribute("bottomLine", bottomLine);
-        request.setAttribute("maxPage", maxPage);
-        request.setAttribute("pageInt", pageInt);
+        model.addAttribute("pageType", pageType);
+        model.addAttribute("memberTier", memberTier);
+        model.addAttribute("productCount", productCount);
+        model.addAttribute("start", start);
+        model.addAttribute("end", end);
+        model.addAttribute("bottomLine", bottomLine);
+        model.addAttribute("maxPage", maxPage);
+        model.addAttribute("pageInt", pageInt);
 
         return "board/product/productList";
     }

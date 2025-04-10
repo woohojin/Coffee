@@ -15,17 +15,17 @@
     </div>
     <div class="product">
       <ul class="center">
-        <div th:switch="${memberTier}">
-          <div th:case="'0'" class="denied-text">
+        <div>
+          <div th:if="${memberTier == 0}" class="denied-text">
             <p>로그인을 진행하시거나</p>
             <br/>
             <p>최초 회원가입 진행 후에 1566-0904로 연락 부탁드립니다.</p>
           </div>
-          <div th:case="*" th:if="${memberTier != '0' and productCount == 0}">
+          <div th:if="${memberTier != 0 and productCount == 0}">
             <p>제품을 찾을 수 없습니다.</p>
           </div>
-          <div th:case="*" th:if="${memberTier != '0'}">
-            <div th:if="${productSearchCount > 0 or productCount > 0}">
+          <div th:if="${memberTier != 0}">
+            <div th:if="${productSearchCount != 0 or productCount != 0}">
               <li th:each="p : ${list}">
                 <div th:if="${p.productSoldOut == 1}" class="sold_out">Sold Out</div>
                 <div th:switch="${p.productType}">
@@ -70,19 +70,20 @@
 
   <div class="pagination_wrap center">
     <div class="pagination">
-      <div th:if="${pageNum >= 3}">
-        <a th:if="${searchText == null}" th:href="@{/board/product(pageNum=${pageNum - 3})}">«</a>
-        <a th:unless="${searchText == null}" th:href="@{/board/productSearch(pageNum=${pageNum - 3}, searchText=${searchText})}">«</a>
-      </div>
-      <div th:if="${productSearchCount > 0}">
-        <a th:each="p : ${#numbers.sequence(start, end)}"
-           th:href="${searchText == null} ? @{/board/product(pageNum=${p})} : @{/board/productSearch(pageNum=${p}, searchText=${searchText})}"
-           th:text="${p}"></a>
-      </div>
-      <div th:if="${pageNum < end - 3}">
-        <a th:if="${searchText == null}" th:href="@{/board/product(pageNum=${pageNum + 3})}">»</a>
-        <a th:unless="${searchText == null}" th:href="@{/board/productSearch(pageNum=${pageNum + 3}, searchText=${searchText})}">»</a>
-      </div>
+      <th:block th:if="${pageInt >= 3}">
+        <a th:if="${searchText == null}" th:href="@{/admin/productList(pageInt=${pageInt - 3})}">«</a>
+        <a th:unless="${searchText == null}" th:href="@{/admin/productListSearch(pageInt=${pageInt - 3}, searchText=${searchText})}">«</a>
+      </th:block>
+      <th:block th:if="${productSearchCount != 0 || productCount != 0}">
+        <th:block th:each="p : ${#numbers.sequence(start, end)}">
+          <a th:if="${searchText == null}" th:href="@{/admin/productList(pageInt=${p})}" th:text="${p}"></a>
+          <a th:unless="${searchText == null}" th:href="@{/admin/productListSearch(pageInt=${p}, searchText=${searchText})}" th:text="${p}"></a>
+        </th:block>
+      </th:block>
+      <th:block th:if="${pageInt < end - 3}">
+        <a th:if="${searchText == null}" th:href="@{/admin/productList(pageInt=${pageInt + 3})}">»</a>
+        <a th:unless="${searchText == null}" th:href="@{/admin/productListSearch(pageInt=${pageInt + 3}, searchText=${searchText})}">»</a>
+      </th:block>
     </div>
   </div>
 </main>

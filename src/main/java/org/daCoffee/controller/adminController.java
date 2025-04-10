@@ -1370,8 +1370,6 @@ public class adminController {
 
     String productType = productDao.productTypeFindByProductCode(productCode);
 
-    LOGGER.debug("================ {} ============", productType);
-
     if(memberTier == 9) {
       switch (productType) {
         case "0" -> {
