@@ -109,6 +109,13 @@ public class ProductDAO {
         return num;
     }
 
+    public String productTypeFindByProductCode(String productCode) {
+        map.clear();
+        map.put("productCode", productCode);
+        String str = session.selectOne(NS + "productTypeFindByProductCode", map);
+        return str;
+    }
+
     public Product productSelectOne(String productCode) {
         Product product = session.selectOne(NS + "productSelectOne", productCode);
         return product;

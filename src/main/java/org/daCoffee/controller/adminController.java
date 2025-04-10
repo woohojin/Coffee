@@ -1368,9 +1368,28 @@ public class adminController {
     String msg = "제품 삭제에 실패했습니다.";
     String url = "/admin/productDelete";
 
+    String productType = productDao.productTypeFindByProductCode(productCode);
+
+    LOGGER.debug("================ {} ============", productType);
+
     if(memberTier == 9) {
-      productDao.productDelete(productCode);
-      msg = "제품 삭제에 성공했습니다.";
+      switch (productType) {
+        case "0" -> {
+          productDao.beanDelete(productCode);
+          productDao.productDelete(productCode);
+          msg = "제품 삭제에 성공했습니다.";
+        }
+        case "1" -> {
+          productDao.mixDelete(productCode);
+          productDao.productDelete(productCode);
+          msg = "제품 삭제에 성공했습니다.";
+        }
+        case "2" -> {
+          productDao.cafeDelete(productCode);
+          productDao.productDelete(productCode);
+          msg = "제품 삭제에 성공했습니다.";
+        }
+      }
     }
 
     model.addAttribute("msg", msg);

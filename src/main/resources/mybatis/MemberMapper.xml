@@ -72,7 +72,7 @@
     select count(*) from member_disabled where member_id = #{memberId}
   </select>
 
-<select id="memberFindId" parameterType="map" resultMap="memberMap">
+  <select id="memberFindId" parameterType="map" resultMap="memberMap">
       select member_id from member where member_name = #{memberName} and member_email = #{memberEmail, typeHandler=encryptionTypeHandler}
   </select>
 

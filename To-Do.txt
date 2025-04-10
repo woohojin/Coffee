@@ -4,6 +4,7 @@
 회원가입 아이디 중복확인
 
 
+어드민 검색조건 비우고 검색시 초기리스트로 변경
 memberTerms label, checkbox script 수정
 자동로그인 사용시 새 세션이 생성되면 springSecurity에서 문제가 있는듯함 admin 페이지가 바로 접속이 안됨
 추후에 Lombok 라이브러리 추가
