@@ -69,7 +69,7 @@
   </div>
 
   <div class="pagination_wrap center">
-    <div class="pagination">
+    <div class="pagination" th:if="${memberTier != 0 and productCount != 0}">
       <th:block th:if="${pageInt >= 3}">
         <a th:if="${searchText == null}" th:href="@{/admin/productList(pageInt=${pageInt - 3})}">«</a>
         <a th:unless="${searchText == null}" th:href="@{/admin/productListSearch(pageInt=${pageInt - 3}, searchText=${searchText})}">«</a>

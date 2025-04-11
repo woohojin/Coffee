@@ -1,4 +1,5 @@
 footer {
+  margin-top: 70px;
   background-color: var(--mainColor);
   border-right: 1px solid var(--grayLine);
 }
