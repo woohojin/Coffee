@@ -142,7 +142,7 @@ public class mainController {
     }
 
     @RequestMapping("beanDetail")
-    public String beanDetail(HttpServletRequest request, HttpSession session, String productCode) throws Exception {
+    public String beanDetail(HttpSession session, Model model, String productCode) throws Exception {
         Integer memberTier = (Integer) session.getAttribute("memberTier");
         if(memberTier == null) {
             memberTier = 0;
@@ -160,16 +160,16 @@ public class mainController {
 
         String detailImageName = imageDao.selectDetailImage(productCode);
 
-        request.setAttribute("memberTier", memberTier);
-        request.setAttribute("productCount", productCount);
-        request.setAttribute("product", product);
-        request.setAttribute("detailmageName", detailImageName);
+        model.addAttribute("memberTier", memberTier);
+        model.addAttribute("productCount", productCount);
+        model.addAttribute("product", product);
+        model.addAttribute("detailImageName", detailImageName);
 
         return "board/product/beanDetail";
     }
 
     @RequestMapping("mixDetail")
-    public String mixDetail(HttpServletRequest request, HttpSession session, String productCode) throws Exception {
+    public String mixDetail(HttpSession session, Model model, String productCode) throws Exception {
         Integer memberTier = (Integer) session.getAttribute("memberTier");
         if(memberTier == null) {
             memberTier = 0;
@@ -187,16 +187,16 @@ public class mainController {
 
         String detailImageName = imageDao.selectDetailImage(productCode);
 
-        request.setAttribute("memberTier", memberTier);
-        request.setAttribute("productCount", productCount);
-        request.setAttribute("product", product);
-        request.setAttribute("detailmageName", detailImageName);
+        model.addAttribute("memberTier", memberTier);
+        model.addAttribute("productCount", productCount);
+        model.addAttribute("product", product);
+        model.addAttribute("detailImageName", detailImageName);
 
         return "board/product/mixDetail";
     }
 
     @RequestMapping("cafeDetail")
-    public String cafeDetail(HttpServletRequest request, HttpSession session, String productCode) throws Exception {
+    public String cafeDetail(HttpSession session, Model model, String productCode) throws Exception {
         Integer memberTier = (Integer) session.getAttribute("memberTier");
         if(memberTier == null) {
             memberTier = 0;
@@ -214,10 +214,10 @@ public class mainController {
 
         String detailImageName = imageDao.selectDetailImage(productCode);
 
-        request.setAttribute("memberTier", memberTier);
-        request.setAttribute("productCount", productCount);
-        request.setAttribute("product", product);
-        request.setAttribute("detailmageName", detailImageName);
+        model.addAttribute("memberTier", memberTier);
+        model.addAttribute("productCount", productCount);
+        model.addAttribute("product", product);
+        model.addAttribute("detailImageName", detailImageName);
 
         return "board/product/cafeDetail";
     }
@@ -229,7 +229,7 @@ public class mainController {
 
     @PostMapping("productDetailPro")
     @ResponseBody
-    public Map<String, Object> productDetailPro(HttpServletRequest request, HttpSession session, @RequestParam(value = "additionalProducts", required = false) List<String> additionalProductsCodes, Cart cart) throws Exception {
+    public Map<String, Object> productDetailPro(HttpSession session, @RequestParam(value = "additionalProducts", required = false) List<String> additionalProductsCodes, Cart cart) throws Exception {
         Map<String, Object> map = new HashMap<>();
 
         String msg = "장바구니 추가 실패";
@@ -302,7 +302,7 @@ public class mainController {
     }
 
     @RequestMapping("productSearch")
-    public String productSearch(HttpServletRequest request, HttpSession session) throws Exception {
+    public String productSearch(HttpServletRequest request, HttpSession session, Model model) throws Exception {
         Integer memberTier = (Integer) session.getAttribute("memberTier");
         if(memberTier == null) {
             memberTier = 0;
@@ -325,7 +325,7 @@ public class mainController {
             productDao.rownumSet();
             List<Product> list = productDao.productSearchListByMemberTier(pageInt, limit, memberTier, searchText);
             productSearchCount = productDao.productSearchCountByTier(memberTier, searchText);
-            request.setAttribute("list", list);
+            model.addAttribute("list", list);
         }
 
         int start = 1;
@@ -344,12 +344,12 @@ public class mainController {
             }
         }
 
-        request.setAttribute("searchText", searchText);
-        request.setAttribute("memberTier", memberTier);
-        request.setAttribute("productSearchCount", productSearchCount);
-        request.setAttribute("pageNum", pageNum);
-        request.setAttribute("start", start);
-        request.setAttribute("end", end);
+        model.addAttribute("searchText", searchText);
+        model.addAttribute("memberTier", memberTier);
+        model.addAttribute("productSearchCount", productSearchCount);
+        model.addAttribute("pageNum", pageNum);
+        model.addAttribute("start", start);
+        model.addAttribute("end", end);
 
         return "board/product/productList";
     }
