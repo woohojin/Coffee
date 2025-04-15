@@ -169,29 +169,23 @@
             </div>
           </ul>
         </div>
-        <!-- 고정된 페이지네이션 패턴 적용 -->
+
         <div class="pagination_wrap center">
           <div class="pagination">
-            <div th:if="${pageInt >= 3}">
+            <th:block th:if="${pageInt >= 3}">
               <a th:if="${searchText == null}" th:href="@{/admin/orderHistory(pageInt=${pageInt - 3})}">«</a>
               <a th:unless="${searchText == null}" th:href="@{/admin/historySearch(pageInt=${pageInt - 3}, searchText=${searchText})}">«</a>
-            </div>
-            <div th:if="${historySearchCount != 0}">
-              <div th:if="${searchText == null}">
-                <a th:each="p : ${#numbers.sequence(start, end)}"
-                   th:href="@{/admin/orderHistory(pageInt=${p})}"
-                   th:text="${p}"></a>
-              </div>
-              <div th:unless="${searchText == null}">
-                <a th:each="p : ${#numbers.sequence(start, end)}"
-                   th:href="@{/admin/historySearch(pageInt=${p}, searchText=${searchText})}"
-                   th:text="${p}"></a>
-              </div>
-            </div>
-            <div th:if="${pageInt < end - 3}">
+            </th:block>
+            <th:block th:if="${productSearchCount != 0 || productCount != 0}">
+              <th:block th:each="p : ${#numbers.sequence(start, end)}">
+                <a th:if="${searchText == null}" th:href="@{/admin/orderHistory(pageInt=${p})}" th:text="${p}"></a>
+                <a th:unless="${searchText == null}" th:href="@{/admin/historySearch(pageInt=${p}, searchText=${searchText})}" th:text="${p}"></a>
+              </th:block>
+            </th:block>
+            <th:block th:if="${pageInt < end - 3}">
               <a th:if="${searchText == null}" th:href="@{/admin/orderHistory(pageInt=${pageInt + 3})}">»</a>
               <a th:unless="${searchText == null}" th:href="@{/admin/historySearch(pageInt=${pageInt + 3}, searchText=${searchText})}">»</a>
-            </div>
+            </th:block>
           </div>
         </div>
       </div>
