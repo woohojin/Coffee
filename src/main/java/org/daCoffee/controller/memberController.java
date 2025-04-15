@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.daCoffee.service.*;
@@ -76,7 +77,7 @@ public class memberController {
   }
 
   @RequestMapping("memberSignUpPro")
-  public String memberSignUpPro(HttpServletRequest request, HttpSession session, @RequestParam("file") MultipartFile file, Member member) throws Exception {
+  public String memberSignUpPro(HttpServletRequest request, HttpSession session, Model model, @RequestParam("file") MultipartFile file, Member member) throws Exception {
 
     String verifyCode = request.getParameter("verifyCode");
     String storedVerifyCode = (String) session.getAttribute("storedVerifyCode");
@@ -84,8 +85,8 @@ public class memberController {
       String url = "/member/memberSignUp";
       String msg = "인증시간이 초과되었습니다.";
 
-      request.setAttribute("url", url);
-      request.setAttribute("msg", msg);
+      model.addAttribute("url", url);
+      model.addAttribute("msg", msg);
 
       return "alert";
     }
@@ -94,8 +95,8 @@ public class memberController {
       String url = "/member/memberSignUp";
       String msg = "인증번호가 일치하지 않습니다.";
 
-      request.setAttribute("url", url);
-      request.setAttribute("msg", msg);
+      model.addAttribute("url", url);
+      model.addAttribute("msg", msg);
 
       return "alert";
     }
@@ -162,8 +163,8 @@ public class memberController {
       LOGGER.error("Error is occurred :", e);
     }
 
-    request.setAttribute("msg", msg);
-    request.setAttribute("url", url);
+    model.addAttribute("msg", msg);
+    model.addAttribute("url", url);
 
     return "alert";
   }
@@ -174,7 +175,7 @@ public class memberController {
   }
 
   @PostMapping("memberSignInPro")
-  public String memberSignInPro(HttpServletRequest request, HttpSession session, HttpServletResponse response, String memberId, String memberPassword, String autoLogin) throws Exception {
+  public String memberSignInPro(HttpSession session, HttpServletResponse response, Model model, String memberId, String memberPassword, String autoLogin) throws Exception {
     SecurityUtil.SHA256 sha256 = new SecurityUtil.SHA256();
 
     String msg = "";
@@ -235,14 +236,14 @@ public class memberController {
       msg = "존재하지 않는 아이디입니다."; // db에 해당 아이디가 없을 때
     }
 
-    request.setAttribute("msg", msg);
-    request.setAttribute("url", url);
+    model.addAttribute("msg", msg);
+    model.addAttribute("url", url);
 
     return "alert";
   }
 
   @RequestMapping("memberLogout")
-  public String memberLogout(HttpServletRequest request, HttpSession session, HttpServletResponse response) throws Exception {
+  public String memberLogout(HttpSession session, Model model, HttpServletResponse response) throws Exception {
     String memberId = (String) session.getAttribute("memberId");
 
     Cookie cookieId = new Cookie("memberId", null);
@@ -261,8 +262,8 @@ public class memberController {
 
     session.invalidate();
 
-    request.setAttribute("msg", msg);
-    request.setAttribute("url", url);
+    model.addAttribute("msg", msg);
+    model.addAttribute("url", url);
 
     return "alert";
   }
@@ -273,7 +274,7 @@ public class memberController {
   }
 
   @RequestMapping("memberWithdrawalPro")
-  public String memberWithdrawalPro(HttpServletRequest request, HttpSession session, HttpServletResponse response, String memberPassword) throws Exception {
+  public String memberWithdrawalPro(HttpSession session, Model model, HttpServletResponse response, String memberPassword) throws Exception {
     String memberId = (String) session.getAttribute("memberId");
     Member member = memberDao.memberSelectOne(memberId);
 
@@ -300,14 +301,14 @@ public class memberController {
       url = "/board/main";
     }
 
-    request.setAttribute("msg", msg);
-    request.setAttribute("url", url);
+    model.addAttribute("msg", msg);
+    model.addAttribute("url", url);
 
     return "alert";
   }
 
   @RequestMapping("memberCart")
-  public String memberCart(HttpServletRequest request, HttpSession session) throws Exception {
+  public String memberCart(HttpSession session, Model model) throws Exception {
     String memberId = (String) session.getAttribute("memberId");
 
     int productType = 0; // 원두
@@ -375,16 +376,16 @@ public class memberController {
     List<Cart> list = cartDao.cartSelectMember(memberId);
 
     session.setAttribute("totalPrice", totalPrice);
-    request.setAttribute("sumPrice", sumPrice);
-    request.setAttribute("deliveryFee", deliveryFee);
-    request.setAttribute("cartCount", cartCount);
-    request.setAttribute("list", list);
+    model.addAttribute("sumPrice", sumPrice);
+    model.addAttribute("deliveryFee", deliveryFee);
+    model.addAttribute("cartCount", cartCount);
+    model.addAttribute("list", list);
 
     return "member/memberCart";
   }
 
   @RequestMapping("memberCartPro")
-  public String memberCartPro(HttpServletRequest request, HttpSession session) throws Exception {
+  public String memberCartPro(HttpServletRequest request, HttpSession session, Model model) throws Exception {
     int status = 9;
     String statusParam = request.getParameter("status");
 
@@ -480,16 +481,16 @@ public class memberController {
     List<Cart> list = cartDao.cartSelectMember(memberId);
 
     session.setAttribute("totalPrice", totalPrice);
-    request.setAttribute("sumPrice", sumPrice);
-    request.setAttribute("deliveryFee", deliveryFee);
-    request.setAttribute("cartCount", cartCount);
-    request.setAttribute("list", list);
+    model.addAttribute("sumPrice", sumPrice);
+    model.addAttribute("deliveryFee", deliveryFee);
+    model.addAttribute("cartCount", cartCount);
+    model.addAttribute("list", list);
 
     return "member/memberCart";
   }
 
   @RequestMapping("memberPayments")
-  public String memberPayments(HttpServletRequest request, HttpSession session) throws Exception {
+  public String memberPayments(HttpSession session, Model model) throws Exception {
     String memberId = (String) session.getAttribute("memberId");
 
     UUIDGenerateModule uuidGenerateModule = new UUIDGenerateModule();
@@ -518,37 +519,37 @@ public class memberController {
 
             session.setAttribute("orderId", orderId);
             session.setAttribute("customerKey", customerKey);
-            request.setAttribute("orderName", orderName);
-            request.setAttribute("member", member);
+            model.addAttribute("orderName", orderName);
+            model.addAttribute("member", member);
 
             return "member/memberPayments";
           }
           errorCode = "CANNOT_FIND_CART_ITEMS";
           errorMessage = "장바구니에 상품이 존재하지 않습니다.";
 
-          request.setAttribute("errorCode", errorCode);
-          request.setAttribute("errorMessage", errorMessage);
+          model.addAttribute("errorCode", errorCode);
+          model.addAttribute("errorMessage", errorMessage);
 
           return "member/memberPaymentsFailure";
         }
         errorCode = "CANNOT_FIND_VALUE_INFO";
         errorMessage = "가격정보가 존재하지 않습니다.";
 
-        request.setAttribute("errorCode", errorCode);
-        request.setAttribute("errorMessage", errorMessage);
+        model.addAttribute("errorCode", errorCode);
+        model.addAttribute("errorMessage", errorMessage);
 
         return "member/memberPaymentsFailure";
       }
     }
 
-    request.setAttribute("errorCode", errorCode);
-    request.setAttribute("errorMessage", errorMessage);
+    model.addAttribute("errorCode", errorCode);
+    model.addAttribute("errorMessage", errorMessage);
 
     return "member/memberPaymentsFailure";
   }
 
   @RequestMapping("memberPaymentsSuccess")
-  public String memberPaymentsSuccess(HttpServletRequest request, HttpSession session) throws Exception {
+  public String memberPaymentsSuccess(HttpSession session, Model model) throws Exception {
     String memberId = (String) session.getAttribute("memberId");
 
     String errorCode = "CANNOT_FIND_MEMBER_ID";
@@ -590,22 +591,22 @@ public class memberController {
           errorCode = "CANNOT_FIND_CART_ITEMS";
           errorMessage = "장바구니에 상품이 존재하지 않습니다.";
 
-          request.setAttribute("errorCode", errorCode);
-          request.setAttribute("errorMessage", errorMessage);
+          model.addAttribute("errorCode", errorCode);
+          model.addAttribute("errorMessage", errorMessage);
 
           return "member/memberPaymentsFailure";
         }
         errorCode = "CANNOT_FIND_VALUE_INFO";
         errorMessage = "가격정보가 존재하지 않습니다.";
 
-        request.setAttribute("errorCode", errorCode);
-        request.setAttribute("errorMessage", errorMessage);
+        model.addAttribute("errorCode", errorCode);
+        model.addAttribute("errorMessage", errorMessage);
 
         return "member/memberPaymentsFailure";
       }
     }
-    request.setAttribute("errorCode", errorCode);
-    request.setAttribute("errorMessage", errorMessage);
+    model.addAttribute("errorCode", errorCode);
+    model.addAttribute("errorMessage", errorMessage);
 
     return "member/memberPaymentsFailure";
   }
@@ -654,17 +655,17 @@ public class memberController {
   }
 
   @RequestMapping("memberFindAccount")
-  public String memberFindAccount(HttpServletRequest request, @RequestParam(value = "findType", required = false, defaultValue = "id") String findType) throws Exception {
+  public String memberFindAccount(Model model, @RequestParam(value = "findType", required = false, defaultValue = "id") String findType) throws Exception {
     int isFind = 0;
 
-    request.setAttribute("isFind", isFind);
-    request.setAttribute("findType", findType);
+    model.addAttribute("isFind", isFind);
+    model.addAttribute("findType", findType);
 
     return "member/memberFindAccount";
   }
 
   @RequestMapping("memberFindAccountPro")
-  public String memberFindAccountPro(HttpServletRequest request, HttpSession session) throws Exception {
+  public String memberFindAccountPro(HttpServletRequest request, HttpSession session, Model model) throws Exception {
     String verifyCode = request.getParameter("verifyCode");
     String storedVerifyCode = (String) session.getAttribute("storedVerifyCode");
 
@@ -672,8 +673,8 @@ public class memberController {
       String url = "/member/memberFindAccount";
       String msg = "인증시간이 초과되었습니다.";
 
-      request.setAttribute("url", url);
-      request.setAttribute("msg", msg);
+      model.addAttribute("url", url);
+      model.addAttribute("msg", msg);
 
       return "alert";
     }
@@ -682,8 +683,8 @@ public class memberController {
       String url = "/member/memberFindAccount";
       String msg = "인증번호가 일치하지 않습니다.";
 
-      request.setAttribute("url", url);
-      request.setAttribute("msg", msg);
+      model.addAttribute("url", url);
+      model.addAttribute("msg", msg);
 
       return "alert";
     }
@@ -708,8 +709,8 @@ public class memberController {
         String url = "/member/memberFindAccount";
         String msg = "아이디가 존재하지 않거나 이름 혹은 이메일이 일치하지 않습니다.";
 
-        request.setAttribute("url", url);
-        request.setAttribute("msg", msg);
+        model.addAttribute("url", url);
+        model.addAttribute("msg", msg);
         return "alert";
       }
     }
@@ -729,20 +730,19 @@ public class memberController {
         sendEmail(memberEmail, subject, main, password);
 
         String tempPassword = passwordEncoder.encode(password);
-        LOGGER.info(tempPassword);
         memberDao.memberTempPasswordUpdate(memberId, tempPassword);
 
         url = "/member/memberSignIn";
         msg = "임시비밀번호가 이메일로 전송되었습니다.";
       }
 
-      request.setAttribute("url", url);
-      request.setAttribute("msg", msg);
+      model.addAttribute("url", url);
+      model.addAttribute("msg", msg);
       return "alert";
     }
 
-    request.setAttribute("isFind", isFind);
-    request.setAttribute("findType", findType);
+    model.addAttribute("isFind", isFind);
+    model.addAttribute("findType", findType);
 
     return "member/memberFindAccount";
   }
@@ -754,18 +754,18 @@ public class memberController {
   }
 
   @RequestMapping("memberProfile")
-  public String memberProfile(HttpServletRequest request, HttpSession session) throws Exception {
+  public String memberProfile(HttpSession session, Model model) throws Exception {
     String memberId = (String) session.getAttribute("memberId");
 
     Member member = memberDao.memberSelectOne(memberId);
 
-    request.setAttribute("member", member);
+    model.addAttribute("member", member);
 
     return "member/memberProfile";
   }
 
   @RequestMapping("memberProfilePro")
-  public String memberProfilePro(HttpServletRequest request, HttpSession session, Member member, String memberExistingPassword) throws Exception {
+  public String memberProfilePro(HttpSession session, Model model, Member member, String memberExistingPassword) throws Exception {
     String memberId = (String) session.getAttribute("memberId");
 
     Member existingMember = memberDao.memberSelectOne(memberId); // 기존 회원 정보
@@ -787,8 +787,8 @@ public class memberController {
       }
     }
 
-    request.setAttribute("url", url);
-    request.setAttribute("msg", msg);
+    model.addAttribute("url", url);
+    model.addAttribute("msg", msg);
 
     return "alert";
   }
