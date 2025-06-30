@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.daCoffee.service.ImageDAO">
-    <resultMap type="image" id="imageMap">
+<mapper namespace="org.daCoffee.dao.ImageDAO">
+    <resultMap type="imageDTO" id="imageMap">
         <id column="product_code" property="productCode" />
         <result column="file_name" property="fileName" />
         <result column="file_register_name" property="fileRegisterName" />
@@ -12,11 +12,11 @@
         <result column="file_modifier_date" property="fileModifierDate" />
     </resultMap>
 
-    <insert id="insertProductImage" parameterType="image">
+    <insert id="insertProductImage" parameterType="imageDTO">
         insert into product_image values (#{productCode}, #{fileName}, #{fileRegisterName}, now(), null, null)
     </insert>
 
-    <update id="updateProductImage" parameterType="image">
+    <update id="updateProductImage" parameterType="imageDTO">
         update product_image set product_code = #{productCode}, file_name = #{fileName}, file_modifier_name = #{fileModifierName}, file_modifier_date = NOW()
                              where product_code = #{existProductCode}
     </update>

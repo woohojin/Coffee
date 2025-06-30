@@ -1,5 +1,12 @@
 package org.daCoffee.controller;
 
+import org.daCoffee.dao.CartDAO;
+import org.daCoffee.dao.CookieDAO;
+import org.daCoffee.dao.HistoryDAO;
+import org.daCoffee.dao.MemberDAO;
+import org.daCoffee.dto.CartDTO;
+import org.daCoffee.dto.HistoryDTO;
+import org.daCoffee.dto.MemberDTO;
 import org.daCoffee.module.UUIDGenerateModule;
 import org.daCoffee.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,10 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.daCoffee.service.*;
-import org.daCoffee.model.Member;
-import org.daCoffee.model.Cart;
-import org.daCoffee.model.History;
-import org.daCoffee.model.PaymentsRequest;
+import org.daCoffee.dto.PaymentsRequestDTO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,7 +81,7 @@ public class memberController {
   }
 
   @RequestMapping("memberSignUpPro")
-  public String memberSignUpPro(HttpServletRequest request, HttpSession session, Model model, @RequestParam("file") MultipartFile file, Member member) throws Exception {
+  public String memberSignUpPro(HttpServletRequest request, HttpSession session, Model model, @RequestParam("file") MultipartFile file, MemberDTO memberDTO) throws Exception {
 
     String verifyCode = request.getParameter("verifyCode");
     String storedVerifyCode = (String) session.getAttribute("storedVerifyCode");
@@ -104,10 +108,10 @@ public class memberController {
     String msg = "회원 가입 중 문제가 발생 했습니다. 다시 시도해주세요.";
     String url = "/member/memberSignUp";
 
-    String memberId = member.getMemberId().toLowerCase();
-    member.setMemberId(memberId);
+    String memberId = memberDTO.getMemberId().toLowerCase();
+    memberDTO.setMemberId(memberId);
 
-    Member mem = null;
+    MemberDTO mem = null;
 
     try{
       mem = memberDao.memberSelectOne(memberId);
@@ -126,27 +130,27 @@ public class memberController {
 
     try{
       if(mem == null) {
-        member.setMemberPassword(passwordEncoder.encode(member.getMemberPassword()));
+        memberDTO.setMemberPassword(passwordEncoder.encode(memberDTO.getMemberPassword()));
 
-        String memberCompanyName = member.getMemberCompanyName();
-        String memberCompanyTel = member.getMemberCompanyTel();
-        String memberFile = member.getMemberFile();
+        String memberCompanyName = memberDTO.getMemberCompanyName();
+        String memberCompanyTel = memberDTO.getMemberCompanyTel();
+        String memberFile = memberDTO.getMemberFile();
 
         if(memberFile != null && !memberFile.trim().isEmpty()) {
           file.transferTo(uploadFile);
         } else {
-          member.setMemberFile(null);
+          memberDTO.setMemberFile(null);
         }
 
         if(memberCompanyName != null && memberCompanyName.trim().isEmpty()) {
-          member.setMemberCompanyName(null);
+          memberDTO.setMemberCompanyName(null);
         }
 
         if(memberCompanyTel != null && memberCompanyTel.trim().isEmpty()) {
-          member.setMemberCompanyTel(null);
+          memberDTO.setMemberCompanyTel(null);
         }
 
-        int num = memberDao.memberInsert(member);
+        int num = memberDao.memberInsert(memberDTO);
 
         if (num > 0) {
           msg = memberId + "님의 가입이 완료되었습니다.";
@@ -181,13 +185,13 @@ public class memberController {
     String msg = "";
     String url = "/member/memberSignIn";
 
-    Member member = memberDao.memberSelectOne(memberId);
+    MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
     int isDisabled = memberDao.disabledMemberSelectOne(memberId);
 
-    if(member != null) {
+    if(memberDTO != null) {
       if(isDisabled < 1) {
-        if(passwordEncoder.matches(memberPassword, member.getMemberPassword())) {
-          Integer memberTier = member.getMemberTier();
+        if(passwordEncoder.matches(memberPassword, memberDTO.getMemberPassword())) {
+          Integer memberTier = memberDTO.getMemberTier();
           session.setAttribute("memberId", memberId);
           session.setAttribute("memberTier", memberTier);
 
@@ -206,7 +210,7 @@ public class memberController {
           url = "/board/main";
 
           if(autoLogin != null) {
-            String encryptKey = member.getMemberId() + COOKIE_LOGIN;
+            String encryptKey = memberDTO.getMemberId() + COOKIE_LOGIN;
 
             String token = sha256.encrypt(encryptKey);
 
@@ -276,12 +280,12 @@ public class memberController {
   @RequestMapping("memberWithdrawalPro")
   public String memberWithdrawalPro(HttpSession session, Model model, HttpServletResponse response, String memberPassword) throws Exception {
     String memberId = (String) session.getAttribute("memberId");
-    Member member = memberDao.memberSelectOne(memberId);
+    MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
 
     String msg = "회원 탈퇴에 실패했습니다.";
     String url = "/member/memberWithdrawal";
 
-    if(passwordEncoder.matches(memberPassword, member.getMemberPassword())) {
+    if(passwordEncoder.matches(memberPassword, memberDTO.getMemberPassword())) {
       Cookie cookieId = new Cookie("memberId", null);
       Cookie cookieToken = new Cookie("token", null);
       cookieId.setMaxAge(0); // 0초 = 쿠키 삭제
@@ -373,7 +377,7 @@ public class memberController {
 
     final int totalPrice = deliveryFee + sumPrice; // 총 가격 계산 후 변경 불가
 
-    List<Cart> list = cartDao.cartSelectMember(memberId);
+    List<CartDTO> list = cartDao.cartSelectMember(memberId);
 
     session.setAttribute("totalPrice", totalPrice);
     model.addAttribute("sumPrice", sumPrice);
@@ -478,7 +482,7 @@ public class memberController {
 
     final int totalPrice = deliveryFee + sumPrice; // 총 가격 계산 후 변경 불가
 
-    List<Cart> list = cartDao.cartSelectMember(memberId);
+    List<CartDTO> list = cartDao.cartSelectMember(memberId);
 
     session.setAttribute("totalPrice", totalPrice);
     model.addAttribute("sumPrice", sumPrice);
@@ -499,8 +503,8 @@ public class memberController {
     String errorMessage = "로그인 후 결제를 진행해주세요.";
 
     if(memberId != null) {
-      Member member = memberDao.memberSelectOne(memberId);
-      if(member != null) {
+      MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
+      if(memberDTO != null) {
         String orderId = uuidGenerateModule.generateOrderId();
         String customerKey = uuidGenerateModule.generateCustomerKey(memberId);
         List<String> productNames = new ArrayList<>();
@@ -508,11 +512,11 @@ public class memberController {
         final Integer totalPrice = (Integer) session.getAttribute("totalPrice");
 
         if(totalPrice != null) {
-          List<Cart> list = cartDao.cartSelectMember(memberId);
+          List<CartDTO> list = cartDao.cartSelectMember(memberId);
 
           if(list != null) {
-            for (Cart cart : list) {
-              productNames.add(cart.getProductName());
+            for (CartDTO cartDTO : list) {
+              productNames.add(cartDTO.getProductName());
             }
 
             String orderName = productNames.get(0) + " 외 " + (productNames.size() - 1) + "건";
@@ -520,7 +524,7 @@ public class memberController {
             session.setAttribute("orderId", orderId);
             session.setAttribute("customerKey", customerKey);
             model.addAttribute("orderName", orderName);
-            model.addAttribute("member", member);
+            model.addAttribute("member", memberDTO);
 
             return "member/memberPayments";
           }
@@ -556,31 +560,31 @@ public class memberController {
     String errorMessage = "로그인 후 결제를 진행해주세요.";
 
     if(memberId != null) {
-      Member member = memberDao.memberSelectOne(memberId);
-      if (member != null) {
+      MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
+      if (memberDTO != null) {
         String orderId = (String) session.getAttribute("orderId");
 
         final Integer totalPrice = (Integer) session.getAttribute("totalPrice");
 
         if (totalPrice != null) {
-          List<Cart> list = cartDao.cartSelectMember(memberId);
+          List<CartDTO> list = cartDao.cartSelectMember(memberId);
 
           if (list != null) {
-            for (Cart cart : list) {
-              History history = new History();
+            for (CartDTO cartDTO : list) {
+              HistoryDTO historyDTO = new HistoryDTO();
 
-              history.setOrderId(orderId);
-              history.setMemberTier(member.getMemberTier());
-              history.setMemberId(memberId);
-              history.setMemberName(member.getMemberName());
-              history.setMemberFranCode(member.getMemberFranCode());
-              history.setProductCode(cart.getProductCode());
-              history.setQuantity(cart.getQuantity());
-              history.setDeliveryAddress(member.getMemberDeliveryAddress());
-              history.setDetailDeliveryAddress(member.getMemberDetailDeliveryAddress());
-              history.setTotalPrice(totalPrice);
+              historyDTO.setOrderId(orderId);
+              historyDTO.setMemberTier(memberDTO.getMemberTier());
+              historyDTO.setMemberId(memberId);
+              historyDTO.setMemberName(memberDTO.getMemberName());
+              historyDTO.setMemberFranCode(memberDTO.getMemberFranCode());
+              historyDTO.setProductCode(cartDTO.getProductCode());
+              historyDTO.setQuantity(cartDTO.getQuantity());
+              historyDTO.setDeliveryAddress(memberDTO.getMemberDeliveryAddress());
+              historyDTO.setDetailDeliveryAddress(memberDTO.getMemberDetailDeliveryAddress());
+              historyDTO.setTotalPrice(totalPrice);
 
-              historyDao.historyInsert(history);
+              historyDao.historyInsert(historyDTO);
             }
             cartDao.deleteCartByMember(memberId);
             session.removeAttribute("orderId");
@@ -618,7 +622,7 @@ public class memberController {
 
   @PostMapping("memberPaymentsConfirm")
   @ResponseBody
-  public ResponseEntity<Object> memberPaymentsConfirm(@RequestBody PaymentsRequest paymentsRequest) throws Exception {
+  public ResponseEntity<Object> memberPaymentsConfirm(@RequestBody PaymentsRequestDTO paymentsRequestDTO) throws Exception {
     try{
       String widgetSecretKey = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6";
       String encodedSecretKey = "Basic " + Base64.getEncoder().encodeToString((widgetSecretKey + ":").getBytes());
@@ -633,7 +637,7 @@ public class memberController {
       ResponseEntity<Map<String, Object>> responseEntity = new RestTemplate().exchange(
               apiUrl,
               HttpMethod.POST,
-              new HttpEntity<>(paymentsRequest, headers),
+              new HttpEntity<>(paymentsRequestDTO, headers),
               new ParameterizedTypeReference<Map<String, Object>>() {
               }
       );
@@ -700,7 +704,7 @@ public class memberController {
     if(findType.equals("id")) {
       String memberName = request.getParameter("memberName");
       String memberEmail = request.getParameter("memberEmail");
-      List<Member> list = memberDao.memberFindId(memberName, memberEmail);
+      List<MemberDTO> list = memberDao.memberFindId(memberName, memberEmail);
 
       if(list != null && !list.isEmpty()) {
         isFind = 1;
@@ -757,30 +761,30 @@ public class memberController {
   public String memberProfile(HttpSession session, Model model) throws Exception {
     String memberId = (String) session.getAttribute("memberId");
 
-    Member member = memberDao.memberSelectOne(memberId);
+    MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
 
-    model.addAttribute("member", member);
+    model.addAttribute("member", memberDTO);
 
     return "member/memberProfile";
   }
 
   @RequestMapping("memberProfilePro")
-  public String memberProfilePro(HttpSession session, Model model, Member member, String memberExistingPassword) throws Exception {
+  public String memberProfilePro(HttpSession session, Model model, MemberDTO memberDTO, String memberExistingPassword) throws Exception {
     String memberId = (String) session.getAttribute("memberId");
 
-    Member existingMember = memberDao.memberSelectOne(memberId); // 기존 회원 정보
-    member.setMemberId(memberId); // 사용자가 임의로 변경하는 것을 막기 위함
+    MemberDTO existingMemberDTO = memberDao.memberSelectOne(memberId); // 기존 회원 정보
+    memberDTO.setMemberId(memberId); // 사용자가 임의로 변경하는 것을 막기 위함
 
     String url = "/member/memberProfile";
     String msg = "회원 정보가 수정되었습니다.";
 
     if(memberExistingPassword != null) {
-      if(passwordEncoder.matches(memberExistingPassword, existingMember.getMemberPassword())) { // 입력한 기존 비밀번호와 db의 비밀번호가 일치 할 때 변경
-        if(member.getMemberPassword() == null || member.getMemberPassword().isEmpty()) {
-          memberDao.memberUpdateNotPassword(member);
+      if(passwordEncoder.matches(memberExistingPassword, existingMemberDTO.getMemberPassword())) { // 입력한 기존 비밀번호와 db의 비밀번호가 일치 할 때 변경
+        if(memberDTO.getMemberPassword() == null || memberDTO.getMemberPassword().isEmpty()) {
+          memberDao.memberUpdateNotPassword(memberDTO);
         } else {
-          member.setMemberPassword(passwordEncoder.encode(member.getMemberPassword()));
-          memberDao.memberUpdate(member);
+          memberDTO.setMemberPassword(passwordEncoder.encode(memberDTO.getMemberPassword()));
+          memberDao.memberUpdate(memberDTO);
         }
       } else {
         msg = "기존 비밀번호가 틀렸습니다.";
@@ -819,7 +823,7 @@ public class memberController {
     String startDate = year + "-" + month + "-" + day;
     String endDate = String.valueOf(now);
 
-    List<History> list = historyDao.historySelectBetween(memberId, startDate, endDate);
+    List<HistoryDTO> list = historyDao.historySelectBetween(memberId, startDate, endDate);
     int historyCount = historyDao.historyCountBetween(memberId, startDate, endDate);
 
     request.setAttribute("startDate", startDate);
@@ -836,7 +840,7 @@ public class memberController {
     String startDate = request.getParameter("startDate");
     String endDate = request.getParameter("endDate");
 
-    List<History> list = historyDao.historySelectBetween(memberId, startDate, endDate);
+    List<HistoryDTO> list = historyDao.historySelectBetween(memberId, startDate, endDate);
     int historyCount = historyDao.historyCountBetween(memberId, startDate, endDate);
 
     request.setAttribute("startDate", startDate);

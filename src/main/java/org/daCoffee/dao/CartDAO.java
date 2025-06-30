@@ -1,10 +1,10 @@
-package org.daCoffee.service;
+package org.daCoffee.dao;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
-import org.daCoffee.model.Cart;
+import org.daCoffee.dto.CartDTO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,11 +19,11 @@ public class CartDAO {
     this.session = session;
   }
 
-  private final static String NS = "org.daCoffee.service.CartDAO.";
+  private final static String NS = "org.daCoffee.dao.CartDAO.";
   private static Map map = new HashMap<>();
 
-  public int cartInsert(Cart cart) {
-    int num = session.insert(NS+"cartInsert", cart);
+  public int cartInsert(CartDTO cartDTO) {
+    int num = session.insert(NS+"cartInsert", cartDTO);
     return num;
   }
 
@@ -64,18 +64,18 @@ public class CartDAO {
     return list;
   }
 
-  public List<Cart> cartSelectMember(String memberId) {
-    List<Cart> list = session.selectList(NS + "cartSelectMember", memberId);
+  public List<CartDTO> cartSelectMember(String memberId) {
+    List<CartDTO> list = session.selectList(NS + "cartSelectMember", memberId);
     return list;
   }
 
-  public Cart cartSelectOne(String memberId, String productCode) {
+  public CartDTO cartSelectOne(String memberId, String productCode) {
     map.clear();
     map.put("memberId", memberId);
     map.put("productCode", productCode);
-    Cart cart = session.selectOne(NS + "cartSelectOne", map);
+    CartDTO cartDTO = session.selectOne(NS + "cartSelectOne", map);
 
-    return cart;
+    return cartDTO;
   }
 
   public int cartSumPrice(String memberId) {

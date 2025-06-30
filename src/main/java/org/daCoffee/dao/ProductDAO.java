@@ -1,10 +1,10 @@
-package org.daCoffee.service;
+package org.daCoffee.dao;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
-import org.daCoffee.model.*;
+import org.daCoffee.dto.*;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,41 +18,41 @@ public class ProductDAO {
         this.session = session;
     }
 
-    private final static String NS = "org.daCoffee.service.ProductDAO.";
+    private final static String NS = "org.daCoffee.dao.ProductDAO.";
     private static Map map = new HashMap<>();
 
-    public int productInsert(Product product) {
-        int num = session.insert(NS + "productInsert", product);
+    public int productInsert(ProductDTO productDTO) {
+        int num = session.insert(NS + "productInsert", productDTO);
         return num;
     }
 
-    public int productUpdate(Product product) {
-        int num = session.update(NS + "productUpdate", product);
+    public int productUpdate(ProductDTO productDTO) {
+        int num = session.update(NS + "productUpdate", productDTO);
         return num;
     }
 
-    public int beanInsert(Product product) {
-        int num = session.insert(NS + "beanInsert", product);
+    public int beanInsert(ProductDTO productDTO) {
+        int num = session.insert(NS + "beanInsert", productDTO);
         return num;
     }
 
-    public int beanUpdate(Product product) {
-        int num = session.update(NS + "beanUpdate", product);
+    public int beanUpdate(ProductDTO productDTO) {
+        int num = session.update(NS + "beanUpdate", productDTO);
         return num;
     }
 
-    public int mixInsert(Product product) {
-        int num = session.insert(NS + "mixInsert", product);
+    public int mixInsert(ProductDTO productDTO) {
+        int num = session.insert(NS + "mixInsert", productDTO);
         return num;
     }
 
-    public int mixUpdate(Product product) {
-        int num = session.update(NS + "mixUpdate", product);
+    public int mixUpdate(ProductDTO productDTO) {
+        int num = session.update(NS + "mixUpdate", productDTO);
         return num;
     }
 
-    public int cafeInsert(Product product) {
-        int num = session.insert(NS + "cafeInsert", product);
+    public int cafeInsert(ProductDTO productDTO) {
+        int num = session.insert(NS + "cafeInsert", productDTO);
         return num;
     }
 
@@ -116,28 +116,28 @@ public class ProductDAO {
         return str;
     }
 
-    public Product productSelectOne(String productCode) {
-        Product product = session.selectOne(NS + "productSelectOne", productCode);
-        return product;
+    public ProductDTO productSelectOne(String productCode) {
+        ProductDTO productDTO = session.selectOne(NS + "productSelectOne", productCode);
+        return productDTO;
     }
 
-    public Product beanSelectOne(String productCode) {
-        Product product = session.selectOne(NS + "beanSelectOne", productCode);
-        return product;
+    public ProductDTO beanSelectOne(String productCode) {
+        ProductDTO productDTO = session.selectOne(NS + "beanSelectOne", productCode);
+        return productDTO;
     }
 
-    public Product mixSelectOne(String productCode) {
-        Product product = session.selectOne(NS + "mixSelectOne", productCode);
-        return product;
+    public ProductDTO mixSelectOne(String productCode) {
+        ProductDTO productDTO = session.selectOne(NS + "mixSelectOne", productCode);
+        return productDTO;
     }
 
-    public Product cafeSelectOne(String productCode) {
-        Product product = session.selectOne(NS + "cafeSelectOne", productCode);
-        return product;
+    public ProductDTO cafeSelectOne(String productCode) {
+        ProductDTO productDTO = session.selectOne(NS + "cafeSelectOne", productCode);
+        return productDTO;
     }
 
-    public List<Product> productListAll() {
-        List<Product> list = session.selectList(NS + "productListAll");
+    public List<ProductDTO> productListAll() {
+        List<ProductDTO> list = session.selectList(NS + "productListAll");
         return list;
     }
 
@@ -145,281 +145,281 @@ public class ProductDAO {
         session.selectOne(NS + "rownumSet");
     }
 
-    public List<Product> productList(int pageInt, int limit) {
+    public List<ProductDTO> productList(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<Product> list = session.selectList(NS + "productList", map);
+        List<ProductDTO> list = session.selectList(NS + "productList", map);
         return list;
     }
 
-    public List<Product> productListByMemberTierByProductType(int pageInt, int limit, int memberTier, int productType) {
+    public List<ProductDTO> productListByMemberTierByProductType(int pageInt, int limit, int memberTier, int productType) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("memberTier", memberTier);
         map.put("productType", productType);
-        List<Product> list = session.selectList(NS + "productListByMemberTierByProductType", map);
+        List<ProductDTO> list = session.selectList(NS + "productListByMemberTierByProductType", map);
         return list;
     }
 
-    public List<Product> productSearchListByMemberTier(int pageInt, int limit, int memberTier, String searchText) {
+    public List<ProductDTO> productSearchListByMemberTier(int pageInt, int limit, int memberTier, String searchText) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("memberTier", memberTier);
         map.put("searchText", searchText);
-        List<Product> list = session.selectList(NS + "productSearchListByMemberTier", map);
+        List<ProductDTO> list = session.selectList(NS + "productSearchListByMemberTier", map);
         return list;
     }
 
-    public List<Product> productSearchListByProductCode(int pageInt, int limit, String searchText) {
+    public List<ProductDTO> productSearchListByProductCode(int pageInt, int limit, String searchText) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
-        List<Product> list = session.selectList(NS + "productSearchListByProductCode", map);
+        List<ProductDTO> list = session.selectList(NS + "productSearchListByProductCode", map);
         return list;
     }
 
-    public List<Product> productSearchListByProductName(int pageInt, int limit, String searchText) {
+    public List<ProductDTO> productSearchListByProductName(int pageInt, int limit, String searchText) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
-        List<Product> list = session.selectList(NS + "productSearchListByProductName", map);
+        List<ProductDTO> list = session.selectList(NS + "productSearchListByProductName", map);
         return list;
     }
 
-    public List<Product> productSearchListByProductType(int pageInt, int limit, String searchText) {
+    public List<ProductDTO> productSearchListByProductType(int pageInt, int limit, String searchText) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
-        List<Product> list = session.selectList(NS + "productSearchListByProductType", map);
+        List<ProductDTO> list = session.selectList(NS + "productSearchListByProductType", map);
         return list;
     }
 
-    public List<Product> productSearchListByProductPrice(int pageInt, int limit, String searchText) {
+    public List<ProductDTO> productSearchListByProductPrice(int pageInt, int limit, String searchText) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
-        List<Product> list = session.selectList(NS + "productSearchListByProductPrice", map);
+        List<ProductDTO> list = session.selectList(NS + "productSearchListByProductPrice", map);
         return list;
     }
 
-    public List<Product> productSearchListByProductUnit(int pageInt, int limit, String searchText) {
+    public List<ProductDTO> productSearchListByProductUnit(int pageInt, int limit, String searchText) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
-        List<Product> list = session.selectList(NS + "productSearchListByProductUnit", map);
+        List<ProductDTO> list = session.selectList(NS + "productSearchListByProductUnit", map);
         return list;
     }
 
-    public List<Product> productSearchListByProductCountry(int pageInt, int limit, String searchText) {
+    public List<ProductDTO> productSearchListByProductCountry(int pageInt, int limit, String searchText) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
-        List<Product> list = session.selectList(NS + "productSearchListByProductCountry", map);
+        List<ProductDTO> list = session.selectList(NS + "productSearchListByProductCountry", map);
         return list;
     }
 
-    public List<Product> productSearchListByProductSpecies(int pageInt, int limit, String searchText) {
+    public List<ProductDTO> productSearchListByProductSpecies(int pageInt, int limit, String searchText) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
-        List<Product> list = session.selectList(NS + "productSearchListByProductSpecies", map);
+        List<ProductDTO> list = session.selectList(NS + "productSearchListByProductSpecies", map);
         return list;
     }
 
-    public List<Product> productSearchListByProductCompany(int pageInt, int limit, String searchText) {
+    public List<ProductDTO> productSearchListByProductCompany(int pageInt, int limit, String searchText) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
-        List<Product> list = session.selectList(NS + "productSearchListByProductCompany", map);
+        List<ProductDTO> list = session.selectList(NS + "productSearchListByProductCompany", map);
         return list;
     }
 
-    public List<Product> productSearchListByProductTier(int pageInt, int limit, String searchText) {
+    public List<ProductDTO> productSearchListByProductTier(int pageInt, int limit, String searchText) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
-        List<Product> list = session.selectList(NS + "productSearchListByProductTier", map);
+        List<ProductDTO> list = session.selectList(NS + "productSearchListByProductTier", map);
         return list;
     }
 
-    public List<Product> productSearchListByProductSoldOut(int pageInt, int limit, String searchText) {
+    public List<ProductDTO> productSearchListByProductSoldOut(int pageInt, int limit, String searchText) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
-        List<Product> list = session.selectList(NS + "productSearchListByProductSoldOut", map);
+        List<ProductDTO> list = session.selectList(NS + "productSearchListByProductSoldOut", map);
         return list;
     }
 
-    public List<Product> productListByProductType(int pageInt, int limit) {
+    public List<ProductDTO> productListByProductType(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<Product> list = session.selectList(NS + "productListByProductType", map);
+        List<ProductDTO> list = session.selectList(NS + "productListByProductType", map);
         return list;
     }
 
-    public List<Product> productListDescByProductType(int pageInt, int limit) {
+    public List<ProductDTO> productListDescByProductType(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<Product> list = session.selectList(NS + "productListDescByProductType", map);
+        List<ProductDTO> list = session.selectList(NS + "productListDescByProductType", map);
         return list;
     }
 
-    public List<Product> productListByProductCode(int pageInt, int limit) {
+    public List<ProductDTO> productListByProductCode(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<Product> list = session.selectList(NS + "productListByProductCode", map);
+        List<ProductDTO> list = session.selectList(NS + "productListByProductCode", map);
         return list;
     }
 
-    public List<Product> productListDescByProductCode(int pageInt, int limit) {
+    public List<ProductDTO> productListDescByProductCode(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<Product> list = session.selectList(NS + "productListDescByProductCode", map);
+        List<ProductDTO> list = session.selectList(NS + "productListDescByProductCode", map);
         return list;
     }
 
-    public List<Product> productListByProductName(int pageInt, int limit) {
+    public List<ProductDTO> productListByProductName(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<Product> list = session.selectList(NS + "productListByProductName", map);
+        List<ProductDTO> list = session.selectList(NS + "productListByProductName", map);
         return list;
     }
 
-    public List<Product> productListDescByProductName(int pageInt, int limit) {
+    public List<ProductDTO> productListDescByProductName(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<Product> list = session.selectList(NS + "productListDescByProductName", map);
+        List<ProductDTO> list = session.selectList(NS + "productListDescByProductName", map);
         return list;
     }
 
-    public List<Product> productListByProductUnit(int pageInt, int limit) {
+    public List<ProductDTO> productListByProductUnit(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<Product> list = session.selectList(NS + "productListByProductUnit", map);
+        List<ProductDTO> list = session.selectList(NS + "productListByProductUnit", map);
         return list;
     }
 
-    public List<Product> productListDescByProductUnit(int pageInt, int limit) {
+    public List<ProductDTO> productListDescByProductUnit(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<Product> list = session.selectList(NS + "productListDescByProductUnit", map);
+        List<ProductDTO> list = session.selectList(NS + "productListDescByProductUnit", map);
         return list;
     }
 
-    public List<Product> productListByProductPrice(int pageInt, int limit) {
+    public List<ProductDTO> productListByProductPrice(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<Product> list = session.selectList(NS + "productListByProductPrice", map);
+        List<ProductDTO> list = session.selectList(NS + "productListByProductPrice", map);
         return list;
     }
 
-    public List<Product> productListDescByProductPrice(int pageInt, int limit) {
+    public List<ProductDTO> productListDescByProductPrice(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<Product> list = session.selectList(NS + "productListDescByProductPrice", map);
+        List<ProductDTO> list = session.selectList(NS + "productListDescByProductPrice", map);
         return list;
     }
 
-    public List<Product> productListByProductCountry(int pageInt, int limit) {
+    public List<ProductDTO> productListByProductCountry(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<Product> list = session.selectList(NS + "productListByProductCountry", map);
+        List<ProductDTO> list = session.selectList(NS + "productListByProductCountry", map);
         return list;
     }
 
-    public List<Product> productListDescByProductCountry(int pageInt, int limit) {
+    public List<ProductDTO> productListDescByProductCountry(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<Product> list = session.selectList(NS + "productListDescByProductCountry", map);
+        List<ProductDTO> list = session.selectList(NS + "productListDescByProductCountry", map);
         return list;
     }
 
-    public List<Product> productListByProductSpecies(int pageInt, int limit) {
+    public List<ProductDTO> productListByProductSpecies(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<Product> list = session.selectList(NS + "productListByProductSpecies", map);
+        List<ProductDTO> list = session.selectList(NS + "productListByProductSpecies", map);
         return list;
     }
 
-    public List<Product> productListDescByProductSpecies(int pageInt, int limit) {
+    public List<ProductDTO> productListDescByProductSpecies(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<Product> list = session.selectList(NS + "productListDescByProductSpecies", map);
+        List<ProductDTO> list = session.selectList(NS + "productListDescByProductSpecies", map);
         return list;
     }
 
-    public List<Product> productListByProductCompany(int pageInt, int limit) {
+    public List<ProductDTO> productListByProductCompany(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<Product> list = session.selectList(NS + "productListByProductCompany", map);
+        List<ProductDTO> list = session.selectList(NS + "productListByProductCompany", map);
         return list;
     }
 
-    public List<Product> productListDescByProductCompany(int pageInt, int limit) {
+    public List<ProductDTO> productListDescByProductCompany(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<Product> list = session.selectList(NS + "productListDescByProductCompany", map);
+        List<ProductDTO> list = session.selectList(NS + "productListDescByProductCompany", map);
         return list;
     }
 
-    public List<Product> productListByProductTier(int pageInt, int limit) {
+    public List<ProductDTO> productListByProductTier(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<Product> list = session.selectList(NS + "productListByProductTier", map);
+        List<ProductDTO> list = session.selectList(NS + "productListByProductTier", map);
         return list;
     }
 
-    public List<Product> productListDescByProductTier(int pageInt, int limit) {
+    public List<ProductDTO> productListDescByProductTier(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<Product> list = session.selectList(NS + "productListDescByProductTier", map);
+        List<ProductDTO> list = session.selectList(NS + "productListDescByProductTier", map);
         return list;
     }
 
-    public List<Product> productListByProductSoldOut(int pageInt, int limit) {
+    public List<ProductDTO> productListByProductSoldOut(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<Product> list = session.selectList(NS + "productListByProductSoldOut", map);
+        List<ProductDTO> list = session.selectList(NS + "productListByProductSoldOut", map);
         return list;
     }
 
-    public List<Product> productListDescByProductSoldOut(int pageInt, int limit) {
+    public List<ProductDTO> productListDescByProductSoldOut(int pageInt, int limit) {
         map.clear();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
-        List<Product> list = session.selectList(NS + "productListDescByProductSoldOut", map);
+        List<ProductDTO> list = session.selectList(NS + "productListDescByProductSoldOut", map);
         return list;
     }
 

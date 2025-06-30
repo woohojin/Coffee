@@ -1,6 +1,6 @@
-package org.daCoffee.model;
+package org.daCoffee.dto;
 
-public class History {
+public class HistoryDTO {
   String orderId;
   int memberTier;
   String memberId;

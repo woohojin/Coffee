@@ -1,6 +1,6 @@
-package org.daCoffee.model;
+package org.daCoffee.dto;
 
-public class Cart {
+public class CartDTO {
   String memberId;
   String productCode;
   String productName;

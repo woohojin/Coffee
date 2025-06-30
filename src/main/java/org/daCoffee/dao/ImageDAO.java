@@ -1,10 +1,10 @@
-package org.daCoffee.service;
+package org.daCoffee.dao;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
-import org.daCoffee.model.Image;
+import org.daCoffee.dto.ImageDTO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,21 +18,21 @@ public class ImageDAO {
     this.session = session;
   }
 
-  private final static String NS = "org.daCoffee.service.ImageDAO.";
+  private final static String NS = "org.daCoffee.dao.ImageDAO.";
   private static Map map = new HashMap<>();
 
-  public int insertProductImage(Image image) {
-    int num = session.insert(NS + "insertProductImage", image);
+  public int insertProductImage(ImageDTO imageDTO) {
+    int num = session.insert(NS + "insertProductImage", imageDTO);
     return num;
   }
 
-  public int updateProductImage(Image image) {
-    int num = session.update(NS + "updateProductImage", image);
+  public int updateProductImage(ImageDTO imageDTO) {
+    int num = session.update(NS + "updateProductImage", imageDTO);
     return num;
   }
 
-  public List<Image> selectProductImage(String productCode) {
-    List<Image> list = session.selectList(NS + "selectProductImage", productCode);
+  public List<ImageDTO> selectProductImage(String productCode) {
+    List<ImageDTO> list = session.selectList(NS + "selectProductImage", productCode);
     return list;
   }
 

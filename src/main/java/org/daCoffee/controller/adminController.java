@@ -1,9 +1,13 @@
 package org.daCoffee.controller;
 
-import org.daCoffee.model.Image;
-import org.daCoffee.model.Member;
-import org.daCoffee.model.Product;
-import org.daCoffee.model.History;
+import org.daCoffee.dao.HistoryDAO;
+import org.daCoffee.dao.ImageDAO;
+import org.daCoffee.dao.MemberDAO;
+import org.daCoffee.dao.ProductDAO;
+import org.daCoffee.dto.HistoryDTO;
+import org.daCoffee.dto.ImageDTO;
+import org.daCoffee.dto.MemberDTO;
+import org.daCoffee.dto.ProductDTO;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -16,7 +20,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.daCoffee.service.*;
 
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
@@ -71,7 +74,7 @@ public class adminController {
 
     if(memberTier == 9) {
       productDao.rownumSet();
-      List<Product> list = productDao.productList(pageInt, limit);
+      List<ProductDTO> list = productDao.productList(pageInt, limit);
       productCount = productDao.productCount();
       model.addAttribute("list", list);
     }
@@ -122,7 +125,7 @@ public class adminController {
 
     if(memberTier == 9) {
       productDao.rownumSet();
-      List<Product> list;
+      List<ProductDTO> list;
 
       switch (columnName) {
         case "product_type":
@@ -210,7 +213,7 @@ public class adminController {
 
     int productCount = 0;
     String searchText = "";
-    List<Product> list = null;
+    List<ProductDTO> list = null;
     String[] array = {"productCode", "productName", "productType", "productPrice",
                       "productUnit", "productCountry", "productSpecies", "productCompany", "productTier", "productSoldOut"};
 
@@ -303,7 +306,7 @@ public class adminController {
 
     if(memberTier == 9) {
       productDao.rownumSet();
-      List<Product> list = productDao.productList(pageInt, limit);
+      List<ProductDTO> list = productDao.productList(pageInt, limit);
       productCount = productDao.productCount();
       model.addAttribute("list", list);
     }
@@ -366,7 +369,7 @@ public class adminController {
 
     if(memberTier == 9) {
       memberDao.rownumSet();
-      List<Member> list = memberDao.memberList(pageInt, limit);
+      List<MemberDTO> list = memberDao.memberList(pageInt, limit);
       LOGGER.info(list.toString());
       memberCount = memberDao.memberCount();
       model.addAttribute("list", list);
@@ -419,7 +422,7 @@ public class adminController {
 
     if(memberTier == 9) {
       memberDao.rownumSet();
-      List<Member> list;
+      List<MemberDTO> list;
 
       switch (columnName) {
         case "member_company_name":
@@ -498,31 +501,31 @@ public class adminController {
 
   @RequestMapping("memberUpdate")
   public String memberUpdate(Model model, String memberId) throws Exception {
-    Member member = memberDao.memberSelectOne(memberId);
+    MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
 
-    model.addAttribute("member", member);
+    model.addAttribute("member", memberDTO);
 
     return "admin/memberUpdate";
   }
 
   @RequestMapping("memberUpdatePro")
-  public String memberUpdatePro(HttpSession session, Model model, Member member) throws Exception {
+  public String memberUpdatePro(HttpSession session, Model model, MemberDTO memberDTO) throws Exception {
     String adminId = (String) session.getAttribute("memberId");
-    Member admin = memberDao.memberSelectOne(adminId);
+    MemberDTO admin = memberDao.memberSelectOne(adminId);
     String adminName = admin.getMemberName();
 
     String url = "/admin/memberList";
     String msg = "회원 정보가 수정되었습니다.";
 
-    String memberId = member.getMemberId();
-    Member existMember = memberDao.memberSelectOne(memberId); // 업데이트 전 회원 정보
-    String existMemberFranCode = existMember.getMemberFranCode(); // 업데이트 전 가맹점코드
+    String memberId = memberDTO.getMemberId();
+    MemberDTO existMemberDTO = memberDao.memberSelectOne(memberId); // 업데이트 전 회원 정보
+    String existMemberFranCode = existMemberDTO.getMemberFranCode(); // 업데이트 전 가맹점코드
 
-    member.setMemberModifierName(adminName);
-    memberDao.memberAdminUpdate(member);
+    memberDTO.setMemberModifierName(adminName);
+    memberDao.memberAdminUpdate(memberDTO);
 
-    Member updatedMember = memberDao.memberSelectOne(memberId); // 업데이트 후 회원 정보
-    String memberFranCode = updatedMember.getMemberFranCode(); // 업데이트 후 가맹점 코드
+    MemberDTO updatedMemberDTO = memberDao.memberSelectOne(memberId); // 업데이트 후 회원 정보
+    String memberFranCode = updatedMemberDTO.getMemberFranCode(); // 업데이트 후 가맹점 코드
 
     if(!existMemberFranCode.equals(memberFranCode)) {
       historyDao.historyFranCodeUpdate(existMemberFranCode, memberFranCode); // 주문 기록에 있는 변경된 가맹점코드 전부 업데이트
@@ -553,7 +556,7 @@ public class adminController {
 
     int memberCount = 0;
     String searchText = "";
-    List<Member> list = null;
+    List<MemberDTO> list = null;
     String[] array = {"memberCompanyName", "memberFranCode", "memberId", "memberName",
       "memberTel", "memberCompanyTel", "memberTier"};
 
@@ -635,7 +638,7 @@ public class adminController {
 
     if(memberTier == 9) {
       memberDao.rownumSet();
-      List<Member> list = memberDao.memberWithdrawalList(pageInt, limit);
+      List<MemberDTO> list = memberDao.memberWithdrawalList(pageInt, limit);
       LOGGER.info(list.toString());
       memberCount = memberDao.memberWithdrawalCount();
       model.addAttribute("list", list);
@@ -685,7 +688,7 @@ public class adminController {
 
     if(memberTier == 9) {
       historyDao.rownumSet();
-      List<History> list = historyDao.historyList(pageInt, limit);
+      List<HistoryDTO> list = historyDao.historyList(pageInt, limit);
       historyCount = historyDao.historyCount();
       model.addAttribute("list", list);
     }
@@ -736,7 +739,7 @@ public class adminController {
 
     if(memberTier == 9) {
       historyDao.rownumSet();
-      List<History> list;
+      List<HistoryDTO> list;
 
       switch (columnName) {
         case "history_code":
@@ -815,24 +818,24 @@ public class adminController {
 
   @RequestMapping("orderHistoryUpdate")
   public String orderHistoryUpdate(HttpServletRequest request, HttpSession session, Model model, String orderId, String productCode) throws Exception {
-    History history = historyDao.historySelectOne(orderId, productCode);
+    HistoryDTO historyDTO = historyDao.historySelectOne(orderId, productCode);
 
-    model.addAttribute("history", history);
+    model.addAttribute("history", historyDTO);
 
     return "admin/orderHistoryUpdate";
   }
 
   @RequestMapping("orderHistoryUpdatePro")
-  public String orderHistoryUpdatePro(HttpServletRequest request, HttpSession session, Model model, History history) throws Exception {
+  public String orderHistoryUpdatePro(HttpServletRequest request, HttpSession session, Model model, HistoryDTO historyDTO) throws Exception {
     String adminId = (String) session.getAttribute("memberId");
-    Member admin = memberDao.memberSelectOne(adminId);
+    MemberDTO admin = memberDao.memberSelectOne(adminId);
     String adminName = admin.getMemberName();
 
     String msg = "주문 기록이 수정되었습니다.";
     String url = "/admin/orderHistory";
 
-    history.setHistoryModifierName(adminName);
-    int num = historyDao.historyUpdate(history);
+    historyDTO.setHistoryModifierName(adminName);
+    int num = historyDao.historyUpdate(historyDTO);
 
     if(num == 0) {
       msg = "주문 기록 수정에 실패했습니다.";
@@ -896,7 +899,7 @@ public class adminController {
     int bottomLine = 100; // pagination 개수
 
     int historyCount = 0;
-    List<History> list = null;
+    List<HistoryDTO> list = null;
     String searchText = "";
     String searchText1 = "";
     String[] array = {"historyCode", "memberId"};
@@ -989,7 +992,7 @@ public class adminController {
       memberTier = 0;
     }
 
-    List<Member> list;
+    List<MemberDTO> list;
 
     if(memberTier == 9) {
       list = memberDao.memberSearchListByMemberTier(1, 32, "0");
@@ -1059,7 +1062,7 @@ public class adminController {
       memberTier = 0;
     }
 
-    List<Member> list;
+    List<MemberDTO> list;
 
     if(memberTier == 9) {
       list = memberDao.memberSearchListByMemberDisable(1, 32);
@@ -1073,8 +1076,8 @@ public class adminController {
 
   @RequestMapping("memberDisableUpdatePro")
   public String memberDisableUpdatePro(HttpServletRequest request, Model model, String memberId) throws Exception {
-    Member member = memberDao.memberSelectOne(memberId);
-    Member disabledMember = memberDao.memberDisableSelectOne(memberId);
+    MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
+    MemberDTO disabledMemberDTO = memberDao.memberDisableSelectOne(memberId);
 
     int checkMember = memberDao.checkMember(memberId);
     int checkDisabledMember = memberDao.checkDisabledMember(memberId);
@@ -1107,17 +1110,17 @@ public class adminController {
   }
 
   @RequestMapping("productUploadPro")
-  public String productUploadPro(HttpServletRequest request, HttpSession session, Model model, MultipartHttpServletRequest files, Product product) throws Exception {
+  public String productUploadPro(HttpServletRequest request, HttpSession session, Model model, MultipartHttpServletRequest files, ProductDTO productDTO) throws Exception {
     String adminId = (String) session.getAttribute("memberId");
-    Member admin = memberDao.memberSelectOne(adminId);
+    MemberDTO admin = memberDao.memberSelectOne(adminId);
     String adminName = admin.getMemberName();
 
     String msg = "제품 등록에 실패하였습니다.";
     String url = "/admin/productUpload";
 
-    Image image = new Image();
-    String productCode = product.getProductCode();
-    int productType = product.getProductType();
+    ImageDTO imageDTO = new ImageDTO();
+    String productCode = productDTO.getProductCode();
+    int productType = productDTO.getProductType();
 
     String filePath = request.getServletContext().getRealPath("/") + "view/files/bean/" + productCode;
 
@@ -1138,7 +1141,7 @@ public class adminController {
 
     List<MultipartFile> fileList = files.getFiles("files");
 
-    Product check = productDao.productSelectOne(productCode);
+    ProductDTO check = productDao.productSelectOne(productCode);
 
     if (check == null) {
       if (fileList.size() > 0) {
@@ -1146,13 +1149,13 @@ public class adminController {
           fileName = fileList.get(i).getOriginalFilename();
           File file = new File(filePath, fileName);
 
-          image.setProductCode(productCode);
-          image.setFileName(fileName);
-          image.setFileRegisterName(adminName);
-          imageDao.insertProductImage(image);
+          imageDTO.setProductCode(productCode);
+          imageDTO.setFileName(fileName);
+          imageDTO.setFileRegisterName(adminName);
+          imageDao.insertProductImage(imageDTO);
 
           if(fileName.contains("thumbnail")) {
-            product.setProductFile(fileName);
+            productDTO.setProductFile(fileName);
           }
 
           try {
@@ -1164,17 +1167,17 @@ public class adminController {
           }
         }
 
-        product.setProductRegisterName(adminName);
-        productDao.productInsert(product);
+        productDTO.setProductRegisterName(adminName);
+        productDao.productInsert(productDTO);
 
         if(productType == 0) {
-          product.setBeanRegisterName(adminName);
-          productDao.beanInsert(product);
+          productDTO.setBeanRegisterName(adminName);
+          productDao.beanInsert(productDTO);
         }
 
         if(productType == 1) {
-          product.setMixRegisterName(adminName);
-          productDao.mixInsert(product);
+          productDTO.setMixRegisterName(adminName);
+          productDao.mixInsert(productDTO);
         }
 
 //        if(productType == 2) { // cafe 제품에 필요한 데이터 컬럼은 product 테이블에 전부 있어서 비활성화
@@ -1200,37 +1203,37 @@ public class adminController {
   @RequestMapping("productUpdate")
   public String productUpdate(HttpServletRequest request, Model model, @RequestParam(name = "productCode") String productCode) {
 
-    Product product = productDao.productSelectOne(productCode);
-    int productType = product.getProductType();
+    ProductDTO productDTO = productDao.productSelectOne(productCode);
+    int productType = productDTO.getProductType();
 
     if(productType == 0) { // bean (cafe는 테이블이 없음)
-      Product bean = productDao.beanSelectOne(productCode);
+      ProductDTO bean = productDao.beanSelectOne(productCode);
       model.addAttribute("bean", bean);
     }
     if(productType == 1) { // mix
-      Product mix = productDao.mixSelectOne(productCode);
+      ProductDTO mix = productDao.mixSelectOne(productCode);
       model.addAttribute("mix", mix);
     }
 
-    product.setExistProductCode(productCode);
+    productDTO.setExistProductCode(productCode);
 
-    model.addAttribute("product", product);
+    model.addAttribute("product", productDTO);
 
     return "admin/productUpdate";
   }
 
   @RequestMapping("productUpdatePro")
-  public String productUpdatePro(HttpServletRequest request, HttpSession session, Model model, MultipartHttpServletRequest files, Product product) throws Exception {
+  public String productUpdatePro(HttpServletRequest request, HttpSession session, Model model, MultipartHttpServletRequest files, ProductDTO productDTO) throws Exception {
     String adminId = (String) session.getAttribute("memberId");
-    Member admin = memberDao.memberSelectOne(adminId);
+    MemberDTO admin = memberDao.memberSelectOne(adminId);
     String adminName = admin.getMemberName();
 
     String msg = "제품 수정에 실패하였습니다.";
     String url = "/admin/productList";
 
-    Image image = new Image();
-    String productCode = product.getProductCode();
-    int productType = product.getProductType();
+    ImageDTO imageDTO = new ImageDTO();
+    String productCode = productDTO.getProductCode();
+    int productType = productDTO.getProductType();
 
     String filePath = request.getServletContext().getRealPath("/") + "view/files/bean/" + productCode;
 
@@ -1251,8 +1254,8 @@ public class adminController {
 
     List<MultipartFile> fileList = files.getFiles("files");
 
-    Product check = productDao.productSelectOne(productCode);
-    product.setProductFile(check.getProductFile());
+    ProductDTO check = productDao.productSelectOne(productCode);
+    productDTO.setProductFile(check.getProductFile());
 
     if (check != null) {
       if (fileList.size() > 0) {
@@ -1261,34 +1264,34 @@ public class adminController {
           File file = new File(filePath, fileName);
 
           if(fileName.contains("thumbnail")) {
-            product.setProductFile(fileName);
+            productDTO.setProductFile(fileName);
           }
 
           if(!fileName.isEmpty()) {
-            image.setProductCode(productCode);
-            image.setFileName(fileName);
-            image.setFileModifierName(adminName);
+            imageDTO.setProductCode(productCode);
+            imageDTO.setFileName(fileName);
+            imageDTO.setFileModifierName(adminName);
 
             if(file.exists() && file.delete()) {
               System.out.println("File is deleted.");
             }
 
-            imageDao.updateProductImage(image);
+            imageDao.updateProductImage(imageDTO);
             fileList.get(i).transferTo(file);
           }
         }
 
-        product.setProductModifierName(adminName);
-        productDao.productUpdate(product);
+        productDTO.setProductModifierName(adminName);
+        productDao.productUpdate(productDTO);
 
         if(productType == 0) {
-          product.setBeanModifierName(adminName);
-          productDao.beanUpdate(product);
+          productDTO.setBeanModifierName(adminName);
+          productDao.beanUpdate(productDTO);
         }
 
         if(productType == 1) {
-          product.setMixModifierName(adminName);
-          productDao.mixUpdate(product);
+          productDTO.setMixModifierName(adminName);
+          productDao.mixUpdate(productDTO);
         }
 
 //        if(productType == 2) { // cafe 제품에 필요한 데이터 컬럼은 product 테이블에 전부 있어서 비활성화
@@ -1331,7 +1334,7 @@ public class adminController {
 
     if(memberTier == 9) {
       productDao.rownumSet();
-      List<Product> list = productDao.productList(pageInt, limit);
+      List<ProductDTO> list = productDao.productList(pageInt, limit);
       productCount = productDao.productCount();
       model.addAttribute("list", list);
     }
@@ -1398,7 +1401,7 @@ public class adminController {
 
   @RequestMapping("excelProductDownload")
   public void excelProductDownload(HttpServletResponse response) throws IOException {
-    List<Product> productList = productDao.productListAll();
+    List<ProductDTO> productDTOList = productDao.productListAll();
 
     String excelFileName = "productList.xlsx";
 
@@ -1422,20 +1425,20 @@ public class adminController {
     headerRow.createCell(10).setCellValue("수정일");
 
     int rowNum = 1;
-    for (Product product : productList) {
+    for (ProductDTO productDTO : productDTOList) {
       Row row = sheet.createRow(rowNum++);
       int colNum = 0;
-      row.createCell(colNum++).setCellValue(product.getProductCode());
-      row.createCell(colNum++).setCellValue(product.getProductType());
-      row.createCell(colNum++).setCellValue(product.getProductName());
-      row.createCell(colNum++).setCellValue(product.getProductPrice());
-      row.createCell(colNum++).setCellValue(product.getProductUnit());
-      row.createCell(colNum++).setCellValue(product.getProductTier());
-      row.createCell(colNum++).setCellValue(product.getProductSoldOut());
-      row.createCell(colNum++).setCellValue(product.getProductRegisterName());
-      row.createCell(colNum++).setCellValue(product.getProductRegisterDate());
-      row.createCell(colNum++).setCellValue(product.getProductModifierName());
-      row.createCell(colNum++).setCellValue(product.getProductModifierDate());
+      row.createCell(colNum++).setCellValue(productDTO.getProductCode());
+      row.createCell(colNum++).setCellValue(productDTO.getProductType());
+      row.createCell(colNum++).setCellValue(productDTO.getProductName());
+      row.createCell(colNum++).setCellValue(productDTO.getProductPrice());
+      row.createCell(colNum++).setCellValue(productDTO.getProductUnit());
+      row.createCell(colNum++).setCellValue(productDTO.getProductTier());
+      row.createCell(colNum++).setCellValue(productDTO.getProductSoldOut());
+      row.createCell(colNum++).setCellValue(productDTO.getProductRegisterName());
+      row.createCell(colNum++).setCellValue(productDTO.getProductRegisterDate());
+      row.createCell(colNum++).setCellValue(productDTO.getProductModifierName());
+      row.createCell(colNum++).setCellValue(productDTO.getProductModifierDate());
     }
 
     ServletOutputStream outputStream = response.getOutputStream();
@@ -1446,7 +1449,7 @@ public class adminController {
 
   @RequestMapping("excelMemberDownload")
   public void excelMemberDownload(HttpServletResponse response) throws IOException {
-    List<Member> memberList = memberDao.memberListAll();
+    List<MemberDTO> memberDTOList = memberDao.memberListAll();
 
     String excelFileName = "memberList.xlsx";
 
@@ -1474,24 +1477,24 @@ public class adminController {
     headerRow.createCell(14).setCellValue("수정일");
 
     int rowNum = 1;
-    for (Member member : memberList) {
+    for (MemberDTO memberDTO : memberDTOList) {
       Row row = sheet.createRow(rowNum++);
       int colNum = 0;
-      row.createCell(colNum++).setCellValue(member.getMemberTier());
-      row.createCell(colNum++).setCellValue(member.getMemberId());
-      row.createCell(colNum++).setCellValue(member.getMemberName());
-      row.createCell(colNum++).setCellValue(member.getMemberCompanyName());
-      row.createCell(colNum++).setCellValue(member.getMemberPassword());
-      row.createCell(colNum++).setCellValue(member.getMemberTel());
-      row.createCell(colNum++).setCellValue(member.getMemberCompanyTel());
-      row.createCell(colNum++).setCellValue(member.getMemberAddress() + " " + member.getMemberDetailAddress());
-      row.createCell(colNum++).setCellValue(member.getMemberDeliveryAddress() + " " + member.getMemberDetailDeliveryAddress());
-      row.createCell(colNum++).setCellValue(member.getMemberEmail());
-      row.createCell(colNum++).setCellValue(member.getMemberFranCode());
-      row.createCell(colNum++).setCellValue(member.getMemberDate());
-      row.createCell(colNum++).setCellValue(member.getMemberDisableDate());
-      row.createCell(colNum++).setCellValue(member.getMemberModifierName());
-      row.createCell(colNum++).setCellValue(member.getMemberModifierDate());
+      row.createCell(colNum++).setCellValue(memberDTO.getMemberTier());
+      row.createCell(colNum++).setCellValue(memberDTO.getMemberId());
+      row.createCell(colNum++).setCellValue(memberDTO.getMemberName());
+      row.createCell(colNum++).setCellValue(memberDTO.getMemberCompanyName());
+      row.createCell(colNum++).setCellValue(memberDTO.getMemberPassword());
+      row.createCell(colNum++).setCellValue(memberDTO.getMemberTel());
+      row.createCell(colNum++).setCellValue(memberDTO.getMemberCompanyTel());
+      row.createCell(colNum++).setCellValue(memberDTO.getMemberAddress() + " " + memberDTO.getMemberDetailAddress());
+      row.createCell(colNum++).setCellValue(memberDTO.getMemberDeliveryAddress() + " " + memberDTO.getMemberDetailDeliveryAddress());
+      row.createCell(colNum++).setCellValue(memberDTO.getMemberEmail());
+      row.createCell(colNum++).setCellValue(memberDTO.getMemberFranCode());
+      row.createCell(colNum++).setCellValue(memberDTO.getMemberDate());
+      row.createCell(colNum++).setCellValue(memberDTO.getMemberDisableDate());
+      row.createCell(colNum++).setCellValue(memberDTO.getMemberModifierName());
+      row.createCell(colNum++).setCellValue(memberDTO.getMemberModifierDate());
     }
 
     ServletOutputStream outputStream = response.getOutputStream();
@@ -1502,7 +1505,7 @@ public class adminController {
 
   @RequestMapping("excelHistoryDownload")
   public void excelHistoryDownload(HttpServletResponse response) throws IOException {
-    List<History> historyList = historyDao.historyListAll();
+    List<HistoryDTO> historyDTOList = historyDao.historyListAll();
 
     String excelFileName = "historyList.xlsx";
 
@@ -1529,22 +1532,22 @@ public class adminController {
     headerRow.createCell(12).setCellValue("배송지");
 
     int rowNum = 1;
-    for (History history : historyList) {
+    for (HistoryDTO historyDTO : historyDTOList) {
       Row row = sheet.createRow(rowNum++);
       int colNum = 0;
-      row.createCell(colNum++).setCellValue(history.getOrderId());
-      row.createCell(colNum++).setCellValue(history.getMemberTier());
-      row.createCell(colNum++).setCellValue(history.getMemberId());
-      row.createCell(colNum++).setCellValue(history.getMemberName());
-      row.createCell(colNum++).setCellValue(history.getMemberFranCode());
-      row.createCell(colNum++).setCellValue(history.getProductCode());
-      row.createCell(colNum++).setCellValue(history.getProductName());
-      row.createCell(colNum++).setCellValue(history.getQuantity());
-      row.createCell(colNum++).setCellValue(history.getProductUnit());
-      row.createCell(colNum++).setCellValue(history.getProductPrice());
-      row.createCell(colNum++).setCellValue(history.getTotalPrice());
-      row.createCell(colNum++).setCellValue(history.getOrderDate());
-      row.createCell(colNum++).setCellValue(history.getDeliveryAddress() + " " + history.getDetailDeliveryAddress());
+      row.createCell(colNum++).setCellValue(historyDTO.getOrderId());
+      row.createCell(colNum++).setCellValue(historyDTO.getMemberTier());
+      row.createCell(colNum++).setCellValue(historyDTO.getMemberId());
+      row.createCell(colNum++).setCellValue(historyDTO.getMemberName());
+      row.createCell(colNum++).setCellValue(historyDTO.getMemberFranCode());
+      row.createCell(colNum++).setCellValue(historyDTO.getProductCode());
+      row.createCell(colNum++).setCellValue(historyDTO.getProductName());
+      row.createCell(colNum++).setCellValue(historyDTO.getQuantity());
+      row.createCell(colNum++).setCellValue(historyDTO.getProductUnit());
+      row.createCell(colNum++).setCellValue(historyDTO.getProductPrice());
+      row.createCell(colNum++).setCellValue(historyDTO.getTotalPrice());
+      row.createCell(colNum++).setCellValue(historyDTO.getOrderDate());
+      row.createCell(colNum++).setCellValue(historyDTO.getDeliveryAddress() + " " + historyDTO.getDetailDeliveryAddress());
     }
 
     ServletOutputStream outputStream = response.getOutputStream();

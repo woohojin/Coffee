@@ -1,6 +1,6 @@
 package org.daCoffee.controller.security;
 
-import org.daCoffee.model.Member;
+import org.daCoffee.dto.MemberDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -21,10 +21,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Member member = sqlSession.selectOne("member.memberSelectOne", username);
+        MemberDTO memberDTO = sqlSession.selectOne("member.memberSelectOne", username);
 
-        return User.withUsername(member.getMemberId())
-                .password(member.getMemberPassword())
+        return User.withUsername(memberDTO.getMemberId())
+                .password(memberDTO.getMemberPassword())
                 .disabled(false)
                 .roles("USER")
                 .build();

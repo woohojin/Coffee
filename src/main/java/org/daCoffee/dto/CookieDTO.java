@@ -1,6 +1,6 @@
-package org.daCoffee.model;
+package org.daCoffee.dto;
 
-public class Cookie {
+public class CookieDTO {
     String memberId;
     String token;
 

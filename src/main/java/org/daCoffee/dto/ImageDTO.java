@@ -1,6 +1,6 @@
-package org.daCoffee.model;
+package org.daCoffee.dto;
 
-public class Image {
+public class ImageDTO {
   String productCode;
   String existProductCode; // admin productUpdate
   String fileName;

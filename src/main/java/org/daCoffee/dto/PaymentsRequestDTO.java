@@ -1,6 +1,6 @@
-package org.daCoffee.model;
+package org.daCoffee.dto;
 
-public class PaymentsRequest {
+public class PaymentsRequestDTO {
     private String paymentKey;
     private String orderId;
     private String amount;

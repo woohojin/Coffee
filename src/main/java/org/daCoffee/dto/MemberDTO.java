@@ -1,6 +1,6 @@
-package org.daCoffee.model;
+package org.daCoffee.dto;
 
-public class Member {
+public class MemberDTO {
     String memberId;
     String memberName;
     String memberCompanyName;

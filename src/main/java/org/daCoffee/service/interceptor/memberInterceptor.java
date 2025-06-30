@@ -1,15 +1,15 @@
 package org.daCoffee.service.interceptor;
 
-import org.daCoffee.model.Member;
-import org.daCoffee.model.Cookie;
+import org.daCoffee.dto.CookieDTO;
+import org.daCoffee.dto.MemberDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
-import org.daCoffee.service.CartDAO;
-import org.daCoffee.service.CookieDAO;
-import org.daCoffee.service.MemberDAO;
+import org.daCoffee.dao.CartDAO;
+import org.daCoffee.dao.CookieDAO;
+import org.daCoffee.dao.MemberDAO;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,8 +32,8 @@ public class memberInterceptor implements HandlerInterceptor {
     this.cartDao = cartDao;
   }
 
-  Member member;
-  Cookie cookie;
+  MemberDTO memberDTO;
+  CookieDTO cookieDTO;
 
   String cookieDBToken; // DB에서 가져온 토큰
   String cookieToken; // 쿠키에서 가져온 토큰
@@ -52,15 +52,15 @@ public class memberInterceptor implements HandlerInterceptor {
       for(jakarta.servlet.http.Cookie cookie: cookies) {
         if(cookie.getName().equals("memberId")) {
           memberCookieId = cookie.getValue();
-          member = memberDao.memberSelectOne(memberCookieId);
-          if(member != null) {
-            memberId = member.getMemberId();
+          memberDTO = memberDao.memberSelectOne(memberCookieId);
+          if(memberDTO != null) {
+            memberId = memberDTO.getMemberId();
             int isDisabled = memberDao.disabledMemberSelectOne(memberId);
 
             if(isDisabled < 1) {
-              memberTier = member.getMemberTier();
-              this.cookie = cookieDao.cookieSelectOne(memberId);
-              cookieDBToken = this.cookie.getToken();
+              memberTier = memberDTO.getMemberTier();
+              this.cookieDTO = cookieDao.cookieSelectOne(memberId);
+              cookieDBToken = this.cookieDTO.getToken();
             } else {
               cookieDBToken = "";
               jakarta.servlet.http.Cookie cookieId = new jakarta.servlet.http.Cookie("memberId", null);

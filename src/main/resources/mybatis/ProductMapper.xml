@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.daCoffee.service.ProductDAO">
-    <resultMap type="product" id="productMap">
+<mapper namespace="org.daCoffee.dao.ProductDAO">
+    <resultMap type="productDTO" id="productMap">
         <id column="product_code" property="productCode" />
         <result column="product_type" property="productType" />
         <result column="product_name" property="productName" />
@@ -48,37 +48,37 @@
 
     </resultMap>
 
-    <insert id="productInsert" parameterType="product">
+    <insert id="productInsert" parameterType="productDTO">
         insert into product values (#{productCode}, #{productType}, #{productName}, #{productPrice}, #{productUnit}, #{productTier}, #{productFile}, 0,
                                     #{productRegisterName}, NOW(), null, null)
     </insert>
 
-    <update id="productUpdate" parameterType="product">
+    <update id="productUpdate" parameterType="productDTO">
         update product set product_code = #{productCode}, product_type = #{productType}, product_name = #{productName}, product_unit = #{productUnit}, product_price = #{productPrice},
                            product_tier = #{productTier}, product_file = #{productFile}, product_sold_out = #{productSoldOut}, product_modifier_name = #{productModifierName}, product_modifier_date = NOW()
                        where product_code = #{existProductCode}
     </update>
 
-    <insert id="beanInsert" parameterType="product">
+    <insert id="beanInsert" parameterType="productDTO">
         insert into bean values (#{productCode}, #{beanSpecies}, #{beanCompany}, #{beanUseByDate}, #{beanCountry}, #{beanRegisterName}, NOW(), null, null)
     </insert>
 
-    <update id="beanUpdate" parameterType="product">
+    <update id="beanUpdate" parameterType="productDTO">
         update bean set product_code = #{productCode}, bean_species = #{beanSpecies}, bean_company = #{beanCompany},
                         bean_use_by_date = #{beanUseByDate}, bean_country = #{beanCountry}, bean_modifier_name = #{beanModifierName}, bean_modifier_date = NOW()
                     where product_code = #{existProductCode}
     </update>
 
-    <insert id="mixInsert" parameterType="product">
+    <insert id="mixInsert" parameterType="productDTO">
         insert into mix values (#{productCode}, #{mixCompany}, #{mixUseByDate}, #{mixRegisterName}, NOW(), null, null)
     </insert>
 
-    <update id="mixUpdate" parameterType="product">
+    <update id="mixUpdate" parameterType="productDTO">
         update mix set product_code = #{productCode}, mix_company = #{mixCompany}, mix_use_by_date = #{mixUseByDate},
                        mix_modifier_name = #{mixModifierName}, mix_modifier_date = NOW()
     </update>
 
-    <insert id="cafeInsert" parameterType="product">
+    <insert id="cafeInsert" parameterType="productDTO">
         insert into cafe values (#{productCode}, #{cafeCompany}, #{cafeRegisterName}, NOW(), null, null)
     </insert>
 

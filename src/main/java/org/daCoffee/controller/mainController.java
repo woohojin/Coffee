@@ -1,14 +1,14 @@
 package org.daCoffee.controller;
 
-import org.daCoffee.model.Cart;
+import org.daCoffee.dto.CartDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.daCoffee.service.ImageDAO;
-import org.daCoffee.service.ProductDAO;
-import org.daCoffee.service.CartDAO;
-import org.daCoffee.model.Product;
+import org.daCoffee.dao.ImageDAO;
+import org.daCoffee.dao.ProductDAO;
+import org.daCoffee.dao.CartDAO;
+import org.daCoffee.dto.ProductDTO;
 
 import java.io.*;
 import java.sql.Connection;
@@ -96,7 +96,7 @@ public class mainController {
             if(pageType.equals("bean")) {
                 productType = 0;
                 productDao.rownumSet();
-                List<Product> list = productDao.productListByMemberTierByProductType(pageInt, limit, memberTier, productType);
+                List<ProductDTO> list = productDao.productListByMemberTierByProductType(pageInt, limit, memberTier, productType);
                 productCount = productDao.productCountByTierByProductType(memberTier, productType);
                 model.addAttribute("list", list);
             }
@@ -104,7 +104,7 @@ public class mainController {
             if(pageType.equals("mix")) {
                 productType = 1;
                 productDao.rownumSet();
-                List<Product> list = productDao.productListByMemberTierByProductType(pageInt, limit, memberTier, productType);
+                List<ProductDTO> list = productDao.productListByMemberTierByProductType(pageInt, limit, memberTier, productType);
                 productCount = productDao.productCountByTierByProductType(memberTier, productType);
                 model.addAttribute("list", list);
             }
@@ -113,7 +113,7 @@ public class mainController {
                 productType = 2;
                 memberTier = 1; // 카페용품은 등급이 항상 1임
                 productDao.rownumSet();
-                List<Product> list = productDao.productListByMemberTierByProductType(pageInt, limit, memberTier, productType);
+                List<ProductDTO> list = productDao.productListByMemberTierByProductType(pageInt, limit, memberTier, productType);
                 productCount = productDao.productCountByTierByProductType(memberTier, productType);
                 model.addAttribute("list", list);
             }
@@ -156,13 +156,13 @@ public class mainController {
             productCount = productDao.productCountByTierByProductType(memberTier, productType);
         }
 
-        Product product = productDao.beanSelectOne(productCode);
+        ProductDTO productDTO = productDao.beanSelectOne(productCode);
 
         String detailImageName = imageDao.selectDetailImage(productCode);
 
         model.addAttribute("memberTier", memberTier);
         model.addAttribute("productCount", productCount);
-        model.addAttribute("product", product);
+        model.addAttribute("product", productDTO);
         model.addAttribute("detailImageName", detailImageName);
 
         return "board/product/beanDetail";
@@ -183,13 +183,13 @@ public class mainController {
             productCount = productDao.productCountByTierByProductType(memberTier, productType);
         }
 
-        Product product = productDao.mixSelectOne(productCode);
+        ProductDTO productDTO = productDao.mixSelectOne(productCode);
 
         String detailImageName = imageDao.selectDetailImage(productCode);
 
         model.addAttribute("memberTier", memberTier);
         model.addAttribute("productCount", productCount);
-        model.addAttribute("product", product);
+        model.addAttribute("product", productDTO);
         model.addAttribute("detailImageName", detailImageName);
 
         return "board/product/mixDetail";
@@ -210,13 +210,13 @@ public class mainController {
             productCount = productDao.productCountByTierByProductType(memberTier, productType);
         }
 
-        Product product = productDao.productSelectOne(productCode);
+        ProductDTO productDTO = productDao.productSelectOne(productCode);
 
         String detailImageName = imageDao.selectDetailImage(productCode);
 
         model.addAttribute("memberTier", memberTier);
         model.addAttribute("productCount", productCount);
-        model.addAttribute("product", product);
+        model.addAttribute("product", productDTO);
         model.addAttribute("detailImageName", detailImageName);
 
         return "board/product/cafeDetail";
@@ -229,7 +229,7 @@ public class mainController {
 
     @PostMapping("productDetailPro")
     @ResponseBody
-    public Map<String, Object> productDetailPro(HttpSession session, @RequestParam(value = "additionalProducts", required = false) List<String> additionalProductsCodes, Cart cart) throws Exception {
+    public Map<String, Object> productDetailPro(HttpSession session, @RequestParam(value = "additionalProducts", required = false) List<String> additionalProductsCodes, CartDTO cartDTO) throws Exception {
         Map<String, Object> map = new HashMap<>();
 
         String msg = "장바구니 추가 실패";
@@ -240,16 +240,16 @@ public class mainController {
         if (additionalProductsCodes != null && !additionalProductsCodes.isEmpty()) {
             for (String additionalProductsCode : additionalProductsCodes) {
                 if(!additionalProductsCode.equals("none")) {
-                    Cart cartCheck = cartDao.cartSelectOne(memberId, additionalProductsCode);
+                    CartDTO cartDTOCheck = cartDao.cartSelectOne(memberId, additionalProductsCode);
 
-                    if(cartCheck == null) {
-                        Cart additionalCart = new Cart();
-                        additionalCart.setProductCode(additionalProductsCode);
-                        additionalCart.setMemberId(memberId);
-                        additionalCart.setQuantity(1);
-                        cartDao.cartInsert(additionalCart);
+                    if(cartDTOCheck == null) {
+                        CartDTO additionalCartDTO = new CartDTO();
+                        additionalCartDTO.setProductCode(additionalProductsCode);
+                        additionalCartDTO.setMemberId(memberId);
+                        additionalCartDTO.setQuantity(1);
+                        cartDao.cartInsert(additionalCartDTO);
                     } else {
-                        int additionalProductQuantity = 1 + cartCheck.getQuantity();
+                        int additionalProductQuantity = 1 + cartDTOCheck.getQuantity();
                         cartDao.cartQuantityUpdate(memberId, additionalProductsCode, additionalProductQuantity);
                     }
                 }
@@ -258,43 +258,43 @@ public class mainController {
 
         //일반 상품 부분
 
-        int quantity = cart.getQuantity();
+        int quantity = cartDTO.getQuantity();
 
         if(quantity < 1) {
             quantity = 1;
-            cart.setQuantity(quantity);
+            cartDTO.setQuantity(quantity);
         }
 
-        String productCode = cart.getProductCode();
+        String productCode = cartDTO.getProductCode();
 
-        Product product = productDao.productSelectOne(productCode);
+        ProductDTO productDTO = productDao.productSelectOne(productCode);
 
-        Cart cartCheck = cartDao.cartSelectOne(memberId, productCode);
-        if(cartCheck == null) {
-            cart.setMemberId(memberId);
-            int num = cartDao.cartInsert(cart);
+        CartDTO cartDTOCheck = cartDao.cartSelectOne(memberId, productCode);
+        if(cartDTOCheck == null) {
+            cartDTO.setMemberId(memberId);
+            int num = cartDao.cartInsert(cartDTO);
 
             if(num > 0) {
                 msg = "장바구니 추가 성공";
-                map.put("productCode", product.getProductCode());
-                map.put("productName", product.getProductName());
-                map.put("productUnit", product.getProductUnit());
+                map.put("productCode", productDTO.getProductCode());
+                map.put("productName", productDTO.getProductName());
+                map.put("productUnit", productDTO.getProductUnit());
 //                map.put("productGrinding", cart.getProductGrinding());
-                map.put("quantity", cart.getQuantity());
-                map.put("productPrice", product.getProductPrice());
-                map.put("productFile", product.getProductFile());
+                map.put("quantity", cartDTO.getQuantity());
+                map.put("productPrice", productDTO.getProductPrice());
+                map.put("productFile", productDTO.getProductFile());
             }
         } else {
-            quantity = quantity + cartCheck.getQuantity();
+            quantity = quantity + cartDTOCheck.getQuantity();
             cartDao.cartQuantityUpdate(memberId, productCode, quantity);
             msg = "장바구니 추가 성공";
-            map.put("productCode", product.getProductCode());
-            map.put("productName", product.getProductName());
-            map.put("productUnit", product.getProductUnit());
+            map.put("productCode", productDTO.getProductCode());
+            map.put("productName", productDTO.getProductName());
+            map.put("productUnit", productDTO.getProductUnit());
 //            map.put("productGrinding", product.getProductGrinding());
-            map.put("quantity", cart.getQuantity());
-            map.put("productPrice", product.getProductPrice());
-            map.put("productFile", product.getProductFile());
+            map.put("quantity", cartDTO.getQuantity());
+            map.put("productPrice", productDTO.getProductPrice());
+            map.put("productFile", productDTO.getProductFile());
         }
 
         map.put("cartStatus", msg);
@@ -323,7 +323,7 @@ public class mainController {
 
         if(memberTier != 0) {
             productDao.rownumSet();
-            List<Product> list = productDao.productSearchListByMemberTier(pageInt, limit, memberTier, searchText);
+            List<ProductDTO> list = productDao.productSearchListByMemberTier(pageInt, limit, memberTier, searchText);
             productSearchCount = productDao.productSearchCountByTier(memberTier, searchText);
             model.addAttribute("list", list);
         }

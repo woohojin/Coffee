@@ -26,7 +26,7 @@ public class MybatisConfig {
     // mybatis가 DB를 불러올 수 있도록 함
     factoryBean.setDataSource(dataSource);
     // 지정한 하위 디렉토리의 모든 클래스들은 별칭으로 등록 ex) EncryptionTypeHandler.java = encryptionTypeHandler
-    factoryBean.setTypeAliasesPackage("org.daCoffee.handler,org.daCoffee.model");
+    factoryBean.setTypeAliasesPackage("org.daCoffee.handler,org.daCoffee.dto");
 
     // mybatis 하위에 있는 모든 mapper를 불러옴
     Resource[] mappers = new PathMatchingResourcePatternResolver().getResources("classpath*:mybatis/*.xml");

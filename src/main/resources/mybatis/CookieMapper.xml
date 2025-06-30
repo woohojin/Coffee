@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.daCoffee.service.CookieDAO">
-    <resultMap type="cookie" id="cookieMap">
+<mapper namespace="org.daCoffee.dao.CookieDAO">
+    <resultMap type="cookieDTO" id="cookieMap">
         <id column="member_id" property="memberId" />
         <result column="cookie_token" property="cookieToken" />
     </resultMap>
 
-    <insert id="cookieInsert" parameterType="cookie">
+    <insert id="cookieInsert" parameterType="cookieDTO">
         insert into cookie values (#{memberId}, #{token})
     </insert>
 
