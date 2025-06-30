@@ -54,8 +54,9 @@ public class adminController {
   }
 
   @RequestMapping("productList")
-  public String productList(HttpServletRequest request, HttpSession session, Model model) throws Exception {
-    Integer memberTier = (Integer) session.getAttribute("memberTier");
+  public String productList(HttpServletRequest request, HttpSession session, Model model,
+                            @SessionAttribute Integer memberTier) throws Exception {
+
     if(memberTier == null) {
       memberTier = 0;
     }
@@ -102,16 +103,16 @@ public class adminController {
   }
 
   @RequestMapping("productListPro")
-  public String productListPro(HttpServletRequest request, HttpSession session, Model model) throws Exception {
-    String columnName = request.getParameter("columnName");
-    String orderBy = request.getParameter("orderBy");
+  public String productListPro(HttpServletRequest request, HttpSession session, Model model,
+                               @RequestParam String columnName,
+                               @RequestParam String orderBy,
+                               @RequestParam String pageNum,
+                               @SessionAttribute Integer memberTier) throws Exception {
 
-    Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
     }
 
-    String pageNum = request.getParameter("pageNum");
     if (pageNum == null) {
       pageNum = "1";
     }
@@ -195,13 +196,14 @@ public class adminController {
   }
 
   @RequestMapping("productSearch")
-  public String productSearch(HttpServletRequest request, HttpSession session, Model model) throws Exception {
-    Integer memberTier = (Integer) session.getAttribute("memberTier");
+  public String productSearch(HttpServletRequest request, HttpSession session, Model model,
+                              @RequestParam String pageNum,
+                              @SessionAttribute Integer memberTier) throws Exception {
+
     if(memberTier == null) {
       memberTier = 0;
     }
 
-    String pageNum = request.getParameter("pageNum");
     if (pageNum == null) {
       pageNum = "1";
     }
@@ -286,13 +288,14 @@ public class adminController {
 
 
   @RequestMapping("productSoldOutUpdate")
-  public String productSoldOutUpdate(HttpServletRequest request, HttpSession session, Model model) throws Exception {
-    Integer memberTier = (Integer) session.getAttribute("memberTier");
+  public String productSoldOutUpdate(HttpServletRequest request, HttpSession session, Model model,
+                                     @RequestParam String pageNum,
+                                     @SessionAttribute Integer memberTier) throws Exception {
+
     if(memberTier == null) {
       memberTier = 0;
     }
 
-    String pageNum = request.getParameter("pageNum");
     if (pageNum == null) {
       pageNum = "1";
     }
@@ -349,13 +352,14 @@ public class adminController {
   }
 
   @RequestMapping("memberList")
-  public String memberList(HttpServletRequest request, HttpSession session, Model model) throws Exception {
-    Integer memberTier = (Integer) session.getAttribute("memberTier");
+  public String memberList(HttpServletRequest request, HttpSession session, Model model,
+                           @RequestParam String pageNum,
+                           @SessionAttribute Integer memberTier) throws Exception {
+
     if(memberTier == null) {
       memberTier = 0;
     }
 
-    String pageNum = request.getParameter("pageNum");
     if (pageNum == null) {
       pageNum = "1";
     }
@@ -399,16 +403,16 @@ public class adminController {
   }
 
   @RequestMapping("memberListPro")
-  public String memberListPro(HttpServletRequest request, HttpSession session, Model model) throws Exception {
-    String columnName = request.getParameter("columnName");
-    String orderBy = request.getParameter("orderBy");
+  public String memberListPro(HttpServletRequest request, HttpSession session, Model model,
+                              @RequestParam String pageNum,
+                              @RequestParam String columnName,
+                              @RequestParam String orderBy,
+                              @SessionAttribute Integer memberTier) throws Exception {
 
-    Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
     }
 
-    String pageNum = request.getParameter("pageNum");
     if (pageNum == null) {
       pageNum = "1";
     }
@@ -509,8 +513,9 @@ public class adminController {
   }
 
   @RequestMapping("memberUpdatePro")
-  public String memberUpdatePro(HttpSession session, Model model, MemberDTO memberDTO) throws Exception {
-    String adminId = (String) session.getAttribute("memberId");
+  public String memberUpdatePro(HttpSession session, Model model, MemberDTO memberDTO,
+                                @SessionAttribute(name="memberId") String adminId) throws Exception {
+
     MemberDTO admin = memberDao.memberSelectOne(adminId);
     String adminName = admin.getMemberName();
 
@@ -538,13 +543,14 @@ public class adminController {
   }
 
   @RequestMapping("memberSearch")
-  public String memberSearch(HttpServletRequest request, HttpSession session, Model model) throws Exception {
-    Integer memberTier = (Integer) session.getAttribute("memberTier");
+  public String memberSearch(HttpServletRequest request, HttpSession session, Model model,
+                             @RequestParam String pageNum,
+                             @SessionAttribute Integer memberTier) throws Exception {
+
     if(memberTier == null) {
       memberTier = 0;
     }
 
-    String pageNum = request.getParameter("pageNum");
     if (pageNum == null) {
       pageNum = "1";
     }
@@ -618,13 +624,14 @@ public class adminController {
   }
 
   @RequestMapping("memberWithdrawalList")
-  public String memberWithdrawalList(HttpServletRequest request, HttpSession session, Model model) throws Exception {
-    Integer memberTier = (Integer) session.getAttribute("memberTier");
+  public String memberWithdrawalList(HttpServletRequest request, HttpSession session, Model model,
+                                     @RequestParam String pageNum,
+                                     @SessionAttribute Integer memberTier) throws Exception {
+
     if(memberTier == null) {
       memberTier = 0;
     }
 
-    String pageNum = request.getParameter("pageNum");
     if (pageNum == null) {
       pageNum = "1";
     }
@@ -668,13 +675,14 @@ public class adminController {
   }
 
   @RequestMapping("orderHistory")
-  public String orderHistory(HttpServletRequest request, HttpSession session, Model model) throws Exception {
-    Integer memberTier = (Integer) session.getAttribute("memberTier");
+  public String orderHistory(HttpServletRequest request, HttpSession session, Model model,
+                             @RequestParam String pageNum,
+                             @SessionAttribute Integer memberTier) throws Exception {
+
     if(memberTier == null) {
       memberTier = 0;
     }
 
-    String pageNum = request.getParameter("pageNum");
     if (pageNum == null) {
       pageNum = "1";
     }
@@ -716,16 +724,16 @@ public class adminController {
   }
 
   @RequestMapping("orderHistoryPro")
-  public String orderHistoryPro(HttpServletRequest request, HttpSession session, Model model) throws Exception {
-    String columnName = request.getParameter("columnName");
-    String orderBy = request.getParameter("orderBy");
+  public String orderHistoryPro(HttpServletRequest request, HttpSession session, Model model,
+                                @RequestParam String pageNum,
+                                @RequestParam String columnName,
+                                @RequestParam String orderBy,
+                                @SessionAttribute Integer memberTier) throws Exception {
 
-    Integer memberTier = (Integer) session.getAttribute("memberTier");
     if(memberTier == null) {
       memberTier = 0;
     }
 
-    String pageNum = request.getParameter("pageNum");
     if (pageNum == null) {
       pageNum = "1";
     }
@@ -826,8 +834,9 @@ public class adminController {
   }
 
   @RequestMapping("orderHistoryUpdatePro")
-  public String orderHistoryUpdatePro(HttpServletRequest request, HttpSession session, Model model, HistoryDTO historyDTO) throws Exception {
-    String adminId = (String) session.getAttribute("memberId");
+  public String orderHistoryUpdatePro(HttpServletRequest request, HttpSession session, Model model, HistoryDTO historyDTO,
+                                      @SessionAttribute(name="memberId") String adminId) throws Exception {
+
     MemberDTO admin = memberDao.memberSelectOne(adminId);
     String adminName = admin.getMemberName();
 
@@ -882,13 +891,14 @@ public class adminController {
   }
 
   @RequestMapping("historySearch")
-  public String historySearch(HttpServletRequest request, HttpSession session, Model model) throws Exception {
-    Integer memberTier = (Integer) session.getAttribute("memberTier");
+  public String historySearch(HttpServletRequest request, HttpSession session, Model model,
+                              @RequestParam String pageNum,
+                              @SessionAttribute Integer memberTier) throws Exception {
+
     if(memberTier == null) {
       memberTier = 0;
     }
 
-    String pageNum = request.getParameter("pageNum");
     if (pageNum == null) {
       pageNum = "1";
     }
@@ -986,8 +996,9 @@ public class adminController {
   }
 
   @RequestMapping("memberTierUpdate")
-  public String memberTierUpdate(HttpServletRequest request, HttpSession session, Model model) throws Exception {
-    Integer memberTier = (Integer) session.getAttribute("memberTier");
+  public String memberTierUpdate(HttpServletRequest request, HttpSession session, Model model,
+                                 @SessionAttribute Integer memberTier) throws Exception {
+
     if(memberTier == null) {
       memberTier = 0;
     }
@@ -1056,8 +1067,9 @@ public class adminController {
 //  }
 
   @RequestMapping("memberDisableUpdate")
-  public String memberDisableUpdate(HttpServletRequest request, HttpSession session, Model model) throws Exception {
-    Integer memberTier = (Integer) session.getAttribute("memberTier");
+  public String memberDisableUpdate(HttpServletRequest request, HttpSession session, Model model,
+                                    @SessionAttribute Integer memberTier) throws Exception {
+
     if(memberTier == null) {
       memberTier = 0;
     }
@@ -1110,8 +1122,9 @@ public class adminController {
   }
 
   @RequestMapping("productUploadPro")
-  public String productUploadPro(HttpServletRequest request, HttpSession session, Model model, MultipartHttpServletRequest files, ProductDTO productDTO) throws Exception {
-    String adminId = (String) session.getAttribute("memberId");
+  public String productUploadPro(HttpServletRequest request, HttpSession session, Model model, MultipartHttpServletRequest files, ProductDTO productDTO,
+                                 @SessionAttribute(name="memberId") String adminId) throws Exception {
+
     MemberDTO admin = memberDao.memberSelectOne(adminId);
     String adminName = admin.getMemberName();
 
@@ -1201,7 +1214,7 @@ public class adminController {
 
 
   @RequestMapping("productUpdate")
-  public String productUpdate(HttpServletRequest request, Model model, @RequestParam(name = "productCode") String productCode) {
+  public String productUpdate(HttpServletRequest request, Model model, @RequestParam String productCode) {
 
     ProductDTO productDTO = productDao.productSelectOne(productCode);
     int productType = productDTO.getProductType();
@@ -1223,8 +1236,9 @@ public class adminController {
   }
 
   @RequestMapping("productUpdatePro")
-  public String productUpdatePro(HttpServletRequest request, HttpSession session, Model model, MultipartHttpServletRequest files, ProductDTO productDTO) throws Exception {
-    String adminId = (String) session.getAttribute("memberId");
+  public String productUpdatePro(HttpServletRequest request, HttpSession session, Model model, MultipartHttpServletRequest files, ProductDTO productDTO,
+                                 @SessionAttribute(name="memberId") String adminId) throws Exception {
+
     MemberDTO admin = memberDao.memberSelectOne(adminId);
     String adminName = admin.getMemberName();
 
@@ -1314,13 +1328,14 @@ public class adminController {
   }
 
   @RequestMapping("productDelete")
-  public String productDelete(HttpServletRequest request, HttpSession session, Model model) throws Exception {
-    Integer memberTier = (Integer) session.getAttribute("memberTier");
+  public String productDelete(HttpServletRequest request, HttpSession session, Model model,
+                              @RequestParam String pageNum,
+                              @SessionAttribute Integer memberTier) throws Exception {
+
     if(memberTier == null) {
       memberTier = 0;
     }
 
-    String pageNum = request.getParameter("pageNum");
     if (pageNum == null) {
       pageNum = "1";
     }
@@ -1362,8 +1377,9 @@ public class adminController {
   }
 
   @RequestMapping("productDeletePro")
-  public String productDeletePro(HttpServletRequest request, HttpSession session, Model model, String productCode) throws Exception {
-    Integer memberTier = (Integer) session.getAttribute("memberTier");
+  public String productDeletePro(HttpServletRequest request, HttpSession session, Model model, String productCode,
+                                 @SessionAttribute Integer memberTier) throws Exception {
+
     if(memberTier == null) {
       memberTier = 0;
     }

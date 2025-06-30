@@ -81,10 +81,11 @@ public class memberController {
   }
 
   @RequestMapping("memberSignUpPro")
-  public String memberSignUpPro(HttpServletRequest request, HttpSession session, Model model, @RequestParam("file") MultipartFile file, MemberDTO memberDTO) throws Exception {
+  public String memberSignUpPro(HttpServletRequest request, HttpSession session, Model model, MemberDTO memberDTO,
+                                @RequestParam MultipartFile file,
+                                @RequestParam String verifyCode,
+                                @SessionAttribute String storedVerifyCode) throws Exception {
 
-    String verifyCode = request.getParameter("verifyCode");
-    String storedVerifyCode = (String) session.getAttribute("storedVerifyCode");
     if(verifyCode == null || verifyCode.equals("timeout")) {
       String url = "/member/memberSignUp";
       String msg = "인증시간이 초과되었습니다.";
@@ -247,8 +248,8 @@ public class memberController {
   }
 
   @RequestMapping("memberLogout")
-  public String memberLogout(HttpSession session, Model model, HttpServletResponse response) throws Exception {
-    String memberId = (String) session.getAttribute("memberId");
+  public String memberLogout(HttpSession session, Model model, HttpServletResponse response,
+                             @SessionAttribute String memberId) throws Exception {
 
     Cookie cookieId = new Cookie("memberId", null);
     Cookie cookieToken = new Cookie("token", null);
@@ -278,8 +279,9 @@ public class memberController {
   }
 
   @RequestMapping("memberWithdrawalPro")
-  public String memberWithdrawalPro(HttpSession session, Model model, HttpServletResponse response, String memberPassword) throws Exception {
-    String memberId = (String) session.getAttribute("memberId");
+  public String memberWithdrawalPro(HttpSession session, Model model, HttpServletResponse response, String memberPassword,
+                                    @SessionAttribute String memberId) throws Exception {
+
     MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
 
     String msg = "회원 탈퇴에 실패했습니다.";
@@ -312,8 +314,8 @@ public class memberController {
   }
 
   @RequestMapping("memberCart")
-  public String memberCart(HttpSession session, Model model) throws Exception {
-    String memberId = (String) session.getAttribute("memberId");
+  public String memberCart(HttpSession session, Model model,
+                           @SessionAttribute String memberId) throws Exception {
 
     int productType = 0; // 원두
 
@@ -389,28 +391,12 @@ public class memberController {
   }
 
   @RequestMapping("memberCartPro")
-  public String memberCartPro(HttpServletRequest request, HttpSession session, Model model) throws Exception {
-    int status = 9;
-    String statusParam = request.getParameter("status");
-
-    int quantity = 1;
-    String quantityParam = request.getParameter("quantity");
-
-    int productGrinding = 0;
-    String productGrindingParam = request.getParameter("productGrinding");
-
-    String productCode = request.getParameter("productCode");
-    String memberId = (String) session.getAttribute("memberId");
-
-    if(statusParam != null && !statusParam.trim().isEmpty()) {
-      status = Integer.parseInt(statusParam);
-    }
-    if(quantityParam != null && !quantityParam.trim().isEmpty()) {
-      quantity = Integer.parseInt(quantityParam);
-    }
-    if(productGrindingParam != null && !productGrindingParam.trim().isEmpty()) {
-      productGrinding = Integer.parseInt(productGrindingParam);
-    }
+  public String memberCartPro(HttpServletRequest request, HttpSession session, Model model,
+                              @RequestParam(defaultValue = "9") int status,
+                              @RequestParam(defaultValue = "1") int quantity,
+                              @RequestParam(defaultValue = "0") int productGrinding,
+                              @RequestParam String productCode,
+                              @SessionAttribute String memberId) throws Exception {
 
     if(status == 0) { // status 0 = delete || status 1 = updateQuantity || status 2 = updateGrindingType
       cartDao.cartDelete(memberId, productCode);
@@ -494,8 +480,9 @@ public class memberController {
   }
 
   @RequestMapping("memberPayments")
-  public String memberPayments(HttpSession session, Model model) throws Exception {
-    String memberId = (String) session.getAttribute("memberId");
+  public String memberPayments(HttpSession session, Model model,
+                               @SessionAttribute String memberId,
+                               @SessionAttribute final Integer totalPrice) throws Exception {
 
     UUIDGenerateModule uuidGenerateModule = new UUIDGenerateModule();
 
@@ -508,8 +495,6 @@ public class memberController {
         String orderId = uuidGenerateModule.generateOrderId();
         String customerKey = uuidGenerateModule.generateCustomerKey(memberId);
         List<String> productNames = new ArrayList<>();
-
-        final Integer totalPrice = (Integer) session.getAttribute("totalPrice");
 
         if(totalPrice != null) {
           List<CartDTO> list = cartDao.cartSelectMember(memberId);
@@ -536,6 +521,7 @@ public class memberController {
 
           return "member/memberPaymentsFailure";
         }
+
         errorCode = "CANNOT_FIND_VALUE_INFO";
         errorMessage = "가격정보가 존재하지 않습니다.";
 
@@ -553,8 +539,10 @@ public class memberController {
   }
 
   @RequestMapping("memberPaymentsSuccess")
-  public String memberPaymentsSuccess(HttpSession session, Model model) throws Exception {
-    String memberId = (String) session.getAttribute("memberId");
+  public String memberPaymentsSuccess(HttpSession session, Model model,
+                                      @SessionAttribute String memberId,
+                                      @SessionAttribute String orderId,
+                                      @SessionAttribute final Integer totalPrice) throws Exception {
 
     String errorCode = "CANNOT_FIND_MEMBER_ID";
     String errorMessage = "로그인 후 결제를 진행해주세요.";
@@ -562,9 +550,6 @@ public class memberController {
     if(memberId != null) {
       MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
       if (memberDTO != null) {
-        String orderId = (String) session.getAttribute("orderId");
-
-        final Integer totalPrice = (Integer) session.getAttribute("totalPrice");
 
         if (totalPrice != null) {
           List<CartDTO> list = cartDao.cartSelectMember(memberId);
@@ -659,7 +644,8 @@ public class memberController {
   }
 
   @RequestMapping("memberFindAccount")
-  public String memberFindAccount(Model model, @RequestParam(value = "findType", required = false, defaultValue = "id") String findType) throws Exception {
+  public String memberFindAccount(Model model,
+                                  @RequestParam(value = "findType", required = false, defaultValue = "id") String findType) throws Exception {
     int isFind = 0;
 
     model.addAttribute("isFind", isFind);
@@ -669,9 +655,13 @@ public class memberController {
   }
 
   @RequestMapping("memberFindAccountPro")
-  public String memberFindAccountPro(HttpServletRequest request, HttpSession session, Model model) throws Exception {
-    String verifyCode = request.getParameter("verifyCode");
-    String storedVerifyCode = (String) session.getAttribute("storedVerifyCode");
+  public String memberFindAccountPro(HttpServletRequest request, HttpSession session, Model model,
+                                     @RequestParam(value = "findType", required = false, defaultValue = "id") String findType,
+                                     @RequestParam(required = false) String memberName,
+                                     @RequestParam(required = false) String memberEmail,
+                                     @RequestParam(required = false) String memberId,
+                                     @RequestParam String verifyCode,
+                                     @SessionAttribute String storedVerifyCode) throws Exception {
 
     if(verifyCode == null || verifyCode.equals("timeout")) { // 인증시간이 초과되면 verifyCode가 timeout으로 바뀜
       String url = "/member/memberFindAccount";
@@ -693,17 +683,9 @@ public class memberController {
       return "alert";
     }
 
-    String findType = request.getParameter("findType");
-
-    if(findType == null || findType.isEmpty()) {
-      findType = "id";
-    }
-
     int isFind = 0;
 
     if(findType.equals("id")) {
-      String memberName = request.getParameter("memberName");
-      String memberEmail = request.getParameter("memberEmail");
       List<MemberDTO> list = memberDao.memberFindId(memberName, memberEmail);
 
       if(list != null && !list.isEmpty()) {
@@ -720,8 +702,6 @@ public class memberController {
     }
 
     if(findType.equals("password")) {
-      String memberId = request.getParameter("memberId");
-      String memberEmail = request.getParameter("memberEmail");
       String memberPassword = memberDao.memberFindPassword(memberId, memberEmail);
 
       String url = "/member/memberFindAccount";
@@ -758,8 +738,8 @@ public class memberController {
   }
 
   @RequestMapping("memberProfile")
-  public String memberProfile(HttpSession session, Model model) throws Exception {
-    String memberId = (String) session.getAttribute("memberId");
+  public String memberProfile(HttpSession session, Model model,
+                              @SessionAttribute String memberId) throws Exception {
 
     MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
 
@@ -769,8 +749,8 @@ public class memberController {
   }
 
   @RequestMapping("memberProfilePro")
-  public String memberProfilePro(HttpSession session, Model model, MemberDTO memberDTO, String memberExistingPassword) throws Exception {
-    String memberId = (String) session.getAttribute("memberId");
+  public String memberProfilePro(HttpSession session, Model model, MemberDTO memberDTO, String memberExistingPassword,
+                                 @SessionAttribute String memberId) throws Exception {
 
     MemberDTO existingMemberDTO = memberDao.memberSelectOne(memberId); // 기존 회원 정보
     memberDTO.setMemberId(memberId); // 사용자가 임의로 변경하는 것을 막기 위함
@@ -798,8 +778,8 @@ public class memberController {
   }
 
   @RequestMapping("memberHistory")
-  public String memberHistory(HttpServletRequest request, HttpSession session) throws Exception {
-    String memberId = (String) session.getAttribute("memberId");
+  public String memberHistory(HttpServletRequest request, HttpSession session,
+                              @SessionAttribute String memberId) throws Exception {
 
     LocalDate now = LocalDate.now();
     int year = now.getYear();
@@ -835,10 +815,10 @@ public class memberController {
   }
 
   @RequestMapping("memberHistoryPro")
-  public String memberHistoryPro(HttpServletRequest request, HttpSession session) throws Exception {
-    String memberId = (String) session.getAttribute("memberId");
-    String startDate = request.getParameter("startDate");
-    String endDate = request.getParameter("endDate");
+  public String memberHistoryPro(HttpServletRequest request, HttpSession session,
+                                 @RequestParam String startDate,
+                                 @RequestParam String endDate,
+                                 @SessionAttribute String memberId) throws Exception {
 
     List<HistoryDTO> list = historyDao.historySelectBetween(memberId, startDate, endDate);
     int historyCount = historyDao.historyCountBetween(memberId, startDate, endDate);

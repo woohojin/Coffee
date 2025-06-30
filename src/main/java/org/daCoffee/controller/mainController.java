@@ -72,13 +72,15 @@ public class mainController {
     }
 
     @RequestMapping("product")
-    public String product(HttpServletRequest request, HttpSession session, Model model, @RequestParam(value = "pageType", defaultValue = "bean") String pageType) throws Exception {
-        Integer memberTier = (Integer) session.getAttribute("memberTier");
+    public String product(HttpServletRequest request, HttpSession session, Model model,
+                          @RequestParam(value = "pageType", defaultValue = "bean") String pageType,
+                          @RequestParam String pageNum,
+                          @SessionAttribute Integer memberTier) throws Exception {
+
         if(memberTier == null) {
             memberTier = 0;
         }
 
-        String pageNum = request.getParameter("pageNum");
         if (pageNum == null) {
             pageNum = "1";
         }
@@ -142,8 +144,9 @@ public class mainController {
     }
 
     @RequestMapping("beanDetail")
-    public String beanDetail(HttpSession session, Model model, String productCode) throws Exception {
-        Integer memberTier = (Integer) session.getAttribute("memberTier");
+    public String beanDetail(HttpSession session, Model model, String productCode,
+                             @SessionAttribute Integer memberTier) throws Exception {
+
         if(memberTier == null) {
             memberTier = 0;
         }
@@ -169,8 +172,9 @@ public class mainController {
     }
 
     @RequestMapping("mixDetail")
-    public String mixDetail(HttpSession session, Model model, String productCode) throws Exception {
-        Integer memberTier = (Integer) session.getAttribute("memberTier");
+    public String mixDetail(HttpSession session, Model model, String productCode,
+                            @SessionAttribute Integer memberTier) throws Exception {
+
         if(memberTier == null) {
             memberTier = 0;
         }
@@ -196,8 +200,9 @@ public class mainController {
     }
 
     @RequestMapping("cafeDetail")
-    public String cafeDetail(HttpSession session, Model model, String productCode) throws Exception {
-        Integer memberTier = (Integer) session.getAttribute("memberTier");
+    public String cafeDetail(HttpSession session, Model model, String productCode,
+                             @SessionAttribute Integer memberTier) throws Exception {
+
         if(memberTier == null) {
             memberTier = 0;
         }
@@ -302,13 +307,14 @@ public class mainController {
     }
 
     @RequestMapping("productSearch")
-    public String productSearch(HttpServletRequest request, HttpSession session, Model model) throws Exception {
-        Integer memberTier = (Integer) session.getAttribute("memberTier");
+    public String productSearch(HttpServletRequest request, HttpSession session, Model model,
+                                @RequestParam String pageNum,
+                                @SessionAttribute Integer memberTier) throws Exception {
+
         if(memberTier == null) {
             memberTier = 0;
         }
 
-        String pageNum = request.getParameter("pageNum");
         if (pageNum == null) {
             pageNum = "1";
         }
