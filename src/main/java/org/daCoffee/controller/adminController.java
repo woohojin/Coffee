@@ -25,7 +25,9 @@ import jakarta.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin/")
@@ -46,6 +48,30 @@ public class adminController {
     this.cartDao = cartDao;
   }
 
+  int limit = 30; // 한 page당 게시물 개수
+  int bottomLine = 100; // pagination 개수
+
+  // 어드민 페이지 페이지네이션 계산 함수
+  public Map<String, Integer> calculatePagination(int pageInt, int count) {
+    Map<String, Integer> paginationInfo = new HashMap<>();
+
+    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
+    int end = start + bottomLine - 1;
+    int maxPage = (count / limit) + (count % limit == 0 ? 0 : 1);
+
+    if (end > maxPage) {
+      end = maxPage;
+    }
+    if (end > count) {
+      end = count;
+    }
+
+    paginationInfo.put("start", start);
+    paginationInfo.put("end", end);
+
+    return paginationInfo;
+  }
+
   @RequestMapping("dashboard")
   public String index() throws Exception {
 
@@ -57,8 +83,6 @@ public class adminController {
                             @RequestParam(defaultValue = "1") int pageInt,
                             @SessionAttribute int memberTier) throws Exception {
 
-    int limit = 30; // 한 page당 게시물 개수
-    int bottomLine = 100; // pagination 개수
 
     int productCount = 0;
 
@@ -69,22 +93,14 @@ public class adminController {
       model.addAttribute("list", list);
     }
 
-    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
-    int end = start + bottomLine - 1;
-    int maxPage = (productCount / limit) + (productCount % limit == 0 ? 0 : 1);
-    if (end > maxPage) {
-      end = maxPage;
-    }
-    if (end > productCount) {
-      end = productCount;
-    }
+    Map<String, Integer> paginationInfo = calculatePagination(pageInt, productCount);
+    int start = paginationInfo.get("start");
+    int end = paginationInfo.get("end");
 
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("productCount", productCount);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
-    model.addAttribute("bottomLine", bottomLine);
-    model.addAttribute("maxPage", maxPage);
     model.addAttribute("pageInt", pageInt);
 
     return "admin/productList";
@@ -96,9 +112,6 @@ public class adminController {
                                @RequestParam String orderBy,
                                @RequestParam(defaultValue = "1") int pageInt,
                                @SessionAttribute int memberTier) throws Exception {
-
-    int limit = 30; // 한 page당 게시물 개수
-    int bottomLine = 100; // pagination 개수
 
     int productCount = 0;
 
@@ -150,15 +163,10 @@ public class adminController {
       model.addAttribute("list", list);
     }
 
-    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
-    int end = start + bottomLine - 1;
-    int maxPage = (productCount / limit) + (productCount % limit == 0 ? 0 : 1);
-    if (end > maxPage) {
-      end = maxPage;
-    }
-    if (end > productCount) {
-      end = productCount;
-    }
+    Map<String, Integer> paginationInfo = calculatePagination(pageInt, productCount);
+    int start = paginationInfo.get("start");
+    int end = paginationInfo.get("end");
+
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("productCount", productCount);
     model.addAttribute("columnName", columnName);
@@ -166,9 +174,6 @@ public class adminController {
     model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
-    model.addAttribute("bottomLine", bottomLine);
-    model.addAttribute("maxPage", maxPage);
-    model.addAttribute("pageInt", pageInt);
 
     return "admin/productList";
   }
@@ -177,9 +182,6 @@ public class adminController {
   public String productSearch(HttpServletRequest request, HttpSession session, Model model,
                               @RequestParam(defaultValue = "1") int pageInt,
                               @SessionAttribute int memberTier) throws Exception {
-
-    int limit = 32; // 한 page당 게시물 개수
-    int bottomLine = 100; // pagination 개수
 
     int productCount = 0;
     String searchText = "";
@@ -231,15 +233,9 @@ public class adminController {
       productCount = productDao.productCount();
     }
 
-    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
-    int end = start + bottomLine - 1;
-    int maxPage = (productCount / limit) + (productCount % limit == 0 ? 0 : 1);
-    if (end > maxPage) {
-      end = maxPage;
-    }
-    if (end > productCount) {
-      end = productCount;
-    }
+    Map<String, Integer> paginationInfo = calculatePagination(pageInt, productCount);
+    int start = paginationInfo.get("start");
+    int end = paginationInfo.get("end");
 
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("productCount", productCount);
@@ -247,21 +243,14 @@ public class adminController {
     model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
-    model.addAttribute("bottomLine", bottomLine);
-    model.addAttribute("maxPage", maxPage);
-    model.addAttribute("pageInt", pageInt);
 
     return "admin/productList";
   }
-
 
   @RequestMapping("productSoldOutUpdate")
   public String productSoldOutUpdate(HttpServletRequest request, HttpSession session, Model model,
                                      @RequestParam(defaultValue = "1") int pageInt,
                                      @SessionAttribute int memberTier) throws Exception {
-
-    int limit = 32; // 한 page당 게시물 개수
-    int bottomLine = 100; // pagination 개수
 
     int productCount = 0;
 
@@ -272,24 +261,15 @@ public class adminController {
       model.addAttribute("list", list);
     }
 
-    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
-    int end = start + bottomLine - 1;
-    int maxPage = (productCount / limit) + (productCount % limit == 0 ? 0 : 1);
-    if (end > maxPage) {
-      end = maxPage;
-    }
-    if (end > productCount) {
-      end = productCount;
-    }
+    Map<String, Integer> paginationInfo = calculatePagination(pageInt, productCount);
+    int start = paginationInfo.get("start");
+    int end = paginationInfo.get("end");
 
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("productCount", productCount);
     model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
-    model.addAttribute("bottomLine", bottomLine);
-    model.addAttribute("maxPage", maxPage);
-    model.addAttribute("pageInt", pageInt);
 
     return "admin/productSoldOutUpdate";
   }
@@ -314,9 +294,6 @@ public class adminController {
                            @RequestParam(defaultValue = "1") int pageInt,
                            @SessionAttribute int memberTier) throws Exception {
 
-    int limit = 32; // 한 page당 게시물 개수
-    int bottomLine = 100; // pagination 개수
-
     int memberCount = 0;
 
     if(memberTier == 9) {
@@ -328,25 +305,15 @@ public class adminController {
       LOGGER.info(list.toString());
     }
 
-    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
-    int end = start + bottomLine - 1;
-    int maxPage = (memberCount / limit) + (memberCount % limit == 0 ? 0 : 1);
-    if (end > maxPage) {
-      end = maxPage;
-    }
-    if (end > memberCount) {
-      end = memberCount;
-    }
+    Map<String, Integer> paginationInfo = calculatePagination(pageInt, memberCount);
+    int start = paginationInfo.get("start");
+    int end = paginationInfo.get("end");
 
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("memberCount", memberCount);
     model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
-    model.addAttribute("bottomLine", bottomLine);
-    model.addAttribute("maxPage", maxPage);
-    model.addAttribute("pageInt", pageInt);
-
     return "admin/memberList";
   }
 
@@ -356,9 +323,6 @@ public class adminController {
                               @RequestParam String columnName,
                               @RequestParam String orderBy,
                               @SessionAttribute int memberTier) throws Exception {
-
-    int limit = 30; // 한 page당 게시물 개수
-    int bottomLine = 100; // pagination 개수
 
     int memberCount = 0;
 
@@ -418,15 +382,10 @@ public class adminController {
       model.addAttribute("list", list);
     }
 
-    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
-    int end = start + bottomLine - 1;
-    int maxPage = (memberCount / limit) + (memberCount % limit == 0 ? 0 : 1);
-    if (end > maxPage) {
-      end = maxPage;
-    }
-    if (end > memberCount) {
-      end = memberCount;
-    }
+    Map<String, Integer> paginationInfo = calculatePagination(pageInt, memberCount);
+    int start = paginationInfo.get("start");
+    int end = paginationInfo.get("end");
+
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("memberCount", memberCount);
     model.addAttribute("columnName", columnName);
@@ -434,9 +393,6 @@ public class adminController {
     model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
-    model.addAttribute("bottomLine", bottomLine);
-    model.addAttribute("maxPage", maxPage);
-    model.addAttribute("pageInt", pageInt);
 
     return "admin/memberList";
   }
@@ -485,9 +441,6 @@ public class adminController {
                              @RequestParam(defaultValue = "1") int pageInt,
                              @SessionAttribute int memberTier) throws Exception {
 
-    int limit = 32; // 한 page당 게시물 개수
-    int bottomLine = 100; // pagination 개수
-
     int memberCount = 0;
     String searchText = "";
     List<MemberDTO> list = null;
@@ -528,15 +481,9 @@ public class adminController {
       memberCount = memberDao.memberCount();
     }
 
-    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
-    int end = start + bottomLine - 1;
-    int maxPage = (memberCount / limit) + (memberCount % limit == 0 ? 0 : 1);
-    if (end > maxPage) {
-      end = maxPage;
-    }
-    if (end > memberCount) {
-      end = memberCount;
-    }
+    Map<String, Integer> paginationInfo = calculatePagination(pageInt, memberCount);
+    int start = paginationInfo.get("start");
+    int end = paginationInfo.get("end");
 
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("memberCount", memberCount);
@@ -544,10 +491,6 @@ public class adminController {
     model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
-    model.addAttribute("bottomLine", bottomLine);
-    model.addAttribute("maxPage", maxPage);
-    model.addAttribute("pageInt", pageInt);
-
     return "admin/memberList";
   }
 
@@ -555,9 +498,6 @@ public class adminController {
   public String memberWithdrawalList(HttpServletRequest request, HttpSession session, Model model,
                                      @RequestParam(defaultValue = "1") int pageInt,
                                      @SessionAttribute int memberTier) throws Exception {
-
-    int limit = 32; // 한 page당 게시물 개수
-    int bottomLine = 100; // pagination 개수
 
     int memberCount = 0;
 
@@ -570,25 +510,15 @@ public class adminController {
       LOGGER.info(list.toString());
     }
 
-    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
-    int end = start + bottomLine - 1;
-    int maxPage = (memberCount / limit) + (memberCount % limit == 0 ? 0 : 1);
-    if (end > maxPage) {
-      end = maxPage;
-    }
-    if (end > memberCount) {
-      end = memberCount;
-    }
+    Map<String, Integer> paginationInfo = calculatePagination(pageInt, memberCount);
+    int start = paginationInfo.get("start");
+    int end = paginationInfo.get("end");
 
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("memberCount", memberCount);
     model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
-    model.addAttribute("bottomLine", bottomLine);
-    model.addAttribute("maxPage", maxPage);
-    model.addAttribute("pageInt", pageInt);
-
     return "admin/memberWithdrawalList";
   }
 
@@ -596,9 +526,6 @@ public class adminController {
   public String orderHistory(HttpServletRequest request, HttpSession session, Model model,
                              @RequestParam(defaultValue = "1") int pageInt,
                              @SessionAttribute int memberTier) throws Exception {
-
-    int limit = 32; // 한 page당 게시물 개수
-    int bottomLine = 100; // pagination 개수
 
     int historyCount = 0;
 
@@ -609,25 +536,15 @@ public class adminController {
       model.addAttribute("list", list);
     }
 
-    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
-    int end = start + bottomLine - 1;
-    int maxPage = (historyCount / limit) + (historyCount % limit == 0 ? 0 : 1);
-    if (end > maxPage) {
-      end = maxPage;
-    }
-    if (end > historyCount) {
-      end = historyCount;
-    }
+    Map<String, Integer> paginationInfo = calculatePagination(pageInt, historyCount);
+    int start = paginationInfo.get("start");
+    int end = paginationInfo.get("end");
 
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("historyCount", historyCount);
     model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
-    model.addAttribute("bottomLine", bottomLine);
-    model.addAttribute("maxPage", maxPage);
-    model.addAttribute("pageInt", pageInt);
-
     return "admin/orderHistory";
   }
 
@@ -637,9 +554,6 @@ public class adminController {
                                 @RequestParam String columnName,
                                 @RequestParam String orderBy,
                                 @SessionAttribute int memberTier) throws Exception {
-
-    int limit = 30; // 한 page당 게시물 개수
-    int bottomLine = 100; // pagination 개수
 
     int historyCount = 0;
 
@@ -699,23 +613,16 @@ public class adminController {
       model.addAttribute("list", list);
     }
 
-    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
-    int end = start + bottomLine - 1;
-    int maxPage = (historyCount / limit) + (historyCount % limit == 0 ? 0 : 1);
-    if (end > maxPage) {
-      end = maxPage;
-    }
-    if (end > historyCount) {
-      end = historyCount;
-    }
+    Map<String, Integer> paginationInfo = calculatePagination(pageInt, historyCount);
+    int start = paginationInfo.get("start");
+    int end = paginationInfo.get("end");
+
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("historyCount", historyCount);
     model.addAttribute("columnName", columnName);
     model.addAttribute("orderBy", orderBy);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
-    model.addAttribute("bottomLine", bottomLine);
-    model.addAttribute("maxPage", maxPage);
     model.addAttribute("pageInt", pageInt);
 
     return "admin/orderHistory";
@@ -792,9 +699,6 @@ public class adminController {
                               @RequestParam(defaultValue = "1") int pageInt,
                               @SessionAttribute int memberTier) throws Exception {
 
-    int limit = 32; // 한 page당 게시물 개수
-    int bottomLine = 100; // pagination 개수
-
     int historyCount = 0;
     List<HistoryDTO> list = null;
     String searchText = "";
@@ -859,15 +763,9 @@ public class adminController {
       }
     }
 
-    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
-    int end = start + bottomLine - 1;
-    int maxPage = (historyCount / limit) + (historyCount % limit == 0 ? 0 : 1);
-    if (end > maxPage) {
-      end = maxPage;
-    }
-    if (end > historyCount) {
-      end = historyCount;
-    }
+    Map<String, Integer> paginationInfo = calculatePagination(pageInt, historyCount);
+    int start = paginationInfo.get("start");
+    int end = paginationInfo.get("end");
 
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("historyCount", historyCount);
@@ -875,10 +773,6 @@ public class adminController {
     model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
-    model.addAttribute("bottomLine", bottomLine);
-    model.addAttribute("maxPage", maxPage);
-    model.addAttribute("pageInt", pageInt);
-
     return "admin/orderHistory";
   }
 
@@ -1213,9 +1107,6 @@ public class adminController {
                               @RequestParam(defaultValue = "1") int pageInt,
                               @SessionAttribute int memberTier) throws Exception {
 
-    int limit = 32; // 한 page당 게시물 개수
-    int bottomLine = 100; // pagination 개수
-
     int productCount = 0;
 
     if(memberTier == 9) {
@@ -1225,25 +1116,15 @@ public class adminController {
       model.addAttribute("list", list);
     }
 
-    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
-    int end = start + bottomLine - 1;
-    int maxPage = (productCount / limit) + (productCount % limit == 0 ? 0 : 1);
-    if (end > maxPage) {
-      end = maxPage;
-    }
-    if (end > productCount) {
-      end = productCount;
-    }
+    Map<String, Integer> paginationInfo = calculatePagination(pageInt, productCount);
+    int start = paginationInfo.get("start");
+    int end = paginationInfo.get("end");
 
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("productCount", productCount);
     model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
-    model.addAttribute("bottomLine", bottomLine);
-    model.addAttribute("maxPage", maxPage);
-    model.addAttribute("pageInt", pageInt);
-
     return "admin/productDelete";
   }
 

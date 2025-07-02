@@ -41,6 +41,30 @@ public class mainController {
     this.imageDao = imageDao;
     }
 
+    int limit = 15; // 한 page당 게시물 개수
+    int bottomLine = 100; // pagination 개수
+
+    // 제품 페이지 페이지네이션 계산 함수
+    public Map<String, Integer> calculatePagination(int pageInt, int count) {
+        Map<String, Integer> paginationInfo = new HashMap<>();
+
+        int start = (pageInt - 1) / bottomLine * bottomLine + 1;
+        int end = start + bottomLine - 1;
+        int maxPage = (count / limit) + (count % limit == 0 ? 0 : 1);
+
+        if (end > maxPage) {
+            end = maxPage;
+        }
+        if (end > count) {
+            end = count;
+        }
+
+        paginationInfo.put("start", start);
+        paginationInfo.put("end", end);
+
+        return paginationInfo;
+    }
+    
     @RequestMapping("main")
     public String main(HttpSession session) throws Exception {
 
@@ -77,9 +101,6 @@ public class mainController {
                           @RequestParam(defaultValue = "1") int pageInt,
                           @SessionAttribute int memberTier) throws Exception {
 
-        int limit = 16; // 한 page당 게시물 개수
-        int bottomLine = 100; // pagination 개수
-
         int productCount = 0;
 
         int productType;
@@ -111,23 +132,15 @@ public class mainController {
             }
         }
 
-        int start = (pageInt - 1) / bottomLine * bottomLine + 1;
-        int end = start + bottomLine - 1;
-        int maxPage = (productCount / limit) + (productCount % limit == 0 ? 0 : 1);
-        if (end > maxPage) {
-            end = maxPage;
-        }
-        if (end > productCount) {
-            end = productCount;
-        }
+        Map<String, Integer> paginationInfo = calculatePagination(pageInt, productCount);
+        int start = paginationInfo.get("start");
+        int end = paginationInfo.get("end");
 
         model.addAttribute("pageType", pageType);
         model.addAttribute("memberTier", memberTier);
         model.addAttribute("productCount", productCount);
         model.addAttribute("start", start);
         model.addAttribute("end", end);
-        model.addAttribute("bottomLine", bottomLine);
-        model.addAttribute("maxPage", maxPage);
         model.addAttribute("pageInt", pageInt);
 
         return "board/product/productList";
@@ -302,21 +315,9 @@ public class mainController {
             model.addAttribute("list", list);
         }
 
-        int start = 1;
-        int end = 1;
-        int bottomLine = 100; // pagination 개수
-
-        if(productSearchCount < 1) {
-            start = 0;
-            end = 0;
-        } else if (productSearchCount > 1) {
-            // 페이지 번호를 표시하는 로직
-            start = (pageInt - 1) / bottomLine * bottomLine + 1;
-            end = (productSearchCount / limit) + (productSearchCount % limit == 0 ? 0 : 1);
-            if (end > productSearchCount) {
-                end = productSearchCount;
-            }
-        }
+        Map<String, Integer> paginationInfo = calculatePagination(pageInt, productSearchCount);
+        int start = paginationInfo.get("start");
+        int end = paginationInfo.get("end");
 
         model.addAttribute("searchText", searchText);
         model.addAttribute("memberTier", memberTier);
