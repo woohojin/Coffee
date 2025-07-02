@@ -74,18 +74,12 @@ public class mainController {
     @RequestMapping("product")
     public String product(HttpServletRequest request, HttpSession session, Model model,
                           @RequestParam(value = "pageType", defaultValue = "bean") String pageType,
-                          @RequestParam String pageNum,
+                          @RequestParam(defaultValue = "1") int pageInt,
                           @SessionAttribute Integer memberTier) throws Exception {
 
         if(memberTier == null) {
             memberTier = 0;
         }
-
-        if (pageNum == null) {
-            pageNum = "1";
-        }
-
-        int pageInt = Integer.parseInt(pageNum);
 
         int limit = 16; // 한 page당 게시물 개수
         int bottomLine = 100; // pagination 개수
@@ -308,18 +302,12 @@ public class mainController {
 
     @RequestMapping("productSearch")
     public String productSearch(HttpServletRequest request, HttpSession session, Model model,
-                                @RequestParam String pageNum,
+                                @RequestParam(defaultValue = "1") int pageInt,
                                 @SessionAttribute Integer memberTier) throws Exception {
 
         if(memberTier == null) {
             memberTier = 0;
         }
-
-        if (pageNum == null) {
-            pageNum = "1";
-        }
-
-        int pageInt = Integer.parseInt(pageNum);
 
         int limit = 4; // 한 page당 게시물 개수
 
@@ -353,7 +341,7 @@ public class mainController {
         model.addAttribute("searchText", searchText);
         model.addAttribute("memberTier", memberTier);
         model.addAttribute("productSearchCount", productSearchCount);
-        model.addAttribute("pageNum", pageNum);
+        model.addAttribute("pageInt", pageInt);
         model.addAttribute("start", start);
         model.addAttribute("end", end);
 

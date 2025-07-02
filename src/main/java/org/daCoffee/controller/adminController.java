@@ -54,20 +54,14 @@ public class adminController {
 
   @RequestMapping("productList")
   public String productList(HttpServletRequest request, HttpSession session, Model model,
+                            @RequestParam(defaultValue = "1") int pageInt,
                             @SessionAttribute Integer memberTier) throws Exception {
 
     if(memberTier == null) {
       memberTier = 0;
     }
 
-    String pageNum = request.getParameter("pageNum");
-    if (pageNum == null) {
-      pageNum = "1";
-    }
-
-    int pageInt = Integer.parseInt(pageNum);
-
-    int limit = 32; // 한 page당 게시물 개수
+    int limit = 30; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
 
     int productCount = 0;
@@ -91,7 +85,6 @@ public class adminController {
 
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("productCount", productCount);
-    model.addAttribute("pageNum", pageNum);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
     model.addAttribute("bottomLine", bottomLine);
@@ -105,18 +98,12 @@ public class adminController {
   public String productListPro(HttpServletRequest request, HttpSession session, Model model,
                                @RequestParam String columnName,
                                @RequestParam String orderBy,
-                               @RequestParam String pageNum,
+                               @RequestParam(defaultValue = "1") int pageInt,
                                @SessionAttribute Integer memberTier) throws Exception {
 
     if(memberTier == null) {
       memberTier = 0;
     }
-
-    if (pageNum == null) {
-      pageNum = "1";
-    }
-
-    int pageInt = Integer.parseInt(pageNum);
 
     int limit = 30; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
@@ -184,7 +171,7 @@ public class adminController {
     model.addAttribute("productCount", productCount);
     model.addAttribute("columnName", columnName);
     model.addAttribute("orderBy", orderBy);
-    model.addAttribute("pageNum", pageNum);
+    model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
     model.addAttribute("bottomLine", bottomLine);
@@ -196,18 +183,12 @@ public class adminController {
 
   @RequestMapping("productSearch")
   public String productSearch(HttpServletRequest request, HttpSession session, Model model,
-                              @RequestParam String pageNum,
+                              @RequestParam(defaultValue = "1") int pageInt,
                               @SessionAttribute Integer memberTier) throws Exception {
 
     if(memberTier == null) {
       memberTier = 0;
     }
-
-    if (pageNum == null) {
-      pageNum = "1";
-    }
-
-    int pageInt = Integer.parseInt(pageNum);
 
     int limit = 32; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
@@ -275,7 +256,7 @@ public class adminController {
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("productCount", productCount);
     model.addAttribute("list", list);
-    model.addAttribute("pageNum", pageNum);
+    model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
     model.addAttribute("bottomLine", bottomLine);
@@ -288,18 +269,12 @@ public class adminController {
 
   @RequestMapping("productSoldOutUpdate")
   public String productSoldOutUpdate(HttpServletRequest request, HttpSession session, Model model,
-                                     @RequestParam String pageNum,
+                                     @RequestParam(defaultValue = "1") int pageInt,
                                      @SessionAttribute Integer memberTier) throws Exception {
 
     if(memberTier == null) {
       memberTier = 0;
     }
-
-    if (pageNum == null) {
-      pageNum = "1";
-    }
-
-    int pageInt = Integer.parseInt(pageNum);
 
     int limit = 32; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
@@ -325,7 +300,7 @@ public class adminController {
 
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("productCount", productCount);
-    model.addAttribute("pageNum", pageNum);
+    model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
     model.addAttribute("bottomLine", bottomLine);
@@ -352,18 +327,12 @@ public class adminController {
 
   @RequestMapping("memberList")
   public String memberList(HttpServletRequest request, HttpSession session, Model model,
-                           @RequestParam String pageNum,
+                           @RequestParam(defaultValue = "1") int pageInt,
                            @SessionAttribute Integer memberTier) throws Exception {
 
     if(memberTier == null) {
       memberTier = 0;
     }
-
-    if (pageNum == null) {
-      pageNum = "1";
-    }
-
-    int pageInt = Integer.parseInt(pageNum);
 
     int limit = 32; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
@@ -391,7 +360,7 @@ public class adminController {
 
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("memberCount", memberCount);
-    model.addAttribute("pageNum", pageNum);
+    model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
     model.addAttribute("bottomLine", bottomLine);
@@ -403,7 +372,7 @@ public class adminController {
 
   @RequestMapping("memberListPro")
   public String memberListPro(HttpServletRequest request, HttpSession session, Model model,
-                              @RequestParam String pageNum,
+                              @RequestParam(defaultValue = "1") int pageInt,
                               @RequestParam String columnName,
                               @RequestParam String orderBy,
                               @SessionAttribute Integer memberTier) throws Exception {
@@ -411,12 +380,6 @@ public class adminController {
     if(memberTier == null) {
       memberTier = 0;
     }
-
-    if (pageNum == null) {
-      pageNum = "1";
-    }
-
-    int pageInt = Integer.parseInt(pageNum);
 
     int limit = 30; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
@@ -492,7 +455,7 @@ public class adminController {
     model.addAttribute("memberCount", memberCount);
     model.addAttribute("columnName", columnName);
     model.addAttribute("orderBy", orderBy);
-    model.addAttribute("pageNum", pageNum);
+    model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
     model.addAttribute("bottomLine", bottomLine);
@@ -543,18 +506,12 @@ public class adminController {
 
   @RequestMapping("memberSearch")
   public String memberSearch(HttpServletRequest request, HttpSession session, Model model,
-                             @RequestParam String pageNum,
+                             @RequestParam(defaultValue = "1") int pageInt,
                              @SessionAttribute Integer memberTier) throws Exception {
 
     if(memberTier == null) {
       memberTier = 0;
     }
-
-    if (pageNum == null) {
-      pageNum = "1";
-    }
-
-    int pageInt = Integer.parseInt(pageNum);
 
     int limit = 32; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
@@ -612,7 +569,7 @@ public class adminController {
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("memberCount", memberCount);
     model.addAttribute("list", list);
-    model.addAttribute("pageNum", pageNum);
+    model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
     model.addAttribute("bottomLine", bottomLine);
@@ -624,18 +581,12 @@ public class adminController {
 
   @RequestMapping("memberWithdrawalList")
   public String memberWithdrawalList(HttpServletRequest request, HttpSession session, Model model,
-                                     @RequestParam String pageNum,
+                                     @RequestParam(defaultValue = "1") int pageInt,
                                      @SessionAttribute Integer memberTier) throws Exception {
 
     if(memberTier == null) {
       memberTier = 0;
     }
-
-    if (pageNum == null) {
-      pageNum = "1";
-    }
-
-    int pageInt = Integer.parseInt(pageNum);
 
     int limit = 32; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
@@ -663,7 +614,7 @@ public class adminController {
 
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("memberCount", memberCount);
-    model.addAttribute("pageNum", pageNum);
+    model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
     model.addAttribute("bottomLine", bottomLine);
@@ -675,18 +626,12 @@ public class adminController {
 
   @RequestMapping("orderHistory")
   public String orderHistory(HttpServletRequest request, HttpSession session, Model model,
-                             @RequestParam String pageNum,
+                             @RequestParam(defaultValue = "1") int pageInt,
                              @SessionAttribute Integer memberTier) throws Exception {
 
     if(memberTier == null) {
       memberTier = 0;
     }
-
-    if (pageNum == null) {
-      pageNum = "1";
-    }
-
-    int pageInt = Integer.parseInt(pageNum);
 
     int limit = 32; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
@@ -712,7 +657,7 @@ public class adminController {
 
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("historyCount", historyCount);
-    model.addAttribute("pageNum", pageNum);
+    model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
     model.addAttribute("bottomLine", bottomLine);
@@ -724,7 +669,7 @@ public class adminController {
 
   @RequestMapping("orderHistoryPro")
   public String orderHistoryPro(HttpServletRequest request, HttpSession session, Model model,
-                                @RequestParam String pageNum,
+                                @RequestParam(defaultValue = "1") int pageInt,
                                 @RequestParam String columnName,
                                 @RequestParam String orderBy,
                                 @SessionAttribute Integer memberTier) throws Exception {
@@ -732,12 +677,6 @@ public class adminController {
     if(memberTier == null) {
       memberTier = 0;
     }
-
-    if (pageNum == null) {
-      pageNum = "1";
-    }
-
-    int pageInt = Integer.parseInt(pageNum);
 
     int limit = 30; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
@@ -813,7 +752,6 @@ public class adminController {
     model.addAttribute("historyCount", historyCount);
     model.addAttribute("columnName", columnName);
     model.addAttribute("orderBy", orderBy);
-    model.addAttribute("pageNum", pageNum);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
     model.addAttribute("bottomLine", bottomLine);
@@ -891,18 +829,12 @@ public class adminController {
 
   @RequestMapping("historySearch")
   public String historySearch(HttpServletRequest request, HttpSession session, Model model,
-                              @RequestParam String pageNum,
+                              @RequestParam(defaultValue = "1") int pageInt,
                               @SessionAttribute Integer memberTier) throws Exception {
 
     if(memberTier == null) {
       memberTier = 0;
     }
-
-    if (pageNum == null) {
-      pageNum = "1";
-    }
-
-    int pageInt = Integer.parseInt(pageNum);
 
     int limit = 32; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
@@ -984,7 +916,7 @@ public class adminController {
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("historyCount", historyCount);
     model.addAttribute("list", list);
-    model.addAttribute("pageNum", pageNum);
+    model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
     model.addAttribute("bottomLine", bottomLine);
@@ -1330,18 +1262,12 @@ public class adminController {
 
   @RequestMapping("productDelete")
   public String productDelete(HttpServletRequest request, HttpSession session, Model model,
-                              @RequestParam String pageNum,
+                              @RequestParam(defaultValue = "1") int pageInt,
                               @SessionAttribute Integer memberTier) throws Exception {
 
     if(memberTier == null) {
       memberTier = 0;
     }
-
-    if (pageNum == null) {
-      pageNum = "1";
-    }
-
-    int pageInt = Integer.parseInt(pageNum);
 
     int limit = 32; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
@@ -1367,7 +1293,7 @@ public class adminController {
 
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("productCount", productCount);
-    model.addAttribute("pageNum", pageNum);
+    model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
     model.addAttribute("bottomLine", bottomLine);
