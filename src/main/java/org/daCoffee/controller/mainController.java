@@ -75,11 +75,7 @@ public class mainController {
     public String product(HttpServletRequest request, HttpSession session, Model model,
                           @RequestParam(value = "pageType", defaultValue = "bean") String pageType,
                           @RequestParam(defaultValue = "1") int pageInt,
-                          @SessionAttribute Integer memberTier) throws Exception {
-
-        if(memberTier == null) {
-            memberTier = 0;
-        }
+                          @SessionAttribute int memberTier) throws Exception {
 
         int limit = 16; // 한 page당 게시물 개수
         int bottomLine = 100; // pagination 개수
@@ -139,11 +135,7 @@ public class mainController {
 
     @RequestMapping("beanDetail")
     public String beanDetail(HttpSession session, Model model, String productCode,
-                             @SessionAttribute Integer memberTier) throws Exception {
-
-        if(memberTier == null) {
-            memberTier = 0;
-        }
+                             @SessionAttribute int memberTier) throws Exception {
 
         int productCount = 0;
 
@@ -167,11 +159,7 @@ public class mainController {
 
     @RequestMapping("mixDetail")
     public String mixDetail(HttpSession session, Model model, String productCode,
-                            @SessionAttribute Integer memberTier) throws Exception {
-
-        if(memberTier == null) {
-            memberTier = 0;
-        }
+                            @SessionAttribute int memberTier) throws Exception {
 
         int productCount = 0;
 
@@ -195,11 +183,7 @@ public class mainController {
 
     @RequestMapping("cafeDetail")
     public String cafeDetail(HttpSession session, Model model, String productCode,
-                             @SessionAttribute Integer memberTier) throws Exception {
-
-        if(memberTier == null) {
-            memberTier = 0;
-        }
+                             @SessionAttribute int memberTier) throws Exception {
 
         int productCount = 0;
 
@@ -303,11 +287,7 @@ public class mainController {
     @RequestMapping("productSearch")
     public String productSearch(HttpServletRequest request, HttpSession session, Model model,
                                 @RequestParam(defaultValue = "1") int pageInt,
-                                @SessionAttribute Integer memberTier) throws Exception {
-
-        if(memberTier == null) {
-            memberTier = 0;
-        }
+                                @SessionAttribute int memberTier) throws Exception {
 
         int limit = 4; // 한 page당 게시물 개수
 

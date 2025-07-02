@@ -55,11 +55,7 @@ public class adminController {
   @RequestMapping("productList")
   public String productList(HttpServletRequest request, HttpSession session, Model model,
                             @RequestParam(defaultValue = "1") int pageInt,
-                            @SessionAttribute Integer memberTier) throws Exception {
-
-    if(memberTier == null) {
-      memberTier = 0;
-    }
+                            @SessionAttribute int memberTier) throws Exception {
 
     int limit = 30; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
@@ -99,11 +95,7 @@ public class adminController {
                                @RequestParam String columnName,
                                @RequestParam String orderBy,
                                @RequestParam(defaultValue = "1") int pageInt,
-                               @SessionAttribute Integer memberTier) throws Exception {
-
-    if(memberTier == null) {
-      memberTier = 0;
-    }
+                               @SessionAttribute int memberTier) throws Exception {
 
     int limit = 30; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
@@ -184,11 +176,7 @@ public class adminController {
   @RequestMapping("productSearch")
   public String productSearch(HttpServletRequest request, HttpSession session, Model model,
                               @RequestParam(defaultValue = "1") int pageInt,
-                              @SessionAttribute Integer memberTier) throws Exception {
-
-    if(memberTier == null) {
-      memberTier = 0;
-    }
+                              @SessionAttribute int memberTier) throws Exception {
 
     int limit = 32; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
@@ -270,11 +258,7 @@ public class adminController {
   @RequestMapping("productSoldOutUpdate")
   public String productSoldOutUpdate(HttpServletRequest request, HttpSession session, Model model,
                                      @RequestParam(defaultValue = "1") int pageInt,
-                                     @SessionAttribute Integer memberTier) throws Exception {
-
-    if(memberTier == null) {
-      memberTier = 0;
-    }
+                                     @SessionAttribute int memberTier) throws Exception {
 
     int limit = 32; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
@@ -328,11 +312,7 @@ public class adminController {
   @RequestMapping("memberList")
   public String memberList(HttpServletRequest request, HttpSession session, Model model,
                            @RequestParam(defaultValue = "1") int pageInt,
-                           @SessionAttribute Integer memberTier) throws Exception {
-
-    if(memberTier == null) {
-      memberTier = 0;
-    }
+                           @SessionAttribute int memberTier) throws Exception {
 
     int limit = 32; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
@@ -375,11 +355,7 @@ public class adminController {
                               @RequestParam(defaultValue = "1") int pageInt,
                               @RequestParam String columnName,
                               @RequestParam String orderBy,
-                              @SessionAttribute Integer memberTier) throws Exception {
-
-    if(memberTier == null) {
-      memberTier = 0;
-    }
+                              @SessionAttribute int memberTier) throws Exception {
 
     int limit = 30; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
@@ -507,11 +483,7 @@ public class adminController {
   @RequestMapping("memberSearch")
   public String memberSearch(HttpServletRequest request, HttpSession session, Model model,
                              @RequestParam(defaultValue = "1") int pageInt,
-                             @SessionAttribute Integer memberTier) throws Exception {
-
-    if(memberTier == null) {
-      memberTier = 0;
-    }
+                             @SessionAttribute int memberTier) throws Exception {
 
     int limit = 32; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
@@ -582,11 +554,7 @@ public class adminController {
   @RequestMapping("memberWithdrawalList")
   public String memberWithdrawalList(HttpServletRequest request, HttpSession session, Model model,
                                      @RequestParam(defaultValue = "1") int pageInt,
-                                     @SessionAttribute Integer memberTier) throws Exception {
-
-    if(memberTier == null) {
-      memberTier = 0;
-    }
+                                     @SessionAttribute int memberTier) throws Exception {
 
     int limit = 32; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
@@ -627,11 +595,7 @@ public class adminController {
   @RequestMapping("orderHistory")
   public String orderHistory(HttpServletRequest request, HttpSession session, Model model,
                              @RequestParam(defaultValue = "1") int pageInt,
-                             @SessionAttribute Integer memberTier) throws Exception {
-
-    if(memberTier == null) {
-      memberTier = 0;
-    }
+                             @SessionAttribute int memberTier) throws Exception {
 
     int limit = 32; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
@@ -672,11 +636,7 @@ public class adminController {
                                 @RequestParam(defaultValue = "1") int pageInt,
                                 @RequestParam String columnName,
                                 @RequestParam String orderBy,
-                                @SessionAttribute Integer memberTier) throws Exception {
-
-    if(memberTier == null) {
-      memberTier = 0;
-    }
+                                @SessionAttribute int memberTier) throws Exception {
 
     int limit = 30; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
@@ -830,11 +790,7 @@ public class adminController {
   @RequestMapping("historySearch")
   public String historySearch(HttpServletRequest request, HttpSession session, Model model,
                               @RequestParam(defaultValue = "1") int pageInt,
-                              @SessionAttribute Integer memberTier) throws Exception {
-
-    if(memberTier == null) {
-      memberTier = 0;
-    }
+                              @SessionAttribute int memberTier) throws Exception {
 
     int limit = 32; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
@@ -928,11 +884,7 @@ public class adminController {
 
   @RequestMapping("memberTierUpdate")
   public String memberTierUpdate(HttpServletRequest request, HttpSession session, Model model,
-                                 @SessionAttribute Integer memberTier) throws Exception {
-
-    if(memberTier == null) {
-      memberTier = 0;
-    }
+                                 @SessionAttribute int memberTier) throws Exception {
 
     List<MemberDTO> list;
 
@@ -999,11 +951,7 @@ public class adminController {
 
   @RequestMapping("memberDisableUpdate")
   public String memberDisableUpdate(HttpServletRequest request, HttpSession session, Model model,
-                                    @SessionAttribute Integer memberTier) throws Exception {
-
-    if(memberTier == null) {
-      memberTier = 0;
-    }
+                                    @SessionAttribute int memberTier) throws Exception {
 
     List<MemberDTO> list;
 
@@ -1263,11 +1211,7 @@ public class adminController {
   @RequestMapping("productDelete")
   public String productDelete(HttpServletRequest request, HttpSession session, Model model,
                               @RequestParam(defaultValue = "1") int pageInt,
-                              @SessionAttribute Integer memberTier) throws Exception {
-
-    if(memberTier == null) {
-      memberTier = 0;
-    }
+                              @SessionAttribute int memberTier) throws Exception {
 
     int limit = 32; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수
@@ -1305,11 +1249,7 @@ public class adminController {
 
   @RequestMapping("productDeletePro")
   public String productDeletePro(HttpServletRequest request, HttpSession session, Model model, String productCode,
-                                 @SessionAttribute Integer memberTier) throws Exception {
-
-    if(memberTier == null) {
-      memberTier = 0;
-    }
+                                 @SessionAttribute int memberTier) throws Exception {
 
     String msg = "제품 삭제에 실패했습니다.";
     String url = "/admin/productDelete";
