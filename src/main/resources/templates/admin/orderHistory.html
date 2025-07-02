@@ -176,7 +176,7 @@
               <a th:if="${searchText == null}" th:href="@{/admin/orderHistory(pageInt=${pageInt - 3})}">«</a>
               <a th:unless="${searchText == null}" th:href="@{/admin/historySearch(pageInt=${pageInt - 3}, searchText=${searchText})}">«</a>
             </th:block>
-            <th:block th:if="${productSearchCount != 0 || productCount != 0}">
+            <th:block th:if="${start <= end and historyCount > 0}">
               <th:block th:each="p : ${#numbers.sequence(start, end)}">
                 <a th:if="${searchText == null}" th:href="@{/admin/orderHistory(pageInt=${p})}" th:text="${p}"></a>
                 <a th:unless="${searchText == null}" th:href="@{/admin/historySearch(pageInt=${p}, searchText=${searchText})}" th:text="${p}"></a>

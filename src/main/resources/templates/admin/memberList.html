@@ -184,7 +184,7 @@
               <a th:if="${searchText == null}" th:href="@{/admin/memberList(pageInt=${pageInt - 3})}">«</a>
               <a th:unless="${searchText == null}" th:href="@{/admin/memberListSearch(pageInt=${pageInt - 3}, searchText=${searchText})}">«</a>
             </th:block>
-            <th:block th:if="${memberSearchCount != 0 || memberCount != 0}">
+            <th:block th:if="${start <= end and memberCount > 0}">
               <th:block th:each="p : ${#numbers.sequence(start, end)}">
                 <a th:if="${searchText == null}" th:href="@{/admin/memberList(pageInt=${p})}" th:text="${p}"></a>
                 <a th:unless="${searchText == null}" th:href="@{/admin/memberListSearch(pageInt=${p}, searchText=${searchText})}" th:text="${p}"></a>
@@ -196,6 +196,7 @@
             </th:block>
           </div>
         </div>
+      </div>
     </main>
     <script type="text/javascript" th:inline="javascript">
       window.onload = function() {
