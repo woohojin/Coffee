@@ -1,9 +1,6 @@
 package org.daCoffee.controller;
 
-import org.daCoffee.dao.HistoryDAO;
-import org.daCoffee.dao.ImageDAO;
-import org.daCoffee.dao.MemberDAO;
-import org.daCoffee.dao.ProductDAO;
+import org.daCoffee.dao.*;
 import org.daCoffee.dto.HistoryDTO;
 import org.daCoffee.dto.ImageDTO;
 import org.daCoffee.dto.MemberDTO;
@@ -38,13 +35,15 @@ public class adminController {
   private final HistoryDAO historyDao;
   private final ImageDAO imageDao;
   private static final Logger LOGGER = LoggerFactory.getLogger(adminController.class);
+  private final CartDAO cartDao;
 
   @Autowired
-  public adminController(ProductDAO productDao, MemberDAO memberDao, HistoryDAO historyDao, ImageDAO imageDao) {
+  public adminController(ProductDAO productDao, MemberDAO memberDao, HistoryDAO historyDao, ImageDAO imageDao, CartDAO cartDao) {
     this.productDao = productDao;
     this.memberDao = memberDao;
     this.historyDao = historyDao;
     this.imageDao = imageDao;
+    this.cartDao = cartDao;
   }
 
   @RequestMapping("dashboard")
@@ -1094,11 +1093,13 @@ public class adminController {
     int checkMember = memberDao.checkMember(memberId);
     int checkDisabledMember = memberDao.checkDisabledMember(memberId);
 
+    LOGGER.info("memberID : {}", memberId);
     System.out.println(checkMember + "checkMember");
     System.out.println(checkDisabledMember + "checkDisabledMember");
 
     if(checkMember > 0) {
       memberDao.memberDisable(memberId);
+      cartDao.deleteCartByMember(memberId);
       memberDao.memberDelete(memberId);
       memberDao.updateDisabledDate(memberId);
     } else if(checkDisabledMember > 0) {

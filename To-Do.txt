@@ -5,7 +5,7 @@
 
 백엔드 전체 Restful 방식 사용으로 변경
 
-어드민 멤버 비활성화 고장남
+
 어드민 검색조건 비우고 검색시 초기리스트로 변경
 pageNum, pageInt 메소드 파라미터로 가져오는 방식으로 변경되면서 변수 타입 변환 필요 x
 memberTier 메소드 파라미터로 가져오는 방식으로 변경되면서 null 값 판별 필요 x
@@ -19,7 +19,6 @@ application.properties랑 secrets.properties의 디렉토리 동일하게 바꾸
 수정테이블 생성
 페이지 사용 중 세션 만료시 재로그인 후 해당 페이지로 이동
 어드민페이지 0,1,2와 같은 것들 전부 변경(productType, memberTier, productTier, productSoldout 등)
-jsp에 spring eval로 application.properties에 있는 한글 텍스트 적용시 한글 깨짐
 어드민페이지 권한 부족 부분 검색 및 업데이트 부분은 미포함 되어있음
 adminController 일부 메소드 권한 확인 코드가 빠져있는 것 같음
 장바구니에 선택 주문 추가
