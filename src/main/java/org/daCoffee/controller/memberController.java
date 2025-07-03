@@ -1,5 +1,6 @@
 package org.daCoffee.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dao.CartDAO;
 import org.daCoffee.dao.CookieDAO;
 import org.daCoffee.dao.HistoryDAO;
@@ -43,6 +44,7 @@ import static org.daCoffee.util.SecurityUtil.getRandomPassword;
 
 @Controller
 @RequestMapping("/member/")
+@Slf4j
 public class memberController {
   private final MemberDAO memberDao;
   private final CartDAO cartDao;
@@ -63,8 +65,6 @@ public class memberController {
     this.passwordEncoder = passwordEncoder;
     this.mailService = mailService;
   }
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(memberController.class);
 
   public void sendEmail(String toEmail, String subject, String main, String code) {
     mailService.sendEmail(toEmail, subject, main, code);
@@ -117,7 +117,7 @@ public class memberController {
     try{
       mem = memberDao.memberSelectOne(memberId);
     } catch (Exception e) {
-      LOGGER.error(e.getMessage());
+      log.error(e.getMessage());
     }
 
     String filePath = request.getServletContext().getRealPath("/") + "view/files/";
@@ -165,7 +165,7 @@ public class memberController {
         url = "/member/memberSignUp";
       }
     } catch (Exception e) {
-      LOGGER.error("Error is occurred :", e);
+      log.error("Error is occurred :", e);
     }
 
     model.addAttribute("msg", msg);
@@ -196,7 +196,7 @@ public class memberController {
           session.setAttribute("memberId", memberId);
           session.setAttribute("memberTier", memberTier);
 
-          LOGGER.info("memberTier : {}", session.getAttribute("memberTier"));
+          log.info("memberTier : {}", session.getAttribute("memberTier"));
 
           List<SimpleGrantedAuthority> authorities = memberTier == 9 ?
             Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")) :
@@ -629,16 +629,16 @@ public class memberController {
 
       if (responseEntity.getStatusCode().is2xxSuccessful()) {
         // 결제 성공 로직
-        LOGGER.info(Objects.requireNonNull(responseEntity.getBody()).toString());
+        log.info(Objects.requireNonNull(responseEntity.getBody()).toString());
         return ResponseEntity.ok(responseEntity.getBody());
       } else {
         // 결제 실패 로직
-        LOGGER.info(Objects.requireNonNull(responseEntity.getBody()).toString());
+        log.info(Objects.requireNonNull(responseEntity.getBody()).toString());
         return ResponseEntity.status(responseEntity.getStatusCode()).body(responseEntity.getBody());
       }
 
     } catch (Exception e) {
-      LOGGER.error("Error in memberPaymentsConfirm", e);
+      log.error("Error in memberPaymentsConfirm", e);
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("error", "Internal Server Error"));
     }
   }
@@ -849,12 +849,12 @@ public class memberController {
       map.put("code", code);
 
     } catch (Exception e) {
-      LOGGER.error("이메일 전송 실패 : ", e);
+      log.error("이메일 전송 실패 : ", e);
       map.put("error", "이메일 전송 실패 : " + e.getMessage());
       return map;
     }
 
-    LOGGER.debug("응답 : {}", map);
+    log.debug("응답 : {}", map);
     return map;
   }
 

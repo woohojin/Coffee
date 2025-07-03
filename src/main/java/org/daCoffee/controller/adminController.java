@@ -1,5 +1,7 @@
 package org.daCoffee.controller;
 
+import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.XSlf4j;
 import org.daCoffee.dao.*;
 import org.daCoffee.dto.HistoryDTO;
 import org.daCoffee.dto.ImageDTO;
@@ -31,12 +33,12 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/admin/")
+@Slf4j
 public class adminController {
   private final ProductDAO productDao;
   private final MemberDAO memberDao;
   private final HistoryDAO historyDao;
   private final ImageDAO imageDao;
-  private static final Logger LOGGER = LoggerFactory.getLogger(adminController.class);
   private final CartDAO cartDao;
 
   @Autowired
@@ -299,10 +301,10 @@ public class adminController {
     if(memberTier == 9) {
       memberDao.rownumSet();
       List<MemberDTO> list = memberDao.memberList(pageInt, limit);
-      LOGGER.info(list.toString());
+      log.info(list.toString());
       memberCount = memberDao.memberCount();
       model.addAttribute("list", list);
-      LOGGER.info(list.toString());
+      log.info(list.toString());
     }
 
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, memberCount);
@@ -504,10 +506,10 @@ public class adminController {
     if(memberTier == 9) {
       memberDao.rownumSet();
       List<MemberDTO> list = memberDao.memberWithdrawalList(pageInt, limit);
-      LOGGER.info(list.toString());
+      log.info(list.toString());
       memberCount = memberDao.memberWithdrawalCount();
       model.addAttribute("list", list);
-      LOGGER.info(list.toString());
+      log.info(list.toString());
     }
 
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, memberCount);
@@ -798,7 +800,7 @@ public class adminController {
   @RequestMapping("memberTierUpdatePro")
   public String memberTierUpdatePro(HttpServletRequest request, Model model, String memberId, int memberTier) throws Exception {
 
-    LOGGER.info(memberId, memberTier);
+    log.info(memberId, memberTier);
 
     memberDao.memberTierUpdate(memberId, memberTier);
 
@@ -867,7 +869,7 @@ public class adminController {
     int checkMember = memberDao.checkMember(memberId);
     int checkDisabledMember = memberDao.checkDisabledMember(memberId);
 
-    LOGGER.info("memberID : {}", memberId);
+    log.info("memberID : {}", memberId);
     System.out.println(checkMember + "checkMember");
     System.out.println(checkDisabledMember + "checkDisabledMember");
 

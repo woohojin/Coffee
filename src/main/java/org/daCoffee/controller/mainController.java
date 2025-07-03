@@ -1,5 +1,6 @@
 package org.daCoffee.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dto.CartDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +27,8 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 @RequestMapping("/board/")
+@Slf4j
 public class mainController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(mainController.class);
     private final DataSource ds;
     private final ProductDAO productDao;
     private final CartDAO cartDao;
@@ -73,7 +74,7 @@ public class mainController {
             System.out.println("Success : " + conn);
         } catch (Exception e) {
             System.out.println("Failed to Connect DB");
-            LOGGER.error(e.getMessage());
+            log.error(e.getMessage());
         }
 
         Integer memberTier = (Integer) session.getAttribute("memberTier");
