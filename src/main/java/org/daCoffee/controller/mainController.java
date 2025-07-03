@@ -1,5 +1,6 @@
 package org.daCoffee.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dto.CartDTO;
 import org.springframework.ui.Model;
@@ -25,20 +26,13 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 @RequestMapping("/board/")
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @Slf4j
 public class mainController {
     private final DataSource ds;
     private final ProductDAO productDao;
     private final CartDAO cartDao;
     private final ImageDAO imageDao;
-
-    @Autowired
-    public mainController(DataSource ds, ProductDAO productDao, CartDAO cartDao, ImageDAO imageDao) {
-    this.ds = ds;
-    this.productDao = productDao;
-    this.cartDao = cartDao;
-    this.imageDao = imageDao;
-    }
 
     int limit = 15; // 한 page당 게시물 개수
     int bottomLine = 100; // pagination 개수

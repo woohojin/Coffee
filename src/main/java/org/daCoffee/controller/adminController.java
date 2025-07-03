@@ -1,5 +1,6 @@
 package org.daCoffee.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dao.*;
 import org.daCoffee.dto.HistoryDTO;
@@ -30,6 +31,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/admin/")
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @Slf4j
 public class adminController {
   private final ProductDAO productDao;
@@ -37,15 +39,6 @@ public class adminController {
   private final HistoryDAO historyDao;
   private final ImageDAO imageDao;
   private final CartDAO cartDao;
-
-  @Autowired
-  public adminController(ProductDAO productDao, MemberDAO memberDao, HistoryDAO historyDao, ImageDAO imageDao, CartDAO cartDao) {
-    this.productDao = productDao;
-    this.memberDao = memberDao;
-    this.historyDao = historyDao;
-    this.imageDao = imageDao;
-    this.cartDao = cartDao;
-  }
 
   int limit = 30; // 한 page당 게시물 개수
   int bottomLine = 100; // pagination 개수

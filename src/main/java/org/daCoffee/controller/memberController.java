@@ -1,5 +1,6 @@
 package org.daCoffee.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dao.CartDAO;
 import org.daCoffee.dao.CookieDAO;
@@ -41,7 +42,9 @@ import static org.daCoffee.util.SecurityUtil.getRandomPassword;
 
 @Controller
 @RequestMapping("/member/")
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @Slf4j
+
 public class memberController {
   private final MemberDAO memberDao;
   private final CartDAO cartDao;
@@ -52,16 +55,6 @@ public class memberController {
 
   @Value("${COOKIE_LOGIN}")
   private String COOKIE_LOGIN;
-
-  @Autowired
-  public memberController(MemberDAO memberDao, CartDAO cartDao, CookieDAO cookieDao, HistoryDAO historyDao, PasswordEncoder passwordEncoder, MailService mailService) {
-    this.memberDao = memberDao;
-    this.cartDao = cartDao;
-    this.cookieDao = cookieDao;
-    this.historyDao = historyDao;
-    this.passwordEncoder = passwordEncoder;
-    this.mailService = mailService;
-  }
 
   public void sendEmail(String toEmail, String subject, String main, String code) {
     mailService.sendEmail(toEmail, subject, main, code);
