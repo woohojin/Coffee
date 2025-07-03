@@ -93,7 +93,15 @@
                         </thead>
                         <tbody>
                         <tr th:each="m : ${list}">
-                          <td><p th:text="${m.memberTier}"></p></td>
+                          <td>
+                            <p th:switch="${m.memberTier}">
+                              <span th:case="0">미승인</span>
+                              <span th:case="1">임대</span>
+                              <span th:case="2">미임대</span>
+                              <span th:case="3">카페고객</span>
+                              <span th:case="9">관리자</span>
+                            </p>
+                          </td>
                           <td><p th:text="${m.memberId}"></p></td>
                           <td><p th:text="${m.memberName}"></p></td>
                           <td><p th:text="${m.memberCompanyName}"></p></td>
@@ -113,9 +121,8 @@
                           <td><p th:text="${m.memberDate}"></p></td>
                           <td>
                             <select id="memberTier" name="memberTier">
-                              <option value="0">0 (권한없음)</option>
-                              <option value="1">1 (머신임대고객)</option>
-                              <option value="2">2 (머신비임대고객)</option>
+                              <option value="1">임대</option>
+                              <option value="2">미임대</option>
                             </select>
                             <input type="hidden" name="memberId" th:value="${m.memberId}" />
                           </td>

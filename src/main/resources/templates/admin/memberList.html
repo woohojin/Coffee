@@ -142,7 +142,15 @@
                   </thead>
                   <tbody>
                   <tr th:each="m : ${list}">
-                    <td><p th:text="${m.memberTier}"></p></td>
+                    <td>
+                      <p th:switch="${m.memberTier}">
+                        <span th:case="0">미승인</span>
+                        <span th:case="1">임대</span>
+                        <span th:case="2">미임대</span>
+                        <span th:case="3">카페고객</span>
+                        <span th:case="9">관리자</span>
+                      </p>
+                    </td>
                     <td><p th:text="${m.memberFranCode}"></p></td>
                     <td>
                       <a th:href="@{/admin/memberUpdate(memberId=${m.memberId})}" target="_blank" th:text="${m.memberId}"></a>

@@ -147,15 +147,32 @@
                     </thead>
                     <tbody>
                     <tr th:each="p : ${list}">
-                      <td><p th:text="${p.productType}"></p></td>
+                      <td>
+                        <p th:switch="${p.productType}">
+                          <span th:case="0">원두</span>
+                          <span th:case="1">커피믹스</span>
+                          <span th:case="2">카페용품</span>
+                        </p>
+                      </td>
                       <td>
                         <a th:href="@{/admin/productUpdate(productCode=${p.productCode})}" target="_blank" th:text="${p.productCode}"></a>
                       </td>
                       <td><p th:text="${p.productName}"></p></td>
                       <td><p th:text="${p.productUnit}"></p></td>
                       <td><p th:text="${#numbers.formatInteger(p.productPrice, 3, 'COMMA')} + ' 원'"></p></td>
-                      <td><p th:text="${p.productTier}"></p></td>
-                      <td><p th:text="${p.productSoldOut}"></p></td>
+                      <td>
+                        <p th:switch="${p.productTier}">
+                          <span th:case="1">임대</span>
+                          <span th:case="2">미임대</span>
+                          <span th:case="3">카페고객</span>
+                        </p>
+                      </td>
+                      <td>
+                        <p th:switch="${p.productSoldOut}">
+                          <span th:case="0">X</span>
+                          <span th:case="1">O</span>
+                        </p>
+                      </td>
                       <td><p th:text="${p.productFile}"></p></td>
                       <td><p th:text="${p.productRegisterName}"></p></td>
                       <td><p th:text="${p.productRegisterDate}"></p></td>
