@@ -23,7 +23,7 @@ public class CartDAO {
   private static Map map = new HashMap<>();
 
   public int cartInsert(CartDTO cartDTO) {
-    int num = session.insert(NS+"cartInsert", cartDTO);
+    int num = session.insert(NS + "cartInsert", cartDTO);
     return num;
   }
 
