@@ -2,8 +2,6 @@ package org.daCoffee.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dto.CartDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.daCoffee.dao.ImageDAO;
