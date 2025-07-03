@@ -98,7 +98,7 @@ function stopCountdown() {
   let verifyCode = document.querySelector(".verify_code").value;
   let countdown = document.querySelector('.countdown');
 
-  if(code == null || code != verifyCode || code === "") {
+  if(code === null || code !== verifyCode || code === "") {
     alert("인증에 실패했습니다.");
     return;
   }
