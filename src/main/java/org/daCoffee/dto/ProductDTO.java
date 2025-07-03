@@ -1,8 +1,10 @@
 package org.daCoffee.dto;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString
 public class ProductDTO {
     String productCode;
     String existProductCode; // admin productUpdate
@@ -85,41 +87,4 @@ public class ProductDTO {
 //    public void setCafeModifierDate(String cafeModifierDate) {
 //        this.cafeModifierDate = cafeModifierDate;
 //    }
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "productCode='" + productCode + '\'' +
-                ", productType=" + productType +
-                ", productName='" + productName + '\'' +
-                ", productPrice=" + productPrice +
-                ", productUnit='" + productUnit + '\'' +
-                ", productTier=" + productTier +
-                ", productFile='" + productFile + '\'' +
-                ", productSoldOut=" + productSoldOut +
-                ", productRegisterName='" + productRegisterName + '\'' +
-                ", productRegisterDate='" + productRegisterDate + '\'' +
-                ", productModifierName='" + productModifierName + '\'' +
-                ", productModifierDate='" + productModifierDate + '\'' +
-                ", beanCountry='" + beanCountry + '\'' +
-                ", beanSpecies='" + beanSpecies + '\'' +
-                ", beanCompany='" + beanCompany + '\'' +
-                ", beanUseByDate='" + beanUseByDate + '\'' +
-                ", beanRegisterName='" + beanRegisterName + '\'' +
-                ", beanRegisterDate='" + beanRegisterDate + '\'' +
-                ", beanModifierName='" + beanModifierName + '\'' +
-                ", beanModifierDate='" + beanModifierDate + '\'' +
-                ", mixCompany='" + mixCompany + '\'' +
-                ", mixUseByDate='" + mixUseByDate + '\'' +
-                ", mixRegisterName='" + mixRegisterName + '\'' +
-                ", mixRegisterDate='" + mixRegisterDate + '\'' +
-                ", mixModifierName='" + mixModifierName + '\'' +
-                ", mixModifierDate='" + mixModifierDate + '\'' +
-//                ", cafeCompany='" + cafeCompany + '\'' +
-//                ", cafeRegisterName='" + cafeRegisterName + '\'' +
-//                ", cafeRegisterDate='" + cafeRegisterDate + '\'' +
-//                ", cafeModifierName='" + cafeModifierName + '\'' +
-//                ", cafeModifierDate='" + cafeModifierDate + '\'' +
-                '}';
-    }
 }
