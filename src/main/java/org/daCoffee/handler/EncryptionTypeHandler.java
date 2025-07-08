@@ -1,12 +1,11 @@
 package org.daCoffee.handler;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.type.Alias;
 import org.apache.ibatis.type.MappedTypes;
 import org.daCoffee.module.AESEncryptionModule;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 import java.sql.CallableStatement;
@@ -15,10 +14,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
+@Slf4j
 @Alias("encryptionTypeHandler")
 @MappedTypes(String.class)
 public class EncryptionTypeHandler extends BaseTypeHandler<String> {
-  private static final Logger LOGGER = LoggerFactory.getLogger(EncryptionTypeHandler.class);
   private static final AESEncryptionModule aesEncryptionModule;
 
   // 키를 직접적으로 가져오는 이유는 Spring에서 관리 시 encryptionTypeHandler가 String 타입 컬럼에 전체 적용된다는 문제가 있어서 직접 인스턴스화 하고 관리하도록 함
@@ -28,7 +27,7 @@ public class EncryptionTypeHandler extends BaseTypeHandler<String> {
   // static을 사용하는 이유는 Mybatis에서 EncryptionTypeHandler를 과도하게 불러오는 현상 때문에 정적으로 만들어 하나의 인스턴스로 모든 컬럼을 암호화 하게 만들기 위함임
   // 하지만 여전히 과도하게 불러오는 현상이 있지만 횟수가 많지 않아 성능에 영향을 주지 않을거라 판단.
   static {
-    LOGGER.info("Initializing EncryptionTypeHandler static block");
+    log.info("Initializing EncryptionTypeHandler static block");
     aesEncryptionModule = new AESEncryptionModule();
     try (InputStream input = EncryptionTypeHandler.class.getClassLoader().getResourceAsStream("config/secrets.properties")) {
       if (input == null) {
@@ -47,7 +46,7 @@ public class EncryptionTypeHandler extends BaseTypeHandler<String> {
   }
 
   public EncryptionTypeHandler() {
-    LOGGER.debug("Default constructor called by MyBatis");
+    log.debug("Default constructor called by MyBatis");
   }
 
   @Override

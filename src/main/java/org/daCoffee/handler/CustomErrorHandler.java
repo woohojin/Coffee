@@ -1,7 +1,6 @@
 package org.daCoffee.handler;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -12,9 +11,9 @@ import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
+@Slf4j
 @Controller
 public class CustomErrorHandler implements ErrorController {
-  private static final Logger logger = LoggerFactory.getLogger(CustomErrorHandler.class);
 
   @RequestMapping("/error")
   public String handleError(HttpServletRequest request, Model model, HttpSession session) {
@@ -26,7 +25,7 @@ public class CustomErrorHandler implements ErrorController {
     Object sessionStatus = session.getAttribute("errorStatus");
     Object sessionMessage = session.getAttribute("errorMessage");
 
-    logger.info("Error occurred: Status = {}, Message = {}, Exception = {}, URI = {}, Session Status = {}, Session Message = {}",
+    log.info("Error occurred: Status = {}, Message = {}, Exception = {}, URI = {}, Session Status = {}, Session Message = {}",
       status, message, exception, requestUri, sessionStatus, sessionMessage);
 
     // 상태 코드 처리

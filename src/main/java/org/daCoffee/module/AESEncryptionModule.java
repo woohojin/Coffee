@@ -1,16 +1,15 @@
 package org.daCoffee.module;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 
+@Slf4j
 public class AESEncryptionModule {
     private final String AES_ALGORITHM = "AES";
     private final String AES_MODE = "AES/ECB/PKCS5Padding";
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AESEncryptionModule.class);
     private String AES_KEY;
 
     // mybatis에서 인스턴스화를 진행하기 위해서 기본 생성자가 필요하기에 있음
@@ -26,7 +25,7 @@ public class AESEncryptionModule {
     }
 
     public String encrypt(String data) throws Exception {
-      LOGGER.info("Encrypting data: {}", data);
+      log.info("Encrypting data: {}", data);
 
       if (data == null) {
           throw new IllegalArgumentException("Data to encrypt cannot be null");
