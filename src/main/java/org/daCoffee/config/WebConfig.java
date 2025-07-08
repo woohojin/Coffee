@@ -34,7 +34,8 @@ public class WebConfig implements WebMvcConfigurer {
         "/member/memberProfile",
         "/member/memberPayments",
         "/member/memberPaymentsSuccess",
-        "/member/memberPaymentsFailure");
+        "/member/memberPaymentsFailure",
+        "/member/memberCart");
     registry.addInterceptor(memberInterceptor)
       .addPathPatterns("/**");
     registry.addInterceptor(adminInterceptor)
