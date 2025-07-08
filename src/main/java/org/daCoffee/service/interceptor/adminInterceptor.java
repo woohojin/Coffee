@@ -1,5 +1,6 @@
 package org.daCoffee.service.interceptor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -10,6 +11,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.Arrays;
 
 @Component
+@Slf4j
 public class adminInterceptor implements HandlerInterceptor {
 
   //Spring이 자동으로 ","로 split해서 배열로 주입됨

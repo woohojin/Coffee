@@ -27,7 +27,7 @@ footer 및 제품 상세페이지 등 레이아웃 일치
 order 테이블도 필요해보임 (현재 주문 상태, 주문번호 등)
 장바구니/결제 및 주문기록에 현금영수증, 세금계산서 추가
 주문기록에 세금계산서 현금영수증 + 프론트에서 선택 후 form 생성
-productGrinding이 다를 경우 카트 제품 여러개로w
+productGrinding이 다를 경우 카트 제품 여러개로
 로그인 상태에선 memberSignIn 페이지 접속 안되게
 이미 로그인 상태에서 재로그인시 cookie duplicate error
 로그저장

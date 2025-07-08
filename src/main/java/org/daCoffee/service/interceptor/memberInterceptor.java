@@ -1,5 +1,6 @@
 package org.daCoffee.service.interceptor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dto.CookieDTO;
 import org.daCoffee.dto.MemberDTO;
 import org.slf4j.Logger;
@@ -17,9 +18,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @Component
+@Slf4j
 public class memberInterceptor implements HandlerInterceptor {
-
-  private static Logger LOGGER = LoggerFactory.getLogger(memberInterceptor.class);
 
   private final MemberDAO memberDao;
   private final CookieDAO cookieDao;
