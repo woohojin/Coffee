@@ -170,7 +170,8 @@ public class memberController {
   }
 
   @PostMapping("memberSignInPro")
-  public String memberSignInPro(HttpSession session, HttpServletResponse response, Model model, String memberId, String memberPassword, String autoLogin) throws Exception {
+  public String memberSignInPro(HttpSession session, HttpServletResponse response, Model model, String memberId, String memberPassword, String autoLogin,
+                                @SessionAttribute(name="memberId", required=false) String sessionMemberId) throws Exception {
     SecurityUtil.SHA256 sha256 = new SecurityUtil.SHA256();
 
     String msg = "";
@@ -178,6 +179,17 @@ public class memberController {
 
     MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
     int isDisabled = memberDao.disabledMemberSelectOne(memberId);
+
+    if(sessionMemberId != null) {
+
+      msg = "이미 로그인된 상태입니다.";
+      url = "/board/main";
+
+      model.addAttribute("msg", msg);
+      model.addAttribute("url", url);
+
+      return "alert";
+    }
 
     if(memberDTO != null) {
       if(isDisabled < 1) {

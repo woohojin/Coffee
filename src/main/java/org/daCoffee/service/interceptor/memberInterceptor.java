@@ -47,6 +47,7 @@ public class memberInterceptor implements HandlerInterceptor {
   public boolean preHandle(HttpServletRequest request,HttpServletResponse response, Object handler) throws Exception {
     HttpSession session = request.getSession();
     jakarta.servlet.http.Cookie[] cookies = request.getCookies();
+    String requestURI = request.getRequestURI();
 
     if(cookies != null) {
       for(jakarta.servlet.http.Cookie cookie: cookies) {
@@ -84,6 +85,12 @@ public class memberInterceptor implements HandlerInterceptor {
           }
         }
       }
+    }
+
+    if(session.getAttribute("memberId") != null
+      && (requestURI.equals("/member/memberSignIn") || requestURI.equals("/member/memberSignUp"))) {
+      response.sendRedirect("/board/main");
+      return false;
     }
 
     return true;
