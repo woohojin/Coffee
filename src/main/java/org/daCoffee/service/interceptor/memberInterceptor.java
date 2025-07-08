@@ -3,8 +3,6 @@ package org.daCoffee.service.interceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dto.CookieDTO;
 import org.daCoffee.dto.MemberDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

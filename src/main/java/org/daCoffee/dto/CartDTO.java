@@ -1,6 +1,5 @@
 package org.daCoffee.dto;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
