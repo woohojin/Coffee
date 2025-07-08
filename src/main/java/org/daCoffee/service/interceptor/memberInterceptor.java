@@ -6,6 +6,11 @@ import org.daCoffee.dto.MemberDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.daCoffee.dao.CartDAO;
@@ -16,6 +21,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -48,7 +56,7 @@ public class memberInterceptor implements HandlerInterceptor {
     HttpSession session = request.getSession();
     jakarta.servlet.http.Cookie[] cookies = request.getCookies();
     String requestURI = request.getRequestURI();
-
+    
     if(cookies != null) {
       for(jakarta.servlet.http.Cookie cookie: cookies) {
         if(cookie.getName().equals("memberId")) {
@@ -82,6 +90,16 @@ public class memberInterceptor implements HandlerInterceptor {
           if(checkValidate) {
             session.setAttribute("memberId", memberId);
             session.setAttribute("memberTier", memberTier);
+
+            List<SimpleGrantedAuthority> authorities = memberTier == 9 ?
+              Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")) :
+              Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+            Authentication auth = new UsernamePasswordAuthenticationToken(memberId, null, authorities);
+            SecurityContextHolder.getContext().setAuthentication(auth);
+
+            SecurityContext context = SecurityContextHolder.createEmptyContext();
+            context.setAuthentication(auth);
+            session.setAttribute("SPRING_SECURITY_CONTEXT", context);
           }
         }
       }
