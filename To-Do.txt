@@ -26,13 +26,11 @@ order 테이블도 필요해보임 (현재 주문 상태, 주문번호 등)
 productGrinding이 다를 경우 카트 제품 여러개로
 로그저장
 대시보드
-adminController memberTier -> memberId to tier
 admin 클릭시 복사
 회원가입 사업자 개인 카테고리
 통계
 택배 크롤링
 컨트롤러 세분화
-html formatting
 검색 최소 2글자 부터
 css 정리 분류부터 다시
 jstl도 이후에 정리
@@ -42,8 +40,6 @@ jstl도 이후에 정리
 헤더 fixed 로고 빼고 가져오기
 위시리스트
 국세청 전자세금계산서 api확인
-카카오톡 상담
-실제 배포 이후에는 branch를 나뉘어서 관리해야함
 tomcat 9.0.64
 
 https://www.erdcloud.com/d/ifkt7zHppbaMgXAyF
