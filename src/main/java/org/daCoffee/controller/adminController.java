@@ -75,15 +75,12 @@ public class adminController {
                             @RequestParam(defaultValue = "1") int pageInt,
                             @SessionAttribute int memberTier) throws Exception {
 
-
     int productCount = 0;
 
-    if(memberTier == 9) {
-      productDao.rownumSet();
-      List<ProductDTO> list = productDao.productList(pageInt, limit);
-      productCount = productDao.productCount();
-      model.addAttribute("list", list);
-    }
+    productDao.rownumSet();
+    List<ProductDTO> list = productDao.productList(pageInt, limit);
+    productCount = productDao.productCount();
+    model.addAttribute("list", list);
 
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, productCount);
     int start = paginationInfo.get("start");
@@ -107,53 +104,51 @@ public class adminController {
 
     int productCount = 0;
 
-    if(memberTier == 9) {
-      productDao.rownumSet();
-      List<ProductDTO> list;
+    productDao.rownumSet();
+    List<ProductDTO> list;
 
-      switch (columnName) {
-        case "product_type":
-          list = ("desc".equals(orderBy)) ? productDao.productListDescByProductType(pageInt, limit) :
-            productDao.productListByProductType(pageInt, limit);
-          break;
-        case "product_code":
-          list = ("desc".equals(orderBy)) ? productDao.productListDescByProductCode(pageInt, limit) :
-            productDao.productListByProductCode(pageInt, limit);
-          break;
-        case "product_name":
-          list = ("desc".equals(orderBy)) ? productDao.productListDescByProductName(pageInt, limit) :
-            productDao.productListByProductName(pageInt, limit);
-          break;
-        case "product_unit":
-          list = ("desc".equals(orderBy)) ? productDao.productListDescByProductUnit(pageInt, limit) :
-            productDao.productListByProductUnit(pageInt, limit);
-          break;
-        case "product_price":
-          list = ("desc".equals(orderBy)) ? productDao.productListDescByProductPrice(pageInt, limit) :
-            productDao.productListByProductPrice(pageInt, limit);
-          break;
-        case "product_tier":
-          list = ("desc".equals(orderBy)) ? productDao.productListDescByProductTier(pageInt, limit) :
-            productDao.productListByProductTier(pageInt, limit);
-          break;
-        case "product_sold_out":
-          list = ("desc".equals(orderBy)) ? productDao.productListDescByProductSoldOut(pageInt, limit) :
-            productDao.productListByProductSoldOut(pageInt, limit);
-          break;
-        default:
-          list = productDao.productListByProductType(pageInt, limit);
-          break;
-      }
-
-      if(orderBy == "asc") {
-        orderBy = "desc";
-      } else if(orderBy == "desc") {
-        orderBy = "asc";
-      }
-
-      productCount = productDao.productCount();
-      model.addAttribute("list", list);
+    switch (columnName) {
+      case "product_type":
+        list = ("desc".equals(orderBy)) ? productDao.productListDescByProductType(pageInt, limit) :
+          productDao.productListByProductType(pageInt, limit);
+        break;
+      case "product_code":
+        list = ("desc".equals(orderBy)) ? productDao.productListDescByProductCode(pageInt, limit) :
+          productDao.productListByProductCode(pageInt, limit);
+        break;
+      case "product_name":
+        list = ("desc".equals(orderBy)) ? productDao.productListDescByProductName(pageInt, limit) :
+          productDao.productListByProductName(pageInt, limit);
+        break;
+      case "product_unit":
+        list = ("desc".equals(orderBy)) ? productDao.productListDescByProductUnit(pageInt, limit) :
+          productDao.productListByProductUnit(pageInt, limit);
+        break;
+      case "product_price":
+        list = ("desc".equals(orderBy)) ? productDao.productListDescByProductPrice(pageInt, limit) :
+          productDao.productListByProductPrice(pageInt, limit);
+        break;
+      case "product_tier":
+        list = ("desc".equals(orderBy)) ? productDao.productListDescByProductTier(pageInt, limit) :
+          productDao.productListByProductTier(pageInt, limit);
+        break;
+      case "product_sold_out":
+        list = ("desc".equals(orderBy)) ? productDao.productListDescByProductSoldOut(pageInt, limit) :
+          productDao.productListByProductSoldOut(pageInt, limit);
+        break;
+      default:
+        list = productDao.productListByProductType(pageInt, limit);
+        break;
     }
+
+    if(orderBy == "asc") {
+      orderBy = "desc";
+    } else if(orderBy == "desc") {
+      orderBy = "asc";
+    }
+
+    productCount = productDao.productCount();
+    model.addAttribute("list", list);
 
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, productCount);
     int start = paginationInfo.get("start");
@@ -181,49 +176,47 @@ public class adminController {
     String[] array = {"productCode", "productName", "productType", "productPrice",
                       "productUnit", "productCountry", "productSpecies", "productCompany", "productTier", "productSoldOut"};
 
-    if(memberTier == 9) {
-      for(String param : array) {
-        String parameter = request.getParameter(param);
-        if(parameter != null && !parameter.isEmpty()) {
-          searchText = request.getParameter(param);
-          model.addAttribute(param, searchText);
-          productDao.rownumSet();
-          switch(param) {
-            case "productCode":
-              list = productDao.productSearchListByProductCode(pageInt, limit, searchText);
-              break;
-            case "productName":
-              list = productDao.productSearchListByProductName(pageInt, limit, searchText);
-              break;
-            case "productType":
-              list = productDao.productSearchListByProductType(pageInt, limit, searchText);
-              break;
-            case "productPrice":
-              list = productDao.productSearchListByProductPrice(pageInt, limit, searchText);
-              break;
-            case "productUnit":
-              list = productDao.productSearchListByProductUnit(pageInt, limit, searchText);
-              break;
-            case "productCountry":
-              list = productDao.productSearchListByProductCountry(pageInt, limit, searchText);
-              break;
-            case "productSpecies":
-              list = productDao.productSearchListByProductSpecies(pageInt, limit, searchText);
-              break;
-            case "productCompany":
-              list = productDao.productSearchListByProductCompany(pageInt, limit, searchText);
-              break;
-            case "productTier":
-              list = productDao.productSearchListByProductTier(pageInt, limit, searchText);
-              break;
-            case "productSoldOut":
-              list = productDao.productSearchListByProductSoldOut(pageInt, limit, searchText);
-              break;
-          }
+    for(String param : array) {
+      String parameter = request.getParameter(param);
+      if(parameter != null && !parameter.isEmpty()) {
+        searchText = request.getParameter(param);
+        model.addAttribute(param, searchText);
+        productDao.rownumSet();
+        switch(param) {
+          case "productCode":
+            list = productDao.productSearchListByProductCode(pageInt, limit, searchText);
+            break;
+          case "productName":
+            list = productDao.productSearchListByProductName(pageInt, limit, searchText);
+            break;
+          case "productType":
+            list = productDao.productSearchListByProductType(pageInt, limit, searchText);
+            break;
+          case "productPrice":
+            list = productDao.productSearchListByProductPrice(pageInt, limit, searchText);
+            break;
+          case "productUnit":
+            list = productDao.productSearchListByProductUnit(pageInt, limit, searchText);
+            break;
+          case "productCountry":
+            list = productDao.productSearchListByProductCountry(pageInt, limit, searchText);
+            break;
+          case "productSpecies":
+            list = productDao.productSearchListByProductSpecies(pageInt, limit, searchText);
+            break;
+          case "productCompany":
+            list = productDao.productSearchListByProductCompany(pageInt, limit, searchText);
+            break;
+          case "productTier":
+            list = productDao.productSearchListByProductTier(pageInt, limit, searchText);
+            break;
+          case "productSoldOut":
+            list = productDao.productSearchListByProductSoldOut(pageInt, limit, searchText);
+            break;
         }
       }
-      productCount = productDao.productCount();
     }
+    productCount = productDao.productCount();
 
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, productCount);
     int start = paginationInfo.get("start");
@@ -246,12 +239,10 @@ public class adminController {
 
     int productCount = 0;
 
-    if(memberTier == 9) {
-      productDao.rownumSet();
-      List<ProductDTO> list = productDao.productList(pageInt, limit);
-      productCount = productDao.productCount();
-      model.addAttribute("list", list);
-    }
+    productDao.rownumSet();
+    List<ProductDTO> list = productDao.productList(pageInt, limit);
+    productCount = productDao.productCount();
+    model.addAttribute("list", list);
 
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, productCount);
     int start = paginationInfo.get("start");
@@ -288,14 +279,12 @@ public class adminController {
 
     int memberCount = 0;
 
-    if(memberTier == 9) {
-      memberDao.rownumSet();
-      List<MemberDTO> list = memberDao.memberList(pageInt, limit);
-      log.info(list.toString());
-      memberCount = memberDao.memberCount();
-      model.addAttribute("list", list);
-      log.info(list.toString());
-    }
+    memberDao.rownumSet();
+    List<MemberDTO> list = memberDao.memberList(pageInt, limit);
+    log.info(list.toString());
+    memberCount = memberDao.memberCount();
+    model.addAttribute("list", list);
+    log.info(list.toString());
 
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, memberCount);
     int start = paginationInfo.get("start");
@@ -318,61 +307,59 @@ public class adminController {
 
     int memberCount = 0;
 
-    if(memberTier == 9) {
-      memberDao.rownumSet();
-      List<MemberDTO> list;
+    memberDao.rownumSet();
+    List<MemberDTO> list;
 
-      switch (columnName) {
-        case "member_company_name":
-          list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberCompanyName(pageInt, limit) :
-            memberDao.memberListByMemberCompanyName(pageInt, limit);
-          break;
-        case "member_fran_code":
-          list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberFranCode(pageInt, limit) :
-            memberDao.memberListByMemberFranCode(pageInt, limit);
-          break;
-        case "member_id":
-          list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberId(pageInt, limit) :
-            memberDao.memberListByMemberId(pageInt, limit);
-          break;
-        case "member_name":
-          list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberName(pageInt, limit) :
-            memberDao.memberListByMemberName(pageInt, limit);
-          break;
-        case "member_tel":
-          list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberTel(pageInt, limit) :
-            memberDao.memberListByMemberTel(pageInt, limit);
-          break;
-        case "member_company_tel":
-          list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberCompanyTel(pageInt, limit) :
-            memberDao.memberListByMemberCompanyTel(pageInt, limit);
-          break;
-        case "member_tier":
-          list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberTier(pageInt, limit) :
-            memberDao.memberListByMemberTier(pageInt, limit);
-          break;
-        case "member_date":
-          list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberDate(pageInt, limit) :
-            memberDao.memberListByMemberDate(pageInt, limit);
-          break;
-        case "member_disable":
-          list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberDisable(pageInt, limit) :
-            memberDao.memberListByMemberDisable(pageInt, limit);
-          break;
-        default:
-          list = memberDao.memberListByMemberTier(pageInt, limit);
-          break;
-      }
-
-      if(orderBy == "asc") {
-        orderBy = "desc";
-      } else if(orderBy == "desc") {
-        orderBy = "asc";
-      }
-
-      memberCount = memberDao.memberCount();
-      model.addAttribute("list", list);
+    switch (columnName) {
+      case "member_company_name":
+        list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberCompanyName(pageInt, limit) :
+          memberDao.memberListByMemberCompanyName(pageInt, limit);
+        break;
+      case "member_fran_code":
+        list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberFranCode(pageInt, limit) :
+          memberDao.memberListByMemberFranCode(pageInt, limit);
+        break;
+      case "member_id":
+        list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberId(pageInt, limit) :
+          memberDao.memberListByMemberId(pageInt, limit);
+        break;
+      case "member_name":
+        list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberName(pageInt, limit) :
+          memberDao.memberListByMemberName(pageInt, limit);
+        break;
+      case "member_tel":
+        list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberTel(pageInt, limit) :
+          memberDao.memberListByMemberTel(pageInt, limit);
+        break;
+      case "member_company_tel":
+        list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberCompanyTel(pageInt, limit) :
+          memberDao.memberListByMemberCompanyTel(pageInt, limit);
+        break;
+      case "member_tier":
+        list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberTier(pageInt, limit) :
+          memberDao.memberListByMemberTier(pageInt, limit);
+        break;
+      case "member_date":
+        list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberDate(pageInt, limit) :
+          memberDao.memberListByMemberDate(pageInt, limit);
+        break;
+      case "member_disable":
+        list = ("desc".equals(orderBy)) ? memberDao.memberListDescByMemberDisable(pageInt, limit) :
+          memberDao.memberListByMemberDisable(pageInt, limit);
+        break;
+      default:
+        list = memberDao.memberListByMemberTier(pageInt, limit);
+        break;
     }
+
+    if(orderBy == "asc") {
+      orderBy = "desc";
+    } else if(orderBy == "desc") {
+      orderBy = "asc";
+    }
+
+    memberCount = memberDao.memberCount();
+    model.addAttribute("list", list);
 
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, memberCount);
     int start = paginationInfo.get("start");
@@ -439,39 +426,38 @@ public class adminController {
     String[] array = {"memberCompanyName", "memberFranCode", "memberId", "memberName",
       "memberTel", "memberCompanyTel", "memberTier"};
 
-    if(memberTier == 9) {
-      for(String param : array) {
-        if(!request.getParameter(param).isEmpty()) {
-          searchText = request.getParameter(param);
-          model.addAttribute(param, searchText);
-          memberDao.rownumSet();
-          switch(param) {
-            case "memberCompanyName":
-              list = memberDao.memberSearchListByMemberCompanyName(pageInt, limit, searchText);
-              break;
-            case "memberFranCode":
-              list = memberDao.memberSearchListByMemberFranCode(pageInt, limit, searchText);
-              break;
-            case "memberId":
-              list = memberDao.memberSearchListByMemberId(pageInt, limit, searchText);
-              break;
-            case "memberName":
-              list = memberDao.memberSearchListByMemberName(pageInt, limit, searchText);
-              break;
-            case "memberTel":
-              list = memberDao.memberSearchListByMemberTel(pageInt, limit, searchText);
-              break;
-            case "memberCompanyTel":
-              list = memberDao.memberSearchListByMemberCompanyTel(pageInt, limit, searchText);
-              break;
-            case "memberTier":
-              list = memberDao.memberSearchListByMemberTier(pageInt, limit, searchText);
-              break;
-          }
+    for(String param : array) {
+      if(!request.getParameter(param).isEmpty()) {
+        searchText = request.getParameter(param);
+        model.addAttribute(param, searchText);
+        memberDao.rownumSet();
+        switch(param) {
+          case "memberCompanyName":
+            list = memberDao.memberSearchListByMemberCompanyName(pageInt, limit, searchText);
+            break;
+          case "memberFranCode":
+            list = memberDao.memberSearchListByMemberFranCode(pageInt, limit, searchText);
+            break;
+          case "memberId":
+            list = memberDao.memberSearchListByMemberId(pageInt, limit, searchText);
+            break;
+          case "memberName":
+            list = memberDao.memberSearchListByMemberName(pageInt, limit, searchText);
+            break;
+          case "memberTel":
+            list = memberDao.memberSearchListByMemberTel(pageInt, limit, searchText);
+            break;
+          case "memberCompanyTel":
+            list = memberDao.memberSearchListByMemberCompanyTel(pageInt, limit, searchText);
+            break;
+          case "memberTier":
+            list = memberDao.memberSearchListByMemberTier(pageInt, limit, searchText);
+            break;
         }
       }
-      memberCount = memberDao.memberCount();
     }
+    memberCount = memberDao.memberCount();
+
 
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, memberCount);
     int start = paginationInfo.get("start");
@@ -493,14 +479,12 @@ public class adminController {
 
     int memberCount = 0;
 
-    if(memberTier == 9) {
-      memberDao.rownumSet();
-      List<MemberDTO> list = memberDao.memberWithdrawalList(pageInt, limit);
-      log.info(list.toString());
-      memberCount = memberDao.memberWithdrawalCount();
-      model.addAttribute("list", list);
-      log.info(list.toString());
-    }
+    memberDao.rownumSet();
+    List<MemberDTO> list = memberDao.memberWithdrawalList(pageInt, limit);
+    log.info(list.toString());
+    memberCount = memberDao.memberWithdrawalCount();
+    model.addAttribute("list", list);
+    log.info(list.toString());
 
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, memberCount);
     int start = paginationInfo.get("start");
@@ -521,12 +505,10 @@ public class adminController {
 
     int historyCount = 0;
 
-    if(memberTier == 9) {
-      historyDao.rownumSet();
-      List<HistoryDTO> list = historyDao.historyList(pageInt, limit);
-      historyCount = historyDao.historyCount();
-      model.addAttribute("list", list);
-    }
+    historyDao.rownumSet();
+    List<HistoryDTO> list = historyDao.historyList(pageInt, limit);
+    historyCount = historyDao.historyCount();
+    model.addAttribute("list", list);
 
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, historyCount);
     int start = paginationInfo.get("start");
@@ -549,61 +531,59 @@ public class adminController {
 
     int historyCount = 0;
 
-    if(memberTier == 9) {
-      historyDao.rownumSet();
-      List<HistoryDTO> list;
+    historyDao.rownumSet();
+    List<HistoryDTO> list;
 
-      switch (columnName) {
-        case "history_code":
-          list = ("desc".equals(orderBy)) ? historyDao.historyListDescByHistoryCode(pageInt, limit) :
-            historyDao.historyListByHistoryCode(pageInt, limit);
-          break;
-        case "member_id":
-          list = ("desc".equals(orderBy)) ? historyDao.historyListDescByMemberId(pageInt, limit) :
-            historyDao.historyListByMemberId(pageInt, limit);
-          break;
-        case "product_code":
-          list = ("desc".equals(orderBy)) ? historyDao.historyListDescByProductCode(pageInt, limit) :
-            historyDao.historyListByProductCode(pageInt, limit);
-          break;
-        case "product_name":
-          list = ("desc".equals(orderBy)) ? historyDao.historyListDescByProductName(pageInt, limit) :
-            historyDao.historyListByProductName(pageInt, limit);
-          break;
-        case "product_unit":
-          list = ("desc".equals(orderBy)) ? historyDao.historyListDescByProductUnit(pageInt, limit) :
-            historyDao.historyListByProductUnit(pageInt, limit);
-          break;
-        case "product_price":
-          list = ("desc".equals(orderBy)) ? historyDao.historyListDescByProductPrice(pageInt, limit) :
-            historyDao.historyListByProductPrice(pageInt, limit);
-          break;
-        case "quantity":
-          list = ("desc".equals(orderBy)) ? historyDao.historyListDescByQuantity(pageInt, limit) :
-            historyDao.historyListByQuantity(pageInt, limit);
-          break;
-        case "deliveryAddress":
-          list = ("desc".equals(orderBy)) ? historyDao.historyListDescByDeliveryAddress(pageInt, limit) :
-            historyDao.historyListByDeliveryAddress(pageInt, limit);
-          break;
-        case "order_date":
-          list = ("desc".equals(orderBy)) ? historyDao.historyListDescByOrderDate(pageInt, limit) :
-            historyDao.historyListByOrderDate(pageInt, limit);
-          break;
-        default:
-          list = historyDao.historyList(pageInt, limit);
-          break;
-      }
-
-      if(orderBy == "asc") {
-        orderBy = "desc";
-      } else if(orderBy == "desc") {
-        orderBy = "asc";
-      }
-
-      historyCount = historyDao.historyCount();
-      model.addAttribute("list", list);
+    switch (columnName) {
+      case "history_code":
+        list = ("desc".equals(orderBy)) ? historyDao.historyListDescByHistoryCode(pageInt, limit) :
+          historyDao.historyListByHistoryCode(pageInt, limit);
+        break;
+      case "member_id":
+        list = ("desc".equals(orderBy)) ? historyDao.historyListDescByMemberId(pageInt, limit) :
+          historyDao.historyListByMemberId(pageInt, limit);
+        break;
+      case "product_code":
+        list = ("desc".equals(orderBy)) ? historyDao.historyListDescByProductCode(pageInt, limit) :
+          historyDao.historyListByProductCode(pageInt, limit);
+        break;
+      case "product_name":
+        list = ("desc".equals(orderBy)) ? historyDao.historyListDescByProductName(pageInt, limit) :
+          historyDao.historyListByProductName(pageInt, limit);
+        break;
+      case "product_unit":
+        list = ("desc".equals(orderBy)) ? historyDao.historyListDescByProductUnit(pageInt, limit) :
+          historyDao.historyListByProductUnit(pageInt, limit);
+        break;
+      case "product_price":
+        list = ("desc".equals(orderBy)) ? historyDao.historyListDescByProductPrice(pageInt, limit) :
+          historyDao.historyListByProductPrice(pageInt, limit);
+        break;
+      case "quantity":
+        list = ("desc".equals(orderBy)) ? historyDao.historyListDescByQuantity(pageInt, limit) :
+          historyDao.historyListByQuantity(pageInt, limit);
+        break;
+      case "deliveryAddress":
+        list = ("desc".equals(orderBy)) ? historyDao.historyListDescByDeliveryAddress(pageInt, limit) :
+          historyDao.historyListByDeliveryAddress(pageInt, limit);
+        break;
+      case "order_date":
+        list = ("desc".equals(orderBy)) ? historyDao.historyListDescByOrderDate(pageInt, limit) :
+          historyDao.historyListByOrderDate(pageInt, limit);
+        break;
+      default:
+        list = historyDao.historyList(pageInt, limit);
+        break;
     }
+
+    if(orderBy == "asc") {
+      orderBy = "desc";
+    } else if(orderBy == "desc") {
+      orderBy = "asc";
+    }
+
+    historyCount = historyDao.historyCount();
+    model.addAttribute("list", list);
 
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, historyCount);
     int start = paginationInfo.get("start");
@@ -700,59 +680,57 @@ public class adminController {
     String startDate = request.getParameter("startDate");
     String endDate = request.getParameter("endDate");
 
-    if(memberTier == 9) {
-      historyDao.rownumSet();
-      historyCount = historyDao.historyCount();
+    historyDao.rownumSet();
+    historyCount = historyDao.historyCount();
 
-      for(String param : array) {
-        String parameter = request.getParameter(param);
-        if(parameter != null && !parameter.isEmpty()) {
-          arrayList.add(param);
-        }
+    for(String param : array) {
+      String parameter = request.getParameter(param);
+      if(parameter != null && !parameter.isEmpty()) {
+        arrayList.add(param);
       }
+    }
 
-      if(arrayList.size() == 2) {
-        searchText = request.getParameter(arrayList.get(0));
-        searchText1 = request.getParameter(arrayList.get(1));
+    if(arrayList.size() == 2) {
+      searchText = request.getParameter(arrayList.get(0));
+      searchText1 = request.getParameter(arrayList.get(1));
+      if(!startDate.isEmpty() && !endDate.isEmpty()) {
+        list = historyDao.historySearchListByHistoryCodeAndMemberIdWithOrderDate(pageInt, limit, searchText, searchText1 ,startDate, endDate);
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+        model.addAttribute("historyCode", searchText);
+        model.addAttribute("memberId", searchText1);
+      } else {
+        list = historyDao.historySearchListByHistoryCodeAndMemberId(pageInt, limit, searchText, searchText1);
+        model.addAttribute("historyCode", searchText);
+        model.addAttribute("memberId", searchText1);
+      }
+    } else if (arrayList.size() == 1) {
+      searchText = request.getParameter(arrayList.get(0));
+      if(arrayList.get(0) == "historyCode") {
         if(!startDate.isEmpty() && !endDate.isEmpty()) {
-          list = historyDao.historySearchListByHistoryCodeAndMemberIdWithOrderDate(pageInt, limit, searchText, searchText1 ,startDate, endDate);
+          list = historyDao.historySearchListByHistoryCodeWithOrderDate(pageInt, limit, searchText, startDate, endDate);
           model.addAttribute("startDate", startDate);
           model.addAttribute("endDate", endDate);
           model.addAttribute("historyCode", searchText);
-          model.addAttribute("memberId", searchText1);
         } else {
-          list = historyDao.historySearchListByHistoryCodeAndMemberId(pageInt, limit, searchText, searchText1);
+          list = historyDao.historySearchListByHistoryCode(pageInt, limit, searchText);
           model.addAttribute("historyCode", searchText);
-          model.addAttribute("memberId", searchText1);
         }
-      } else if (arrayList.size() == 1) {
-        searchText = request.getParameter(arrayList.get(0));
-        if(arrayList.get(0) == "historyCode") {
-          if(!startDate.isEmpty() && !endDate.isEmpty()) {
-            list = historyDao.historySearchListByHistoryCodeWithOrderDate(pageInt, limit, searchText, startDate, endDate);
-            model.addAttribute("startDate", startDate);
-            model.addAttribute("endDate", endDate);
-            model.addAttribute("historyCode", searchText);
-          } else {
-            list = historyDao.historySearchListByHistoryCode(pageInt, limit, searchText);
-            model.addAttribute("historyCode", searchText);
-          }
-        } else if(arrayList.get(0) == "memberId") {
-          if(!startDate.isEmpty() && !endDate.isEmpty()) {
-            list = historyDao.historySearchListByMemberIdWithOrderDate(pageInt, limit, searchText, startDate, endDate);
-            model.addAttribute("startDate", startDate);
-            model.addAttribute("endDate", endDate);
-            model.addAttribute("memberId", searchText);
-          } else {
-            list = historyDao.historySearchListByMemberId(pageInt, limit, searchText);
-            model.addAttribute("memberId", searchText);
-          }
+      } else if(arrayList.get(0) == "memberId") {
+        if(!startDate.isEmpty() && !endDate.isEmpty()) {
+          list = historyDao.historySearchListByMemberIdWithOrderDate(pageInt, limit, searchText, startDate, endDate);
+          model.addAttribute("startDate", startDate);
+          model.addAttribute("endDate", endDate);
+          model.addAttribute("memberId", searchText);
+        } else {
+          list = historyDao.historySearchListByMemberId(pageInt, limit, searchText);
+          model.addAttribute("memberId", searchText);
         }
-      } else if(!startDate.isEmpty() && !endDate.isEmpty()) {
-        list = historyDao.historySearchListByOrderDate(pageInt, limit, startDate, endDate);
-        model.addAttribute("startDate", startDate);
-        model.addAttribute("endDate", endDate);
       }
+    } else if(!startDate.isEmpty() && !endDate.isEmpty()) {
+      list = historyDao.historySearchListByOrderDate(pageInt, limit, startDate, endDate);
+      model.addAttribute("startDate", startDate);
+      model.addAttribute("endDate", endDate);
     }
 
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, historyCount);
@@ -774,10 +752,8 @@ public class adminController {
 
     List<MemberDTO> list;
 
-    if(memberTier == 9) {
-      list = memberDao.memberSearchListByMemberTier(1, 32, "0");
-      model.addAttribute("list", list);
-    }
+    list = memberDao.memberSearchListByMemberTier(1, 32, "0");
+    model.addAttribute("list", list);
 
     Integer memberCount = memberDao.memberCount();
 
@@ -802,7 +778,7 @@ public class adminController {
 
     return "alert";
   }
-//
+
 //  @RequestMapping("memberFranCodeUpdate")
 //  public String memberFranCodeUpdate() throws Exception {
 //    Integer memberTier = (Integer) session.getAttribute("memberTier");
@@ -812,10 +788,8 @@ public class adminController {
 //
 //    List<Member> list;
 //
-//    if(memberTier == 9) {
-//      list = memberDao.memberSearchListByMemberFranCodeByNull(1, 32);
-//      model.addAttribute()("list", list);
-//    }
+//    list = memberDao.memberSearchListByMemberFranCodeByNull(1, 32);
+//    model.addAttribute()("list", list);
 //
 //    model.addAttribute()("memberTier", memberTier);
 //
@@ -841,10 +815,8 @@ public class adminController {
 
     List<MemberDTO> list;
 
-    if(memberTier == 9) {
-      list = memberDao.memberSearchListByMemberDisable(1, 32);
-      model.addAttribute("list", list);
-    }
+    list = memberDao.memberSearchListByMemberDisable(1, 32);
+    model.addAttribute("list", list);
 
     model.addAttribute("memberTier", memberTier);
 
@@ -860,8 +832,6 @@ public class adminController {
     int checkDisabledMember = memberDao.checkDisabledMember(memberId);
 
     log.info("memberID : {}", memberId);
-    System.out.println(checkMember + "checkMember");
-    System.out.println(checkDisabledMember + "checkDisabledMember");
 
     if(checkMember > 0) {
       memberDao.memberDisable(memberId);
@@ -1101,12 +1071,10 @@ public class adminController {
 
     int productCount = 0;
 
-    if(memberTier == 9) {
-      productDao.rownumSet();
-      List<ProductDTO> list = productDao.productList(pageInt, limit);
-      productCount = productDao.productCount();
-      model.addAttribute("list", list);
-    }
+    productDao.rownumSet();
+    List<ProductDTO> list = productDao.productList(pageInt, limit);
+    productCount = productDao.productCount();
+    model.addAttribute("list", list);
 
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, productCount);
     int start = paginationInfo.get("start");
@@ -1129,23 +1097,21 @@ public class adminController {
 
     String productType = productDao.productTypeFindByProductCode(productCode);
 
-    if(memberTier == 9) {
-      switch (productType) {
-        case "0" -> {
-          productDao.beanDelete(productCode);
-          productDao.productDelete(productCode);
-          msg = "제품 삭제에 성공했습니다.";
-        }
-        case "1" -> {
-          productDao.mixDelete(productCode);
-          productDao.productDelete(productCode);
-          msg = "제품 삭제에 성공했습니다.";
-        }
-        case "2" -> {
-          productDao.cafeDelete(productCode);
-          productDao.productDelete(productCode);
-          msg = "제품 삭제에 성공했습니다.";
-        }
+    switch (productType) {
+      case "0" -> {
+        productDao.beanDelete(productCode);
+        productDao.productDelete(productCode);
+        msg = "제품 삭제에 성공했습니다.";
+      }
+      case "1" -> {
+        productDao.mixDelete(productCode);
+        productDao.productDelete(productCode);
+        msg = "제품 삭제에 성공했습니다.";
+      }
+      case "2" -> {
+        productDao.cafeDelete(productCode);
+        productDao.productDelete(productCode);
+        msg = "제품 삭제에 성공했습니다.";
       }
     }
 

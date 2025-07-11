@@ -31,5 +31,4 @@ public class adminInterceptor implements HandlerInterceptor {
     }
     return true;
   }
-
 }
