@@ -12,6 +12,7 @@ import org.daCoffee.dto.ProductDTO;
 
 import java.io.*;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,14 +60,16 @@ public class mainController {
     }
     
     @RequestMapping("main")
-    public String main(HttpSession session) throws Exception {
+    public String main(HttpSession session, Model model) {
 
-        try{
-            Connection conn = (Connection) ds.getConnection();
-            System.out.println("Success : " + conn);
-        } catch (Exception e) {
-            System.out.println("Failed to Connect DB");
-            log.error(e.getMessage());
+        try {
+            Connection conn = ds.getConnection();
+            log.info("Database connection successful: {}", conn);
+        } catch (SQLException e) {
+            log.error("Failed to connect to database: ", e);
+            model.addAttribute("msg", "데이터베이스 연결에 실패했습니다.");
+            model.addAttribute("url", "/board/main");
+            return "alert";
         }
 
         Integer memberTier = (Integer) session.getAttribute("memberTier");
@@ -79,12 +82,12 @@ public class mainController {
     }
 
     @RequestMapping("terms")
-    public String terms() throws Exception {
+    public String terms() {
         return "terms";
     }
 
     @RequestMapping("privacy")
-    public String privacy() throws Exception {
+    public String privacy() {
         return "privacy";
     }
 
@@ -92,7 +95,7 @@ public class mainController {
     public String product(HttpServletRequest request, HttpSession session, Model model,
                           @RequestParam(value = "pageType", defaultValue = "bean") String pageType,
                           @RequestParam(defaultValue = "1") int pageInt,
-                          @SessionAttribute int memberTier) throws Exception {
+                          @SessionAttribute int memberTier) {
 
         int productCount = 0;
 
@@ -141,7 +144,7 @@ public class mainController {
 
     @RequestMapping("beanDetail")
     public String beanDetail(HttpSession session, Model model, String productCode,
-                             @SessionAttribute int memberTier) throws Exception {
+                             @SessionAttribute int memberTier) {
 
         int productCount = 0;
 
@@ -165,7 +168,7 @@ public class mainController {
 
     @RequestMapping("mixDetail")
     public String mixDetail(HttpSession session, Model model, String productCode,
-                            @SessionAttribute int memberTier) throws Exception {
+                            @SessionAttribute int memberTier) {
 
         int productCount = 0;
 
@@ -189,7 +192,7 @@ public class mainController {
 
     @RequestMapping("cafeDetail")
     public String cafeDetail(HttpSession session, Model model, String productCode,
-                             @SessionAttribute int memberTier) throws Exception {
+                             @SessionAttribute int memberTier) {
 
         int productCount = 0;
 
@@ -212,13 +215,14 @@ public class mainController {
     }
 
     @RequestMapping("machineDetail")
-    public String machineDetail() throws Exception {
+    public String machineDetail() {
         return "board/product/machineDetail";
     }
 
     @PostMapping("productDetailPro")
     @ResponseBody
-    public Map<String, Object> productDetailPro(HttpSession session, @RequestParam(value = "additionalProducts", required = false) List<String> additionalProductsCodes, CartDTO cartDTO) throws Exception {
+    public Map<String, Object> productDetailPro(HttpSession session, CartDTO cartDTO,
+                                                @RequestParam(value = "additionalProducts", required = false) List<String> additionalProductsCodes) {
         Map<String, Object> map = new HashMap<>();
 
         String msg = "장바구니 추가 실패";
@@ -293,7 +297,7 @@ public class mainController {
     @RequestMapping("productSearch")
     public String productSearch(HttpServletRequest request, HttpSession session, Model model,
                                 @RequestParam(defaultValue = "1") int pageInt,
-                                @SessionAttribute int memberTier) throws Exception {
+                                @SessionAttribute int memberTier) {
 
         int limit = 4; // 한 page당 게시물 개수
 

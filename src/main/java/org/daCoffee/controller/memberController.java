@@ -32,6 +32,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.*;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -59,12 +60,12 @@ public class memberController {
   }
 
   @RequestMapping("memberTerms")
-  public String memberTerms() throws Exception {
+  public String memberTerms() {
     return "member/memberTerms";
   }
 
   @RequestMapping("memberSignUp")
-  public String memberSignUp() throws Exception {
+  public String memberSignUp() {
     return "member/memberSignUpForm";
   }
 
@@ -72,7 +73,7 @@ public class memberController {
   public String memberSignUpPro(HttpServletRequest request, HttpSession session, Model model, MemberDTO memberDTO,
                                 @RequestParam MultipartFile file,
                                 @RequestParam String verifyCode,
-                                @SessionAttribute String storedVerifyCode) throws Exception {
+                                @SessionAttribute String storedVerifyCode) {
 
     if(verifyCode == null || verifyCode.equals("timeout")) {
       String url = "/member/memberSignUp";
@@ -163,13 +164,13 @@ public class memberController {
   }
 
   @RequestMapping("memberSignIn")
-  public String memberSignIn() throws Exception {
+  public String memberSignIn() {
     return "member/memberSignInForm";
   }
 
   @PostMapping("memberSignInPro")
   public String memberSignInPro(HttpSession session, HttpServletResponse response, Model model, String memberId, String memberPassword, String autoLogin,
-                                @SessionAttribute(name="memberId", required=false) String sessionMemberId) throws Exception {
+                                @SessionAttribute(name="memberId", required=false) String sessionMemberId) {
     SecurityUtil.SHA256 sha256 = new SecurityUtil.SHA256();
 
     String msg = "";
@@ -213,22 +214,29 @@ public class memberController {
           if(autoLogin != null) {
             String encryptKey = memberDTO.getMemberId() + COOKIE_LOGIN;
 
-            String token = sha256.encrypt(encryptKey);
+            try {
+              String token = sha256.encrypt(encryptKey);
 
-            cookieDao.cookieDelete(memberId);
+              int num = cookieDao.cookieInsert(memberId, token);
 
-            int num = cookieDao.cookieInsert(memberId, token);
+              if(num > 0) {
+                Cookie cookieId = new Cookie("memberId", memberId);
+                Cookie cookieToken = new Cookie("token", token);
+                cookieId.setMaxAge(60 * 60 * 24 * 30); // 60 * 60 * 24 * 30 == 30days
+                cookieId.setPath("/");
+                cookieToken.setMaxAge(60 * 60 * 24 * 30);
+                cookieToken.setPath("/");
+                response.addCookie(cookieId);
+                response.addCookie(cookieToken);
+              }
+            } catch (NoSuchAlgorithmException e) {
+              log.error("Encrypt failed : ", e);
+              model.addAttribute("msg", "로그인 중 에러가 발생했습니다. 자세한 사항은 관리자에게 문의해주세요.");
+              model.addAttribute("url", url);
 
-            if(num > 0) {
-              Cookie cookieId = new Cookie("memberId", memberId);
-              Cookie cookieToken = new Cookie("token", token);
-              cookieId.setMaxAge(60 * 60 * 24 * 30); // 60 * 60 * 24 * 30 == 30days
-              cookieId.setPath("/");
-              cookieToken.setMaxAge(60 * 60 * 24 * 30);
-              cookieToken.setPath("/");
-              response.addCookie(cookieId);
-              response.addCookie(cookieToken);
+              return "alert";
             }
+            cookieDao.cookieDelete(memberId);
           }
           return "redirect:/board/main";
         } else {
@@ -249,7 +257,7 @@ public class memberController {
 
   @RequestMapping("memberLogout")
   public String memberLogout(HttpSession session, Model model, HttpServletResponse response,
-                             @SessionAttribute String memberId) throws Exception {
+                             @SessionAttribute String memberId) {
 
     Cookie cookieId = new Cookie("memberId", null);
     Cookie cookieToken = new Cookie("token", null);
@@ -274,13 +282,13 @@ public class memberController {
   }
 
   @RequestMapping("memberWithdrawal")
-  public String memberWithdrawal() throws Exception {
+  public String memberWithdrawal() {
     return "/member/memberWithdrawal";
   }
 
   @RequestMapping("memberWithdrawalPro")
   public String memberWithdrawalPro(HttpSession session, Model model, HttpServletResponse response, String memberPassword,
-                                    @SessionAttribute String memberId) throws Exception {
+                                    @SessionAttribute String memberId) {
 
     MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
 
@@ -315,7 +323,7 @@ public class memberController {
 
   @RequestMapping("memberCart")
   public String memberCart(HttpSession session, Model model,
-                           @SessionAttribute String memberId) throws Exception {
+                           @SessionAttribute String memberId) {
 
     CartPriceDTO cartPriceDTO;
 
@@ -343,7 +351,7 @@ public class memberController {
                               @RequestParam(defaultValue = "1") int quantity,
                               @RequestParam(defaultValue = "0") int productGrinding,
                               @RequestParam String productCode,
-                              @SessionAttribute String memberId) throws Exception {
+                              @SessionAttribute String memberId) {
 
     // ==== 장바구니 제품 갯수 변경 ====
     if(status == 0) { // status 0 = delete || status 1 = updateQuantity || status 2 = updateGrindingType
@@ -378,7 +386,7 @@ public class memberController {
   @RequestMapping("memberPayments")
   public String memberPayments(HttpSession session, Model model,
                                @SessionAttribute String memberId,
-                               @SessionAttribute final Integer totalPrice) throws Exception {
+                               @SessionAttribute final Integer totalPrice) {
 
     UUIDGenerateModule uuidGenerateModule = new UUIDGenerateModule();
 
@@ -438,7 +446,7 @@ public class memberController {
   public String memberPaymentsSuccess(HttpSession session, Model model,
                                       @SessionAttribute String memberId,
                                       @SessionAttribute String orderId,
-                                      @SessionAttribute final Integer totalPrice) throws Exception {
+                                      @SessionAttribute final Integer totalPrice) {
 
     String errorCode = "CANNOT_FIND_MEMBER_ID";
     String errorMessage = "로그인 후 결제를 진행해주세요.";
@@ -497,13 +505,13 @@ public class memberController {
   }
 
   @RequestMapping("memberPaymentsFailure")
-  public String memberPaymentsFailure() throws Exception {
+  public String memberPaymentsFailure() {
     return "member/memberPaymentsFailure";
   }
 
   @PostMapping("memberPaymentsConfirm")
   @ResponseBody
-  public ResponseEntity<Object> memberPaymentsConfirm(@RequestBody PaymentsRequestDTO paymentsRequestDTO) throws Exception {
+  public ResponseEntity<Object> memberPaymentsConfirm(@RequestBody PaymentsRequestDTO paymentsRequestDTO) {
     try{
       String widgetSecretKey = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6";
       String encodedSecretKey = "Basic " + Base64.getEncoder().encodeToString((widgetSecretKey + ":").getBytes());
@@ -541,7 +549,7 @@ public class memberController {
 
   @RequestMapping("memberFindAccount")
   public String memberFindAccount(Model model,
-                                  @RequestParam(value = "findType", required = false, defaultValue = "id") String findType) throws Exception {
+                                  @RequestParam(value = "findType", required = false, defaultValue = "id") String findType) {
     int isFind = 0;
 
     model.addAttribute("isFind", isFind);
@@ -557,7 +565,7 @@ public class memberController {
                                      @RequestParam(required = false) String memberEmail,
                                      @RequestParam(required = false) String memberId,
                                      @RequestParam String verifyCode,
-                                     @SessionAttribute String storedVerifyCode) throws Exception {
+                                     @SessionAttribute String storedVerifyCode) {
 
     if(verifyCode == null || verifyCode.equals("timeout")) { // 인증시간이 초과되면 verifyCode가 timeout으로 바뀜
       String url = "/member/memberFindAccount";
@@ -628,14 +636,14 @@ public class memberController {
   }
 
   @RequestMapping("memberMyPage")
-  public String memberMyPage() throws Exception {
+  public String memberMyPage() {
 
     return "member/memberMyPage";
   }
 
   @RequestMapping("memberProfile")
   public String memberProfile(HttpSession session, Model model,
-                              @SessionAttribute String memberId) throws Exception {
+                              @SessionAttribute String memberId) {
 
     MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
 
@@ -646,7 +654,7 @@ public class memberController {
 
   @RequestMapping("memberProfilePro")
   public String memberProfilePro(HttpSession session, Model model, MemberDTO memberDTO, String memberExistingPassword,
-                                 @SessionAttribute String memberId) throws Exception {
+                                 @SessionAttribute String memberId) {
 
     MemberDTO existingMemberDTO = memberDao.memberSelectOne(memberId); // 기존 회원 정보
     memberDTO.setMemberId(memberId); // 사용자가 임의로 변경하는 것을 막기 위함
@@ -675,7 +683,7 @@ public class memberController {
 
   @RequestMapping("memberHistory")
   public String memberHistory(HttpServletRequest request, HttpSession session,
-                              @SessionAttribute String memberId) throws Exception {
+                              @SessionAttribute String memberId) {
 
     LocalDate now = LocalDate.now();
     int year = now.getYear();
@@ -714,7 +722,7 @@ public class memberController {
   public String memberHistoryPro(HttpServletRequest request, HttpSession session,
                                  @RequestParam String startDate,
                                  @RequestParam String endDate,
-                                 @SessionAttribute String memberId) throws Exception {
+                                 @SessionAttribute String memberId) {
 
     List<HistoryDTO> list = historyDao.historySelectBetween(memberId, startDate, endDate);
     int historyCount = historyDao.historyCountBetween(memberId, startDate, endDate);
@@ -729,7 +737,7 @@ public class memberController {
 
   @ResponseBody
   @PostMapping(value = "verifyEmail", produces = "application/json")
-  public Map<String, Object> verifyEmail(HttpSession session, String memberEmail) throws Exception {
+  public Map<String, Object> verifyEmail(HttpSession session, String memberEmail) {
     Map<String, Object> map = new HashMap<>();
 
     try{

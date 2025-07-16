@@ -14,7 +14,7 @@ public class UUIDGenerateModule {
     @Value("${SECRET_TOSS_CUSTOMER_KEY}")
     private String TOSS_CUSTOMER_KEY;
 
-    public String generateOrderId() throws Exception {
+    public String generateOrderId() {
         UUID randomUUID = UUID.randomUUID();
         String UUIDWithoutHyphens = randomUUID.toString().replace("-","");
         String UUID8Digits = UUIDWithoutHyphens.substring(0, 8);
@@ -29,7 +29,7 @@ public class UUIDGenerateModule {
         return orderId;
     }
 
-    public String generateCustomerKey(String memberId) throws Exception {
+    public String generateCustomerKey(String memberId) {
         String customString = memberId + TOSS_CUSTOMER_KEY;
 
         assert TOSS_CUSTOMER_KEY != null;
