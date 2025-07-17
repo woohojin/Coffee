@@ -2,7 +2,6 @@ package org.daCoffee.config;
 
 import org.daCoffee.service.interceptor.loginInterceptor;
 import org.daCoffee.service.interceptor.memberInterceptor;
-import org.daCoffee.service.interceptor.adminInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -15,13 +14,10 @@ public class WebConfig implements WebMvcConfigurer {
 
   private final memberInterceptor memberInterceptor;
 
-  private final adminInterceptor adminInterceptor;
-
   @Autowired
-  public WebConfig(org.daCoffee.service.interceptor.loginInterceptor loginInterceptor, org.daCoffee.service.interceptor.memberInterceptor memberInterceptor, org.daCoffee.service.interceptor.adminInterceptor adminInterceptor) {
+  public WebConfig(org.daCoffee.service.interceptor.loginInterceptor loginInterceptor, org.daCoffee.service.interceptor.memberInterceptor memberInterceptor) {
     this.loginInterceptor = loginInterceptor;
     this.memberInterceptor = memberInterceptor;
-    this.adminInterceptor = adminInterceptor;
   }
 
   @Override
@@ -37,7 +33,5 @@ public class WebConfig implements WebMvcConfigurer {
         "/member/memberCart");
     registry.addInterceptor(memberInterceptor)
       .addPathPatterns("/**");
-    registry.addInterceptor(adminInterceptor)
-      .addPathPatterns("/admin/**");
   }
 }

@@ -80,15 +80,6 @@
             <bean class="org.daCoffee.service.interceptor.memberInterceptor" />
 
         </mvc:interceptor>
-
-        <mvc:interceptor>
-
-            <mvc:mapping path="/admin/**" />
-
-            <bean class="org.daCoffee.service.interceptor.adminInterceptor" />
-
-        </mvc:interceptor>
-
     </mvc:interceptors>
 
 </beans>

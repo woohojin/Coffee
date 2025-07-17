@@ -12,6 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 @Configuration
 @EnableWebSecurity
 @Slf4j
@@ -41,14 +44,19 @@ public class SecurityConfig {
           .csrf(csrf -> csrf
             .ignoringRequestMatchers("/alert")
           )
+          // URLEncoder는 한글을 사용하기 위해서 UTF_8로 인코딩을 하는 것
           .exceptionHandling(ex -> ex
             .accessDeniedHandler((request, response, accessDeniedException) -> {
               log.info("Access Denied: {}", accessDeniedException.getMessage());
-              response.sendRedirect("/alert?msg=Access+Denied&url=/board/main");
+              String msg = URLEncoder.encode("권한이 부족합니다.", StandardCharsets.UTF_8);
+              String url = URLEncoder.encode("/member/memberSignIn", StandardCharsets.UTF_8);
+              response.sendRedirect("/alert?msg=" + msg + "&url=" + url);
             })
             .authenticationEntryPoint((request, response, authException) -> {
               log.info("Authentication Failed: {}", authException.getMessage());
-              response.sendRedirect("/alert?msg=Authentication+Failed&url=/board/main");
+              String msg = URLEncoder.encode("로그인이 필요합니다.", StandardCharsets.UTF_8);
+              String url = URLEncoder.encode("/member/memberSignIn", StandardCharsets.UTF_8);
+              response.sendRedirect("/alert?msg=" + msg + "&url=" + url);
             })
           );
         return http.build();
