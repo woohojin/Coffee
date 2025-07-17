@@ -72,8 +72,7 @@ public class adminController {
 
   @RequestMapping("productList")
   public String productList(HttpServletRequest request, HttpSession session, Model model,
-                            @RequestParam(defaultValue = "1") int pageInt,
-                            @SessionAttribute int memberTier) {
+                            @RequestParam(defaultValue = "1") int pageInt) {
 
     int productCount = 0;
 
@@ -85,8 +84,6 @@ public class adminController {
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, productCount);
     int start = paginationInfo.get("start");
     int end = paginationInfo.get("end");
-
-    model.addAttribute("memberTier", memberTier);
     model.addAttribute("productCount", productCount);
     model.addAttribute("start", start);
     model.addAttribute("end", end);
@@ -99,8 +96,7 @@ public class adminController {
   public String productListPro(HttpServletRequest request, HttpSession session, Model model,
                                @RequestParam String columnName,
                                @RequestParam String orderBy,
-                               @RequestParam(defaultValue = "1") int pageInt,
-                               @SessionAttribute int memberTier) {
+                               @RequestParam(defaultValue = "1") int pageInt) {
 
     int productCount = 0;
 
@@ -153,8 +149,6 @@ public class adminController {
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, productCount);
     int start = paginationInfo.get("start");
     int end = paginationInfo.get("end");
-
-    model.addAttribute("memberTier", memberTier);
     model.addAttribute("productCount", productCount);
     model.addAttribute("columnName", columnName);
     model.addAttribute("orderBy", orderBy);
@@ -167,8 +161,7 @@ public class adminController {
 
   @RequestMapping("productSearch")
   public String productSearch(HttpServletRequest request, HttpSession session, Model model,
-                              @RequestParam(defaultValue = "1") int pageInt,
-                              @SessionAttribute int memberTier) {
+                              @RequestParam(defaultValue = "1") int pageInt) {
 
     int productCount = 0;
     String searchText = "";
@@ -221,8 +214,6 @@ public class adminController {
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, productCount);
     int start = paginationInfo.get("start");
     int end = paginationInfo.get("end");
-
-    model.addAttribute("memberTier", memberTier);
     model.addAttribute("productCount", productCount);
     model.addAttribute("list", list);
     model.addAttribute("pageInt", pageInt);
@@ -234,8 +225,7 @@ public class adminController {
 
   @RequestMapping("productSoldOutUpdate")
   public String productSoldOutUpdate(HttpServletRequest request, HttpSession session, Model model,
-                                     @RequestParam(defaultValue = "1") int pageInt,
-                                     @SessionAttribute int memberTier) {
+                                     @RequestParam(defaultValue = "1") int pageInt) {
 
     int productCount = 0;
 
@@ -247,8 +237,6 @@ public class adminController {
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, productCount);
     int start = paginationInfo.get("start");
     int end = paginationInfo.get("end");
-
-    model.addAttribute("memberTier", memberTier);
     model.addAttribute("productCount", productCount);
     model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
@@ -274,8 +262,7 @@ public class adminController {
 
   @RequestMapping("memberList")
   public String memberList(HttpServletRequest request, HttpSession session, Model model,
-                           @RequestParam(defaultValue = "1") int pageInt,
-                           @SessionAttribute int memberTier) {
+                           @RequestParam(defaultValue = "1") int pageInt) {
 
     int memberCount = 0;
 
@@ -289,8 +276,6 @@ public class adminController {
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, memberCount);
     int start = paginationInfo.get("start");
     int end = paginationInfo.get("end");
-
-    model.addAttribute("memberTier", memberTier);
     model.addAttribute("memberCount", memberCount);
     model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
@@ -302,8 +287,7 @@ public class adminController {
   public String memberListPro(HttpServletRequest request, HttpSession session, Model model,
                               @RequestParam(defaultValue = "1") int pageInt,
                               @RequestParam String columnName,
-                              @RequestParam String orderBy,
-                              @SessionAttribute int memberTier) {
+                              @RequestParam String orderBy) {
 
     int memberCount = 0;
 
@@ -364,8 +348,6 @@ public class adminController {
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, memberCount);
     int start = paginationInfo.get("start");
     int end = paginationInfo.get("end");
-
-    model.addAttribute("memberTier", memberTier);
     model.addAttribute("memberCount", memberCount);
     model.addAttribute("columnName", columnName);
     model.addAttribute("orderBy", orderBy);
@@ -417,8 +399,7 @@ public class adminController {
 
   @RequestMapping("memberSearch")
   public String memberSearch(HttpServletRequest request, HttpSession session, Model model,
-                             @RequestParam(defaultValue = "1") int pageInt,
-                             @SessionAttribute int memberTier) {
+                             @RequestParam(defaultValue = "1") int pageInt) {
 
     int memberCount = 0;
     String searchText = "";
@@ -462,8 +443,6 @@ public class adminController {
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, memberCount);
     int start = paginationInfo.get("start");
     int end = paginationInfo.get("end");
-
-    model.addAttribute("memberTier", memberTier);
     model.addAttribute("memberCount", memberCount);
     model.addAttribute("list", list);
     model.addAttribute("pageInt", pageInt);
@@ -474,8 +453,7 @@ public class adminController {
 
   @RequestMapping("memberWithdrawalList")
   public String memberWithdrawalList(HttpServletRequest request, HttpSession session, Model model,
-                                     @RequestParam(defaultValue = "1") int pageInt,
-                                     @SessionAttribute int memberTier) {
+                                     @RequestParam(defaultValue = "1") int pageInt) {
 
     int memberCount = 0;
 
@@ -489,8 +467,6 @@ public class adminController {
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, memberCount);
     int start = paginationInfo.get("start");
     int end = paginationInfo.get("end");
-
-    model.addAttribute("memberTier", memberTier);
     model.addAttribute("memberCount", memberCount);
     model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
@@ -500,8 +476,7 @@ public class adminController {
 
   @RequestMapping("orderHistory")
   public String orderHistory(HttpServletRequest request, HttpSession session, Model model,
-                             @RequestParam(defaultValue = "1") int pageInt,
-                             @SessionAttribute int memberTier) {
+                             @RequestParam(defaultValue = "1") int pageInt) {
 
     int historyCount = 0;
 
@@ -513,8 +488,6 @@ public class adminController {
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, historyCount);
     int start = paginationInfo.get("start");
     int end = paginationInfo.get("end");
-
-    model.addAttribute("memberTier", memberTier);
     model.addAttribute("historyCount", historyCount);
     model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
@@ -526,8 +499,7 @@ public class adminController {
   public String orderHistoryPro(HttpServletRequest request, HttpSession session, Model model,
                                 @RequestParam(defaultValue = "1") int pageInt,
                                 @RequestParam String columnName,
-                                @RequestParam String orderBy,
-                                @SessionAttribute int memberTier) {
+                                @RequestParam String orderBy) {
 
     int historyCount = 0;
 
@@ -588,8 +560,6 @@ public class adminController {
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, historyCount);
     int start = paginationInfo.get("start");
     int end = paginationInfo.get("end");
-
-    model.addAttribute("memberTier", memberTier);
     model.addAttribute("historyCount", historyCount);
     model.addAttribute("columnName", columnName);
     model.addAttribute("orderBy", orderBy);
@@ -668,8 +638,7 @@ public class adminController {
 
   @RequestMapping("historySearch")
   public String historySearch(HttpServletRequest request, HttpSession session, Model model,
-                              @RequestParam(defaultValue = "1") int pageInt,
-                              @SessionAttribute int memberTier) {
+                              @RequestParam(defaultValue = "1") int pageInt) {
 
     int historyCount = 0;
     List<HistoryDTO> list = null;
@@ -736,8 +705,6 @@ public class adminController {
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, historyCount);
     int start = paginationInfo.get("start");
     int end = paginationInfo.get("end");
-
-    model.addAttribute("memberTier", memberTier);
     model.addAttribute("historyCount", historyCount);
     model.addAttribute("list", list);
     model.addAttribute("pageInt", pageInt);
@@ -747,8 +714,7 @@ public class adminController {
   }
 
   @RequestMapping("memberTierUpdate")
-  public String memberTierUpdate(HttpServletRequest request, HttpSession session, Model model,
-                                 @SessionAttribute int memberTier) {
+  public String memberTierUpdate(HttpServletRequest request, HttpSession session, Model model) {
 
     List<MemberDTO> list;
 
@@ -758,7 +724,6 @@ public class adminController {
     Integer memberCount = memberDao.memberCount();
 
     model.addAttribute("memberCount", memberCount);
-    model.addAttribute("memberTier", memberTier);
 
     return "admin/memberTierUpdate";
   }
@@ -810,15 +775,12 @@ public class adminController {
 //  }
 
   @RequestMapping("memberDisableUpdate")
-  public String memberDisableUpdate(HttpServletRequest request, HttpSession session, Model model,
-                                    @SessionAttribute int memberTier) {
+  public String memberDisableUpdate(HttpServletRequest request, HttpSession session, Model model) {
 
     List<MemberDTO> list;
 
     list = memberDao.memberSearchListByMemberDisable(1, 32);
     model.addAttribute("list", list);
-
-    model.addAttribute("memberTier", memberTier);
 
     return "admin/memberDisable";
   }
@@ -1074,8 +1036,7 @@ public class adminController {
 
   @RequestMapping("productDelete")
   public String productDelete(HttpServletRequest request, HttpSession session, Model model,
-                              @RequestParam(defaultValue = "1") int pageInt,
-                              @SessionAttribute int memberTier) {
+                              @RequestParam(defaultValue = "1") int pageInt) {
 
     int productCount = 0;
 
@@ -1087,8 +1048,6 @@ public class adminController {
     Map<String, Integer> paginationInfo = calculatePagination(pageInt, productCount);
     int start = paginationInfo.get("start");
     int end = paginationInfo.get("end");
-
-    model.addAttribute("memberTier", memberTier);
     model.addAttribute("productCount", productCount);
     model.addAttribute("pageInt", pageInt);
     model.addAttribute("start", start);
@@ -1097,8 +1056,7 @@ public class adminController {
   }
 
   @RequestMapping("productDeletePro")
-  public String productDeletePro(HttpServletRequest request, HttpSession session, Model model, String productCode,
-                                 @SessionAttribute int memberTier) {
+  public String productDeletePro(HttpServletRequest request, HttpSession session, Model model, String productCode) {
 
     String msg = "제품 삭제에 실패했습니다.";
     String url = "/admin/productDelete";

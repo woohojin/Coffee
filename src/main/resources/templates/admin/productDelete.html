@@ -29,8 +29,8 @@
         </div>
         <div class="list">
           <ul class="center">
-            <div th:switch="${memberTier}">
-              <p th:case="'9'" th:unless="${productCount == 0}"> <!-- memberTier가 9이고 productCount가 0이 아닌 경우 -->
+            <div>
+              <p th:unless="${productCount == 0}"> <!--productCount가 0이 아닌 경우 -->
               <div th:if="${productSearchCount != 0 || productCount != 0}">
                 <table class="list">
                   <thead>
@@ -124,8 +124,7 @@
               </div>
               <p th:if="${productSearchCount == 0}">검색결과를 찾을 수 없습니다.</p>
               </p>
-              <p th:case="'9'" th:if="${productCount == 0}">제품을 찾을 수 없습니다.</p>
-              <p th:case="*">권한이 부족합니다.</p>
+              <p th:if="${productCount == 0}">제품을 찾을 수 없습니다.</p>
             </div>
           </ul>
         </div>
