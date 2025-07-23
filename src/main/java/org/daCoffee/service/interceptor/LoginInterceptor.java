@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpSession;
 
 @Component
 @Slf4j
-public class loginInterceptor implements HandlerInterceptor {
+public class LoginInterceptor implements HandlerInterceptor {
   String memberSessionId; //세션에서 가져온 멤버 아이디
 
   private static final String SIGN_IN_URL = "/member/memberSignIn";

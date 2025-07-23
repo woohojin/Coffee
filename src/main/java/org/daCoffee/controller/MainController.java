@@ -29,7 +29,7 @@ import org.springframework.stereotype.Controller;
 @RequestMapping("/board/")
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @Slf4j
-public class mainController {
+public class MainController {
     private final DataSource ds;
     private final ProductDAO productDao;
     private final CartDAO cartDao;

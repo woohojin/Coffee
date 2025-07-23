@@ -43,7 +43,7 @@ import static org.daCoffee.util.SecurityUtil.getRandomPassword;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @Slf4j
 
-public class memberController {
+public class MemberController {
   private final MemberDAO memberDao;
   private final CartDAO cartDao;
   private final CookieDAO cookieDao;

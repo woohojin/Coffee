@@ -77,7 +77,7 @@
 
             <mvc:mapping path="/**" />
 
-            <bean class="org.daCoffee.service.interceptor.memberInterceptor" />
+            <bean class="org.daCoffee.service.interceptor.MemberInterceptor" />
 
         </mvc:interceptor>
     </mvc:interceptors>

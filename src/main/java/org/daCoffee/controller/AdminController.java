@@ -33,7 +33,7 @@ import java.util.Map;
 @RequestMapping("/admin/")
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @Slf4j
-public class adminController {
+public class AdminController {
   private final ProductDAO productDao;
   private final MemberDAO memberDao;
   private final HistoryDAO historyDao;

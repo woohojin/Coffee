@@ -1,7 +1,7 @@
 package org.daCoffee.config;
 
-import org.daCoffee.service.interceptor.loginInterceptor;
-import org.daCoffee.service.interceptor.memberInterceptor;
+import org.daCoffee.service.interceptor.MemberInterceptor;
+import org.daCoffee.service.interceptor.LoginInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -10,12 +10,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-  private final loginInterceptor loginInterceptor;
+  private final LoginInterceptor loginInterceptor;
 
-  private final memberInterceptor memberInterceptor;
+  private final MemberInterceptor memberInterceptor;
 
   @Autowired
-  public WebConfig(org.daCoffee.service.interceptor.loginInterceptor loginInterceptor, org.daCoffee.service.interceptor.memberInterceptor memberInterceptor) {
+  public WebConfig(org.daCoffee.service.interceptor.LoginInterceptor loginInterceptor, MemberInterceptor memberInterceptor) {
     this.loginInterceptor = loginInterceptor;
     this.memberInterceptor = memberInterceptor;
   }

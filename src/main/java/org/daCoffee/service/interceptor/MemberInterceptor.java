@@ -25,14 +25,14 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class memberInterceptor implements HandlerInterceptor {
+public class MemberInterceptor implements HandlerInterceptor {
 
   private final MemberDAO memberDao;
   private final CookieDAO cookieDao;
   private final CartDAO cartDao;
 
   @Autowired
-  public memberInterceptor(MemberDAO memberDao, CookieDAO cookieDao, CartDAO cartDao) {
+  public MemberInterceptor(MemberDAO memberDao, CookieDAO cookieDao, CartDAO cartDao) {
     this.memberDao = memberDao;
     this.cookieDao = cookieDao;
     this.cartDao = cartDao;
