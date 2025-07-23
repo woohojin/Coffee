@@ -30,8 +30,22 @@ public class SecurityConfig {
         http
           .securityMatcher("/**")
           .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/member/**", "/board/**", "/css/**", "/image/**", "/js/**", "/favicon.ico", "/error", "/alert", "/META-INF/resources/WEB-INF/view/**").permitAll() // 인증 없이 접근 가능, error.jsp가 있는건 sitemesh가 error.jsp를 필터링 하기 때문
+            .requestMatchers(
+              "/member/memberSignIn",
+              "/member/memberSignUp",
+              "/member/memberSignInPro",
+              "/member/memberSignUpPro",
+              "/board/**",
+              "/css/**",
+              "/image/**",
+              "/js/**",
+              "/favicon.ico",
+              "/error",
+              "/alert",
+              "/META-INF/resources/WEB-INF/view/**"
+            ).permitAll() // 인증 없이 접근 가능
             .requestMatchers("/admin/**").hasRole("ADMIN")
+            .requestMatchers("/member/**").authenticated()
             .anyRequest().authenticated()
           )
           .logout(logout -> logout
