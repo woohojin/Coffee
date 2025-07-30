@@ -2,9 +2,12 @@ package org.daCoffee.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.thymeleaf.exceptions.TemplateInputException;
 
 import java.security.NoSuchAlgorithmException;
@@ -27,6 +30,24 @@ public class GlobalExceptionHandler {
   public String handleDataAccessException(DataAccessException ex, Model model) {
     log.error("Database error occurred", ex);
     model.addAttribute("msg", "오류가 발생했습니다. 자세한 사항은 관리자에게 문의해주세요.");
+    model.addAttribute("url", "/board/main");
+    return "alert";
+  }
+
+  // HTTP 500 Internal Server Error 및 ResponseStatusException 처리
+  @ExceptionHandler(ResponseStatusException.class)
+  public String handleResponseStatusException(ResponseStatusException ex, Model model) {
+    log.error("Response status error occurred: {}", ex.getReason(), ex);
+    model.addAttribute("msg", "오류가 발생했습니다. 자세한 사항은 관리자에게 문의해주세요.");
+    model.addAttribute("url", "/board/main");
+    return "alert";
+  }
+
+  // HTTP 404 Not Found 처리
+  @ExceptionHandler(NoHandlerFoundException.class)
+  public String handleNotFoundException(NoHandlerFoundException ex, Model model) {
+    log.error("Page not found: {}", ex.getRequestURL(), ex);
+    model.addAttribute("msg", "요청한 페이지를 찾을 수 없습니다.");
     model.addAttribute("url", "/board/main");
     return "alert";
   }

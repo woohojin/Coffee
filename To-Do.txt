@@ -7,6 +7,8 @@
 admin의 productList 페이지만 alert가 동작하지 않음(setTimeout을 줘봐도 url에서는 파라미터값이 제대로 전달되었으나 timeout 종료 후 redirect 전까지 alert 동작만 나오지 않음)
 ㄴ추가로 member/memberMyPage의 경우에도 동일한 현상 발생 함
 
+
+spring.mvc.throw-exception-if-no-handler-found가 deprecated 되어서 서버 에러를 예외 처리 하는 방법을 찾아야함 현재는 계속 error.html로 이어짐
 어드민 검색조건 비우고 검색시 초기리스트로 변경
 카트 주문하기 버튼 클릭시 에러 발생 예외처리 필요
 추후에 alert 컨트롤러 추가 및 수정으로 Interceptor에서 alert 정상 작동하게 만들기 <= 예외처리 동작을 수행해야해서 예외처리 작업 후 하는 거로
