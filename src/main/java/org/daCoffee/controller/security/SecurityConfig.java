@@ -35,6 +35,7 @@ public class SecurityConfig {
               "/member/memberSignUp",
               "/member/memberSignInPro",
               "/member/memberSignUpPro",
+              "/member/memberTerms",
               "/board/**",
               "/css/**",
               "/image/**",
