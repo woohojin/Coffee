@@ -13,7 +13,6 @@ spring.mvc.throw-exception-if-no-handler-found가 deprecated 되어서 서버 �
 
 어드민 검색조건 비우고 검색시 초기리스트로 변경
 카트 주문하기 버튼 클릭시 에러 발생 예외처리 필요
-추후에 alert 컨트롤러 추가 및 수정으로 Interceptor에서 alert 정상 작동하게 만들기 <= 예외처리 동작을 수행해야해서 예외처리 작업 후 하는 거로
 springSecurity 자세히 살펴보기
 자동로그인 + springSecurity + Interceptor까지 유기적으로 엮여있으나 다 정확히 맞는 위치에서 각 역할을 수행 하고 있는지 모르겠음 권한을 주는 부분이나 확인을 하는 부분 자동로그인 쿠키 등 확인이 필요함
 Redis 사용 여부 판단
