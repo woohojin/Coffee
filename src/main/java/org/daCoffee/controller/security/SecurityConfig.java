@@ -1,8 +1,6 @@
 package org.daCoffee.controller.security;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -43,7 +41,8 @@ public class SecurityConfig {
               "/favicon.ico",
               "/error",
               "/alert",
-              "/META-INF/resources/WEB-INF/view/**"
+              "/META-INF/resources/WEB-INF/view/**",
+              "/test/**"
             ).permitAll() // 인증 없이 접근 가능
             .requestMatchers("/admin/**").hasRole("ADMIN")
             .requestMatchers("/member/**").authenticated()
