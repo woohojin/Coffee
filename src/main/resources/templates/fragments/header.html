@@ -25,11 +25,19 @@
             <li><a th:href="@{/member/memberTerms}">회원가입</a></li>
           </th:block>
           <th:block th:if="${session.memberId != null && session.memberTier != 9}">
-            <li><a th:href="@{/member/memberLogout}" id="logout_button" onclick="return checkLogout()">로그아웃</a></li>
+            <li>
+              <form th:action="@{/member/memberLogout}" method="post">
+              <button type="submit" id="logout_button" onclick="return checkLogout()">로그아웃</button>
+              </form>
+            </li>
             <li><a th:href="@{/member/memberMyPage}">마이페이지</a></li>
           </th:block>
           <th:block th:if="${session.memberId != null && session.memberTier == 9}">
-            <li><a th:href="@{/member/memberLogout}" id="logout_button" onclick="return checkLogout()">로그아웃</a></li>
+            <li>
+              <form th:action="@{/member/memberLogout}" method="post">
+                <button type="submit" id="logout_button" onclick="return checkLogout()">로그아웃</button>
+              </form>
+            </li>
             <li><a th:href="@{/admin/dashboard}" target="_blank">관리자페이지</a></li>
           </th:block>
           <li><span> | </span></li>

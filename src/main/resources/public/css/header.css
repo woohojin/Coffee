@@ -82,7 +82,15 @@ header {
   margin-right: 15px;
 }
 .hd_gnb_menu > ul > li > a {
-  font-size: 17 px;
+  font-size: 17px;
+}
+.hd_gnb_menu > ul > li > form > button {
+  font-size: 17px;
+  background: transparent;
+  text-decoration: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
 }
 .hd_gnb_menu > ul > li > a > img {
   width: 37px;
