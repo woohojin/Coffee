@@ -11,10 +11,12 @@ admin의 productList 페이지만 alert가 동작하지 않음(setTimeout을 줘
 spring.mvc.throw-exception-if-no-handler-found가 deprecated 되어서 서버 에러를 예외 처리 하는 방법을 찾아야함 현재는 계속 error.html로 이어짐
 ㄴ확인 결과 GlobalExceptionHandler에서 이미 예외처리를 정상적으로 진행하고 있어서 필요 없는 설정이었으며 Internal server error를 처리하지 못하던 문제는 memberPayments의 단독적인 문제임
 
+자동로그인 + springSecurity + Interceptor까지 유기적으로 엮여있으나 다 정확히 맞는 위치에서 각 역할을 수행 하고 있는지 모르겠음 권한을 주는 부분이나 확인을 하는 부분 자동로그인 쿠키 등 확인이 필요함
+ㄴ현재는 로그인, 로그아웃 프로세스를 springSecurity에 통합함, 자동로그인 및 Interceptor 기능을 확인해야함
+
 어드민 검색조건 비우고 검색시 초기리스트로 변경
 카트 주문하기 버튼 클릭시 에러 발생 예외처리 필요
 springSecurity 자세히 살펴보기
-자동로그인 + springSecurity + Interceptor까지 유기적으로 엮여있으나 다 정확히 맞는 위치에서 각 역할을 수행 하고 있는지 모르겠음 권한을 주는 부분이나 확인을 하는 부분 자동로그인 쿠키 등 확인이 필요함
 Redis 사용 여부 판단
 수정테이블 생성
 어드민 엑셀 불러오기 모듈화
