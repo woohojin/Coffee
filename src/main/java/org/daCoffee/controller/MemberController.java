@@ -168,118 +168,118 @@ public class MemberController {
     return "member/memberSignInForm";
   }
 
-  @PostMapping("memberSignInPro")
-  public String memberSignInPro(HttpSession session, HttpServletResponse response, Model model, String memberId, String memberPassword, String autoLogin,
-                                @SessionAttribute(name="memberId", required=false) String sessionMemberId) {
-    SecurityUtil.SHA256 sha256 = new SecurityUtil.SHA256();
+//  @PostMapping("memberSignInPro")
+//  public String memberSignInPro(HttpSession session, HttpServletResponse response, Model model, String memberId, String memberPassword, String autoLogin,
+//                                @SessionAttribute(name="memberId", required=false) String sessionMemberId) {
+//    SecurityUtil.SHA256 sha256 = new SecurityUtil.SHA256();
+//
+//    String msg = "";
+//    String url = "/member/memberSignIn";
+//
+//    MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
+//    int isDisabled = memberDao.disabledMemberSelectOne(memberId);
+//
+//    if(sessionMemberId != null) {
+//
+//      msg = "이미 로그인된 상태입니다.";
+//      url = "/board/main";
+//
+//      model.addAttribute("msg", msg);
+//      model.addAttribute("url", url);
+//
+//      return "alert";
+//    }
+//
+//    if(memberDTO != null) {
+//      if(isDisabled < 1) {
+//        if(passwordEncoder.matches(memberPassword, memberDTO.getMemberPassword())) {
+//          Integer memberTier = memberDTO.getMemberTier();
+//          session.setAttribute("memberId", memberId);
+//          session.setAttribute("memberTier", memberTier);
+//
+//          log.info("memberTier : {}", session.getAttribute("memberTier"));
+//
+//          List<SimpleGrantedAuthority> authorities = memberTier == 9 ?
+//            Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")) :
+//            Collections.emptyList();
+//          Authentication auth = new UsernamePasswordAuthenticationToken(memberId, null, authorities);
+//          SecurityContextHolder.getContext().setAuthentication(auth);
+//
+//          SecurityContext context = SecurityContextHolder.createEmptyContext();
+//          context.setAuthentication(auth);
+//          session.setAttribute("SPRING_SECURITY_CONTEXT", context);
+//
+//          url = "/board/main";
+//
+//          if(autoLogin != null) {
+//            String encryptKey = memberDTO.getMemberId() + COOKIE_LOGIN;
+//
+//            try {
+//              String token = sha256.encrypt(encryptKey);
+//
+//              int num = cookieDao.cookieInsert(memberId, token);
+//
+//              if(num > 0) {
+//                Cookie cookieId = new Cookie("memberId", memberId);
+//                Cookie cookieToken = new Cookie("token", token);
+//                cookieId.setMaxAge(60 * 60 * 24 * 30); // 60 * 60 * 24 * 30 == 30days
+//                cookieId.setPath("/");
+//                cookieToken.setMaxAge(60 * 60 * 24 * 30);
+//                cookieToken.setPath("/");
+//                response.addCookie(cookieId);
+//                response.addCookie(cookieToken);
+//              }
+//            } catch (NoSuchAlgorithmException e) {
+//              log.error("Encrypt failed : ", e);
+//              model.addAttribute("msg", "로그인 중 에러가 발생했습니다. 자세한 사항은 관리자에게 문의해주세요.");
+//              model.addAttribute("url", url);
+//
+//              return "alert";
+//            }
+//            cookieDao.cookieDelete(memberId);
+//          }
+//          return "redirect:/board/main";
+//        } else {
+//          msg = "비밀번호가 틀립니다.";
+//        }
+//      } else {
+//        msg = "비활성화 된 아이디입니다."; // disable 된 아이디 일 떄
+//      }
+//    } else {
+//      msg = "존재하지 않는 아이디입니다."; // db에 해당 아이디가 없을 때
+//    }
+//
+//    model.addAttribute("msg", msg);
+//    model.addAttribute("url", url);
+//
+//    return "alert";
+//  }
 
-    String msg = "";
-    String url = "/member/memberSignIn";
-
-    MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
-    int isDisabled = memberDao.disabledMemberSelectOne(memberId);
-
-    if(sessionMemberId != null) {
-
-      msg = "이미 로그인된 상태입니다.";
-      url = "/board/main";
-
-      model.addAttribute("msg", msg);
-      model.addAttribute("url", url);
-
-      return "alert";
-    }
-
-    if(memberDTO != null) {
-      if(isDisabled < 1) {
-        if(passwordEncoder.matches(memberPassword, memberDTO.getMemberPassword())) {
-          Integer memberTier = memberDTO.getMemberTier();
-          session.setAttribute("memberId", memberId);
-          session.setAttribute("memberTier", memberTier);
-
-          log.info("memberTier : {}", session.getAttribute("memberTier"));
-
-          List<SimpleGrantedAuthority> authorities = memberTier == 9 ?
-            Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")) :
-            Collections.emptyList();
-          Authentication auth = new UsernamePasswordAuthenticationToken(memberId, null, authorities);
-          SecurityContextHolder.getContext().setAuthentication(auth);
-
-          SecurityContext context = SecurityContextHolder.createEmptyContext();
-          context.setAuthentication(auth);
-          session.setAttribute("SPRING_SECURITY_CONTEXT", context);
-
-          url = "/board/main";
-
-          if(autoLogin != null) {
-            String encryptKey = memberDTO.getMemberId() + COOKIE_LOGIN;
-
-            try {
-              String token = sha256.encrypt(encryptKey);
-
-              int num = cookieDao.cookieInsert(memberId, token);
-
-              if(num > 0) {
-                Cookie cookieId = new Cookie("memberId", memberId);
-                Cookie cookieToken = new Cookie("token", token);
-                cookieId.setMaxAge(60 * 60 * 24 * 30); // 60 * 60 * 24 * 30 == 30days
-                cookieId.setPath("/");
-                cookieToken.setMaxAge(60 * 60 * 24 * 30);
-                cookieToken.setPath("/");
-                response.addCookie(cookieId);
-                response.addCookie(cookieToken);
-              }
-            } catch (NoSuchAlgorithmException e) {
-              log.error("Encrypt failed : ", e);
-              model.addAttribute("msg", "로그인 중 에러가 발생했습니다. 자세한 사항은 관리자에게 문의해주세요.");
-              model.addAttribute("url", url);
-
-              return "alert";
-            }
-            cookieDao.cookieDelete(memberId);
-          }
-          return "redirect:/board/main";
-        } else {
-          msg = "비밀번호가 틀립니다.";
-        }
-      } else {
-        msg = "비활성화 된 아이디입니다."; // disable 된 아이디 일 떄
-      }
-    } else {
-      msg = "존재하지 않는 아이디입니다."; // db에 해당 아이디가 없을 때
-    }
-
-    model.addAttribute("msg", msg);
-    model.addAttribute("url", url);
-
-    return "alert";
-  }
-
-  @RequestMapping("memberLogout")
-  public String memberLogout(HttpSession session, Model model, HttpServletResponse response,
-                             @SessionAttribute String memberId) {
-
-    Cookie cookieId = new Cookie("memberId", null);
-    Cookie cookieToken = new Cookie("token", null);
-    cookieId.setMaxAge(0); // 0초 = 쿠키 삭제
-    cookieId.setPath("/");
-    cookieToken.setMaxAge(0);
-    cookieToken.setPath("/");
-    response.addCookie(cookieId);
-    response.addCookie(cookieToken);
-
-    cookieDao.cookieDelete(memberId);
-
-    String msg = "로그아웃 되었습니다.";
-    String url = "/board/main";
-
-    session.invalidate();
-
-    model.addAttribute("msg", msg);
-    model.addAttribute("url", url);
-
-    return "alert";
-  }
+//  @RequestMapping("memberLogout")
+//  public String memberLogout(HttpSession session, Model model, HttpServletResponse response,
+//                             @SessionAttribute String memberId) {
+//
+//    Cookie cookieId = new Cookie("memberId", null);
+//    Cookie cookieToken = new Cookie("token", null);
+//    cookieId.setMaxAge(0); // 0초 = 쿠키 삭제
+//    cookieId.setPath("/");
+//    cookieToken.setMaxAge(0);
+//    cookieToken.setPath("/");
+//    response.addCookie(cookieId);
+//    response.addCookie(cookieToken);
+//
+//    cookieDao.cookieDelete(memberId);
+//
+//    String msg = "로그아웃 되었습니다.";
+//    String url = "/board/main";
+//
+//    session.invalidate();
+//
+//    model.addAttribute("msg", msg);
+//    model.addAttribute("url", url);
+//
+//    return "alert";
+//  }
 
   @RequestMapping("memberWithdrawal")
   public String memberWithdrawal() {
