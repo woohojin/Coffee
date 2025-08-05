@@ -1,5 +1,6 @@
 package org.daCoffee.service.interceptor;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dto.CookieDTO;
 import org.daCoffee.dto.MemberDTO;
@@ -27,18 +28,12 @@ import java.util.List;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class MemberInterceptor implements HandlerInterceptor {
 
   private final MemberDAO memberDao;
   private final CookieDAO cookieDao;
   private final CartDAO cartDao;
-
-  @Autowired
-  public MemberInterceptor(MemberDAO memberDao, CookieDAO cookieDao, CartDAO cartDao) {
-    this.memberDao = memberDao;
-    this.cookieDao = cookieDao;
-    this.cartDao = cartDao;
-  }
 
   MemberDTO memberDTO;
   CookieDTO cookieDTO;
@@ -54,63 +49,25 @@ public class MemberInterceptor implements HandlerInterceptor {
   @Override
   public boolean preHandle(HttpServletRequest request,HttpServletResponse response, Object handler) throws Exception {
     HttpSession session = request.getSession();
-    jakarta.servlet.http.Cookie[] cookies = request.getCookies();
     String requestURI = request.getRequestURI();
     
-    if(cookies != null) {
-      for(jakarta.servlet.http.Cookie cookie: cookies) {
-        if(cookie.getName().equals("memberId")) {
-          memberCookieId = cookie.getValue();
-          memberDTO = memberDao.memberSelectOne(memberCookieId);
-          if(memberDTO != null) {
-            memberId = memberDTO.getMemberId();
-            int isDisabled = memberDao.disabledMemberSelectOne(memberId);
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            if(isDisabled < 1) {
-              memberTier = memberDTO.getMemberTier();
-              this.cookieDTO = cookieDao.cookieSelectOne(memberId);
-              cookieDBToken = this.cookieDTO.getToken();
-            } else {
-              cookieDBToken = "";
-              jakarta.servlet.http.Cookie cookieId = new jakarta.servlet.http.Cookie("memberId", null);
-              jakarta.servlet.http.Cookie cookieToken = new jakarta.servlet.http.Cookie("token", null);
-              cookieId.setMaxAge(0); // 0초 = 쿠키 삭제
-              cookieId.setPath("/");
-              cookieToken.setMaxAge(0);
-              cookieToken.setPath("/");
-              response.addCookie(cookieId);
-              response.addCookie(cookieToken);
-              cookieDao.cookieDelete(memberId);
-            }
-          }
-        }
-        if(cookie.getName().equals("token")) {
-          cookieToken = cookie.getValue();
-          checkValidate = cookieDBToken.equals(cookieToken);
-          if(checkValidate) {
-            session.setAttribute("memberId", memberId);
-            session.setAttribute("memberTier", memberTier);
+    if(authentication != null && authentication.isAuthenticated() && !"anonymousUser".equals(authentication.getPrincipal())) {
+      String memberId = authentication.getName();
+      session.setAttribute("memberId", memberId);
 
-            List<SimpleGrantedAuthority> authorities = memberTier == 9 ?
-              Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")) :
-              Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
-            Authentication auth = new UsernamePasswordAuthenticationToken(memberId, null, authorities);
-            SecurityContextHolder.getContext().setAuthentication(auth);
-
-            SecurityContext context = SecurityContextHolder.createEmptyContext();
-            context.setAuthentication(auth);
-            session.setAttribute("SPRING_SECURITY_CONTEXT", context);
-          }
-        }
+      memberDTO = memberDao.memberSelectOne(memberId);
+      if(memberDTO != null) {
+        session.setAttribute("memberTier", memberDTO.getMemberTier());
       }
-    }
 
-    if(session.getAttribute("memberId") != null
-      && (requestURI.equals("/member/memberSignIn") || requestURI.equals("/member/memberSignUp"))) {
-      String msg = URLEncoder.encode("이미 로그인하셨습니다.", StandardCharsets.UTF_8);
-      String url = URLEncoder.encode("/board/main", StandardCharsets.UTF_8);
-      response.sendRedirect("/alert?msg=" + msg + "&url=" + url);
-      return false;
+      if((requestURI.equals("/member/memberSignIn") || requestURI.equals("/member/memberSignUp"))) {
+        String msg = URLEncoder.encode("이미 로그인하셨습니다.", StandardCharsets.UTF_8);
+        String url = URLEncoder.encode("/board/main", StandardCharsets.UTF_8);
+        response.sendRedirect("/alert?msg=" + msg + "&url=" + url);
+        return false;
+      }
     }
 
     return true;
