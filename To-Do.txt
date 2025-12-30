@@ -1,3 +1,5 @@
+** 실제 서버 배포 전에 SecurityConfig의 rememberMe key 환경변수 저장 **
+
 메인페이지
 이메일 변경
 어드민 검색 쿼리문 업데이트 필요
@@ -6,7 +8,6 @@
 백엔드 전체 Restful 방식 사용으로 변경
 admin의 productList 페이지만 alert가 동작하지 않음(setTimeout을 줘봐도 url에서는 파라미터값이 제대로 전달되었으나 timeout 종료 후 redirect 전까지 alert 동작만 나오지 않음)
 ㄴ추가로 member/memberMyPage의 경우에도 동일한 현상 발생 함
-
 
 spring.mvc.throw-exception-if-no-handler-found가 deprecated 되어서 서버 에러를 예외 처리 하는 방법을 찾아야함 현재는 계속 error.html로 이어짐
 ㄴ확인 결과 GlobalExceptionHandler에서 이미 예외처리를 정상적으로 진행하고 있어서 필요 없는 설정이었으며 Internal server error를 처리하지 못하던 문제는 memberPayments의 단독적인 문제임
