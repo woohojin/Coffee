@@ -91,53 +91,14 @@ public class MainController {
         return "privacy";
     }
 
-    @RequestMapping("product")
-    public String product(HttpServletRequest request, HttpSession session, Model model,
+    @GetMapping("product")
+    public String product(Model model,
                           @RequestParam(value = "pageType", defaultValue = "bean") String pageType,
                           @RequestParam(defaultValue = "1") int pageInt,
                           @SessionAttribute int memberTier) {
 
-        int productCount = 0;
-
-        int productType;
-
-        if(memberTier != 0) {
-            if(pageType.equals("bean")) {
-                productType = 0;
-                productDao.rownumSet();
-                List<ProductDTO> list = productDao.productListByMemberTierByProductType(pageInt, limit, memberTier, productType);
-                productCount = productDao.productCountByTierByProductType(memberTier, productType);
-                model.addAttribute("list", list);
-            }
-
-            if(pageType.equals("mix")) {
-                productType = 1;
-                productDao.rownumSet();
-                List<ProductDTO> list = productDao.productListByMemberTierByProductType(pageInt, limit, memberTier, productType);
-                productCount = productDao.productCountByTierByProductType(memberTier, productType);
-                model.addAttribute("list", list);
-            }
-
-            if(pageType.equals("cafe")) {
-                productType = 2;
-                memberTier = 1; // 카페용품은 등급이 항상 1임
-                productDao.rownumSet();
-                List<ProductDTO> list = productDao.productListByMemberTierByProductType(pageInt, limit, memberTier, productType);
-                productCount = productDao.productCountByTierByProductType(memberTier, productType);
-                model.addAttribute("list", list);
-            }
-        }
-
-        Map<String, Integer> paginationInfo = calculatePagination(pageInt, productCount);
-        int start = paginationInfo.get("start");
-        int end = paginationInfo.get("end");
-
         model.addAttribute("pageType", pageType);
         model.addAttribute("memberTier", memberTier);
-        model.addAttribute("productCount", productCount);
-        model.addAttribute("start", start);
-        model.addAttribute("end", end);
-        model.addAttribute("pageInt", pageInt);
 
         return "board/product/productList";
     }

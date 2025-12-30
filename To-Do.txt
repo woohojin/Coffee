@@ -6,11 +6,17 @@
 회원가입 아이디 중복확인
 
 백엔드 전체 Restful 방식 사용으로 변경
+ㄴ 변경 하는 겸 front는 react를 도입하는 것으로 결정 + war대신 jar 배포를 위한 서버와 프로젝트 세팅을 다시 하는 것으로 결정
+ㄴ이후 MainController에서 product부분을 ProductController로 분리
+
 admin의 productList 페이지만 alert가 동작하지 않음(setTimeout을 줘봐도 url에서는 파라미터값이 제대로 전달되었으나 timeout 종료 후 redirect 전까지 alert 동작만 나오지 않음)
 ㄴ추가로 member/memberMyPage의 경우에도 동일한 현상 발생 함
 
 spring.mvc.throw-exception-if-no-handler-found가 deprecated 되어서 서버 에러를 예외 처리 하는 방법을 찾아야함 현재는 계속 error.html로 이어짐
 ㄴ확인 결과 GlobalExceptionHandler에서 이미 예외처리를 정상적으로 진행하고 있어서 필요 없는 설정이었으며 Internal server error를 처리하지 못하던 문제는 memberPayments의 단독적인 문제임
+
+비로그인 상태로 원두 같은 페이지 접근시 오류 발생 에러 메시지만 나오는데 로그인을 해달라는 문구가 나와야함 즉 예외 처리 부분이 검토가 필요함
+
 
 어드민 검색조건 비우고 검색시 초기리스트로 변경
 카트 주문하기 버튼 클릭시 에러 발생 예외처리 필요
