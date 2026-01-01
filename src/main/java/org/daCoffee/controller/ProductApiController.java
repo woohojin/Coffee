@@ -40,7 +40,9 @@ public class ProductApiController {
   public ResponseEntity<Map<String, Object>> getProductList(
     @RequestParam(value = "pageType", defaultValue = "bean") String pageType,
     @RequestParam(defaultValue = "1") int pageInt,
-    @SessionAttribute int memberTier) {
+    @SessionAttribute Integer memberTier) {
+
+    if(memberTier == null) memberTier = 0;
 
     if (memberTier == 0) {
       // 로그인 안 된 경우 빈 리스트 반환

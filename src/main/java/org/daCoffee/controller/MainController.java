@@ -95,7 +95,9 @@ public class MainController {
     public String product(Model model,
                           @RequestParam(value = "pageType", defaultValue = "bean") String pageType,
                           @RequestParam(defaultValue = "1") int pageInt,
-                          @SessionAttribute int memberTier) {
+                          @SessionAttribute Integer memberTier) {
+
+        if(memberTier == null) memberTier = 0;
 
         model.addAttribute("pageType", pageType);
         model.addAttribute("memberTier", memberTier);
@@ -105,11 +107,13 @@ public class MainController {
 
     @RequestMapping("beanDetail")
     public String beanDetail(HttpSession session, Model model, String productCode,
-                             @SessionAttribute int memberTier) {
+                             @SessionAttribute Integer memberTier) {
 
         int productCount = 0;
 
         int productType = 0;
+
+        if(memberTier == null) memberTier = 0;
 
         if(memberTier != 0) {
             productCount = productDao.productCountByTierByProductType(memberTier, productType);
@@ -129,11 +133,13 @@ public class MainController {
 
     @RequestMapping("mixDetail")
     public String mixDetail(HttpSession session, Model model, String productCode,
-                            @SessionAttribute int memberTier) {
+                            @SessionAttribute Integer memberTier) {
 
         int productCount = 0;
 
         int productType = 1;
+
+        if(memberTier == null) memberTier = 0;
 
         if(memberTier != 0) {
             productCount = productDao.productCountByTierByProductType(memberTier, productType);
@@ -153,11 +159,13 @@ public class MainController {
 
     @RequestMapping("cafeDetail")
     public String cafeDetail(HttpSession session, Model model, String productCode,
-                             @SessionAttribute int memberTier) {
+                             @SessionAttribute Integer memberTier) {
 
         int productCount = 0;
 
         int productType = 2;
+
+        if(memberTier == null) memberTier = 0;
 
         if(memberTier != 0) {
             productCount = productDao.productCountByTierByProductType(memberTier, productType);
@@ -258,13 +266,15 @@ public class MainController {
     @RequestMapping("productSearch")
     public String productSearch(HttpServletRequest request, HttpSession session, Model model,
                                 @RequestParam(defaultValue = "1") int pageInt,
-                                @SessionAttribute int memberTier) {
+                                @SessionAttribute Integer memberTier) {
 
         int limit = 4; // 한 page당 게시물 개수
 
         String searchText = request.getParameter("searchText");
 
         int productSearchCount = 0;
+
+        if(memberTier == null) memberTier = 0;
 
         if(memberTier != 0) {
             productDao.rownumSet();
