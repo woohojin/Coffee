@@ -51,7 +51,6 @@ public class SecurityConfig {
             "/member/memberSignInPro",
             "/member/memberSignUpPro",
             "/member/memberTerms",
-            "/board/**",
             "/css/**",
             "/image/**",
             "/js/**",
@@ -68,7 +67,7 @@ public class SecurityConfig {
         .formLogin(form -> form
           .loginPage("/member/memberSignIn")
           .loginProcessingUrl("/member/memberSignInPro")
-          .defaultSuccessUrl("/board/main", true)
+          .defaultSuccessUrl("/main", true)
           .successHandler(customAuthenticationSuccessHandler)
           .usernameParameter("memberId")
           .passwordParameter("memberPassword")
@@ -97,7 +96,7 @@ public class SecurityConfig {
           .deleteCookies("JSESSIONID", "remember-me")
           .clearAuthentication(true)
           .invalidateHttpSession(true)
-          .logoutSuccessUrl("/board/main")
+          .logoutSuccessUrl("/main")
         )
         .csrf(csrf -> csrf
           .ignoringRequestMatchers("/alert")

@@ -64,7 +64,7 @@ public class MemberInterceptor implements HandlerInterceptor {
 
       if((requestURI.equals("/member/memberSignIn") || requestURI.equals("/member/memberSignUp"))) {
         String msg = URLEncoder.encode("이미 로그인하셨습니다.", StandardCharsets.UTF_8);
-        String url = URLEncoder.encode("/board/main", StandardCharsets.UTF_8);
+        String url = URLEncoder.encode("/main", StandardCharsets.UTF_8);
         response.sendRedirect("/alert?msg=" + msg + "&url=" + url);
         return false;
       }

@@ -182,7 +182,7 @@ public class MemberController {
 //    if(sessionMemberId != null) {
 //
 //      msg = "이미 로그인된 상태입니다.";
-//      url = "/board/main";
+//      url = "/main";
 //
 //      model.addAttribute("msg", msg);
 //      model.addAttribute("url", url);
@@ -209,7 +209,7 @@ public class MemberController {
 //          context.setAuthentication(auth);
 //          session.setAttribute("SPRING_SECURITY_CONTEXT", context);
 //
-//          url = "/board/main";
+//          url = "/main";
 //
 //          if(autoLogin != null) {
 //            String encryptKey = memberDTO.getMemberId() + COOKIE_LOGIN;
@@ -238,7 +238,7 @@ public class MemberController {
 //            }
 //            cookieDao.cookieDelete(memberId);
 //          }
-//          return "redirect:/board/main";
+//          return "redirect:/main";
 //        } else {
 //          msg = "비밀번호가 틀립니다.";
 //        }
@@ -271,7 +271,7 @@ public class MemberController {
 //    cookieDao.cookieDelete(memberId);
 //
 //    String msg = "로그아웃 되었습니다.";
-//    String url = "/board/main";
+//    String url = "/main";
 //
 //    session.invalidate();
 //
@@ -312,7 +312,7 @@ public class MemberController {
       session.invalidate();
 
       msg = "회원 탈퇴에 성공했습니다.";
-      url = "/board/main";
+      url = "/main";
     }
 
     model.addAttribute("msg", msg);

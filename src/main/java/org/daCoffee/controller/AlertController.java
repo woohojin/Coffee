@@ -12,7 +12,7 @@ public class AlertController {
   @GetMapping("/alert")
   public String showAlert(Model model,
                           @RequestParam(defaultValue = "오류가 발생했습니다.") String msg,
-                          @RequestParam(defaultValue = "/board/main") String url) {
+                          @RequestParam(defaultValue = "/main") String url) {
 
     log.info("Rendering alert page with msg : {}, url : {}", msg, url);
     model.addAttribute("msg", msg);

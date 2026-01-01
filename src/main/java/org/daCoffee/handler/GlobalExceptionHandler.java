@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
   public String handleGeneralException(Exception ex, Model model) {
     log.error("Unexpected error occurred", ex);
     model.addAttribute("msg", "오류가 발생했습니다. 자세한 사항은 관리자에게 문의해주세요.");
-    model.addAttribute("url", "/board/main");
+    model.addAttribute("url", "/main");
     return "alert";
   }
 
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
   public String handleDataAccessException(DataAccessException ex, Model model) {
     log.error("Database error occurred", ex);
     model.addAttribute("msg", "오류가 발생했습니다. 자세한 사항은 관리자에게 문의해주세요.");
-    model.addAttribute("url", "/board/main");
+    model.addAttribute("url", "/main");
     return "alert";
   }
 
@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
   public String handleResponseStatusException(ResponseStatusException ex, Model model) {
     log.error("Response status error occurred: {}", ex.getReason(), ex);
     model.addAttribute("msg", "오류가 발생했습니다. 자세한 사항은 관리자에게 문의해주세요.");
-    model.addAttribute("url", "/board/main");
+    model.addAttribute("url", "/main");
     return "alert";
   }
 
@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
   public String handleNotFoundException(NoHandlerFoundException ex, Model model) {
     log.error("Page not found: {}", ex.getRequestURL(), ex);
     model.addAttribute("msg", "요청한 페이지를 찾을 수 없습니다.");
-    model.addAttribute("url", "/board/main");
+    model.addAttribute("url", "/main");
     return "alert";
   }
 
@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
   public String handleTemplateInputException(TemplateInputException ex, Model model) {
     log.error("Template input error occurred", ex);
     model.addAttribute("msg", "오류가 발생했습니다. 자세한 사항은 관리자에게 문의해주세요.");
-    model.addAttribute("url", "/board/main");
+    model.addAttribute("url", "/main");
     return "alert";
   }
 
@@ -65,7 +65,7 @@ public class GlobalExceptionHandler {
   public String handleFileUploadException(org.apache.commons.fileupload.FileUploadException ex, Model model) {
     log.error("File upload error occurred", ex);
     model.addAttribute("msg", "오류가 발생했습니다. 자세한 사항은 관리자에게 문의해주세요.");
-    model.addAttribute("url", "/board/main");
+    model.addAttribute("url", "/main");
     return "alert";
   }
 
@@ -74,7 +74,7 @@ public class GlobalExceptionHandler {
   public String handleNoSuchAlgorithmException(NoSuchAlgorithmException ex, Model model) {
     log.error("Encryption error occurred", ex);
     model.addAttribute("msg", "오류가 발생했습니다. 자세한 사항은 관리자에게 문의해주세요.");
-    model.addAttribute("url", "/board/main");
+    model.addAttribute("url", "/main");
     return "alert";
   }
 }

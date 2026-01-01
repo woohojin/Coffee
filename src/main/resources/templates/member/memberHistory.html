@@ -36,7 +36,7 @@
             <tr th:each="h : ${list}">
               <td><p th:text="${h.orderId}"></p></td>
               <td class="member_cart_image">
-                <img th:src="@{/board/files/{code}/{file}(code=${h.productCode}, file=${h.productFile})}" alt="" />
+                <img th:src="@{/files/{code}/{file}(code=${h.productCode}, file=${h.productFile})}" alt="" />
               </td>
               <td><p th:text="${h.productName}"></p></td>
               <td><p th:text="${h.quantity}"></p></td>

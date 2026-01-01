@@ -41,6 +41,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
       log.error("Failed to retrieve memberDTO for user: {}", username);
     }
 
-    response.sendRedirect("/board/main");
+    response.sendRedirect("/main");
   }
 }

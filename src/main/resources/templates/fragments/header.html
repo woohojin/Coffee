@@ -5,13 +5,13 @@
     <div class="hd_gnb">
       <div class="hd_logo_wrap">
         <figure>
-          <a th:href="@{/board/main}">
+          <a th:href="@{/main}">
             <img th:src="@{/image/logo.png}" alt="Daall Coffee" />
           </a>
         </figure>
       </div>
       <div class="hd_search">
-        <form th:action="@{/board/productSearch}" id="search_form" method="post">
+        <form th:action="@{/templates/products/productSearch}" id="search_form" method="post">
           <input name="searchText" id="search_text" type="text" />
         </form>
         <a href="#" class="search_icon" onclick="return searchSubmit()">
@@ -60,23 +60,23 @@
               </div>
               <div class="hd_gnb_member_cart_info">
                 <th:block th:if="${product != null}">
-                  <a th:href="@{/board/beanDetail(productCode=${product.productCode})}" th:if="${product.productType == 0}">
+                  <a th:href="@{/templates/products/beanDetail(productCode=${product.productCode})}" th:if="${product.productType == 0}">
                     <img th:src="@{/files/bean/{code}/{file}(code=${product.productCode}, file=${product.productFile})}" alt="" />
                   </a>
-                  <a th:href="@{/board/mixDetail(productCode=${product.productCode})}" th:if="${product.productType == 1}">
+                  <a th:href="@{/templates/products/mixDetail(productCode=${product.productCode})}" th:if="${product.productType == 1}">
                     <img th:src="@{/files/mix/{code}/{file}(code=${product.productCode}, file=${product.productFile})}" alt="" />
                   </a>
-                  <a th:href="@{/board/cafeDetail(productCode=${product.productCode})}" th:if="${product.productType == 2}">
+                  <a th:href="@{/templates/products/cafeDetail(productCode=${product.productCode})}" th:if="${product.productType == 2}">
                     <img th:src="@{/files/cafe/{code}/{file}(code=${product.productCode}, file=${product.productFile})}" alt="" />
                   </a>
                   <div class="hd_gnb_member_cart_text">
-                    <a th:href="@{/board/beanDetail(productCode=${product.productCode})}" th:if="${product.productType == 0}">
+                    <a th:href="@{/templates/products/beanDetail(productCode=${product.productCode})}" th:if="${product.productType == 0}">
                       <p class="cart_product_name" th:text="${product.productName ?: 'Empty'}">Empty</p>
                     </a>
-                    <a th:href="@{/board/mixDetail(productCode=${product.productCode})}" th:if="${product.productType == 1}">
+                    <a th:href="@{/templates/products/mixDetail(productCode=${product.productCode})}" th:if="${product.productType == 1}">
                       <p class="cart_product_name" th:text="${product.productName ?: 'Empty'}">Empty</p>
                     </a>
-                    <a th:href="@{/board/cafeDetail(productCode=${product.productCode})}" th:if="${product.productType == 2}">
+                    <a th:href="@{/templates/products/cafeDetail(productCode=${product.productCode})}" th:if="${product.productType == 2}">
                       <p class="cart_product_name" th:text="${product.productName ?: 'Empty'}">Empty</p>
                     </a>
                     <p class="cart_product_unit" th:text="${product.productUnit ?: 'Empty'}">Empty</p>
@@ -107,10 +107,10 @@
     <div class="hd_lnb">
       <div class="hd_lnb_list">
         <ul>
-          <li><a th:href="@{/board/machineDetail}">임대머신</a></li>
-          <li><a th:href="@{/board/product(pageType='bean')}">원두</a></li>
-          <li><a th:href="@{/board/product(pageType='mix')}">커피믹스</a></li>
-          <li><a th:href="@{/board/product(pageType='cafe')}">카페용품</a></li>
+          <li><a th:href="@{/products/machineDetail}">임대머신</a></li>
+          <li><a th:href="@{/products/productList(pageType='bean')}">원두</a></li>
+          <li><a th:href="@{/products/productList(pageType='mix')}">커피믹스</a></li>
+          <li><a th:href="@{/products/productList(pageType='cafe')}">카페용품</a></li>
         </ul>
       </div>
     </div>

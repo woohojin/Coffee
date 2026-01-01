@@ -26,38 +26,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 @Controller
-@RequestMapping("/board/")
+@RequestMapping("/")
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @Slf4j
 public class MainController {
     private final DataSource ds;
-    private final ProductDAO productDao;
-    private final CartDAO cartDao;
-    private final ImageDAO imageDao;
-
-    int limit = 15; // 한 page당 게시물 개수
-    int bottomLine = 100; // pagination 개수
-
-    // 제품 페이지 페이지네이션 계산 함수
-    public Map<String, Integer> calculatePagination(int pageInt, int count) {
-        Map<String, Integer> paginationInfo = new HashMap<>();
-
-        int start = (pageInt - 1) / bottomLine * bottomLine + 1;
-        int end = start + bottomLine - 1;
-        int maxPage = (count / limit) + (count % limit == 0 ? 0 : 1);
-
-        if (end > maxPage) {
-            end = maxPage;
-        }
-        if (end > count) {
-            end = count;
-        }
-
-        paginationInfo.put("start", start);
-        paginationInfo.put("end", end);
-
-        return paginationInfo;
-    }
     
     @RequestMapping("main")
     public String main(HttpSession session, Model model) {
@@ -68,7 +41,7 @@ public class MainController {
         } catch (SQLException e) {
             log.error("Failed to connect to database: ", e);
             model.addAttribute("msg", "데이터베이스 연결에 실패했습니다.");
-            model.addAttribute("url", "/board/main");
+            model.addAttribute("url", "/main");
             return "alert";
         }
 
@@ -91,177 +64,10 @@ public class MainController {
         return "privacy";
     }
 
-    @GetMapping("product")
-    public String product(Model model,
-                          @RequestParam(value = "pageType", defaultValue = "bean") String pageType,
-                          @SessionAttribute Integer memberTier) {
-
-        if(memberTier == null) memberTier = 0;
-
-        model.addAttribute("pageType", pageType);
-        model.addAttribute("memberTier", memberTier);
-
-        return "board/product/productList";
-    }
-
-    @GetMapping("beanDetail")
-    public String beanDetail(Model model,
-                             @RequestParam String productCode,
-                             @SessionAttribute Integer memberTier) {
-
-        if(memberTier == null) memberTier = 0;
-
-        model.addAttribute("memberTier", memberTier);
-        model.addAttribute("productCode", productCode);
-
-        return "board/product/beanDetail";
-    }
-
-    @RequestMapping("mixDetail")
-    public String mixDetail(Model model,
-                            @RequestParam String productCode,
-                            @SessionAttribute Integer memberTier) {
-
-        if(memberTier == null) memberTier = 0;
-
-        model.addAttribute("memberTier", memberTier);
-        model.addAttribute("productCode", productCode);
-
-        return "board/product/mixDetail";
-    }
-
-    @RequestMapping("cafeDetail")
-    public String cafeDetail(Model model,
-                             @RequestParam String productCode,
-                             @SessionAttribute Integer memberTier) {
-
-        if(memberTier == null) memberTier = 0;
-
-        model.addAttribute("memberTier", memberTier);
-        model.addAttribute("productCode", productCode);
-
-        return "board/product/cafeDetail";
-    }
-
-    @RequestMapping("machineDetail")
-    public String machineDetail() {
-        return "board/product/machineDetail";
-    }
-
-    @PostMapping("productDetailPro")
-    @ResponseBody
-    public Map<String, Object> productDetailPro(HttpSession session, CartDTO cartDTO,
-                                                @RequestParam(value = "additionalProducts", required = false) List<String> additionalProductsCodes) {
-        Map<String, Object> map = new HashMap<>();
-
-        String msg = "장바구니 추가 실패";
-        String memberId = (String) session.getAttribute("memberId");
-
-        //추가 상품 부분
-
-        if (additionalProductsCodes != null && !additionalProductsCodes.isEmpty()) {
-            for (String additionalProductsCode : additionalProductsCodes) {
-                if(!additionalProductsCode.equals("none")) {
-                    CartDTO cartDTOCheck = cartDao.cartSelectOne(memberId, additionalProductsCode);
-
-                    if(cartDTOCheck == null) {
-                        CartDTO additionalCartDTO = new CartDTO();
-                        additionalCartDTO.setProductCode(additionalProductsCode);
-                        additionalCartDTO.setMemberId(memberId);
-                        additionalCartDTO.setQuantity(1);
-                        cartDao.cartInsert(additionalCartDTO);
-                    } else {
-                        int additionalProductQuantity = 1 + cartDTOCheck.getQuantity();
-                        cartDao.cartQuantityUpdate(memberId, additionalProductsCode, additionalProductQuantity);
-                    }
-                }
-            }
-        }
-
-        //일반 상품 부분
-
-        int quantity = cartDTO.getQuantity();
-
-        if(quantity < 1) {
-            quantity = 1;
-            cartDTO.setQuantity(quantity);
-        }
-
-        String productCode = cartDTO.getProductCode();
-
-        ProductDTO productDTO = productDao.productSelectOne(productCode);
-
-        CartDTO cartDTOCheck = cartDao.cartSelectOne(memberId, productCode);
-        if(cartDTOCheck == null) {
-            cartDTO.setMemberId(memberId);
-            int num = cartDao.cartInsert(cartDTO);
-
-            if(num > 0) {
-                msg = "장바구니 추가 성공";
-                map.put("productCode", productDTO.getProductCode());
-                map.put("productType", productDTO.getProductType());
-                map.put("productName", productDTO.getProductName());
-                map.put("productUnit", productDTO.getProductUnit());
-//                map.put("productGrinding", cart.getProductGrinding());
-                map.put("quantity", cartDTO.getQuantity());
-                map.put("productPrice", productDTO.getProductPrice());
-                map.put("productFile", productDTO.getProductFile());
-            }
-        } else {
-            quantity = quantity + cartDTOCheck.getQuantity();
-            cartDao.cartQuantityUpdate(memberId, productCode, quantity);
-            msg = "장바구니 추가 성공";
-            map.put("productCode", productDTO.getProductCode());
-            map.put("productType", productDTO.getProductType());
-            map.put("productName", productDTO.getProductName());
-            map.put("productUnit", productDTO.getProductUnit());
-//            map.put("productGrinding", product.getProductGrinding());
-            map.put("quantity", cartDTO.getQuantity());
-            map.put("productPrice", productDTO.getProductPrice());
-            map.put("productFile", productDTO.getProductFile());
-        }
-
-        map.put("cartStatus", msg);
-        return map;
-    }
-
-    @RequestMapping("productSearch")
-    public String productSearch(HttpServletRequest request, HttpSession session, Model model,
-                                @RequestParam(defaultValue = "1") int pageInt,
-                                @SessionAttribute Integer memberTier) {
-
-        int limit = 4; // 한 page당 게시물 개수
-
-        String searchText = request.getParameter("searchText");
-
-        int productSearchCount = 0;
-
-        if(memberTier == null) memberTier = 0;
-
-        if(memberTier != 0) {
-            productDao.rownumSet();
-            List<ProductDTO> list = productDao.productSearchListByMemberTier(pageInt, limit, memberTier, searchText);
-            productSearchCount = productDao.productSearchCountByTier(memberTier, searchText);
-            model.addAttribute("list", list);
-        }
-
-        Map<String, Integer> paginationInfo = calculatePagination(pageInt, productSearchCount);
-        int start = paginationInfo.get("start");
-        int end = paginationInfo.get("end");
-
-        model.addAttribute("searchText", searchText);
-        model.addAttribute("memberTier", memberTier);
-        model.addAttribute("productSearchCount", productSearchCount);
-        model.addAttribute("pageInt", pageInt);
-        model.addAttribute("start", start);
-        model.addAttribute("end", end);
-
-        return "board/product/productList";
-    }
 //
 //    @RequestMapping("fileUploadForm")
 //    public String fileUploadForm() throws Exception {
-//        return "board/fileUploadForm";
+//        return "/fileUploadForm";
 //    }
 //
 //    @RequestMapping("fileUploadPro")
@@ -295,7 +101,7 @@ public class MainController {
 //        }
 //
 //        request.setAttribute("fileName", fileName);
-//        return "board/fileUploadPro";
+//        return "fileUploadPro";
 //    }
 
     @RequestMapping("fileDownload")
