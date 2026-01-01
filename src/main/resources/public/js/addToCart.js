@@ -35,9 +35,9 @@ $(document).ready(function() {
                 if (productType === 1) folder = 'mix';
                 else if (productType === 2) folder = 'cafe';
 
-                let detailUrl = '/board/beanDetail';
-                if (productType === 1) detailUrl = '/board/mixDetail';
-                else if (productType === 2) detailUrl = '/board/cafeDetail';
+                let detailUrl = '/products/beanDetail';
+                if (productType === 1) detailUrl = '/products/mixDetail';
+                else if (productType === 2) detailUrl = '/products/cafeDetail';
 
                 const imgHtml = `
                     <a href="${detailUrl}?productCode=${productCode}">
@@ -48,27 +48,16 @@ $(document).ready(function() {
                 // hd_gnb_member_cart_text 앞에 이미지 삽입
                 info.prepend(imgHtml);
 
-                // 상품명 링크도 동적으로 (기존 a 태그 재사용 또는 새로 만들기)
-                const nameHtml = `<a href="${detailUrl}?productCode=${productCode}">
-                                          <p class="cart_product_name">${productName}</p>
-                                        </a>`;
-                text.prepend(nameHtml);
-
+                text.html(`
+                    <p class="cart_product_name">${productName}</p>
+                    <p class="cart_product_unit">${productUnit}</p>
+                    <p class="cart_quantity">${quantity} 개</p>
+                    <p class="cart_product_price">${Number(productPrice).toLocaleString("ko-KR")} 원</p>
+                `);
 
                 // 장바구니 개수 올려주기
                 let num = Number(cartCount.text());
                 num += 1;
-
-                // 장바구니에 담긴 상품 정보 표시
-                // info.find("a img").src("");
-                text.find(".cart_product_unit").text(productUnit);
-                text.find(".cart_quantity").text(quantity + " 개");
-
-                let priceText = '0 원';
-                if (productPrice !== undefined && productPrice !== null) {
-                    priceText = Number(productPrice).toLocaleString("ko-KR") + " 원";
-                }
-                text.find(".cart_product_price").text(priceText);
 
                 // 장바구니에 focus 되도록 해줌
                 cart.css("max-height", "1000px");
