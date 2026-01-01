@@ -199,6 +199,7 @@ public class MainController {
             if(num > 0) {
                 msg = "장바구니 추가 성공";
                 map.put("productCode", productDTO.getProductCode());
+                map.put("productType", productDTO.getProductType());
                 map.put("productName", productDTO.getProductName());
                 map.put("productUnit", productDTO.getProductUnit());
 //                map.put("productGrinding", cart.getProductGrinding());
@@ -211,6 +212,7 @@ public class MainController {
             cartDao.cartQuantityUpdate(memberId, productCode, quantity);
             msg = "장바구니 추가 성공";
             map.put("productCode", productDTO.getProductCode());
+            map.put("productType", productDTO.getProductType());
             map.put("productName", productDTO.getProductName());
             map.put("productUnit", productDTO.getProductUnit());
 //            map.put("productGrinding", product.getProductGrinding());
