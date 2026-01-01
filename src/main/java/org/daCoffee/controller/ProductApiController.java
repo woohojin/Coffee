@@ -99,13 +99,15 @@ public class ProductApiController {
       return ResponseEntity.ok(response);
     }
 
-    ProductDTO product = productDao.beanSelectOne(productCode);
+    ProductDTO product = productDao.productSelectOne(productCode);
     if (product == null) {
       return ResponseEntity.notFound().build();
     }
 
+    int productType = product.getProductType();
+
     String detailImageName = imageDao.selectDetailImage(productCode);
-    int productCount = productDao.productCountByTierByProductType(memberTier, 0);
+    int productCount = productDao.productCountByTierByProductType(memberTier, productType);
 
     response.put("memberTier", memberTier);
     response.put("productCount", productCount);
