@@ -1,5 +1,7 @@
 ** 실제 서버 배포 전에 SecurityConfig의 rememberMe key 환경변수 저장 **
 
+== productDetail 부분에서 일부 텍스트 미출력 문제 해결 필요 ==
+
 메인페이지
 이메일 변경
 어드민 검색 쿼리문 업데이트 필요
