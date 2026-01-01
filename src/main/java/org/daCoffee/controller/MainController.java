@@ -94,7 +94,6 @@ public class MainController {
     @GetMapping("product")
     public String product(Model model,
                           @RequestParam(value = "pageType", defaultValue = "bean") String pageType,
-                          @RequestParam(defaultValue = "1") int pageInt,
                           @SessionAttribute Integer memberTier) {
 
         if(memberTier == null) memberTier = 0;
@@ -105,28 +104,15 @@ public class MainController {
         return "board/product/productList";
     }
 
-    @RequestMapping("beanDetail")
-    public String beanDetail(HttpSession session, Model model, String productCode,
+    @GetMapping("beanDetail")
+    public String beanDetail(Model model,
+                             @RequestParam String productCode,
                              @SessionAttribute Integer memberTier) {
-
-        int productCount = 0;
-
-        int productType = 0;
 
         if(memberTier == null) memberTier = 0;
 
-        if(memberTier != 0) {
-            productCount = productDao.productCountByTierByProductType(memberTier, productType);
-        }
-
-        ProductDTO productDTO = productDao.beanSelectOne(productCode);
-
-        String detailImageName = imageDao.selectDetailImage(productCode);
-
         model.addAttribute("memberTier", memberTier);
-        model.addAttribute("productCount", productCount);
-        model.addAttribute("product", productDTO);
-        model.addAttribute("detailImageName", detailImageName);
+        model.addAttribute("productCode", productCode);
 
         return "board/product/beanDetail";
     }

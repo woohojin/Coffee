@@ -2,6 +2,7 @@ package org.daCoffee.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.daCoffee.dao.ImageDAO;
 import org.daCoffee.dao.ProductDAO;
 import org.daCoffee.dto.ProductDTO;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.Map;
 @Slf4j
 public class ProductApiController {
   private final ProductDAO productDao;
+  private final ImageDAO imageDao;
   private static final int LIMIT = 15;
   private static final int BOTTOM_LINE = 100;
 
@@ -81,6 +83,34 @@ public class ProductApiController {
     response.put("pageInt", pageInt);
     response.put("pageType", pageType);
     response.put("memberTier", memberTier);
+
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("/{productCode}")
+  public ResponseEntity<Map<String, Object>> getProductDetail(@PathVariable("productCode") String productCode,
+                                                              @SessionAttribute Integer memberTier) {
+    if(memberTier == null) memberTier = 0;
+
+    Map<String, Object> response = new HashMap<>();
+
+    if(memberTier == 0) {
+      response.put("memberTier", 0);
+      return ResponseEntity.ok(response);
+    }
+
+    ProductDTO product = productDao.beanSelectOne(productCode);
+    if (product == null) {
+      return ResponseEntity.notFound().build();
+    }
+
+    String detailImageName = imageDao.selectDetailImage(productCode);
+    int productCount = productDao.productCountByTierByProductType(memberTier, 0);
+
+    response.put("memberTier", memberTier);
+    response.put("productCount", productCount);
+    response.put("product", product);
+    response.put("detailImageName", detailImageName);
 
     return ResponseEntity.ok(response);
   }
