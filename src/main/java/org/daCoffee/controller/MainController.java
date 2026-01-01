@@ -2,20 +2,12 @@ package org.daCoffee.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.daCoffee.dto.CartDTO;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.daCoffee.dao.ImageDAO;
-import org.daCoffee.dao.ProductDAO;
-import org.daCoffee.dao.CartDAO;
-import org.daCoffee.dto.ProductDTO;
 
 import java.io.*;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -25,7 +25,6 @@ import java.util.Map;
 public class ProductController {
   private final ProductDAO productDao;
   private final CartDAO cartDao;
-  private final ImageDAO imageDao;
 
   int limit = 15; // 한 page당 게시물 개수
   int bottomLine = 100; // pagination 개수
