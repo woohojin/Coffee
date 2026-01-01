@@ -314,26 +314,11 @@ public class MemberController {
     return "alert";
   }
 
-  @RequestMapping("memberCart")
-  public String memberCart(HttpSession session, Model model,
+  @GetMapping("memberCart")
+  public String memberCart(Model model,
                            @SessionAttribute String memberId) {
 
-    CartPriceDTO cartPriceDTO;
-
-    cartPriceDTO = priceCalculator.calculatePrice(memberId);
-
-    final int totalPrice = cartPriceDTO.getTotalPrice();
-    final int sumPrice = cartPriceDTO.getSumPrice();
-    final int deliveryFee = cartPriceDTO.getDeliveryFee();
-    final int cartCount = cartPriceDTO.getCartCount();
-
-    List<CartDTO> list = cartDao.cartSelectMember(memberId);
-
-    session.setAttribute("totalPrice", totalPrice);
-    model.addAttribute("sumPrice", sumPrice);
-    model.addAttribute("deliveryFee", deliveryFee);
-    model.addAttribute("cartCount", cartCount);
-    model.addAttribute("list", list);
+    model.addAttribute("memberId", memberId);
 
     return "member/memberCart";
   }

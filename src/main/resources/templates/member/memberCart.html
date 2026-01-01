@@ -1,104 +1,160 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
-  <body layout:fragment="content">
-    <main id="member_cart_page">
-      <div class="member_cart_page_wrap">
-        <div class="page_head">
-          <a href="">
-            <h1>장바구니</h1>
-          </a>
-        </div>
-        <div class="member_cart_no_product" th:if="${cartCount < 1}">
-          장바구니에 담은 상품이 없습니다.
-        </div>
+<body layout:fragment="content">
+<main id="member_cart_page">
+  <div class="member_cart_page_wrap">
+    <div class="page_head">
+      <a href="">
+        <h1>장바구니</h1>
+      </a>
+    </div>
 
-        <div class="member_cart_wrap" th:if="${cartCount >= 1}">
-          <table class="member_cart">
-            <colgroup>
-              <col style="width: 15%;" />
-              <col style="width: 25%;" />
-              <col style="width: 25%;" />
-              <col style="width: 10%;" />
-              <col style="width: 20%;" />
-              <col style="width: 5%;" />
-            </colgroup>
-            <thead>
+    <div id="cart-container">
+      <p>로딩 중...</p>
+    </div>
+  </div>
+
+  <div class="member_cart_order_wrap center">
+    <div class="member_cart_order">
+      <h1>주문 요약</h1>
+      <div>
+        <span>상품 금액 :</span>
+        <span id="sum-price">0 원</span>
+      </div>
+      <div>
+        <span>배송비 :</span>
+        <span id="delivery-fee">0 원</span>
+      </div>
+      <div class="member_cart_order_total">
+        <span>합계 :</span>
+        <span id="total-price">0 원</span>
+      </div>
+      <div class="btn_wrap">
+        <div class="btn">
+          <a th:href="@{/member/memberPayments}">결제하기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script th:inline="javascript">
+  const memberId = /*[[${memberId}]]*/;
+
+  function formatPrice(price) {
+    if (!price) return '0';
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function loadCart() {
+    fetch('/api/member/cart', { credentials: 'include' })
+      .then(response => {
+        if (!response.ok) throw new Error('장바구니 로드 실패');
+        return response.json();
+      })
+      .then(data => {
+        renderCart(data);
+      })
+      .catch(err => {
+        document.getElementById('cart-container').innerHTML =
+          `<p>${err.message}</p>`;
+      });
+  }
+
+  function renderCart(data) {
+    const container = document.getElementById('cart-container');
+
+    if (data.cartCount < 1) {
+      container.innerHTML = '<div class="member_cart_no_product">장바구니에 담은 상품이 없습니다.</div>';
+      document.getElementById('order-summary').style.display = 'none';
+      return;
+    }
+
+    let html = `
+        <div class="member_cart_wrap">
+            <table class="member_cart">
+                <colgroup>
+                    <col style="width: 15%;" />
+                    <col style="width: 25%;" />
+                    <col style="width: 25%;" />
+                    <col style="width: 10%;" />
+                    <col style="width: 20%;" />
+                    <col style="width: 5%;" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th class="member_cart_image">이미지</th>
+                        <th class="member_cart_info">상품정보</th>
+                        <th>용량</th>
+                        <th>수량</th>
+                        <th class="member_cart_price">금액</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+
+    data.list.forEach((c, index) => {
+      let folder = 'bean';
+      if (c.productType === 1) folder = 'mix';
+      else if (c.productType === 2) folder = 'cafe';
+
+      html += `
             <tr>
-              <th class="member_cart_image">이미지</th>
-              <th class="member_cart_info">상품정보</th>
-              <th>용량</th>
-              <th>수량</th>
-              <th class="member_cart_price">금액</th>
+                <td class="member_cart_image">
+                    <img src="/files/${folder}/${c.productCode}/${c.productFile}" alt="${c.productName}" />
+                </td>
+                <td class="member_cart_info">
+                    <p>${c.productName}</p>
+                </td>
+                <td class="member_cart_unit">
+                    <p>${c.productUnit}</p>
+                </td>
+                <td class="member_cart_quantity">
+                    <form class="member_cart_form form${index}" action="/member/memberCartPro" method="post">
+                        <input type="hidden" name="productCode" value="${c.productCode}" />
+                        <input type="hidden" class="status${index}" name="status" value="" />
+                        <input type="text" class="member_cart_quantity_input input${index}" name="quantity" value="${c.quantity}" required readonly />
+                        <div class="member_cart_quantity_btn">
+                            <button type="button" class="up_btn" onclick="increaseCartQuantity(${index})">
+                                <img src="/image/triangle-up.png" alt="" />
+                            </button>
+                            <button type="button" class="down_btn" onclick="decreaseCartQuantity(${index})">
+                                <img src="/image/triangle-down.png" alt="" />
+                            </button>
+                        </div>
+                    </form>
+                </td>
+                <td class="member_cart_price">
+                    ${c.productSoldOut == 1 ? '<p>Sold Out</p>' : `<p>${formatPrice(c.productPrice * c.quantity)} 원</p>`}
+                </td>
+                <td>
+                    <a class="member_cart_delete" onclick="deleteCart(${index})">
+                        <img src="/image/close.png" alt="" />
+                    </a>
+                </td>
             </tr>
-            </thead>
-            <tbody>
-            <tr th:each="c, status : ${list}">
-              <td class="member_cart_image" th:switch="${c.productType}">
-                <img th:case="0" th:src="@{/files/bean/{code}/{file}(code=${c.productCode}, file=${c.productFile})}" alt="" />
-                <img th:case="1" th:src="@{/files/mix/{code}/{file}(code=${c.productCode}, file=${c.productFile})}" alt="" />
-                <img th:case="2" th:src="@{/files/cafe/{code}/{file}(code=${c.productCode}, file=${c.productFile})}" alt="" />
-              </td>
-              <td class="member_cart_info">
-                <p th:text="${c.productName}"></p>
-              </td>
-              <td class="member_cart_unit">
-                <p th:text="${c.productUnit}"></p>
-              </td>
-              <td class="member_cart_quantity">
-                <form th:action="@{/member/memberCartPro}" th:class="'member_cart_form form' + ${status.index}" method="post">
-                  <input type="hidden" name="productCode" th:value="${c.productCode}" />
-                  <input type="hidden" th:class="'status' + ${status.index}" name="status" value="" />
-                  <input type="text" name="quantity" th:class="'member_cart_quantity_input input' + ${status.index}" th:value="${c.quantity}" required />
-                  <div class="member_cart_quantity_btn">
-                    <button type="button" class="up_btn" th:onclick="'increaseCartQuantity(' + ${status.index} + ')'">
-                      <img th:src="@{/image/triangle-up.png}" alt="" />
-                    </button>
-                    <button type="button" class="down_btn" th:onclick="'decreaseCartQuantity(' + ${status.index} + ')'">
-                      <img th:src="@{/image/triangle-down.png}" alt="" />
-                    </button>
-                  </div>
-                </form>
-              </td>
-              <td class="member_cart_price">
-                <p th:if="${c.productSoldOut == 1}">Sold Out</p>
-                <p th:if="${c.productSoldOut != 1}" th:text="${#numbers.formatInteger(c.productPrice * c.quantity, 3, 'COMMA')} + ' 원'"></p>
-              </td>
-              <td>
-                <a class="member_cart_delete" th:onclick="'deleteCart(' + ${status.index} + ')'">
-                  <img th:src="@{/image/close.png}" alt="" />
-                </a>
-              </td>
-            </tr>
-            </tbody>
-            <tfoot></tfoot>
-          </table>
+        `;
+    });
+
+    html += `
+                </tbody>
+                <tfoot></tfoot>
+            </table>
         </div>
-      </div>
-      <div class="member_cart_order_wrap center">
-        <div class="member_cart_order">
-          <h1>주문 요약</h1>
-          <div>
-            <span>상품 금액 :</span>
-            <span th:text="${#numbers.formatInteger(sumPrice, 1, 'COMMA')} + ' 원'"></span>
-            <input type="hidden" name="sumPrice" th:value="${sumPrice}" />
-          </div>
-          <div>
-            <span>배송비 :</span>
-            <span th:text="${#numbers.formatInteger(deliveryFee, 1, 'COMMA')} + ' 원'"></span>
-            <input type="hidden" name="sumPrice" th:value="${deliveryFee}" />
-          </div>
-          <div class="member_cart_order_total">
-            <span>합계 :</span>
-            <span th:text="${#numbers.formatInteger(session.totalPrice, 1, 'COMMA')} + ' 원'"></span>
-            <input type="hidden" name="sumPrice" th:value="${session.totalPrice}" />
-          </div>
-          <div class="btn_wrap">
-            <div class="btn">
-              <a th:href="@{/member/memberPayments}">결제하기</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
-  </body>
+    `;
+
+    container.innerHTML = html;
+
+    // 주문 요약
+    document.getElementById('sum-price').textContent = formatPrice(data.sumPrice) + " 원";
+    document.getElementById('delivery-fee').textContent = formatPrice(data.deliveryFee) + " 원";
+    document.getElementById('total-price').textContent = formatPrice(data.totalPrice) + " 원";
+  }
+
+  document.addEventListener('DOMContentLoaded', loadCart);
+</script>
+
+<script th:src="@{/js/addToCart.js}"></script>
+<script th:src="@{/js/scrollMove.js}"></script>
+</body>
 </html>

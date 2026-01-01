@@ -1,4 +1,4 @@
-package org.daCoffee.controller;
+package org.daCoffee.controller.api;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
