@@ -118,53 +118,27 @@ public class MainController {
     }
 
     @RequestMapping("mixDetail")
-    public String mixDetail(HttpSession session, Model model, String productCode,
+    public String mixDetail(Model model,
+                            @RequestParam String productCode,
                             @SessionAttribute Integer memberTier) {
-
-        int productCount = 0;
-
-        int productType = 1;
 
         if(memberTier == null) memberTier = 0;
 
-        if(memberTier != 0) {
-            productCount = productDao.productCountByTierByProductType(memberTier, productType);
-        }
-
-        ProductDTO productDTO = productDao.mixSelectOne(productCode);
-
-        String detailImageName = imageDao.selectDetailImage(productCode);
-
         model.addAttribute("memberTier", memberTier);
-        model.addAttribute("productCount", productCount);
-        model.addAttribute("product", productDTO);
-        model.addAttribute("detailImageName", detailImageName);
+        model.addAttribute("productCode", productCode);
 
         return "board/product/mixDetail";
     }
 
     @RequestMapping("cafeDetail")
-    public String cafeDetail(HttpSession session, Model model, String productCode,
+    public String cafeDetail(Model model,
+                             @RequestParam String productCode,
                              @SessionAttribute Integer memberTier) {
-
-        int productCount = 0;
-
-        int productType = 2;
 
         if(memberTier == null) memberTier = 0;
 
-        if(memberTier != 0) {
-            productCount = productDao.productCountByTierByProductType(memberTier, productType);
-        }
-
-        ProductDTO productDTO = productDao.productSelectOne(productCode);
-
-        String detailImageName = imageDao.selectDetailImage(productCode);
-
         model.addAttribute("memberTier", memberTier);
-        model.addAttribute("productCount", productCount);
-        model.addAttribute("product", productDTO);
-        model.addAttribute("detailImageName", detailImageName);
+        model.addAttribute("productCode", productCode);
 
         return "board/product/cafeDetail";
     }

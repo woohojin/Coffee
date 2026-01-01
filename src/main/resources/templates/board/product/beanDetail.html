@@ -10,14 +10,21 @@
     </div>
   </main>
     <script th:inline="javascript">
-      const productCode = /*[[${productCode}]]*/ "AA0000";
-      const memberTier = /*[[${memberTier}]]*/ 0;
+      // 폴백 값이 없는건 값을 제대로 못 가져왔을 때를 구분하기 위함
+      const productCode = /*[[${productCode}]]*/;
+      const memberTier = /*[[${memberTier}]]*/;
 
       function formatPrice(price) {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       }
 
       function loadProductDetail() {
+        if (!productCode) {
+          document.getElementById('detail-container').innerHTML =
+            '<p>상품 코드가 없습니다.</p>';
+          return;
+        }
+
         fetch(`/api/products/${productCode}`, { credentials: 'include' })
           .then(response => {
             if(!response.ok) {
