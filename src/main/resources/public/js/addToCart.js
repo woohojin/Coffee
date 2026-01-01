@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $(".product_quantity_form").submit(function(event) {
+    $(document).on("submit", ".product_quantity_form", function(event) {
         event.preventDefault();
 
         let formData = new FormData($(this)[0]);
@@ -33,7 +33,12 @@ $(document).ready(function() {
                 text.find(".cart_product_name").text(productName);
                 text.find(".cart_product_unit").text(productUnit);
                 text.find(".cart_quantity").text(quantity + " 개");
-                text.find(".cart_product_price").text(productPrice.toLocaleString("ko-KR") + " 원");
+
+                let priceText = '0 원';
+                if (productPrice !== undefined && productPrice !== null) {
+                    priceText = Number(productPrice).toLocaleString("ko-KR") + " 원";
+                }
+                text.find(".cart_product_price").text(priceText);
 
                 // 장바구니에 focus 되도록 해줌
                 cart.css("max-height", "1000px");
