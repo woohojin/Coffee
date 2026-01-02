@@ -89,7 +89,8 @@ public class ProductApiController {
 
   @GetMapping("/{productCode}")
   public ResponseEntity<Map<String, Object>> getProductDetail(@PathVariable("productCode") String productCode,
-                                                              @SessionAttribute Integer memberTier) {
+                                                              @SessionAttribute Integer memberTier,
+                                                              @RequestParam(defaultValue = "bean") String pageType) {
     if(memberTier == null) memberTier = 0;
 
     Map<String, Object> response = new HashMap<>();
@@ -99,12 +100,23 @@ public class ProductApiController {
       return ResponseEntity.ok(response);
     }
 
-    ProductDTO product = productDao.productSelectOne(productCode);
+    int productType = switch (pageType) {
+      case "mix" -> 1;
+      case "cafe" -> 2;
+      default -> 0; // bean
+    };
+
+    ProductDTO product = null;
+
+    product = switch (pageType) {
+      case "mix" -> productDao.mixSelectOne(productCode);
+      case "cafe" -> productDao.cafeSelectOne(productCode);
+      default -> productDao.beanSelectOne(productCode); // bean
+    };
+
     if (product == null) {
       return ResponseEntity.notFound().build();
     }
-
-    int productType = product.getProductType();
 
     String detailImageName = imageDao.selectDetailImage(productCode);
     int productCount = productDao.productCountByTierByProductType(memberTier, productType);

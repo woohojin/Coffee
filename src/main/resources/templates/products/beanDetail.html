@@ -25,7 +25,17 @@
           return;
         }
 
-        fetch(`/api/products/${productCode}`, { credentials: 'include' })
+        let pageType = 'bean';  // 기본값
+        const pathname = location.pathname;
+        if (pathname.includes('mixDetail')) {
+          pageType = 'mix';
+        } else if (pathname.includes('cafeDetail')) {
+          pageType = 'cafe';
+        } else if (pathname.includes('machineDetail')) {
+          pageType = 'machine';
+        }
+
+        fetch(`/api/products/${productCode}?pageType=${pageType}`, { credentials: 'include' })
           .then(response => {
             if(!response.ok) {
               if(response.status === 404) throw new Error("상품을 찾을 수 없습니다.");
