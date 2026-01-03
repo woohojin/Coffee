@@ -106,7 +106,7 @@ public class ProductApiController {
       default -> 0; // bean
     };
 
-    ProductDTO product = null;
+    ProductDTO product;
 
     product = switch (pageType) {
       case "mix" -> productDao.mixSelectOne(productCode);

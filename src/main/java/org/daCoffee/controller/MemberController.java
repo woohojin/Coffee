@@ -323,44 +323,6 @@ public class MemberController {
     return "member/memberCart";
   }
 
-  @RequestMapping("memberCartPro")
-  public String memberCartPro(HttpServletRequest request, HttpSession session, Model model,
-                              @RequestParam(defaultValue = "9") int status,
-                              @RequestParam(defaultValue = "1") int quantity,
-                              @RequestParam(defaultValue = "0") int productGrinding,
-                              @RequestParam String productCode,
-                              @SessionAttribute String memberId) {
-
-    // ==== 장바구니 제품 갯수 변경 ====
-    if(status == 0) { // status 0 = delete || status 1 = updateQuantity || status 2 = updateGrindingType
-      cartDao.cartDelete(memberId, productCode);
-    } else if (status == 1) {
-      cartDao.cartQuantityUpdate(memberId, productCode, quantity);
-    } // else if (status == 2) {
-    //  cartDao.cartGrindingUpdate(memberId, productCode, productGrinding);
-   // }
-
-    // ==== 제품 갯수 변경 후 가격 계산 ====
-    CartPriceDTO cartPriceDTO;
-
-    cartPriceDTO = priceCalculator.calculatePrice(memberId);
-
-    final int totalPrice = cartPriceDTO.getTotalPrice();
-    final int sumPrice = cartPriceDTO.getSumPrice();
-    final int deliveryFee = cartPriceDTO.getDeliveryFee();
-    final int cartCount = cartPriceDTO.getCartCount();
-
-    List<CartDTO> list = cartDao.cartSelectMember(memberId);
-
-    session.setAttribute("totalPrice", totalPrice);
-    model.addAttribute("sumPrice", sumPrice);
-    model.addAttribute("deliveryFee", deliveryFee);
-    model.addAttribute("cartCount", cartCount);
-    model.addAttribute("list", list);
-
-    return "member/memberCart";
-  }
-
   @RequestMapping("memberPayments")
   public String memberPayments(HttpSession session, Model model,
                                @SessionAttribute String memberId,
