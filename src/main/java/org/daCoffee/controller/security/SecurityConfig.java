@@ -60,7 +60,8 @@ public class SecurityConfig {
             "/error",
             "/alert",
             "/META-INF/resources/WEB-INF/view/**",
-            "/test/**"
+            "/test/**",
+            "/main"
           ).permitAll() // 인증 없이 접근 가능
           .requestMatchers("/admin/**").hasRole("ADMIN")
           .requestMatchers("/member/**").authenticated()
