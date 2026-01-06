@@ -2,8 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
   <body layout:fragment="content">
     <main>
+      <input type="hidden" id="csrf-token" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
       <div class="member_signin_form_wrap" th:if="${isFind == 0}">
-        <form th:action="@{/member/memberFindAccountPro}" method="post" class="member_signin_form">
+        <form method="post" class="member_signin_form">
           <div>
             <input id="find_id" name="findType" type="radio" value="id" th:checked="${findType == 'id'}" th:onclick="'toggleFindType(this)'" />
             <label for="find_id">아이디 찾기</label>
@@ -65,9 +66,10 @@
           </div>
         </form>
       </div>
-      <div th:if="${isFind == 1}" style="display: flex; flex-direction: column; align-items: center">
-        <p th:each="m : ${list}" th:text="'회원님의 아이디는 ' + ${m.memberId} + ' 입니다.'"></p>
-        <div class="btn" style="width: 100px; height: 45px; margin-top: 25px;">
+      <div id="find-result" style="display: none; text-align: center; margin-top: 30px;">
+        <p id="result-message"></p>
+        <div id="id-list" style="margin: 20px 0;"></div>
+        <div class="btn" style="width: 100px; height: 45px;">
           <a th:href="@{/member/memberSignIn}">로그인창으로</a>
         </div>
       </div>
@@ -166,6 +168,56 @@
         countdown.textContent = "";
         alert("인증이 완료되었습니다.");
       }
+
+      const form = document.querySelector('.member_signin_form');
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        if (!checkVerify()) return;
+
+        const params = new URLSearchParams();
+        params.append('findType', document.querySelector('input[name="findType"]:checked').value);
+        params.append('memberName', document.querySelector('.member_name')?.value || '');
+        params.append('memberEmail', document.querySelector('.member_email').value);
+        params.append('memberId', document.querySelector('.member_id')?.value || '');
+        params.append('verifyCode', document.querySelector('.verify_code').value);
+
+        const csrfToken = document.getElementById('csrf-token');
+        if (csrfToken) {
+          params.append(csrfToken.name, csrfToken.value);
+        }
+
+        try {
+          const response = await fetch('/api/member/findAccount', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: params,
+            credentials: 'include'
+          });
+
+          const data = await response.json();
+
+          const resultDiv = document.getElementById('find-result');
+          const messageP = document.getElementById('result-message');
+          const idList = document.getElementById('id-list');
+
+          messageP.textContent = data.message;
+          resultDiv.style.display = 'block';
+
+          if (data.success && data.ids) {
+            idList.innerHTML = data.ids.map(id => `<p>회원님의 아이디는 ${id} 입니다.</p>`).join('');
+          } else if (data.success) {
+            alert(data.message);
+            location.href = '/member/memberSignIn';
+          } else {
+            idList.innerHTML = '';
+          }
+        } catch (err) {
+          alert('처리 중 오류 발생');
+        }
+      });
     </script>
   </body>
 </html>

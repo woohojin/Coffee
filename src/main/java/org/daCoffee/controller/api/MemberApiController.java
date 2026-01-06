@@ -8,9 +8,11 @@ import org.daCoffee.dao.HistoryDAO;
 import org.daCoffee.dao.MemberDAO;
 import org.daCoffee.dto.*;
 import org.daCoffee.module.UUIDGenerateModule;
+import org.daCoffee.service.MailService;
 import org.daCoffee.service.PriceCalculator;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,6 +20,8 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.daCoffee.util.SecurityUtil.getRandomPassword;
 
 @RestController
 @RequestMapping("/api/member")
@@ -28,6 +32,39 @@ public class MemberApiController {
   private final CartDAO cartDao;
   private final HistoryDAO historyDao;
   private final PriceCalculator priceCalculator;
+  private final MailService mailService;
+  private final PasswordEncoder passwordEncoder;
+
+  public void sendEmail(String toEmail, String subject, String main, String code) {
+    mailService.sendEmail(toEmail, subject, main, code);
+  }
+
+  @ResponseBody
+  @PostMapping(value = "verifyEmail", produces = "application/json")
+  public Map<String, Object> verifyEmail(HttpSession session, String memberEmail) {
+    Map<String, Object> map = new HashMap<>();
+
+    try{
+      String code = getRandomPassword(6);
+      String subject = "다올커피 - 이메일 인증번호가 도착했습니다.";
+      String main = "회원님의 이메일 인증번호는";
+
+      sendEmail(memberEmail, subject, main, code);
+
+      session.setAttribute("storedVerifyCode", code);
+
+      map.clear();
+      map.put("code", code);
+
+    } catch (Exception e) {
+      log.error("이메일 전송 실패 : ", e);
+      map.put("error", "이메일 전송 실패 : " + e.getMessage());
+      return map;
+    }
+
+    log.debug("응답 : {}", map);
+    return map;
+  }
 
   @GetMapping("/cart")
   @ResponseBody
@@ -276,5 +313,55 @@ public class MemberApiController {
       errorBody.put("error", "결제 확인 중 오류가 발생했습니다.");
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorBody);
     }
+  }
+
+  @PostMapping("/findAccount")
+  @ResponseBody
+  public Map<String, Object> findAccount(
+    @RequestParam String findType,
+    @RequestParam(required = false) String memberName,
+    @RequestParam(required = false) String memberEmail,
+    @RequestParam(required = false) String memberId,
+    @RequestParam String verifyCode,
+    HttpSession session) {
+
+    Map<String, Object> response = new HashMap<>();
+
+    // 인증번호 검증
+    String storedCode = (String) session.getAttribute("storedVerifyCode");
+    if (verifyCode == null || "timeout".equals(verifyCode) || !verifyCode.equals(storedCode)) {
+      response.put("success", false);
+      response.put("message", "인증번호가 일치하지 않거나 만료되었습니다.");
+      return response;
+    }
+
+    if ("id".equals(findType)) {
+      List<MemberDTO> list = memberDao.memberFindId(memberName, memberEmail);
+      if (list != null && !list.isEmpty()) {
+        List<String> ids = list.stream().map(MemberDTO::getMemberId).toList();
+        response.put("success", true);
+        response.put("ids", ids);
+      } else {
+        response.put("success", false);
+        response.put("message", "이름 또는 이메일이 일치하지 않습니다.");
+      }
+    } else if ("password".equals(findType)) {
+      String found = memberDao.memberFindPassword(memberId, memberEmail);
+      if (found != null && !found.isEmpty()) {
+        String tempPassword = getRandomPassword(8);
+        sendEmail(memberEmail, "다올커피 임시 비밀번호", "임시 비밀번호: ", tempPassword);
+
+        String encoded = passwordEncoder.encode(tempPassword);
+        memberDao.memberTempPasswordUpdate(memberId, encoded);
+
+        response.put("success", true);
+        response.put("message", "임시 비밀번호가 이메일로 전송되었습니다.");
+      } else {
+        response.put("success", false);
+        response.put("message", "아이디 또는 이메일이 일치하지 않습니다.");
+      }
+    }
+
+    return response;
   }
 }

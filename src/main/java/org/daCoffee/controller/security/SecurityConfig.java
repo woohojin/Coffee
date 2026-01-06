@@ -51,6 +51,8 @@ public class SecurityConfig {
             "/member/memberSignInPro",
             "/member/memberSignUpPro",
             "/member/memberTerms",
+            "/member/memberFindAccount",
+            "/member/verifyEmail",
             "/css/**",
             "/image/**",
             "/js/**",
@@ -99,7 +101,7 @@ public class SecurityConfig {
           .logoutSuccessUrl("/main")
         )
         .csrf(csrf -> csrf
-          .ignoringRequestMatchers("/alert")
+          .ignoringRequestMatchers("/alert", "/member/verifyEmail")
         )
         // URLEncoder는 한글을 사용하기 위해서 UTF_8로 인코딩을 하는 것
         .exceptionHandling(ex -> ex
