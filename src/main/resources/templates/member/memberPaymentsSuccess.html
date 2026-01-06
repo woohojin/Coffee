@@ -27,7 +27,7 @@
             </div>
             <div class="flex-column align-center w-100 max-w-540">
               <div class="button-group">
-                <a class="payments_btn primary" th:href="@{/board/main}">메인화면으로 이동</a>
+                <a class="payments_btn primary" th:href="@{/main}">메인화면으로 이동</a>
               </div>
             </div>
           </div>
@@ -54,7 +54,7 @@
           amount: amount
         };
 
-        const response = await fetch(contextPath + "/member/memberPaymentsConfirm", {
+        const response = await fetch(contextPath + "/api/member/payments/confirm", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
