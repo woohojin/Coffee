@@ -97,11 +97,11 @@ public class CartDAO {
     return num;
   }
 
-  public void cartQuantityUpdate(String memberId, String productCode, int quantity) {
+  public void cartQuantityUpdate(String memberId, String productCode, int delta) {
     map.clear();
     map.put("memberId", memberId);
     map.put("productCode", productCode);
-    map.put("quantity", quantity);
+    map.put("delta", delta);
     session.update(NS + "cartQuantityUpdate", map);
   }
 

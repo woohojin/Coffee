@@ -63,7 +63,7 @@
     </delete>
 
     <update id="cartQuantityUpdate" parameterType="map">
-        update cart set quantity = #{quantity} where member_id = #{memberId} and product_code = #{productCode}
+        update cart set quantity = quantity + #{delta} where member_id = #{memberId} and product_code = #{productCode} and quantity + #{delta} >= 1
     </update>
 
 <!--    <update id="cartGrindingUpdate" parameterType="map">-->
