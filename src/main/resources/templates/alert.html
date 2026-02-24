@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
   </head>
   <body layout:fragment="content">
-  <script type="text/javascript" th:inline="javascript">
+  <script type="text/javascript" th:inline="javascript" th:nonce="${cspNonce}">
     alert(/*[[${msg}]]*/ "알림 메시지가 없습니다.");
     location.href = /*[[@{${url}}]]*/ "/";
   </script>
