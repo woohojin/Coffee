@@ -34,6 +34,18 @@ function decreaseProductQuantity() {
   }
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  loadProductDetail();
+
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.increase-btn')) {
+      increaseProductQuantity();
+    } else if (e.target.closest('.decrease-btn')) {
+      decreaseProductQuantity();
+    }
+  });
+});
+
 function loadProductDetail() {
   if (!productCode) {
     document.getElementById('detail-container').innerHTML = '<p>상품 코드가 없습니다.</p>';
@@ -147,10 +159,10 @@ function renderDetail(data) {
               <div class="product_quantity">
                 <input type="text" class="product_quantity_input" value="1" name="quantity" readonly />
                 <div class="product_quantity_btn">
-                  <button type="button" class="left_btn center" onclick="decreaseProductQuantity()">
+                  <button type="button" class="left_btn center decrease-btn">
                     <img src="/image/minus.png" alt="" />
                   </button>
-                  <button type="button" class="right_btn center" onclick="increaseProductQuantity()">
+                  <button type="button" class="right_btn center increase-btn">
                     <img src="/image/plus.png" alt="" />
                   </button>
                 </div>
