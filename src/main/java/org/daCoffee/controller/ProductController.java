@@ -72,6 +72,7 @@ public class ProductController {
 
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("productCode", productCode);
+    model.addAttribute("pageType", "bean");
 
     return "products/beanDetail";
   }
@@ -85,6 +86,7 @@ public class ProductController {
 
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("productCode", productCode);
+    model.addAttribute("pageType", "mix");
 
     return "products/mixDetail";
   }
@@ -98,6 +100,7 @@ public class ProductController {
 
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("productCode", productCode);
+    model.addAttribute("pageType", "cafe");
 
     return "products/cafeDetail";
   }

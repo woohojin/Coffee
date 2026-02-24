@@ -110,7 +110,7 @@ public class ProductApiController {
 
     product = switch (pageType) {
       case "mix" -> productDao.mixSelectOne(productCode);
-      case "cafe" -> productDao.cafeSelectOne(productCode);
+      case "cafe" -> productDao.productSelectOne(productCode);
       default -> productDao.beanSelectOne(productCode); // bean
     };
 
