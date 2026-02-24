@@ -133,8 +133,7 @@ public class ProductController {
             additionalCartDTO.setQuantity(1);
             cartDao.cartInsert(additionalCartDTO);
           } else {
-            int additionalProductQuantity = 1 + cartDTOCheck.getQuantity();
-            cartDao.cartQuantityUpdate(memberId, additionalProductsCode, additionalProductQuantity);
+            cartDao.cartQuantityUpdate(memberId, additionalProductsCode, 1);
           }
         }
       }
@@ -170,8 +169,7 @@ public class ProductController {
         map.put("productFile", productDTO.getProductFile());
       }
     } else {
-      quantity = quantity + cartDTOCheck.getQuantity();
-      cartDao.cartQuantityUpdate(memberId, productCode, quantity);
+      cartDao.cartQuantityUpdate(memberId, productCode, cartDTO.getQuantity());
       msg = "장바구니 추가 성공";
       map.put("productCode", productDTO.getProductCode());
       map.put("productType", productDTO.getProductType());

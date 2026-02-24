@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // 이벤트 위임으로 submit 처리
   const csrfInput = document.getElementById('csrf-token');
   const csrfToken = csrfInput ? csrfInput.value : '';
   const csrfHeader = 'X-CSRF-TOKEN';
 
+  // 이벤트 위임으로 submit 처리
   document.addEventListener("submit", function (event) {
       if (!event.target.matches(".product_quantity_form")) return;
 
