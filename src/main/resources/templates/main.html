@@ -26,15 +26,6 @@
         </div>
       </th:block>
     </main>
-    <script th:src="@{/js/slider.js}"></script>
-    <script th:inline="javascript">
-      document.addEventListener("DOMContentLoaded", function() {
-        const memberId = /*[[${session.memberId}]]*/ '';
-        const memberTier = /*[[${session.memberTier}]]*/ null;
-        if (memberId.length > 0 && memberTier === 0) {
-          alert("현재 가입 승인 대기중입니다.");
-        }
-      });
-    </script>
+    <script th:src="@{/js/slider.js}" th:nonce="${cspNonce}"></script>
   </div>
 </html>

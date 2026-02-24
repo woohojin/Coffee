@@ -21,18 +21,7 @@
         </div>
       </div>
     </div>
-    <script type="text/javascript" th:inline="javascript">
-      const urlParams = new URLSearchParams(window.location.search);
-      const errorCode = urlParams.get("code");
-      const errorMessage = urlParams.get("message");
-
-      const errorCodeElement = document.getElementById("error-code");
-      const errorMessageElement = document.getElementById("error-message");
-
-      if (errorCode != null && errorMessage != null) {
-        errorCodeElement.textContent = errorCode;
-        errorMessageElement.textContent = errorMessage;
-      }
-    </script>
+    <script src="https://js.tosspayments.com/v1/payment-widget"></script>
+    <script th:src="@{/js/paymentsFailure.js}" th:nonce="${cspNonce}"></script>
   </body>
 </html>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
   <body layout:fragment="content">
+  <meta name="signUpUrl" th:attr="content=@{/member/memberSignUp}">
   <main id="member_terms_page">
     <div class="member_terms_page_wrap">
       <div class="page_head">
@@ -11,8 +12,8 @@
       <div class="member_terms_wrap center">
         <div class="member_terms">
           <p>
-            <input type="checkbox" class="check-all" th:onclick="'setCheckAll()'" />
-            <label th:onclick="'setCheckAll()'">(필수) 이용약관 및 개인정보수집 및 이용에 모두 동의합니다.</label>
+            <input type="checkbox" id="terms-checkbox-all" class="check-all" />
+            <label for="terms-checkbox-all">(필수) 이용약관 및 개인정보수집 및 이용에 모두 동의합니다.</label>
           </p>
           <div class="member_terms_textarea">
             <p>[필수] 이용약관 동의</p>
@@ -285,48 +286,11 @@
             </p>
           </div>
           <div class="member_terms_button">
-            <input type="submit" value="회원가입 진행" class="submit_btn" th:onclick="'return redirect()'" />
+            <input type="submit" id="terms-submit_btn" value="회원가입 진행" class="submit_btn"/>
           </div>
         </div>
       </div>
     </div>
   </main>
-  <script type="text/javascript" th:inline="javascript">
-    const checkAll = document.querySelector(".check-all");
-    const firstCheckbox = document.querySelector(".first_checkbox");
-    const secondCheckbox = document.querySelector(".second_checkbox");
-
-    function redirect() {
-      if (firstCheckbox.checked && secondCheckbox.checked) {
-        window.location.href = /*[[@{/member/memberSignUp}]]*/ '';
-        return true;
-      }
-      alert("필수사항을 모두 동의해주세요.");
-      return false;
-    }
-
-    function setCheckAll() {
-      if (!firstCheckbox.checked || !secondCheckbox.checked) {
-        firstCheckbox.checked = true;
-        secondCheckbox.checked = true;
-        checkAll.checked = true;
-      } else {
-        firstCheckbox.checked = false;
-        secondCheckbox.checked = false;
-        checkAll.checked = false;
-      }
-    }
-
-    function getChecked() {
-      if (firstCheckbox.checked && secondCheckbox.checked) {
-        checkAll.checked = true;
-      } else {
-        checkAll.checked = false;
-      }
-    }
-
-    firstCheckbox.addEventListener('change', getChecked);
-    secondCheckbox.addEventListener('change', getChecked);
-  </script>
   </body>
 </html>

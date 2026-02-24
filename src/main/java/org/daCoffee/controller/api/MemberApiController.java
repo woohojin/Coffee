@@ -86,22 +86,25 @@ public class MemberApiController {
   @PostMapping("/cart/update")
   @ResponseBody
   public Map<String, Object> updateCart(
-    @RequestParam(defaultValue = "9") int status,
+    @RequestParam String status,
     @RequestParam(defaultValue = "1") int quantity,
-    @RequestParam(defaultValue = "0") int productGrinding,
     @RequestParam String productCode,
     @SessionAttribute String memberId) {
 
     Map<String, Object> response = new HashMap<>();
 
+    int delta = 0;
+
     try {
-      if (status == 0) { // status 0 = delete || status 1 = updateQuantity || status 2 = updateGrindingType
+      if ("delete".equals(status)) {
         cartDao.cartDelete(memberId, productCode);
-      } else if (status == 1) {
-        cartDao.cartQuantityUpdate(memberId, productCode, quantity);
-      } // else if (status == 2) {
-      //     cartDao.cartGrindingUpdate(memberId, productCode, productGrinding);
-      // }
+      } else if ("increase".equals(status)) {
+        delta = 1;
+        cartDao.cartQuantityUpdate(memberId, productCode, delta);
+      } else if("decrease".equals(status)) {
+        delta = -1;
+        cartDao.cartQuantityUpdate(memberId, productCode, delta);
+      }
 
       // ==== 제품 갯수 변경 후 가격 계산 ====
       CartPriceDTO cartPriceDTO = priceCalculator.calculatePrice(memberId);
@@ -120,8 +123,8 @@ public class MemberApiController {
       response.put("totalPrice", totalPrice);
       response.put("list", list);
 
-      log.info("updateCart called: memberId={}, productCode={}, status={}, quantity={}",
-        memberId, productCode, status, quantity);
+      log.info("updateCart called: memberId={}, productCode={}, status={}, delta={}",
+        memberId, productCode, status, delta);
 
     } catch (Exception e) {
       log.error("장바구니 업데이트 실패", e);

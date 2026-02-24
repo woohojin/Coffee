@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
   <body layout:fragment="content">
+    <meta name="contextPath" content="${#httpServletRequest.contextPath}">
+    <meta name="widgetClientKey" content="test_ck_yZqmkKeP8gNW0G14QzkBrbQRxB9l">
+    <meta name="customerKey" content="${session.customerKey}">
+    <meta name="totalPrice" content="${session.totalPrice}">
+    <meta name="orderId" content="${session.orderId}">
+    <meta name="orderName" content="${orderName}">
+    <meta name="memberName" content="${member.memberName}">
+    <meta name="memberTel" content="${member.memberTel}">
     <main>
       <div class="wrapper w-100">
         <div class="max-w-540 w-100">
@@ -12,38 +20,7 @@
         </div>
       </div>
     </main>
-    <script type="text/javascript" th:inline="javascript">
-      const contextPath = /*[[${#httpServletRequest.contextPath}]]*/ '';
-      const button = document.getElementById("payment-request-button");
-      const widgetClientKey = "test_ck_yZqmkKeP8gNW0G14QzkBrbQRxB9l";
-      const customerKey = /*[[${session.customerKey}]]*/ '';
-      const paymentWidget = PaymentWidget(widgetClientKey, customerKey);
-
-      const paymentMethodWidget = paymentWidget.renderPaymentMethods(
-        "#payment-method",
-        {
-          value: /*[[${session.totalPrice}]]*/ 0,
-          currency: "KRW",
-          country: "KR"
-        },
-        { variantKey: "DEFAULT" }
-      );
-
-      paymentWidget.renderAgreement(
-        "#agreement",
-        { variantKey: "AGREEMENT" }
-      );
-
-      button.addEventListener("click", function () {
-        paymentWidget.requestPayment({
-          orderId: /*[[${session.orderId}]]*/ '',
-          orderName: /*[[${orderName}]]*/ '',
-          successUrl: window.location.origin + contextPath + "/member/memberPaymentsSuccess",
-          failUrl: window.location.origin + contextPath + "/member/memberPaymentsFailure",
-          customerName: /*[[${member.memberName}]]*/ '',
-          customerMobilePhone: /*[[${member.memberTel}]]*/ ''
-        });
-      });
-    </script>
+    <script src="https://js.tosspayments.com/v1/payment-widget"></script>
+    <script th:src="@{/js/payments.js}" th:nonce="${cspNonce}"></script>
   </body>
 </html>

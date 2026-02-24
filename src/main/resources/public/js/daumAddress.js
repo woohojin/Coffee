@@ -1,3 +1,21 @@
+document.addEventListener('DOMContentLoaded', () => {
+  // 주소 검색 버튼
+  const addressBtn = document.getElementById('address-btn');
+  if (addressBtn) {
+    addressBtn.addEventListener('click', () => {
+      execAddress();
+    });
+  }
+
+  // 배송지 주소 검색 버튼
+  const deliveryAddressBtn = document.getElementById('delivery-address-btn');
+  if (deliveryAddressBtn) {
+    deliveryAddressBtn.addEventListener('click', () => {
+      execDeliveryAddress();
+    });
+  }
+});
+
 function execAddress() {
   new daum.Postcode({
     oncomplete: function (data) {

@@ -14,7 +14,7 @@
                 <div class="form_required">*</div>
               </th>
               <td>
-                <input name="memberId" id="member_id" type="text" placeholder="영문 소문자만 가능, 4자리 이상, 21자리 미만" minlength="4" maxlength="20" oninput="idInputCheck(this)" spellcheck="false" required />
+                <input name="memberId" id="member_id" type="text" placeholder="영문 소문자만 가능, 4자리 이상, 21자리 미만" minlength="4" maxlength="20" spellcheck="false" required />
               </td>
             </tr>
             <tr>
@@ -23,7 +23,7 @@
                 <div class="form_required">*</div>
               </th>
               <td>
-                <input name="memberName" id="member_name" type="text" placeholder="한국어만 입력 가능합니다." oninput="nameInputCheck(this)" spellcheck="false" required />
+                <input name="memberName" id="member_name" type="text" placeholder="한국어만 입력 가능합니다." spellcheck="false" required />
               </td>
             </tr>
             <tr>
@@ -60,7 +60,7 @@
                     <input name="memberAddress" id="member_address" type="text" placeholder="주소 찾기 버튼을 이용해 주세요" readonly spellcheck="false" required />
                   </li>
                   <div class="member_address_button">
-                    <button class="input_btn" type="button" onclick="execAddress()">주소 찾기</button>
+                    <button id="address-btn" class="input_btn" type="button">주소 찾기</button>
                   </div>
                   <li>
                     <input name="memberDetailAddress" id="member_detail_address" type="text" placeholder="상세주소를 입력해주세요" spellcheck="false" required />
@@ -79,13 +79,13 @@
                     <input name="memberDeliveryAddress" id="member_delivery_address" type="text" placeholder="주소 찾기 버튼을 이용해 주세요" readonly spellcheck="false" required />
                   </li>
                   <div class="member_delivery_address_button">
-                    <button class="input_btn" type="button" onclick="execDeliveryAddress()">주소 찾기</button>
+                    <button id="delivery-address-btn" class="input_btn" type="button">주소 찾기</button>
                   </div>
                   <li>
                     <input name="memberDetailDeliveryAddress" id="member_detail_delivery_address" type="text" placeholder="상세주소를 입력해주세요" spellcheck="false" required />
                   </li>
                   <div class="member_delivery_address_button2">
-                    <button class="input_btn" type="button" onclick="sameAddress()">주소와<br/>동일하게</button>
+                    <button id="same-address-btn" class="input_btn" type="button">주소와<br/>동일하게</button>
                   </div>
                 </ul>
               </td>
@@ -96,7 +96,7 @@
                 <div class="form_required">*</div>
               </th>
               <td>
-                <input name="memberTel" id="member_tel" type="tel" maxlength="11" placeholder="'-'없이 입력" oninput="maxLengthCheck(this), numberInputCheck(this)" spellcheck="false" required />
+                <input name="memberTel" id="member_tel" type="tel" maxlength="11" placeholder="'-'없이 입력" spellcheck="false" required />
               </td>
             </tr>
             <tr>
@@ -112,7 +112,7 @@
                 <label for="member_company_tel">업체 연락처</label>
               </th>
               <td>
-                <input name="memberCompanyTel" id="member_company_tel" type="tel" maxlength="11" placeholder="사업자 회원의 경우 꼭 넣어주세요" oninput="maxLengthCheck(this), numberInputCheck(this)" spellcheck="false" />
+                <input name="memberCompanyTel" id="member_company_tel" type="tel" maxlength="11" placeholder="사업자 회원의 경우 꼭 넣어주세요" spellcheck="false" />
               </td>
             </tr>
             <tr class="member_email_wrap">
@@ -123,7 +123,7 @@
               <td>
                 <input name="memberEmail" id="member_email" class="member_email" type="email" spellcheck="false" required />
                 <div class="member_email_verify_button">
-                  <button class="input_btn" type="button" th:onclick="'verifyEmail()'">인증번호 발송</button>
+                  <button id="send-verify-btn" class="input_btn" type="button">인증번호 발송</button>
                 </div>
               </td>
             </tr>
@@ -134,7 +134,7 @@
               <td>
                 <input name="verifyCode" class="verify_code" type="text" spellcheck="false" required />
                 <div class="member_email_verify_button">
-                  <button class="input_btn" type="button" onclick="stopCountdown()">인증하기</button>
+                  <button id="verify-btn" class="input_btn" type="button">인증하기</button>
                 </div>
                 <div class="remain_time">
                   <span class="countdown"></span>
@@ -143,11 +143,11 @@
             </tr>
             <tr>
               <th>
-                <label for="file">사업자등록증 사본</label>
+                <label for="signUpFile">사업자등록증 사본</label>
               </th>
               <td>
                 <div class="file_input_wrap">
-                  <input name="file" id="file" type="file" placeholder="사업자 회원의 경우 꼭 넣어주세요" spellcheck="false" onchange="inputFileName()" />
+                  <input name="file" id="signUpFile" type="file" placeholder="사업자 회원의 경우 꼭 넣어주세요" spellcheck="false" />
                   <input type="hidden" id="memberFile" name="memberFile" value="" />
                 </div>
               </td>
@@ -155,56 +155,14 @@
             </tbody>
           </table>
           <div class="signup">
-            <input type="submit" value="회원가입" class="submit_btn" th:onclick="'return checkVerify()'" />
+            <input id="sign-up-btn" type="submit" value="회원가입" class="submit_btn" th:onclick="'return checkVerify()'" />
           </div>
         </form>
       </div>
     </main>
-    <script type="text/javascript" th:inline="javascript">
-      const signUpForm = document.getElementById('signUpForm');
-      signUpForm.addEventListener('submit', function(event) {
-        if (!passwordInputCheck(this)) {
-          event.preventDefault();
-        }
-      });
-
-      function sameAddress() {
-        const memberAddress = document.getElementById("member_address");
-        const memberDetailAddress = document.getElementById("member_detail_address");
-        const memberDeliveryAddress = document.getElementById("member_delivery_address");
-        const memberDetailDeliveryAddress = document.getElementById("member_detail_delivery_address");
-
-        memberDeliveryAddress.value = memberAddress.value;
-        memberDetailDeliveryAddress.value = memberDetailAddress.value;
-      }
-
-      function inputFileName() {
-        const fileInput = document.getElementById("file");
-        const file = fileInput.files[0];
-
-        if (file) {
-          const fileName = file.name;
-          const input = document.getElementById("memberFile");
-          input.value = fileName;
-        }
-      }
-
-      document.getElementById("member_email").addEventListener("keypress", function(event) {
-        if (event.key === "Enter") {
-          event.preventDefault();
-          verifyEmail();
-          document.querySelector(".verify_code").focus();
-        }
-      });
-
-      document.querySelector(".verify_code").addEventListener("keypress", function(event) {
-        if (event.key === "Enter") {
-          event.preventDefault();
-          stopCountdown();
-        }
-      });
-    </script>
-    <script th:src="@{/js/signUpFormRequirement.js}"></script>
-    <script th:src="@{/js/emailVerification.js}"></script>
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script th:src="@{/js/daumAddress.js}" th:nonce="${cspNonce}"></script>
+    <script th:src="@{/js/signUpFormScript.js}" th:nonce="${cspNonce}"></script>
+    <script th:src="@{/js/emailVerification.js}" th:nonce="${cspNonce}"></script>
   </body>
 </html>

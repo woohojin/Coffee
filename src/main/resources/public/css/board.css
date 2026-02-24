@@ -288,6 +288,24 @@
   border: 1px solid var(--grayLine);
   border-radius: 15px;
 }
+.cart-col-image {
+  width: 15%;
+}
+.cart-col-info  {
+  width: 25%;
+}
+.cart-col-unit  {
+  width: 25%;
+}
+.cart-col-qty {
+  width: 10%;
+}
+.cart-col-price {
+  width: 20%;
+}
+.cart-col-delete  {
+  width:  5%;
+}
 
 #member_mypage_page {
   min-height: 545px;

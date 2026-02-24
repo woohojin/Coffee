@@ -11,6 +11,16 @@ header,
   width: 100%;
 }
 
+.background-fadeout {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: none;
+}
+.background-fadeout.visible {
+  display: block;
+}
+
 header {
   position: fixed;
   background-color: white;
@@ -125,11 +135,15 @@ header {
   background-color: white;
   overflow: hidden;
   transition: max-height 0.7s ease;
+  max-height: 0;
   width: 400px;
   right: -9px;
   top: 50px;
   border: none;
   z-index: 5;
+}
+.hd_gnb_member_cart.open {
+  max-height: 1000px;
 }
 .hd_gnb_member_cart img {
   width: 115px;

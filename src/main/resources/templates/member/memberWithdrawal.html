@@ -36,21 +36,5 @@
         </form>
       </div>
     </main>
-    <script type="text/javascript" th:inline="javascript">
-      const withdrawalForm = document.getElementById('withdrawalForm');
-      withdrawalForm.addEventListener('submit', function(event) {
-        if (!checkDisable()) {
-          event.preventDefault();
-        }
-      });
-
-      function checkDisable() {
-        if (confirm("정말 회원을 탈퇴하시겠습니까?")) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    </script>
   </body>
 </html>

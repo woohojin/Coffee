@@ -48,8 +48,8 @@
               </div>
               <img th:src="@{/image/cart.png}" alt="Cart" />
             </a>
-            <div class="background-fadeout" style="display: none; background-color: inherit;"></div>
-            <div class="hd_gnb_member_cart" style="max-height: 0;">
+            <div class="background-fadeout"></div>
+            <div class="hd_gnb_member_cart">
               <div class="hd_gnb_member_cart_status">
                 <div><p>장바구니에 추가 완료</p></div>
                 <div>
@@ -108,18 +108,5 @@
     </div>
   </div>
 </header>
-<script>
-  function checkLogout() {
-    if (confirm("로그아웃 하시겠습니까?")) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 
-  function searchSubmit() {
-    document.getElementById("search_form").submit();
-    return false; // 기본 링크 동작 방지
-  }
-</script>
 </html>

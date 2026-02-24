@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
   <body layout:fragment="content">
+    <meta name="contextPath" content="${#httpServletRequest.contextPath}">
+    <meta name="paymentKey" content="${paymentKey}">
+    <meta name="orderId" content="${orderId}">
+    <meta name="amount" content="${amount}">
     <main>
       <div class="wrapper w-100">
         <div class="flex-column align-center confirm-loading w-100 max-w-540">
@@ -34,54 +38,7 @@
         </div>
       </div>
     </main>
-    <script type="text/javascript" th:inline="javascript">
-      const contextPath = /*[[${#httpServletRequest.contextPath}]]*/ '';
-      const urlParams = new URLSearchParams(window.location.search);
-      const paymentKey = urlParams.get("paymentKey");
-      const orderId = urlParams.get("orderId");
-      const amount = urlParams.get("amount");
-
-      const orderIdElement = document.getElementById("orderId");
-      const amountElement = document.getElementById("amount");
-
-      const confirmLoadingSection = document.querySelector('.confirm-loading');
-      const confirmSuccessSection = document.querySelector('.confirm-success');
-
-      async function confirmPayment() {
-        const requestData = {
-          paymentKey: paymentKey,
-          orderId: orderId,
-          amount: amount
-        };
-
-        const response = await fetch(contextPath + "/api/member/payments/confirm", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(requestData)
-        });
-
-        if (response.ok) {
-          confirmLoadingSection.style.display = 'none';
-          confirmSuccessSection.style.display = 'flex';
-        }
-
-        if (!response.ok) {
-          const json = await response.json();
-          console.log(json);
-          window.location.href = contextPath + `/member/memberPaymentsFailure?message=${json.message}&code=${json.code}`;
-        }
-
-        const json = await response.json();
-        console.log(json);
-      }
-
-      const confirmPaymentButton = document.getElementById('confirmPaymentButton');
-      confirmPaymentButton.addEventListener('click', confirmPayment);
-
-      orderIdElement.textContent = orderId;
-      amountElement.textContent = amount + '원';
-    </script>
+    <script src="https://js.tosspayments.com/v1/payment-widget"></script>
+    <script th:src="@{/js/paymentsSuccess.js}" th:nonce="${cspNonce}"></script>
   </body>
 </html>
