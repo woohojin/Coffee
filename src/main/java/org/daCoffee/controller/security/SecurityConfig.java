@@ -147,9 +147,19 @@ public class SecurityConfig {
           // 전체 CSP 정책
           if (isAdmin) {
             csp = "default-src 'self'; " +
-              "script-src 'self' 'unsafe-inline'; " +
-              "style-src 'self' 'unsafe-inline'; " +
-              "frame-ancestors 'self';";
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' " +
+              "https://code.jquery.com " +
+              "https://code.jquery.com/ui/ " +
+              "http://t1.daumcdn.net https://t1.daumcdn.net " +
+              "http://postcode.map.daum.net https://postcode.map.daum.net " +
+              "https://s1.daumcdn.net https://s3.daumcdn.net; " +
+              "style-src 'self' 'unsafe-inline' " +
+              "https://fonts.googleapis.com; " +
+              "font-src 'self' data: https://fonts.gstatic.com; " +
+              "img-src 'self' data:; " +
+              "frame-src 'self' " +
+              "http://postcode.map.daum.net https://postcode.map.daum.net; " +
+              "frame-ancestors 'self'; ";
           } else if (isRelaxed) {
             csp = "default-src 'self'; " +
               "script-src 'self' 'nonce-" + nonce + "' " +

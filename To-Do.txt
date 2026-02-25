@@ -5,7 +5,7 @@
 ㄴ productDetailPro, productSearch 확인 필요
 
 csp 정책 변경 완료 및 정상 작동 페이지
-productList, productDetail, memberCart, memberTerms,
+productList, productDetail, memberCart, memberTerms, memberCart(결제하기 제외), memberProfile, admin
 
 메인페이지
 이메일 변경
