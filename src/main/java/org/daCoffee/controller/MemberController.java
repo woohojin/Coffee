@@ -597,33 +597,5 @@ public class MemberController {
 
     return "member/memberHistory";
   }
-
-  @ResponseBody
-  @PostMapping(value = "verifyEmail", produces = "application/json")
-  public Map<String, Object> verifyEmail(HttpSession session, String memberEmail) {
-    Map<String, Object> map = new HashMap<>();
-
-    try{
-      String code = getRandomPassword(6);
-      String subject = "다올커피 - 이메일 인증번호가 도착했습니다.";
-      String main = "회원님의 이메일 인증번호는";
-
-      sendEmail(memberEmail, subject, main, code);
-
-      session.setAttribute("storedVerifyCode", code);
-
-      map.clear();
-      map.put("code", code);
-
-    } catch (Exception e) {
-      log.error("이메일 전송 실패 : ", e);
-      map.put("error", "이메일 전송 실패 : " + e.getMessage());
-      return map;
-    }
-
-    log.debug("응답 : {}", map);
-    return map;
-  }
-
 }
 

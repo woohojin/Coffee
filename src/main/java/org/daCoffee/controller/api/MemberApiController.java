@@ -39,35 +39,7 @@ public class MemberApiController {
     mailService.sendEmail(toEmail, subject, main, code);
   }
 
-  @ResponseBody
-  @PostMapping(value = "verifyEmail", produces = "application/json")
-  public Map<String, Object> verifyEmail(HttpSession session, String memberEmail) {
-    Map<String, Object> map = new HashMap<>();
-
-    try{
-      String code = getRandomPassword(6);
-      String subject = "다올커피 - 이메일 인증번호가 도착했습니다.";
-      String main = "회원님의 이메일 인증번호는";
-
-      sendEmail(memberEmail, subject, main, code);
-
-      session.setAttribute("storedVerifyCode", code);
-
-      map.clear();
-      map.put("code", code);
-
-    } catch (Exception e) {
-      log.error("이메일 전송 실패 : ", e);
-      map.put("error", "이메일 전송 실패 : " + e.getMessage());
-      return map;
-    }
-
-    log.debug("응답 : {}", map);
-    return map;
-  }
-
   @GetMapping("/cart")
-  @ResponseBody
   public Map<String, Object> getCart(@SessionAttribute String memberId) {
     Map<String, Object> response = new HashMap<>();
 
@@ -84,7 +56,6 @@ public class MemberApiController {
   }
 
   @PostMapping("/cart/update")
-  @ResponseBody
   public Map<String, Object> updateCart(
     @RequestParam String status,
     @RequestParam(defaultValue = "1") int quantity,
@@ -136,7 +107,6 @@ public class MemberApiController {
   }
 
   @GetMapping("/payments")
-  @ResponseBody
   public Map<String, Object> getPaymentsData(
     HttpSession session,
     @SessionAttribute String memberId,
@@ -201,7 +171,6 @@ public class MemberApiController {
   }
 
   @PostMapping("/payments/success")
-  @ResponseBody
   public Map<String, Object> paymentsSuccess(
     HttpSession session,
     @SessionAttribute String memberId,
@@ -278,7 +247,6 @@ public class MemberApiController {
   }
 
   @PostMapping("/payments/confirm")
-  @ResponseBody
   public ResponseEntity<Map<String, Object>> memberPaymentsConfirm(
     @RequestBody PaymentsRequestDTO paymentsRequestDTO) {
 
@@ -319,7 +287,6 @@ public class MemberApiController {
   }
 
   @PostMapping("/findAccount")
-  @ResponseBody
   public Map<String, Object> findAccount(
     @RequestParam String findType,
     @RequestParam(required = false) String memberName,
@@ -365,6 +332,60 @@ public class MemberApiController {
       }
     }
 
+    return response;
+  }
+
+  @PostMapping("/verifyEmail")
+  public Map<String, Object> verifyEmail(HttpSession session, @RequestParam String memberEmail) {
+    Map<String, Object> response = new HashMap<>();
+
+    try {
+      String code = getRandomPassword(6);
+      String subject = "다올커피 - 이메일 인증번호가 도착했습니다.";
+      String main = "회원님의 이메일 인증번호는";
+
+      sendEmail(memberEmail, subject, main, code);
+      session.setAttribute("storedVerifyCode", code);
+      session.setAttribute("verifyCodeExpiry", System.currentTimeMillis() + 180000L); // 3분
+
+      response.put("success", true);
+
+    } catch (Exception e) {
+      log.error("이메일 전송 실패 : ", e);
+      response.put("success", false);
+      response.put("message", "이메일 전송에 실패했습니다.");
+    }
+
+    return response;
+  }
+
+  @PostMapping("/verifyCode")
+  public Map<String, Object> verifyCode(HttpSession session, @RequestParam String verifyCode) {
+    Map<String, Object> response = new HashMap<>();
+
+    String storedCode = (String) session.getAttribute("storedVerifyCode");
+    Long expiry = (Long) session.getAttribute("verifyCodeExpiry");
+
+    if (storedCode == null || expiry == null) {
+      response.put("success", false);
+      response.put("message", "인증번호를 먼저 요청해주세요.");
+      return response;
+    }
+
+    if (System.currentTimeMillis() > expiry) {
+      response.put("success", false);
+      response.put("message", "인증시간이 초과되었습니다.");
+      return response;
+    }
+
+    if (!verifyCode.equals(storedCode)) {
+      response.put("success", false);
+      response.put("message", "인증번호가 일치하지 않습니다.");
+      return response;
+    }
+
+    session.setAttribute("isVerified", true);
+    response.put("success", true);
     return response;
   }
 }
