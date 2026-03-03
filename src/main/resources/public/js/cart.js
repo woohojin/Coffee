@@ -1,20 +1,12 @@
+import { apiGet, apiPostForm} from './api-utils'
+
 function formatPrice(price) {
   if (!price) return '0';
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
-function loadCart() {
-  fetch('/api/member/cart', { credentials: 'include' })
-    .then(response => {
-      if (!response.ok) throw new Error('장바구니 로드 실패');
-      return response.json();
-    })
-    .then(data => {
-      renderCart(data);
-    })
-    .catch(err => {
-      document.getElementById('cart-container').innerHTML = `<p>${err.message}</p>`;
-    });
+export async function fetchCart() {
+  return apiGet('/api/member/cart');
 }
 
 function renderCart(data) {
@@ -54,9 +46,9 @@ function renderCart(data) {
     if (c.productType === 1) folder = 'mix';
     else if (c.productType === 2) folder = 'cafe';
 
-    const csrfToken = document.getElementById('csrf-token');
-    const csrfHtml = csrfToken ?
-      `<input type="hidden" name="${csrfToken.name}" value="${csrfToken.value}" />` : '';
+    const csrfHtml = window.csrf?.value
+      ? `<input type="hidden" name="${window.csrf.name}" value="${window.csrf.value}" />`
+      : '';
 
     html += `
       <tr>
@@ -113,12 +105,20 @@ function renderCart(data) {
 }
 
 // 페이지 로드 시 장바구니 불러오기
-loadCart();
+(async () => {
+  try {
+    const data = await fetchCart();
+    renderCart(data);
+  } catch (err) {
+    console.error('장바구니 초기 로드 실패:', err);
+    document.getElementById('cart-container').innerHTML =
+      '<p>장바구니를 불러올 수 없습니다.</p>';
+  }
+})();
 
 // 수량 증가/감소/삭제 처리
-document.addEventListener('click', (e) => {
+document.addEventListener('click', async (e) => {
   const target = e.target.closest('button, a');
-  console.log(target)
   if (!target) return;
 
   const index = target.dataset.index;
@@ -145,49 +145,34 @@ document.addEventListener('click', (e) => {
   // 에러 방지를 위한 formData 덮어쓰기
   formData.set('status', status);
 
-  fetch('/api/member/cart/update', {
-    method: 'POST',
-    body: formData,
-    credentials: 'include',
-  })
-    .then(res => {
-      if (!res.ok) throw new Error(`장바구니 서버 응답 오류 : ${res.status}`);
-      return res.json();
-    })
-    .then(data => {
-      if (data.success) {
-        //주문 요약 업데이트
-        document.getElementById('sum-price').textContent = formatPrice(data.sumPrice) + " 원";
-        document.getElementById('delivery-fee').textContent = formatPrice(data.deliveryFee) + " 원";
-        document.getElementById('total-price').textContent = formatPrice(data.totalPrice) + " 원";
+  try {
+    const data = await apiPostForm('/api/member/cart/update', formData);
 
-        // 선택한 행의 수량만 업데이트
-        if (status === 'increase' || status === 'decrease') {
-          const updatedItem = data.list.find(item => item.productCode === form.querySelector('[name="productCode"]').value);
-          if (updatedItem) {
-            quantityInput.value = updatedItem.quantity;
+    // 주문 요약 업데이트
+    document.getElementById('sum-price').textContent = formatPrice(data.sumPrice) + " 원";
+    document.getElementById('delivery-fee').textContent = formatPrice(data.deliveryFee) + " 원";
+    document.getElementById('total-price').textContent = formatPrice(data.totalPrice) + " 원";
 
-            const priceCell = document.querySelector(`.form${index}`).closest('tr').querySelector('.member_cart_price p');
+    if (status === 'increase' || status === 'decrease') {
+      const updatedItem = data.list.find(item => item.productCode === form.querySelector('[name="productCode"]').value);
+      if (updatedItem) {
+        quantityInput.value = updatedItem.quantity;
 
-            if (priceCell) {
-              if (updatedItem.productSoldOut === 1) {
-                priceCell.innerHTML = 'Sold Out';
-              } else {
-                priceCell.innerHTML = formatPrice(updatedItem.productPrice * updatedItem.quantity) + ' 원';
-              }
-            }
-          }
+        const priceCell = form.closest('tr').querySelector('.member_cart_price p');
+        if (priceCell) {
+          priceCell.innerHTML = updatedItem.productSoldOut === 1
+            ? 'Sold Out'
+            : `${formatPrice(updatedItem.productPrice * updatedItem.quantity)} 원`;
         }
-
-        if (status === 'delete') {
-          form.closest('tr').remove();
-        }
-      } else {
-        alert("처리 중 오류가 발생했습니다.");
       }
-    })
-    .catch(err => {
-      console.error("장바구니 업데이트 오류 : ", err);
-      alert("서버와의 연결에 문제가 발생했습니다.");
-    });
+    }
+
+    if (status === 'delete') {
+      form.closest('tr').remove();
+    }
+
+  } catch (err) {
+    console.error("장바구니 업데이트 오류:", err);
+    alert("서버와의 연결에 문제가 발생했습니다.");
+  }
 });
