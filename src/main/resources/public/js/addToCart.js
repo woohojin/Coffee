@@ -1,100 +1,107 @@
+import {apiPostForm} from "./api-utils";
+
 document.addEventListener("DOMContentLoaded", function () {
-  const csrfInput = document.getElementById('csrf-token');
-  const csrfToken = csrfInput ? csrfInput.value : '';
-  const csrfHeader = 'X-CSRF-TOKEN';
+  function updateCartPreview(data) {
+    const cart = document.querySelector(".hd_gnb_member_cart");
+    const background = document.querySelector(".background-fadeout");
+    const cartCount = document.querySelector(".cart_count");
 
-  // 이벤트 위임으로 submit 처리
-  document.addEventListener("submit", function (event) {
-      if (!event.target.matches(".product_quantity_form")) return;
+    const {
+      productName = "",
+      productUnit = "",
+      quantity = 0,
+      productPrice = 0,
+      productFile = "",
+      productCode = "",
+      productType = 0
+    } = data;
 
-      event.preventDefault();
+    // 상품 타입별 폴더 및 URL 결정
+    let folder = "bean";
+    let detailUrl = "/products/beanDetail";
 
-      const form = event.target;
-      const formData = new FormData(form);
+    if (productType === 1) {
+      folder = "mix";
+      detailUrl = "/products/mixDetail";
+    } else if (productType === 2) {
+      folder = "cafe";
+      detailUrl = "/products/cafeDetail";
+    }
 
-      fetch(form.action, {
-          method: "POST",
-          headers: {
-            [csrfHeader]: csrfToken,
-          },
-          body: formData,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-            const cart = document.querySelector(".hd_gnb_member_cart");
-            const background = document.querySelector(".background-fadeout");
-            const cartCount = document.querySelector(".cart_count");
+    // 기존 내역 삭제
+    const info = document.querySelector(".hd_gnb_member_cart_info");
+    const text = document.querySelector(".hd_gnb_member_cart_text");
 
-            const productName = data.productName;
-            const productUnit = data.productUnit;
-            const quantity = data.quantity;
-            const productPrice = data.productPrice;
-            const productFile = data.productFile;
-            const productCode = data.productCode;
-            const productType = data.productType;
+    info?.querySelectorAll("a").forEach((el) => el.remove());
+    text?.querySelectorAll("a").forEach((el) => el.remove());
 
-            // 기존 이미지 & 텍스트 제거
-            const info = document.querySelector(".hd_gnb_member_cart_info");
-            const text = document.querySelector(".hd_gnb_member_cart_text");
+    // 이미지 추가
+    const imgHtml = `
+      <a href="${detailUrl}?productCode=${productCode}">
+        <img src="/files/${folder}/${productCode}/${productFile}" alt="${productName}" />
+      </a>
+    `;
+    info?.insertAdjacentHTML("afterbegin", imgHtml);
 
-            info.querySelectorAll("a").forEach((el) => el.remove());
-            text.querySelectorAll("a").forEach((el) => el.remove());
+    // 텍스트 업데이트
+    text.innerHTML = `
+      <p class="cart_product_name">${productName}</p>
+      <p class="cart_product_unit">${productUnit}</p>
+      <p class="cart_quantity">${quantity} 개</p>
+      <p class="cart_product_price">${Number(productPrice).toLocaleString("ko-KR")} 원</p>
+    `;
 
-            // 폴더 결정
-            let folder = "bean";
-            if (productType === 1) folder = "mix";
-            else if (productType === 2) folder = "cafe";
+    let count = Number(cartCount?.textContent) || 0;
+    cartCount.textContent = count + 1;
 
-            // 상세 페이지 URL 결정
-            let detailUrl = "/products/beanDetail";
-            if (productType === 1) detailUrl = "/products/mixDetail";
-            else if (productType === 2) detailUrl = "/products/cafeDetail";
+    // 숨겨둔 장바구니 활성화
+    cart?.classList.add("open");
+    background?.classList.add("visible");
 
-            // 새로운 이미지 HTML 생성 및 삽입
-            const imgHtml = `
-        <a href="${detailUrl}?productCode=${productCode}">
-          <img src="/files/${folder}/${productCode}/${productFile}" alt="${productName}" />
-        </a>
-      `;
-            info.insertAdjacentHTML("afterbegin", imgHtml);
+    // 4초 제한
+    setTimeout(() => {
+      cart?.classList.remove("open");
+      setTimeout(() => {
+        background?.classList.remove("visible");
+      }, 1000);
+    }, 4000);
 
-            // 텍스트 업데이트
-            text.innerHTML = `
-        <p class="cart_product_name">${productName}</p>
-        <p class="cart_product_unit">${productUnit}</p>
-        <p class="cart_quantity">${quantity} 개</p>
-        <p class="cart_product_price">${Number(productPrice).toLocaleString("ko-KR")} 원</p>
-      `;
+    // 클릭 이벤트 수동 닫기
+    const closeHandler = () => {
+      cart?.classList.remove("open");
+      setTimeout(() => {
+        background?.classList.remove("visible");
+      }, 1000);
+    };
 
-            // 장바구니 개수 업데이트
-            let num = Number(cartCount.textContent);
-            cartCount.textContent = num + 1;
+    document.querySelector(".cart_close_btn")?.addEventListener("click", closeHandler, { once: true });
+    background?.addEventListener("click", closeHandler, { once: true });
+  }
+  // submit 이벤트 리스너
+  document.addEventListener("submit", async (e) => {
+    if (!e.target.matches(".product_quantity_form")) return;
 
-            // 열기
-            cart.classList.add("open");
-            background.classList.add("visible");
+    e.preventDefault();
 
-            // 자동 닫기
-            setTimeout(() => {
-                cart.classList.remove("open");
-                setTimeout(() => {
-                    background.classList.remove("visible");
-                }, 1000); // transition 시간과 맞춤
-            }, 4000);
+    const form = e.target;
+    const formData = new FormData(form);
 
-            // 수동 닫기 이벤트 (한 번만 등록되도록 조정)
-            const closeHandler = () => {
-                cart.classList.remove("open");
-                setTimeout(() => {
-                    background.classList.remove("visible");
-                }, 1000);
-            };
+    try {
+      const headers = {};
+      if (window.csrf?.name && window.csrf?.value) {
+        headers[window.csrf.name] = window.csrf.value;
+      }
 
-            document.querySelector(".cart_close_btn").addEventListener("click", closeHandler);
-            background.addEventListener("click", closeHandler);
-        })
-        .catch((error) => {
-            console.error("ERROR:", error);
-        });
+      const data = await apiPostForm(
+        form.action,
+        formData,
+        headers
+      );
+
+      updateCartPreview(data);
+
+    } catch (err) {
+      console.error("장바구니 추가 실패:", err);
+    }
   });
 });
