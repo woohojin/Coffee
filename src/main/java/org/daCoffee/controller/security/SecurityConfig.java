@@ -1,14 +1,15 @@
 package org.daCoffee.controller.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.daCoffee.dto.ApiResponseDTO;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -120,9 +121,33 @@ public class SecurityConfig {
       .exceptionHandling(ex -> ex
         .accessDeniedHandler((request, response, accessDeniedException) -> {
           log.info("Access Denied: {}", accessDeniedException.getMessage());
-          String msg = URLEncoder.encode("권한이 부족합니다.", StandardCharsets.UTF_8);
-          String url = URLEncoder.encode("/member/memberSignIn", StandardCharsets.UTF_8);
-          response.sendRedirect("/alert?msg=" + msg + "&url=" + url);
+
+          response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+          response.setContentType("application/json;charset=UTF-8");
+
+          ApiResponseDTO<Void> apiResponse = ApiResponseDTO.error(
+            "권한이 부족합니다.",
+            "/member/memberSignIn",
+            403
+          );
+
+          ObjectMapper objectMapper = new ObjectMapper();
+          response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
+        })
+        .authenticationEntryPoint((request, response, authException) -> {
+          log.info("Authentication Required: {}", authException.getMessage());
+
+          response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+          response.setContentType("application/json;charset=UTF-8");
+
+          ApiResponseDTO<Void> apiResponse = ApiResponseDTO.error(
+            "로그인이 필요합니다.",
+            "/member/memberSignIn",
+            401
+          );
+
+          ObjectMapper objectMapper = new ObjectMapper();
+          response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
         })
       );
     http.addFilterAfter(
