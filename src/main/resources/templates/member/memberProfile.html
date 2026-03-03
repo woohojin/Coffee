@@ -177,8 +177,8 @@
     </main>
     <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script th:src="@{/js/daumAddress.js}" th:nonce="${cspNonce}"></script>
-    <script th:src="@{/js/profile.js}" th:nonce="${cspNonce}"></script>
+    <script type="module" th:src="@{/js/profile.js}" th:nonce="${cspNonce}"></script>
     <script th:src="@{/js/signUpFormScript.js}" th:nonce="${cspNonce}"></script>
-    <script th:src="@{/js/emailVerification.js}" th:nonce="${cspNonce}"></script>
+    <script type="module" th:src="@{/js/emailVerification.js}" th:nonce="${cspNonce}"></script>
 </body>
 </html>
