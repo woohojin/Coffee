@@ -1,4 +1,5 @@
-let code;
+import { apiPost } from "./api-utils.js";
+
 let countdownInterval;
 let isVerified = false;
 let isEmailSending = false;
@@ -9,93 +10,68 @@ document.addEventListener('DOMContentLoaded', () => {
   const verifyBtn = document.getElementById('send-verify-btn');
   if (verifyBtn) {
     verifyBtn.addEventListener('click', async () => {
-      await verifyEmail();
+      await sendVerifyEmail();
+    });
+  }
+
+  const signUpForm = document.getElementById('signUpForm');
+  if (signUpForm) {
+    signUpForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const verified = await checkVerify();
+      if (verified) {
+        signUpForm.submit();
+      }
     });
   }
 });
 
-async function verifyEmail() {
-  let memberEmail = document.querySelector('.member_email').value;
+async function sendVerifyEmail() {
+  const memberEmail = document.querySelector('.member_email').value;
 
-  if (emailRegex.test(memberEmail) === false) {
+  if (!emailRegex.test(memberEmail)) {
     alert("이메일 형식이 올바르지 않습니다.");
     return;
   }
 
-  if (!isEmailSending && !isVerified) {
-    isEmailSending = true;
-
-    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-
-    const params = new URLSearchParams();
-    params.append("memberEmail", memberEmail);
-
-    try {
-      const response = await fetch("../member/verifyEmail", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          [csrfHeader]: csrfToken
-        },
-        body: params
-      });
-
-      if (response.ok) {
-        const responseData = await response.json();
-        code = responseData.code;
-
-        if (countdownInterval) {
-          clearInterval(countdownInterval);
-        }
-
-        alert("인증번호가 전송되었습니다.");
-        startCountdown();
-        document.querySelector(".verify_code").focus();
-
-        setTimeout(() => {
-          isEmailSending = false;
-        }, 60000);
-      } else {
-        console.error("요청 실패 : ", response.status);
-        alert("인증번호 발송에 실패했습니다.");
-      }
-    } catch (err) {
-      console.error("에러 : ", err);
-      alert("인증번호 발송에 실패했습니다.");
-    }
-  } else if (isVerified) {
+  if (isVerified) {
     alert("이미 인증하셨습니다.");
-  } else {
+    return;
+  }
+
+  if (isEmailSending) {
     alert("1분 뒤에 인증번호를 재전송 할 수 있습니다.");
+    return;
+  }
+
+  try {
+    await apiPost('/api/member/verifyEmail', { memberEmail });
+
+    if (countdownInterval) clearInterval(countdownInterval);
+
+    alert("인증번호가 전송되었습니다.");
+    startCountdown();
+    document.querySelector(".verify_code").focus();
+
+    setTimeout(() => {
+      isEmailSending = false;
+    }, 60000);
+
+  } catch (err) {
+    console.error("이메일 전송 실패:", err);
+    isEmailSending = false;
   }
 }
 
-// 회원가입 버튼 클릭 이벤트
-document.addEventListener('DOMContentLoaded', () => {
-  const signUpForm = document.getElementById('signUpForm');
-  if (signUpForm) {
-    signUpForm.addEventListener('submit', (event) => {
-      if (!checkVerify()) {
-        event.preventDefault();
-        return false;
-      }
-    });
-  }
-});
+async function checkVerify() {
+  const verifyCode = document.querySelector(".verify_code").value;
 
-function checkVerify() {
-  let verifyCode = document.querySelector(".verify_code").value;
-
-  if(code === "timeout") {
-    alert("인증시간이 초과되었습니다.");
-    return false;
-  }
-
-  if(code === verifyCode && !(code === "timeout")) {
+  try {
+    await apiPost('/api/member/verifyCode', { verifyCode });
+    isVerified = true;
     return true;
-  } else {
-    alert("인증번호가 일치하지 않습니다.");
+  } catch (err) {
+    console.error("인증 실패:", err);
     return false;
   }
 }
@@ -109,7 +85,6 @@ function startCountdown() {
   countdownInterval = setInterval(function () {
     let now = new Date().getTime(); // 현재시간
     let distance = endTime - now; // 현재와 종료시간의 차이 (남은시간을 분과 초로 바꾸기 위해)
-
     let minutes = Math.floor((distance / 1000) / 60);
     let seconds = Math.floor((distance / 1000) % 60);
 
@@ -118,28 +93,20 @@ function startCountdown() {
     if (distance <= 0) {
       clearInterval(countdownInterval);
       countdown.textContent = '0 : 0';
-      code = "timeout";
     }
   }, 1000);
 }
 
-function stopCountdown() {
-  const verifyBtn = document.querySelector('#verify-btn');
-  let countdown = document.querySelector('.countdown');
-
-  verifyBtn.addEventListener('click', () => {
-    let verifyCode = document.querySelector(".verify_code").value;
-    
-    if(code === null || code !== verifyCode || code === "") {
-      alert("인증에 실패했습니다.");
-      return;
-    }
-
-    clearInterval(countdownInterval);
-    countdown.textContent = "";
-    isVerified = true;
-    alert("인증이 완료되었습니다.");
-  })
-}
-
-stopCountdown();
+document.addEventListener('DOMContentLoaded', () => {
+  const verifyCodeBtn = document.querySelector('#verify-btn');
+  if (verifyCodeBtn) {
+    verifyCodeBtn.addEventListener('click', async () => {
+      const verified = await checkVerify();
+      if (verified) {
+        clearInterval(countdownInterval);
+        document.querySelector('.countdown').textContent = "";
+        alert("인증이 완료되었습니다.");
+      }
+    });
+  }
+});
