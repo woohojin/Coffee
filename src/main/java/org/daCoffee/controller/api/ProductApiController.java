@@ -4,7 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dao.ImageDAO;
 import org.daCoffee.dao.ProductDAO;
+import org.daCoffee.dto.ApiResponseDTO;
 import org.daCoffee.dto.ProductDTO;
+import org.daCoffee.exception.BusinessException;
+import org.daCoffee.exception.NotFoundException;
+import org.daCoffee.exception.UnauthorizedException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,22 +43,16 @@ public class ProductApiController {
   }
 
   @GetMapping
-  public ResponseEntity<Map<String, Object>> getProductList(
+  public ResponseEntity<ApiResponseDTO<Map<String, Object>>> getProductList(
     @RequestParam(value = "pageType", defaultValue = "bean") String pageType,
     @RequestParam(defaultValue = "1") int pageInt,
-    @SessionAttribute Integer memberTier) {
+    @SessionAttribute(required = false) Integer memberTier) {
 
     if(memberTier == null) memberTier = 0;
 
-    if (memberTier == 0) {
-      // 로그인 안 된 경우 빈 리스트 반환
-      Map<String, Object> response = new HashMap<>();
-      response.put("list", List.of());
-      response.put("productCount", 0);
-      response.put("start", 1);
-      response.put("end", 1);
-      response.put("pageInt", pageInt);
-      return ResponseEntity.ok(response);
+    // 직접 memberTier를 체크해서 예외처리가 이루어지기 때문에 파라미터에서는 required가 false
+    if(memberTier == 0) {
+      throw new UnauthorizedException();
     }
 
     int productType = switch (pageType) {
@@ -64,7 +62,7 @@ public class ProductApiController {
         memberTier = 1; // 카페용품은 등급 1 고정
         yield 2;
       }
-      default -> throw new IllegalArgumentException("Invalid pageType: " + pageType);
+      default -> throw new BusinessException("잘못된 상품 타입입니다.");
     };
 
     productDao.rownumSet();
@@ -75,29 +73,27 @@ public class ProductApiController {
     int start = paginationInfo.get("start");
     int end = paginationInfo.get("end");
 
-    Map<String, Object> response = new HashMap<>();
-    response.put("list", list);
-    response.put("productCount", productCount);
-    response.put("start", start);
-    response.put("end", end);
-    response.put("pageInt", pageInt);
-    response.put("pageType", pageType);
-    response.put("memberTier", memberTier);
+    Map<String, Object> data = new HashMap<>();
 
-    return ResponseEntity.ok(response);
+    data.put("list", list);
+    data.put("productCount", productCount);
+    data.put("start", start);
+    data.put("end", end);
+    data.put("pageInt", pageInt);
+    data.put("pageType", pageType);
+    data.put("memberTier", memberTier);
+
+    return ResponseEntity.ok(ApiResponseDTO.success(data));
   }
 
   @GetMapping("/{productCode}")
-  public ResponseEntity<Map<String, Object>> getProductDetail(@PathVariable("productCode") String productCode,
-                                                              @SessionAttribute Integer memberTier,
+  public ResponseEntity<ApiResponseDTO<Map<String, Object>>> getProductDetail(@PathVariable("productCode") String productCode,
+                                                              @SessionAttribute(required = false) Integer memberTier,
                                                               @RequestParam(defaultValue = "bean") String pageType) {
     if(memberTier == null) memberTier = 0;
 
-    Map<String, Object> response = new HashMap<>();
-
     if(memberTier == 0) {
-      response.put("memberTier", 0);
-      return ResponseEntity.ok(response);
+      throw new UnauthorizedException();
     }
 
     int productType = switch (pageType) {
@@ -106,26 +102,26 @@ public class ProductApiController {
       default -> 0; // bean
     };
 
-    ProductDTO product;
-
-    product = switch (pageType) {
+    ProductDTO product = switch (pageType) {
       case "mix" -> productDao.mixSelectOne(productCode);
-      case "cafe" -> productDao.productSelectOne(productCode);
+      case "cafe" -> productDao.productSelectOne(productCode); // cafe는 product 테이블에 필요 상품 데이터가 다 들어있음
       default -> productDao.beanSelectOne(productCode); // bean
     };
 
     if (product == null) {
-      return ResponseEntity.notFound().build();
+      throw new NotFoundException("상품을 찾을 수 없습니다.");
     }
 
     String detailImageName = imageDao.selectDetailImage(productCode);
     int productCount = productDao.productCountByTierByProductType(memberTier, productType);
 
-    response.put("memberTier", memberTier);
-    response.put("productCount", productCount);
-    response.put("product", product);
-    response.put("detailImageName", detailImageName);
+    Map<String, Object> data = new HashMap<>();
 
-    return ResponseEntity.ok(response);
+    data.put("memberTier", memberTier);
+    data.put("productCount", productCount);
+    data.put("product", product);
+    data.put("detailImageName", detailImageName);
+
+    return ResponseEntity.ok(ApiResponseDTO.success(data));
   }
 }
