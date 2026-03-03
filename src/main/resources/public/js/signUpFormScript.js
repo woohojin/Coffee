@@ -155,7 +155,7 @@ function inputFileName() {
 document.getElementById("member_email").addEventListener("keypress", function(event) {
   if (event.key === "Enter") {
     event.preventDefault();
-    verifyEmail();
+    sendVerifyEmail();  // verifyEmail() → sendVerifyEmail()
     document.querySelector(".verify_code").focus();
   }
 });
@@ -163,7 +163,7 @@ document.getElementById("member_email").addEventListener("keypress", function(ev
 document.querySelector(".verify_code").addEventListener("keypress", function(event) {
   if (event.key === "Enter") {
     event.preventDefault();
-    stopCountdown();
+    document.getElementById('verify-btn').click();
   }
 });
 
