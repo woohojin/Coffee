@@ -1,4 +1,4 @@
-import {apiPostForm} from "./api-utils";
+import {apiPostForm} from "./api-utils.js";
 
 function increaseCartQuantity(num) {
     updateCart(num, 1);

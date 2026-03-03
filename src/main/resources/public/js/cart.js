@@ -1,4 +1,4 @@
-import { apiGet, apiPostForm} from './api-utils'
+import { apiGet, apiPostForm} from './api-utils.js'
 
 function formatPrice(price) {
   if (!price) return '0';

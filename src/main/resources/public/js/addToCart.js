@@ -1,4 +1,4 @@
-import {apiPostForm} from "./api-utils";
+import {apiPostForm} from "./api-utils.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   function updateCartPreview(data) {
