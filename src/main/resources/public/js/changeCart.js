@@ -1,3 +1,5 @@
+import {apiPostForm} from "./api-utils";
+
 function increaseCartQuantity(num) {
     updateCart(num, 1);
 }
@@ -39,57 +41,18 @@ function updateCart(num, change) {
     formData.append('quantity', quantity);
     formData.append('productCode', productCode);
 
-    const csrfToken = document.getElementById('csrf-token');
-    if (csrfToken) {
-        formData.append(csrfToken.name, csrfToken.value);
+    const headers = {};
+    if (window.csrf?.name && window.csrf?.value) {
+        headers[window.csrf.name] = window.csrf.value;
     }
 
-    fetch('/api/member/cart/update', {
-        method: 'POST',
-        body: formData,
-        credentials: 'include'
-    })
-      .then(response => {
-          if (!response.ok) {
-              // 403이나 401이면 로그인 페이지 반환될 수 있음
-              if (response.status === 403 || response.status === 401) {
-                  alert('로그인 세션이 만료되었습니다. 다시 로그인해주세요.');
-                  location.href = '/member/memberSignIn';
-                  return;
-              }
-              throw new Error('장바구니 처리 실패');
-          }
-          return response.json();
-      })
+    apiPostForm('/api/member/cart/update', formData, headers)
       .then(data => {
-          if (data.success) {
-              renderCart(data);  // 장바구니 다시 렌더링
-          } else {
-              alert(data.message || '처리 중 오류 발생. 다시 시도 해주세요.');
-          }
+          // 여기서 data.success 체크 필요 없음 → 성공 시에만 여기로 옴
+          renderCart(data);
       })
       .catch(err => {
-          console.error(err);
+          console.error("장바구니 업데이트 실패:", err);
           alert('오류가 발생했습니다. 다시 시도 해주세요.');
       });
-
-
-// function changeGrinding(num) {
-//     const form = document.querySelector(".grinding_form" + num);
-//     const status = document.querySelector(".grinding_status" + num);
-//     const productGrinding = form.querySelector('select[name="productGrinding"]');
-//
-//     const formElements = form.elements;
-//     console.log(formElements);
-//
-//     // productGrinding이 선택되었는지 확인
-//     console.log(productGrinding);
-//
-//     status.value = 2;
-//
-//     const formData = new FormData(form);
-//
-//     for(const pair of formData.entries()) {
-//         console.log(pair[0] + ', ' + pair[1]);
-//     }
 }
