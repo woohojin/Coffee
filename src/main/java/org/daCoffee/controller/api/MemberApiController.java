@@ -288,20 +288,36 @@ public class MemberApiController {
 
   @PostMapping("/findAccount")
   public Map<String, Object> findAccount(
-    @RequestParam String findType,
-    @RequestParam(required = false) String memberName,
-    @RequestParam(required = false) String memberEmail,
-    @RequestParam(required = false) String memberId,
-    @RequestParam String verifyCode,
+    @RequestBody Map<String, String> body,
     HttpSession session) {
+
+    String findType = body.get("findType");
+    String memberName = body.get("memberName");
+    String memberEmail = body.get("memberEmail");
+    String memberId = body.get("memberId");
+    String verifyCode = body.get("verifyCode");
 
     Map<String, Object> response = new HashMap<>();
 
     // 인증번호 검증
     String storedCode = (String) session.getAttribute("storedVerifyCode");
-    if (verifyCode == null || "timeout".equals(verifyCode) || !verifyCode.equals(storedCode)) {
+    Long expiry = (Long) session.getAttribute("verifyCodeExpiry");
+
+    if (storedCode == null || expiry == null) {
       response.put("success", false);
-      response.put("message", "인증번호가 일치하지 않거나 만료되었습니다.");
+      response.put("message", "인증번호를 먼저 요청해주세요.");
+      return response;
+    }
+
+    if (System.currentTimeMillis() > expiry) {
+      response.put("success", false);
+      response.put("message", "인증시간이 초과되었습니다.");
+      return response;
+    }
+
+    if (!verifyCode.equals(storedCode)) {
+      response.put("success", false);
+      response.put("message", "인증번호가 일치하지 않습니다.");
       return response;
     }
 
@@ -309,8 +325,10 @@ public class MemberApiController {
       List<MemberDTO> list = memberDao.memberFindId(memberName, memberEmail);
       if (list != null && !list.isEmpty()) {
         List<String> ids = list.stream().map(MemberDTO::getMemberId).toList();
+        Map<String, Object> data = new HashMap<>();
+        data.put("ids", ids);
         response.put("success", true);
-        response.put("ids", ids);
+        response.put("data", data);
       } else {
         response.put("success", false);
         response.put("message", "이름 또는 이메일이 일치하지 않습니다.");

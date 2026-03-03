@@ -1,27 +1,28 @@
+import { apiPost } from "./api-utils.js";
+
 document.addEventListener('DOMContentLoaded', () => {
   // meta 태그에서 값 읽어오기
   const findType = document.querySelector('meta[name="findType"]')?.content || 'id';
-  const verifyEmailUrl = document.querySelector('meta[name="verifyEmailUrl"]')?.content || '';
   const findAccountUrl = document.querySelector('meta[name="findAccountUrl"]')?.content || '';
-  const apiFindAccountUrl = document.querySelector('meta[name="apiFindAccountUrl"]')?.content || '';
 
-  let code;
   let countdownInterval;
+  let isEmailSending = false;
   const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   window.toggleFindType = function(object) {
     window.location.href = findAccountUrl + "?findType=" + object.value;
   };
 
-  window.verifyEmail = function() {
-    let memberEmail = document.querySelector('.member_email')?.value || '';
+  window.sendVerifyEmail = async function() {
+    const memberEmail = document.querySelector('.member_email')?.value || '';
+
     if (!emailRegex.test(memberEmail)) {
       alert("이메일 형식이 올바르지 않습니다.");
       return;
     }
 
     if (findType === 'id') {
-      let memberName = document.querySelector('.member_name')?.value || '';
+      const memberName = document.querySelector('.member_name')?.value || '';
       if (memberName.trim() === '' || memberEmail.trim() === '') {
         alert('이름과 이메일을 입력하세요.');
         return;
@@ -29,56 +30,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (findType === 'password') {
-      let memberId = document.querySelector('.member_id')?.value || '';
+      const memberId = document.querySelector('.member_id')?.value || '';
       if (memberId.trim() === '' || memberEmail.trim() === '') {
         alert('아이디와 이메일을 입력하세요.');
         return;
       }
     }
 
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', verifyEmailUrl, true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        if (xhr.status === 200) {
-          let response = JSON.parse(xhr.responseText);
-          code = response.code;
-          startCountdown();
-          alert("인증번호가 전송되었습니다.");
-        } else {
-          console.error('요청 실패');
-        }
-      }
-    };
-    let params = 'memberEmail=' + encodeURIComponent(memberEmail);
-    xhr.send(params);
-  };
-
-  window.checkVerify = function() {
-    let verifyCode = document.querySelector(".verify_code")?.value || '';
-    if (code === "timeout") {
-      alert("인증시간이 초과되었습니다.");
-      return false;
-    }
-    if (code === verifyCode && code !== "timeout") {
-      return true;
-    } else {
-      alert("인증번호가 일치하지 않습니다.");
-      return false;
-    }
-  };
-
-  window.stopCountdown = function() {
-    let verifyCode = document.querySelector(".verify_code")?.value || '';
-    let countdown = document.querySelector('.countdown');
-    if (code != null && code !== verifyCode) {
-      alert("인증에 실패했습니다.");
+    if (isEmailSending) {
+      alert("1분 뒤에 인증번호를 재전송 할 수 있습니다.");
       return;
     }
-    clearInterval(countdownInterval);
-    countdown.textContent = "";
-    alert("인증이 완료되었습니다.");
+
+    isEmailSending = true;
+
+    try {
+      await apiPost('/api/member/verifyEmail', { memberEmail });
+
+      if (countdownInterval) clearInterval(countdownInterval);
+
+      alert("인증번호가 전송되었습니다.");
+      startCountdown();
+      document.querySelector(".verify_code").focus();
+
+      setTimeout(() => {
+        isEmailSending = false;
+      }, 60000);
+
+    } catch (err) {
+      console.error("이메일 전송 실패:", err);
+      isEmailSending = false;
+    }
   };
 
   // 폼 submit 이벤트
@@ -87,47 +69,32 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
 
-      if (!window.checkVerify()) return;
-
-      const params = new URLSearchParams();
-      params.append('findType', document.querySelector('input[name="findType"]:checked')?.value || '');
-      params.append('memberName', document.querySelector('.member_name')?.value || '');
-      params.append('memberEmail', document.querySelector('.member_email')?.value || '');
-      params.append('memberId', document.querySelector('.member_id')?.value || '');
-      params.append('verifyCode', document.querySelector('.verify_code')?.value || '');
-
-      const csrfToken = document.getElementById('csrf-token');
-      if (csrfToken) {
-        params.append(csrfToken.name, csrfToken.value);
-      }
+      const verifyCode = document.querySelector('.verify_code')?.value || '';
 
       try {
-        const response = await fetch(apiFindAccountUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: params,
-          credentials: 'include'
+        const data = await apiPost('/api/member/findAccount', {
+          findType,
+          memberName: document.querySelector('.member_name')?.value || '',
+          memberEmail: document.querySelector('.member_email')?.value || '',
+          memberId: document.querySelector('.member_id')?.value || '',
+          verifyCode
         });
 
-        const data = await response.json();
+        if (findType === 'id') {
+          const resultDiv = document.getElementById('find-result');
+          const idList = document.getElementById('id-list');
 
-        const resultDiv = document.getElementById('find-result');
-        const messageP = document.getElementById('result-message');
-        const idList = document.getElementById('id-list');
-
-        if (messageP) messageP.textContent = data.message;
-        if (resultDiv) resultDiv.style.display = 'block';
-
-        if (data.success && data.ids && idList) {
-          idList.innerHTML = data.ids.map(id => `<p>회원님의 아이디는 ${id} 입니다.</p>`).join('');
-        } else if (data.success) {
-          alert(data.message);
+          if (resultDiv) resultDiv.style.display = 'block';
+          if (idList && data.ids) {
+            idList.innerHTML = data.ids.map(id => `<p>회원님의 아이디는 ${id} 입니다.</p>`).join('');
+          }
+        } else {
+          alert("임시 비밀번호가 이메일로 전송되었습니다.");
           location.href = '/member/memberSignIn';
-        } else if (idList) {
-          idList.innerHTML = '';
         }
+
       } catch (err) {
-        alert('처리 중 오류 발생');
+        console.error("계정 찾기 실패:", err);
       }
     });
   }
@@ -136,7 +103,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const sendVerifyBtn = document.getElementById('send-verify-btn');
   if (sendVerifyBtn) {
     sendVerifyBtn.addEventListener('click', () => {
-      verifyEmail();
+      window.sendVerifyEmail();
     });
+  }
+
+  function startCountdown() {
+    const countdown = document.querySelector('.countdown');
+    const endTime = new Date().getTime() + 180 * 1000;
+
+    countdownInterval = setInterval(() => {
+      const distance = endTime - new Date().getTime();
+      const minutes = Math.floor((distance / 1000) / 60);
+      const seconds = Math.floor((distance / 1000) % 60);
+
+      countdown.textContent = minutes + ' : ' + seconds;
+
+      if (distance <= 0) {
+        clearInterval(countdownInterval);
+        countdown.textContent = '0 : 0';
+      }
+    }, 1000);
   }
 });
