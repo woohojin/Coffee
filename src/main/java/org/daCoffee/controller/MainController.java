@@ -23,6 +23,11 @@ import org.springframework.stereotype.Controller;
 @Slf4j
 public class MainController {
     private final DataSource ds;
+
+    @RequestMapping("")
+    public String root() {
+        return "redirect:/main";
+    }
     
     @RequestMapping("main")
     public String main(HttpSession session, Model model) {
