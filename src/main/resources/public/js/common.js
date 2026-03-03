@@ -1,3 +1,17 @@
+// csrf
+document.addEventListener('DOMContentLoaded', () => {
+  const tokenEl = document.getElementById('csrf-token');
+  if (tokenEl) {
+    window.csrf = {
+      name: tokenEl.name,
+      value: tokenEl.value
+    };
+  } else {
+    console.warn('CSRF 토큰 meta 태그를 찾을 수 없습니다.');
+  }
+});
+
+
 // main
 document.addEventListener("DOMContentLoaded", function() {
   const memberId = /*[[${session.memberId}]]*/ '';
