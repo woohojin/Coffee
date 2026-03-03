@@ -1,8 +1,8 @@
+import { apiGet } from "./api-utils.js";
+
 const productCode = document.querySelector('meta[name="product-code"]')?.content || '';
 const memberTier  = Number(document.querySelector('meta[name="member-tier"]')?.content || 0);
 const pageType    = document.querySelector('meta[name="page-type"]')?.content || 'cafe';
-const csrfHeader  = document.querySelector('meta[name="csrf-name"]')?.content || '';
-const csrfToken   = document.querySelector('meta[name="csrf-token"]')?.content || '';
 
 function formatPrice(price) {
   if (!price) return '0';
@@ -46,26 +46,13 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-function loadProductDetail() {
-  if (!productCode) {
-    document.getElementById('detail-container').innerHTML = '<p>상품 코드가 없습니다.</p>';
-    return;
+async function loadProductDetail() {
+  try {
+    const data = await apiGet(`/api/products/${productCode}?pageType=${pageType}`);
+    renderDetail(data);
+  } catch (err) {
+    console.error("상품 상세 로드 실패:", err);
   }
-
-  fetch(`/api/products/${productCode}?pageType=${pageType}`, { credentials: 'include' })
-    .then(response => {
-      if (!response.ok) {
-        if (response.status === 404) throw new Error('상품을 찾을 수 없습니다.');
-        if (response.status === 403) throw new Error('로그인이 필요합니다.');
-        throw new Error(`서버 오류가 발생했습니다 (${response.status})`);
-      }
-      return response.json();
-    })
-    .then(data => renderDetail(data))
-    .catch(err => {
-      document.getElementById('detail-container').innerHTML =
-        `<p style="text-align:center; color:red;">${err.message}</p>`;
-    });
 }
 
 function renderDetail(data) {
@@ -251,7 +238,3 @@ function renderDetail(data) {
 
   updateTotalPrice();
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  loadProductDetail();
-});
