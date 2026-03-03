@@ -51,8 +51,8 @@ public class ProductApiController {
     if(memberTier == null) memberTier = 0;
 
     // 직접 memberTier를 체크해서 예외처리가 이루어지기 때문에 파라미터에서는 required가 false
-    if(memberTier == 0) {
-      throw new UnauthorizedException();
+    if (memberTier == 0) {
+      throw new UnauthorizedException("회원가입 진행 후 1566-0904로 연락 부탁드립니다.");
     }
 
     int productType = switch (pageType) {
@@ -92,8 +92,8 @@ public class ProductApiController {
                                                               @RequestParam(defaultValue = "bean") String pageType) {
     if(memberTier == null) memberTier = 0;
 
-    if(memberTier == 0) {
-      throw new UnauthorizedException();
+    if (memberTier == 0) {
+      throw new UnauthorizedException("회원가입 진행 후 1566-0904로 연락 부탁드립니다.");
     }
 
     int productType = switch (pageType) {

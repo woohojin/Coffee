@@ -1,6 +1,7 @@
+import { apiGet } from "./api-utils.js";
+
 document.addEventListener('DOMContentLoaded', () => {
   const pageType = document.querySelector('meta[name="pageType"]')?.content || 'bean';
-  const memberTier = Number(document.querySelector('meta[name="memberTier"]')?.content || 0);
 
   let currentPage = 1;
 
@@ -9,39 +10,16 @@ document.addEventListener('DOMContentLoaded', () => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
-  function loadProducts(page = 1) {
+  async function loadProducts(page = 1) {
     currentPage = page;
 
-    fetch(`/api/products?pageType=${pageType}&page=${page}`, {
-      credentials: 'include'
-    })
-      .then(response => {
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return response.json();
-      })
-      .then(data => {
-        const container = document.getElementById('product-container');
-        const pagination = document.querySelector('.pagination');
-
-        if (data.memberTier === 0) {
-          container.innerHTML = `
-            <div class="denied-text">
-              <p>로그인을 진행하시거나</p>
-              <br/>
-              <p>최초 회원가입 진행 후에 1566-0904로 연락 부탁드립니다.</p>
-            </div>
-          `;
-          pagination.innerHTML = '';
-          return;
-        }
-
-        renderProductList(data.list, data.pageType);
-        renderPagination(data.start, data.end, data.pageInt, data.productCount);
-      })
-      .catch(err => {
-        console.error(err);
-        document.getElementById('product-container').innerHTML = '<p>데이터를 불러오는 데 실패했습니다.</p>';
-      });
+    try {
+      const data = await apiGet(`/api/products?pageType=${pageType}&page=${page}`);
+      renderProductList(data.list, data.pageType);
+      renderPagination(data.start, data.end, data.pageInt, data.productCount);
+    } catch (err) {
+      console.error("상품 목록 로드 실패:", err);
+    }
   }
 
   function renderProductList(list, pageType) {
