@@ -3,8 +3,8 @@ export async function apiRequest(url, options = {}) {
     const response = await fetch(url, {
       ...options,
       headers: {
-        'Content-Type': 'application/json',
         'Accept': 'application/json',
+        ...(options.body instanceof FormData ? {} : { 'Content-Type': 'application/json' }), // FormData가 아닌 경우 json으로
         ...options.headers
       },
       credentials: 'same-origin'
@@ -48,15 +48,14 @@ export async function apiPost(url, data) {
   });
 }
 
-// customHeaders = apiRequest에 설정한 기본 header 설정을 무시하기 위해 (FormData)
+// customHeaders = CSRF 토큰이 포함된 헤더
 export async function apiPostForm(url, formData, customHeaders = {}) {
   return apiRequest(url, {
     method: 'POST',
     body: formData,
-    headers: customHeaders,
+    headers: customHeaders
   });
 }
-
 export async function apiPut(url, data) {
   return apiRequest(url, {
     method: 'PUT',
