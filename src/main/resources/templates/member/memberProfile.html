@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
   <body layout:fragment="content">
-  <meta name="originalEmail" content="[[${member.memberEmail}]]">
+  <meta name="originalEmail" th:content="${member.memberEmail}">
+  <input type="hidden" id="csrf-token" th:name="${_csrf.headerName}" th:value="${_csrf.token}" />
     <main id="member_profile_page">
       <div class="page_head">
         <a href="">
@@ -69,13 +70,13 @@
               <td>
                 <ul>
                   <li>
-                    <input name="memberAddress" id="member_address" type="text" placeholder="주소 찾기 버튼을 이용해 주세요" readonly spellcheck="false" required />
+                    <input name="memberAddress" id="member_address" type="text" placeholder="주소 찾기 버튼을 이용해 주세요" readonly spellcheck="false" required th:value="${member.memberAddress}" />
                   </li>
                   <div class="member_address_button">
                     <button id="address-btn" class="input_btn" type="button">주소 찾기</button>
                   </div>
                   <li>
-                    <input name="memberDetailAddress" id="member_detail_address" type="text" placeholder="상세주소를 입력해주세요" spellcheck="false" required />
+                    <input name="memberDetailAddress" id="member_detail_address" type="text" placeholder="상세주소를 입력해주세요" spellcheck="false" required th:value="${member.memberDetailAddress}" />
                   </li>
                 </ul>
               </td>
