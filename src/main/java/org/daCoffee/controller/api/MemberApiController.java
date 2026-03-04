@@ -435,7 +435,8 @@ public class MemberApiController {
   }
 
   @PostMapping("/verifyEmail")
-  public Map<String, Object> verifyEmail(HttpSession session, @RequestParam String memberEmail) {
+  public Map<String, Object> verifyEmail(HttpSession session, @RequestBody Map<String, String> body) {
+    String memberEmail = body.get("memberEmail");
     Map<String, Object> response = new HashMap<>();
 
     try {
@@ -459,7 +460,8 @@ public class MemberApiController {
   }
 
   @PostMapping("/verifyCode")
-  public Map<String, Object> verifyCode(HttpSession session, @RequestParam String verifyCode) {
+  public Map<String, Object> verifyCode(HttpSession session, @RequestBody Map<String, String> body) {
+    String verifyCode = body.get("verifyCode");
     Map<String, Object> response = new HashMap<>();
 
     String storedCode = (String) session.getAttribute("storedVerifyCode");
