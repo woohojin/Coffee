@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import org.thymeleaf.exceptions.TemplateInputException;
 
 import java.security.NoSuchAlgorithmException;
@@ -135,6 +136,20 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(NoHandlerFoundException.class)
   public ResponseEntity<ApiResponseDTO<Void>> handleNoHandlerFoundException(NoHandlerFoundException e) {
     log.error("Page not found: {}", e.getRequestURL(), e);
+
+    ApiResponseDTO<Void> response = ApiResponseDTO.error(
+      "요청한 리소스를 찾을 수 없습니다.",
+      404
+    );
+
+    return ResponseEntity
+      .status(HttpStatus.NOT_FOUND)
+      .body(response);
+  }
+
+  @ExceptionHandler(NoResourceFoundException.class)
+  public ResponseEntity<ApiResponseDTO<Void>> handleNoResourceFoundException(NoResourceFoundException e) {
+    log.error("Resource not found: {}", e.getMessage());
 
     ApiResponseDTO<Void> response = ApiResponseDTO.error(
       "요청한 리소스를 찾을 수 없습니다.",
