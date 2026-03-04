@@ -1,10 +1,16 @@
 export async function apiRequest(url, options = {}) {
   try {
+    const csrfHeaders = {};
+    if (window.csrf?.name && window.csrf?.value) {
+      csrfHeaders[window.csrf.name] = window.csrf.value;
+    }
+
     const response = await fetch(url, {
       ...options,
       headers: {
         'Accept': 'application/json',
         ...(options.body instanceof FormData ? {} : { 'Content-Type': 'application/json' }), // FormData가 아닌 경우 json으로
+        ...csrfHeaders,
         ...options.headers
       },
       credentials: 'same-origin'
@@ -48,12 +54,10 @@ export async function apiPost(url, data) {
   });
 }
 
-// customHeaders = CSRF 토큰이 포함된 헤더
-export async function apiPostForm(url, formData, customHeaders = {}) {
+export async function apiPostForm(url, formData = {}) {
   return apiRequest(url, {
     method: 'POST',
     body: formData,
-    headers: customHeaders
   });
 }
 export async function apiPut(url, data) {
