@@ -146,7 +146,12 @@ document.addEventListener('click', async (e) => {
   formData.set('status', status);
 
   try {
-    const data = await apiPostForm('/api/member/cart/update', formData);
+    const headers = {};
+    if (window.csrf?.name && window.csrf?.value) {
+      headers[window.csrf.name] = window.csrf.value;
+    }
+
+    const data = await apiPostForm('/api/member/cart/update', formData, headers);
 
     // 주문 요약 업데이트
     document.getElementById('sum-price').textContent = formatPrice(data.sumPrice) + " 원";
