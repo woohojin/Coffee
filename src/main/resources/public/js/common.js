@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const tokenEl = document.getElementById('csrf-token');
   if (tokenEl) {
     window.csrf = {
-      name: tokenEl.name,
+      name: 'X-CSRF-TOKEN',
       value: tokenEl.value
     };
   } else {
