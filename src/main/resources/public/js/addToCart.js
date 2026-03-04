@@ -87,15 +87,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const formData = new FormData(form);
 
     try {
-      const headers = {};
-      if (window.csrf?.name && window.csrf?.value) {
-        headers[window.csrf.name] = window.csrf.value;
-      }
-
       const data = await apiPostForm(
         form.action,
-        formData,
-        headers
+        formData
       );
 
       updateCartPreview(data);
