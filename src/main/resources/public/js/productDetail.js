@@ -140,7 +140,7 @@ function renderDetail(data) {
             <tbody>${tableRows}</tbody>
           </table>
           <div>
-            <form class="product_quantity_form" action="/products/productDetailPro" method="post">
+            <form class="product_quantity_form" action="/api/member/cart/add" method="post">
               <input type="hidden" name="productCode" value="${p.productCode}" />
               <p>${p.productName} ${p.productUnit}</p>
               <div class="product_quantity">

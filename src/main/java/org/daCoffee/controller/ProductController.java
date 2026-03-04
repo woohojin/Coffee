@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dao.CartDAO;
-import org.daCoffee.dao.ImageDAO;
 import org.daCoffee.dao.ProductDAO;
 import org.daCoffee.dto.CartDTO;
 import org.daCoffee.dto.ProductDTO;
@@ -108,81 +107,6 @@ public class ProductController {
   @RequestMapping("machineDetail")
   public String machineDetail() {
     return "products/machineDetail";
-  }
-
-  @PostMapping("productDetailPro")
-  @ResponseBody
-  public Map<String, Object> productDetailPro(HttpSession session, CartDTO cartDTO,
-                                              @RequestParam(value = "additionalProducts", required = false) List<String> additionalProductsCodes) {
-    Map<String, Object> map = new HashMap<>();
-
-    String msg = "장바구니 추가 실패";
-    String memberId = (String) session.getAttribute("memberId");
-
-    //추가 상품 부분
-
-    if (additionalProductsCodes != null && !additionalProductsCodes.isEmpty()) {
-      for (String additionalProductsCode : additionalProductsCodes) {
-        if(!additionalProductsCode.equals("none")) {
-          CartDTO cartDTOCheck = cartDao.cartSelectOne(memberId, additionalProductsCode);
-
-          if(cartDTOCheck == null) {
-            CartDTO additionalCartDTO = new CartDTO();
-            additionalCartDTO.setProductCode(additionalProductsCode);
-            additionalCartDTO.setMemberId(memberId);
-            additionalCartDTO.setQuantity(1);
-            cartDao.cartInsert(additionalCartDTO);
-          } else {
-            cartDao.cartQuantityUpdate(memberId, additionalProductsCode, 1);
-          }
-        }
-      }
-    }
-
-    //일반 상품 부분
-
-    int quantity = cartDTO.getQuantity();
-
-    if(quantity < 1) {
-      quantity = 1;
-      cartDTO.setQuantity(quantity);
-    }
-
-    String productCode = cartDTO.getProductCode();
-
-    ProductDTO productDTO = productDao.productSelectOne(productCode);
-
-    CartDTO cartDTOCheck = cartDao.cartSelectOne(memberId, productCode);
-    if(cartDTOCheck == null) {
-      cartDTO.setMemberId(memberId);
-      int num = cartDao.cartInsert(cartDTO);
-
-      if(num > 0) {
-        msg = "장바구니 추가 성공";
-        map.put("productCode", productDTO.getProductCode());
-        map.put("productType", productDTO.getProductType());
-        map.put("productName", productDTO.getProductName());
-        map.put("productUnit", productDTO.getProductUnit());
-//                map.put("productGrinding", cart.getProductGrinding());
-        map.put("quantity", cartDTO.getQuantity());
-        map.put("productPrice", productDTO.getProductPrice());
-        map.put("productFile", productDTO.getProductFile());
-      }
-    } else {
-      cartDao.cartQuantityUpdate(memberId, productCode, cartDTO.getQuantity());
-      msg = "장바구니 추가 성공";
-      map.put("productCode", productDTO.getProductCode());
-      map.put("productType", productDTO.getProductType());
-      map.put("productName", productDTO.getProductName());
-      map.put("productUnit", productDTO.getProductUnit());
-//            map.put("productGrinding", product.getProductGrinding());
-      map.put("quantity", cartDTO.getQuantity());
-      map.put("productPrice", productDTO.getProductPrice());
-      map.put("productFile", productDTO.getProductFile());
-    }
-
-    map.put("cartStatus", msg);
-    return map;
   }
 
   @RequestMapping("productSearch")

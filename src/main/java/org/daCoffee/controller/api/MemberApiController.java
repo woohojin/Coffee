@@ -6,7 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dao.CartDAO;
 import org.daCoffee.dao.HistoryDAO;
 import org.daCoffee.dao.MemberDAO;
+import org.daCoffee.dao.ProductDAO;
 import org.daCoffee.dto.*;
+import org.daCoffee.exception.NotFoundException;
 import org.daCoffee.module.UUIDGenerateModule;
 import org.daCoffee.service.MailService;
 import org.daCoffee.service.PriceCalculator;
@@ -29,6 +31,7 @@ import static org.daCoffee.util.SecurityUtil.getRandomPassword;
 @Slf4j
 public class MemberApiController {
   private final MemberDAO memberDao;
+  private final ProductDAO productDao;
   private final CartDAO cartDao;
   private final HistoryDAO historyDao;
   private final PriceCalculator priceCalculator;
@@ -37,6 +40,20 @@ public class MemberApiController {
 
   public void sendEmail(String toEmail, String subject, String main, String code) {
     mailService.sendEmail(toEmail, subject, main, code);
+  }
+
+  private void addOrUpdateCart(String memberId, String productCode, int quantity) throws Exception {
+    CartDTO cartDTOCheck = cartDao.cartSelectOne(memberId, productCode);
+    if (cartDTOCheck == null) {
+      CartDTO cartDTO = new CartDTO();
+      cartDTO.setProductCode(productCode);
+      cartDTO.setMemberId(memberId);
+      cartDTO.setQuantity(quantity);
+      int num = cartDao.cartInsert(cartDTO);
+      if (num < 1) throw new Exception("장바구니 insert 실패: " + productCode);
+    } else {
+      cartDao.cartQuantityUpdate(memberId, productCode, quantity);
+    }
   }
 
   @GetMapping("/cart")
@@ -51,6 +68,55 @@ public class MemberApiController {
     response.put("deliveryFee", cartPriceDTO.getDeliveryFee());
     response.put("totalPrice", cartPriceDTO.getTotalPrice());
     response.put("list", list);
+
+    return response;
+  }
+
+  @PostMapping("/cart/add")
+  public Map<String, Object> addToCart(
+    @SessionAttribute String memberId,
+    @RequestParam String productCode,
+    @RequestParam(defaultValue = "1") int quantity,
+    @RequestParam(value = "additionalProducts", required = false) List<String> additionalProductsCodes) {
+
+    Map<String, Object> response = new HashMap<>();
+
+    try {
+      // 추가 상품 처리
+      if (additionalProductsCodes != null && !additionalProductsCodes.isEmpty()) {
+        for (String code : additionalProductsCodes) {
+          if (!code.equals("none")) {
+            addOrUpdateCart(memberId, code, 1);
+          }
+        }
+      }
+
+      if (quantity < 1) quantity = 1;
+
+      ProductDTO productDTO = productDao.productSelectOne(productCode);
+      if (productDTO == null) {
+        throw new NotFoundException("상품을 찾을 수 없습니다.");
+      }
+
+      addOrUpdateCart(memberId, productCode, quantity);
+
+      Map<String, Object> data = new HashMap<>();
+      data.put("productCode", productDTO.getProductCode());
+      data.put("productType", productDTO.getProductType());
+      data.put("productName", productDTO.getProductName());
+      data.put("productUnit", productDTO.getProductUnit());
+      data.put("quantity", quantity);
+      data.put("productPrice", productDTO.getProductPrice());
+      data.put("productFile", productDTO.getProductFile());
+
+      response.put("success", true);
+      response.put("data", data);
+
+    } catch (Exception e) {
+      log.error("장바구니 추가 실패", e);
+      response.put("success", false);
+      response.put("message", "장바구니 추가 중 오류가 발생했습니다.");
+    }
 
     return response;
   }
