@@ -60,14 +60,25 @@ public class MemberApiController {
   public Map<String, Object> getCart(@SessionAttribute String memberId) {
     Map<String, Object> response = new HashMap<>();
 
-    CartPriceDTO cartPriceDTO = priceCalculator.calculatePrice(memberId);
-    List<CartDTO> list = cartDao.cartSelectMember(memberId);
+    try {
+      CartPriceDTO cartPriceDTO = priceCalculator.calculatePrice(memberId);
+      List<CartDTO> list = cartDao.cartSelectMember(memberId);
 
-    response.put("cartCount", cartPriceDTO.getCartCount());
-    response.put("sumPrice", cartPriceDTO.getSumPrice());
-    response.put("deliveryFee", cartPriceDTO.getDeliveryFee());
-    response.put("totalPrice", cartPriceDTO.getTotalPrice());
-    response.put("list", list);
+      Map<String, Object> data = new HashMap<>();
+      data.put("cartCount", cartPriceDTO.getCartCount());
+      data.put("sumPrice", cartPriceDTO.getSumPrice());
+      data.put("deliveryFee", cartPriceDTO.getDeliveryFee());
+      data.put("totalPrice", cartPriceDTO.getTotalPrice());
+      data.put("list", list);
+
+      response.put("success", true);
+      response.put("data", data);
+
+    } catch (Exception e) {
+      log.error("장바구니 조회 실패", e);
+      response.put("success", false);
+      response.put("message", "장바구니 조회 중 오류가 발생했습니다.");
+    }
 
     return response;
   }
@@ -153,12 +164,16 @@ public class MemberApiController {
 
       List<CartDTO> list = cartDao.cartSelectMember(memberId);
 
+      Map<String, Object> data = new HashMap<>();
+
+      data.put("cartCount", cartCount);
+      data.put("sumPrice", sumPrice);
+      data.put("deliveryFee", deliveryFee);
+      data.put("totalPrice", totalPrice);
+      data.put("list", list);
+
       response.put("success", true);
-      response.put("cartCount", cartCount);
-      response.put("sumPrice", sumPrice);
-      response.put("deliveryFee", deliveryFee);
-      response.put("totalPrice", totalPrice);
-      response.put("list", list);
+      response.put("data", data);
 
       log.info("updateCart called: memberId={}, productCode={}, status={}, delta={}",
         memberId, productCode, status, delta);
