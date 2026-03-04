@@ -112,11 +112,13 @@ function idInputCheck() {
 }
 
 const signUpForm = document.getElementById('signUpForm');
-signUpForm.addEventListener('submit', function(event) {
-  if (!passwordInputCheck(this)) {
-    event.preventDefault();
-  }
-});
+if (signUpForm) {
+  signUpForm.addEventListener('submit', function(event) {
+    if (!passwordInputCheck(this)) {
+      event.preventDefault();
+    }
+  });
+}
 
 // 주소와 동일하게 버튼 클릭 이벤트
 document.addEventListener('DOMContentLoaded', () => {
