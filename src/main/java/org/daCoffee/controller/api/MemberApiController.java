@@ -61,30 +61,24 @@ public class MemberApiController {
   }
 
   @GetMapping("/cart")
-  public Map<String, Object> getCart(@SessionAttribute String memberId) {
-    Map<String, Object> response = new HashMap<>();
-
+  public ApiResponseDTO<CartDataDTO> getCart(@SessionAttribute String memberId) {
     try {
       CartPriceDTO cartPriceDTO = priceCalculator.calculatePrice(memberId);
       List<CartDTO> list = cartDao.cartSelectMember(memberId);
 
-      Map<String, Object> data = new HashMap<>();
-      data.put("cartCount", cartPriceDTO.getCartCount());
-      data.put("sumPrice", cartPriceDTO.getSumPrice());
-      data.put("deliveryFee", cartPriceDTO.getDeliveryFee());
-      data.put("totalPrice", cartPriceDTO.getTotalPrice());
-      data.put("list", list);
+      CartDataDTO data = CartDataDTO.builder()
+        .cartCount(cartPriceDTO.getCartCount())
+        .sumPrice(cartPriceDTO.getSumPrice())
+        .deliveryFee(cartPriceDTO.getDeliveryFee())
+        .totalPrice(cartPriceDTO.getTotalPrice())
+        .list(list)
+        .build();
 
-      response.put("success", true);
-      response.put("data", data);
-
+      return ApiResponseDTO.success(data);
     } catch (Exception e) {
       log.error("장바구니 조회 실패", e);
-      response.put("success", false);
-      response.put("message", "장바구니 조회 중 오류가 발생했습니다.");
+      return ApiResponseDTO.error("장바구니 조회 중 오류가 발생했습니다.");
     }
-
-    return response;
   }
 
   @PostMapping("/cart/add")
@@ -137,13 +131,10 @@ public class MemberApiController {
   }
 
   @PostMapping("/cart/update")
-  public Map<String, Object> updateCart(
+  public ApiResponseDTO<CartDataDTO> updateCart(
     @RequestParam String status,
-    @RequestParam(defaultValue = "1") int quantity,
     @RequestParam String productCode,
     @SessionAttribute String memberId) {
-
-    Map<String, Object> response = new HashMap<>();
 
     int delta = 0;
 
@@ -160,35 +151,25 @@ public class MemberApiController {
 
       // ==== 제품 갯수 변경 후 가격 계산 ====
       CartPriceDTO cartPriceDTO = priceCalculator.calculatePrice(memberId);
-
-      final int totalPrice = cartPriceDTO.getTotalPrice();
-      final int sumPrice = cartPriceDTO.getSumPrice();
-      final int deliveryFee = cartPriceDTO.getDeliveryFee();
-      final int cartCount = cartPriceDTO.getCartCount();
-
       List<CartDTO> list = cartDao.cartSelectMember(memberId);
 
-      Map<String, Object> data = new HashMap<>();
-
-      data.put("cartCount", cartCount);
-      data.put("sumPrice", sumPrice);
-      data.put("deliveryFee", deliveryFee);
-      data.put("totalPrice", totalPrice);
-      data.put("list", list);
-
-      response.put("success", true);
-      response.put("data", data);
+      CartDataDTO data = CartDataDTO.builder()
+        .cartCount(cartPriceDTO.getCartCount())
+        .sumPrice(cartPriceDTO.getSumPrice())
+        .deliveryFee(cartPriceDTO.getDeliveryFee())
+        .totalPrice(cartPriceDTO.getTotalPrice())
+        .list(list)
+        .build();
 
       log.info("updateCart called: memberId={}, productCode={}, status={}, delta={}",
         memberId, productCode, status, delta);
 
+      return ApiResponseDTO.success(data);
+
     } catch (Exception e) {
       log.error("장바구니 업데이트 실패", e);
-      response.put("success", false);
-      response.put("message", "처리 중 오류 발생");
+      return ApiResponseDTO.error("처리 중 오류 발생");
     }
-
-    return response;
   }
 
   @GetMapping("/payments")
