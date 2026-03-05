@@ -2,16 +2,12 @@ package org.daCoffee.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
-import java.sql.Connection;
-import java.sql.SQLException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,24 +26,7 @@ public class MainController {
     }
     
     @RequestMapping("main")
-    public String main(HttpSession session, Model model) {
-
-        try {
-            Connection conn = ds.getConnection();
-            log.info("Database connection successful: {}", conn);
-        } catch (SQLException e) {
-            log.error("Failed to connect to database: ", e);
-            model.addAttribute("msg", "데이터베이스 연결에 실패했습니다.");
-            model.addAttribute("url", "/main");
-            return "alert";
-        }
-
-        Integer memberTier = (Integer) session.getAttribute("memberTier");
-        String memberId = (String) session.getAttribute("memberId");
-
-        session.setAttribute("memberId", memberId);
-        session.setAttribute("memberTier", memberTier);
-
+    public String main() {
         return "main";
     }
 
@@ -60,46 +39,6 @@ public class MainController {
     public String privacy() {
         return "privacy";
     }
-
-//
-//    @RequestMapping("fileUploadForm")
-//    public String fileUploadForm() throws Exception {
-//        return "/fileUploadForm";
-//    }
-//
-//    @RequestMapping("fileUploadPro")
-//    public String fileUploadPro(MultipartHttpServletRequest files) throws Exception {
-//
-//        String filePath = request.getServletContext().getRealPath("/") + "view/files/";
-//        String fileName = null;
-//        File uploadPath = new File(filePath);
-//
-//        if (!uploadPath.exists()) {
-//            uploadPath.mkdirs(); // 경로가 없으면 생성
-//        }
-//
-//        List<MultipartFile> fileList = files.getFiles("files");
-//
-//        if (fileList.size() > 0) {
-//            for(int i = 0; i < fileList.size(); i++) {
-//                fileName = fileList.get(i).getOriginalFilename();
-//                File file = new File(filePath, fileName);
-//                try {
-//                    fileList.get(i).transferTo(file);
-//                } catch (IllegalStateException e) {
-//                    e.printStackTrace();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        } else {
-//            System.out.println("Failed to upload file");
-//            System.out.println(fileList.size() + " / "  + fileList);
-//        }
-//
-//        request.setAttribute("fileName", fileName);
-//        return "fileUploadPro";
-//    }
 
     @RequestMapping("fileDownload")
     public void fileDownload(HttpServletRequest request, HttpServletResponse response) {
