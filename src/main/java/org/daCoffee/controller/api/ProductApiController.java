@@ -6,6 +6,8 @@ import org.daCoffee.dao.ImageDAO;
 import org.daCoffee.dao.ProductDAO;
 import org.daCoffee.dto.ApiResponseDTO;
 import org.daCoffee.dto.ProductDTO;
+import org.daCoffee.dto.ProductDetailDataDTO;
+import org.daCoffee.dto.ProductListDataDTO;
 import org.daCoffee.exception.BusinessException;
 import org.daCoffee.exception.NotFoundException;
 import org.daCoffee.exception.UnauthorizedException;
@@ -13,7 +15,6 @@ import org.daCoffee.util.PaginationUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +27,7 @@ public class ProductApiController {
   private final ImageDAO imageDao;
 
   @GetMapping
-  public ResponseEntity<ApiResponseDTO<Map<String, Object>>> getProductList(
+  public ResponseEntity<ApiResponseDTO<ProductListDataDTO>> getProductList(
     @RequestParam(value = "pageType", defaultValue = "bean") String pageType,
     @RequestParam(defaultValue = "1") int pageInt,
     @SessionAttribute(required = false) Integer memberTier) {
@@ -51,26 +52,24 @@ public class ProductApiController {
     int productCount = productDao.productCountByTierByProductType(memberTier, productType);
 
     Map<String, Integer> paginationInfo = PaginationUtil.calculatePagination(pageInt, productCount);
-    int start = paginationInfo.get("start");
-    int end = paginationInfo.get("end");
 
-    Map<String, Object> data = new HashMap<>();
-
-    data.put("list", list);
-    data.put("productCount", productCount);
-    data.put("start", start);
-    data.put("end", end);
-    data.put("pageInt", pageInt);
-    data.put("pageType", pageType);
-    data.put("memberTier", memberTier);
+    ProductListDataDTO data = ProductListDataDTO.builder()
+      .list(list)
+      .productCount(productCount)
+      .start(paginationInfo.get("start"))
+      .end(paginationInfo.get("end"))
+      .pageInt(pageInt)
+      .pageType(pageType)
+      .memberTier(memberTier)
+      .build();
 
     return ResponseEntity.ok(ApiResponseDTO.success(data));
   }
 
   @GetMapping("/{productCode}")
-  public ResponseEntity<ApiResponseDTO<Map<String, Object>>> getProductDetail(@PathVariable("productCode") String productCode,
-                                                              @SessionAttribute(required = false) Integer memberTier,
-                                                              @RequestParam(defaultValue = "bean") String pageType) {
+  public ResponseEntity<ApiResponseDTO<ProductDetailDataDTO>> getProductDetail(@PathVariable("productCode") String productCode,
+                                                                               @SessionAttribute(required = false) Integer memberTier,
+                                                                               @RequestParam(defaultValue = "bean") String pageType) {
 
     if (memberTier == 0) {
       throw new UnauthorizedException("회원가입 진행 후 1566-0904로 연락 부탁드립니다.");
@@ -95,12 +94,12 @@ public class ProductApiController {
     String detailImageName = imageDao.selectDetailImage(productCode);
     int productCount = productDao.productCountByTierByProductType(memberTier, productType);
 
-    Map<String, Object> data = new HashMap<>();
-
-    data.put("memberTier", memberTier);
-    data.put("productCount", productCount);
-    data.put("product", product);
-    data.put("detailImageName", detailImageName);
+    ProductDetailDataDTO data = ProductDetailDataDTO.builder()
+      .memberTier(memberTier)
+      .productCount(productCount)
+      .product(product)
+      .detailImageName(detailImageName)
+      .build();
 
     return ResponseEntity.ok(ApiResponseDTO.success(data));
   }
