@@ -103,13 +103,10 @@ public class ProductController {
   }
 
   @RequestMapping("productSearch")
-  public String productSearch(HttpServletRequest request, Model model,
+  public String productSearch(Model model,
                               @RequestParam(defaultValue = "1") int pageInt,
+                              @RequestParam(required = false) String searchText,
                               @SessionAttribute Integer memberTier) {
-
-    int limit = 4; // 한 page당 게시물 개수
-
-    String searchText = request.getParameter("searchText");
 
     int productSearchCount = 0;
 
