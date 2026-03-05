@@ -38,19 +38,12 @@ import static org.daCoffee.util.SecurityUtil.getRandomPassword;
 
 public class MemberController {
   private final MemberDAO memberDao;
-  private final CartDAO cartDao;
   private final CookieDAO cookieDao;
   private final HistoryDAO historyDao;
   private final PasswordEncoder passwordEncoder;
-  private final MailService mailService;
-  private final PriceCalculator priceCalculator;
 
   @Value("${COOKIE_LOGIN}")
   private String COOKIE_LOGIN;
-
-  public void sendEmail(String toEmail, String subject, String main, String code) {
-    mailService.sendEmail(toEmail, subject, main, code);
-  }
 
   private void deleteCookies(HttpServletResponse response, String memberId) {
     Cookie cookieId = new Cookie("memberId", null);
@@ -161,119 +154,6 @@ public class MemberController {
     return "member/memberSignInForm";
   }
 
-//  @PostMapping("memberSignInPro")
-//  public String memberSignInPro(HttpSession session, HttpServletResponse response, Model model, String memberId, String memberPassword, String autoLogin,
-//                                @SessionAttribute(name="memberId", required=false) String sessionMemberId) {
-//    SecurityUtil.SHA256 sha256 = new SecurityUtil.SHA256();
-//
-//    String msg = "";
-//    String url = "/member/memberSignIn";
-//
-//    MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
-//    int isDisabled = memberDao.disabledMemberSelectOne(memberId);
-//
-//    if(sessionMemberId != null) {
-//
-//      msg = "이미 로그인된 상태입니다.";
-//      url = "/main";
-//
-//      model.addAttribute("msg", msg);
-//      model.addAttribute("url", url);
-//
-//      return "alert";
-//    }
-//
-//    if(memberDTO != null) {
-//      if(isDisabled < 1) {
-//        if(passwordEncoder.matches(memberPassword, memberDTO.getMemberPassword())) {
-//          Integer memberTier = memberDTO.getMemberTier();
-//          session.setAttribute("memberId", memberId);
-//          session.setAttribute("memberTier", memberTier);
-//
-//          log.info("memberTier : {}", session.getAttribute("memberTier"));
-//
-//          List<SimpleGrantedAuthority> authorities = memberTier == 9 ?
-//            Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")) :
-//            Collections.emptyList();
-//          Authentication auth = new UsernamePasswordAuthenticationToken(memberId, null, authorities);
-//          SecurityContextHolder.getContext().setAuthentication(auth);
-//
-//          SecurityContext context = SecurityContextHolder.createEmptyContext();
-//          context.setAuthentication(auth);
-//          session.setAttribute("SPRING_SECURITY_CONTEXT", context);
-//
-//          url = "/main";
-//
-//          if(autoLogin != null) {
-//            String encryptKey = memberDTO.getMemberId() + COOKIE_LOGIN;
-//
-//            try {
-//              String token = sha256.encrypt(encryptKey);
-//
-//              int num = cookieDao.cookieInsert(memberId, token);
-//
-//              if(num > 0) {
-//                Cookie cookieId = new Cookie("memberId", memberId);
-//                Cookie cookieToken = new Cookie("token", token);
-//                cookieId.setMaxAge(60 * 60 * 24 * 30); // 60 * 60 * 24 * 30 == 30days
-//                cookieId.setPath("/");
-//                cookieToken.setMaxAge(60 * 60 * 24 * 30);
-//                cookieToken.setPath("/");
-//                response.addCookie(cookieId);
-//                response.addCookie(cookieToken);
-//              }
-//            } catch (NoSuchAlgorithmException e) {
-//              log.error("Encrypt failed : ", e);
-//              model.addAttribute("msg", "로그인 중 에러가 발생했습니다. 자세한 사항은 관리자에게 문의해주세요.");
-//              model.addAttribute("url", url);
-//
-//              return "alert";
-//            }
-//            cookieDao.cookieDelete(memberId);
-//          }
-//          return "redirect:/main";
-//        } else {
-//          msg = "비밀번호가 틀립니다.";
-//        }
-//      } else {
-//        msg = "비활성화 된 아이디입니다."; // disable 된 아이디 일 떄
-//      }
-//    } else {
-//      msg = "존재하지 않는 아이디입니다."; // db에 해당 아이디가 없을 때
-//    }
-//
-//    model.addAttribute("msg", msg);
-//    model.addAttribute("url", url);
-//
-//    return "alert";
-//  }
-
-//  @RequestMapping("memberLogout")
-//  public String memberLogout(HttpSession session, Model model, HttpServletResponse response,
-//                             @SessionAttribute String memberId) {
-//
-//    Cookie cookieId = new Cookie("memberId", null);
-//    Cookie cookieToken = new Cookie("token", null);
-//    cookieId.setMaxAge(0); // 0초 = 쿠키 삭제
-//    cookieId.setPath("/");
-//    cookieToken.setMaxAge(0);
-//    cookieToken.setPath("/");
-//    response.addCookie(cookieId);
-//    response.addCookie(cookieToken);
-//
-//    cookieDao.cookieDelete(memberId);
-//
-//    String msg = "로그아웃 되었습니다.";
-//    String url = "/main";
-//
-//    session.invalidate();
-//
-//    model.addAttribute("msg", msg);
-//    model.addAttribute("url", url);
-//
-//    return "alert";
-//  }
-
   @RequestMapping("memberWithdrawal")
   public String memberWithdrawal() {
     return "/member/memberWithdrawal";
@@ -314,169 +194,10 @@ public class MemberController {
     return "member/memberCart";
   }
 
-//  @RequestMapping("memberPayments")
-//  public String memberPayments(HttpSession session, Model model,
-//                               @SessionAttribute String memberId,
-//                               @SessionAttribute final Integer totalPrice) {
-//
-//    UUIDGenerateModule uuidGenerateModule = new UUIDGenerateModule();
-//
-//    String errorCode = "CANNOT_FIND_MEMBER_ID";
-//    String errorMessage = "로그인 후 결제를 진행해주세요.";
-//
-//    if(memberId != null) {
-//      MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
-//      if(memberDTO != null) {
-//        String orderId = uuidGenerateModule.generateOrderId();
-//        String customerKey = uuidGenerateModule.generateCustomerKey(memberId);
-//        List<String> productNames = new ArrayList<>();
-//
-//        if(totalPrice != null) {
-//          List<CartDTO> list = cartDao.cartSelectMember(memberId);
-//
-//          if(list != null) {
-//            for (CartDTO cartDTO : list) {
-//              productNames.add(cartDTO.getProductName());
-//            }
-//
-//            String orderName = productNames.get(0) + " 외 " + (productNames.size() - 1) + "건";
-//
-//            session.setAttribute("orderId", orderId);
-//            session.setAttribute("customerKey", customerKey);
-//            model.addAttribute("orderName", orderName);
-//            model.addAttribute("member", memberDTO);
-//
-//            return "member/memberPayments";
-//          }
-//          errorCode = "CANNOT_FIND_CART_ITEMS";
-//          errorMessage = "장바구니에 상품이 존재하지 않습니다.";
-//
-//          model.addAttribute("errorCode", errorCode);
-//          model.addAttribute("errorMessage", errorMessage);
-//
-//          return "member/memberPaymentsFailure";
-//        }
-//
-//        errorCode = "CANNOT_FIND_VALUE_INFO";
-//        errorMessage = "가격정보가 존재하지 않습니다.";
-//
-//        model.addAttribute("errorCode", errorCode);
-//        model.addAttribute("errorMessage", errorMessage);
-//
-//        return "member/memberPaymentsFailure";
-//      }
-//    }
-//
-//    model.addAttribute("errorCode", errorCode);
-//    model.addAttribute("errorMessage", errorMessage);
-//
-//    return "member/memberPaymentsFailure";
-//  }
-//
-//  @RequestMapping("memberPaymentsSuccess")
-//  public String memberPaymentsSuccess(HttpSession session, Model model,
-//                                      @SessionAttribute String memberId,
-//                                      @SessionAttribute String orderId,
-//                                      @SessionAttribute final Integer totalPrice) {
-//
-//    String errorCode = "CANNOT_FIND_MEMBER_ID";
-//    String errorMessage = "로그인 후 결제를 진행해주세요.";
-//
-//    if(memberId != null) {
-//      MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
-//      if (memberDTO != null) {
-//
-//        if (totalPrice != null) {
-//          List<CartDTO> list = cartDao.cartSelectMember(memberId);
-//
-//          if (list != null) {
-//            for (CartDTO cartDTO : list) {
-//              HistoryDTO historyDTO = new HistoryDTO();
-//
-//              historyDTO.setOrderId(orderId);
-//              historyDTO.setMemberTier(memberDTO.getMemberTier());
-//              historyDTO.setMemberId(memberId);
-//              historyDTO.setMemberName(memberDTO.getMemberName());
-//              historyDTO.setMemberFranCode(memberDTO.getMemberFranCode());
-//              historyDTO.setProductCode(cartDTO.getProductCode());
-//              historyDTO.setQuantity(cartDTO.getQuantity());
-//              historyDTO.setDeliveryAddress(memberDTO.getMemberDeliveryAddress());
-//              historyDTO.setDetailDeliveryAddress(memberDTO.getMemberDetailDeliveryAddress());
-//              historyDTO.setTotalPrice(totalPrice);
-//
-//              historyDao.historyInsert(historyDTO);
-//            }
-//            cartDao.deleteCartByMember(memberId);
-//            session.removeAttribute("orderId");
-//            session.removeAttribute("totalPrice");
-//
-//            return "member/memberPaymentsSuccess";
-//          }
-//          errorCode = "CANNOT_FIND_CART_ITEMS";
-//          errorMessage = "장바구니에 상품이 존재하지 않습니다.";
-//
-//          model.addAttribute("errorCode", errorCode);
-//          model.addAttribute("errorMessage", errorMessage);
-//
-//          return "member/memberPaymentsFailure";
-//        }
-//        errorCode = "CANNOT_FIND_VALUE_INFO";
-//        errorMessage = "가격정보가 존재하지 않습니다.";
-//
-//        model.addAttribute("errorCode", errorCode);
-//        model.addAttribute("errorMessage", errorMessage);
-//
-//        return "member/memberPaymentsFailure";
-//      }
-//    }
-//    model.addAttribute("errorCode", errorCode);
-//    model.addAttribute("errorMessage", errorMessage);
-//
-//    return "member/memberPaymentsFailure";
-//  }
-
   @RequestMapping("memberPaymentsFailure")
   public String memberPaymentsFailure() {
     return "member/memberPaymentsFailure";
   }
-
-//  @PostMapping("memberPaymentsConfirm")
-//  @ResponseBody
-//  public ResponseEntity<Object> memberPaymentsConfirm(@RequestBody PaymentsRequestDTO paymentsRequestDTO) {
-//    try{
-//      String widgetSecretKey = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6";
-//      String encodedSecretKey = "Basic " + Base64.getEncoder().encodeToString((widgetSecretKey + ":").getBytes());
-//
-//      String apiUrl = "https://api.tosspayments.com/v1/payments/confirm";
-//
-//      HttpHeaders headers = new HttpHeaders();
-//      headers.add("Authorization", encodedSecretKey);
-//      headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
-//
-//      // RestTemplate을 사용하여 API 호출
-//      ResponseEntity<Map<String, Object>> responseEntity = new RestTemplate().exchange(
-//              apiUrl,
-//              HttpMethod.POST,
-//              new HttpEntity<>(paymentsRequestDTO, headers),
-//              new ParameterizedTypeReference<Map<String, Object>>() {
-//              }
-//      );
-//
-//      if (responseEntity.getStatusCode().is2xxSuccessful()) {
-//        // 결제 성공 로직
-//        log.info(Objects.requireNonNull(responseEntity.getBody()).toString());
-//        return ResponseEntity.ok(responseEntity.getBody());
-//      } else {
-//        // 결제 실패 로직
-//        log.info(Objects.requireNonNull(responseEntity.getBody()).toString());
-//        return ResponseEntity.status(responseEntity.getStatusCode()).body(responseEntity.getBody());
-//      }
-//
-//    } catch (Exception e) {
-//      log.error("Error in memberPaymentsConfirm", e);
-//      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("error", "Internal Server Error"));
-//    }
-//  }
 
   @RequestMapping("memberFindAccount")
   public String memberFindAccount(Model model,
