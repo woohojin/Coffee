@@ -52,6 +52,18 @@ public class MemberController {
     mailService.sendEmail(toEmail, subject, main, code);
   }
 
+  private void deleteCookies(HttpServletResponse response, String memberId) {
+    Cookie cookieId = new Cookie("memberId", null);
+    Cookie cookieToken = new Cookie("token", null);
+    cookieId.setMaxAge(0);
+    cookieId.setPath("/");
+    cookieToken.setMaxAge(0);
+    cookieToken.setPath("/");
+    response.addCookie(cookieId);
+    response.addCookie(cookieToken);
+    cookieDao.cookieDelete(memberId);
+  }
+
   @RequestMapping("memberTerms")
   public String memberTerms() {
     return "member/memberTerms";
@@ -277,16 +289,7 @@ public class MemberController {
     String url = "/member/memberWithdrawal";
 
     if(passwordEncoder.matches(memberPassword, memberDTO.getMemberPassword())) {
-      Cookie cookieId = new Cookie("memberId", null);
-      Cookie cookieToken = new Cookie("token", null);
-      cookieId.setMaxAge(0); // 0초 = 쿠키 삭제
-      cookieId.setPath("/");
-      cookieToken.setMaxAge(0);
-      cookieToken.setPath("/");
-      response.addCookie(cookieId);
-      response.addCookie(cookieToken);
-
-      cookieDao.cookieDelete(memberId);
+      deleteCookies(response, memberId);
       memberDao.memberWithdrawal(memberId);
       memberDao.memberDelete(memberId);
 
