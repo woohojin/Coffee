@@ -12,6 +12,7 @@ import org.daCoffee.exception.NotFoundException;
 import org.daCoffee.module.UUIDGenerateModule;
 import org.daCoffee.service.MailService;
 import org.daCoffee.service.PriceCalculator;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,6 +38,9 @@ public class MemberApiController {
   private final PriceCalculator priceCalculator;
   private final MailService mailService;
   private final PasswordEncoder passwordEncoder;
+
+  @Value("${SECRET_TOSS_WIDGET_KEY}")
+  private String secretTossWidgetKey;
 
   public void sendEmail(String toEmail, String subject, String main, String code) {
     mailService.sendEmail(toEmail, subject, main, code);
@@ -317,8 +321,7 @@ public class MemberApiController {
   public ResponseEntity<Map<String, Object>> memberPaymentsConfirm(
     @RequestBody PaymentsRequestDTO paymentsRequestDTO) {
 
-    String widgetSecretKey = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6";
-    String encodedSecretKey = "Basic " + Base64.getEncoder().encodeToString((widgetSecretKey + ":").getBytes());
+    String encodedSecretKey = "Basic " + Base64.getEncoder().encodeToString((secretTossWidgetKey + ":").getBytes());
 
     String apiUrl = "https://api.tosspayments.com/v1/payments/confirm";
 
