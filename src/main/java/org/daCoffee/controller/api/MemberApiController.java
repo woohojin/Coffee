@@ -82,13 +82,11 @@ public class MemberApiController {
   }
 
   @PostMapping("/cart/add")
-  public Map<String, Object> addToCart(
+  public ApiResponseDTO<CartDTO> addToCart(
     @SessionAttribute String memberId,
     @RequestParam String productCode,
     @RequestParam(defaultValue = "1") int quantity,
     @RequestParam(value = "additionalProducts", required = false) List<String> additionalProductsCodes) {
-
-    Map<String, Object> response = new HashMap<>();
 
     try {
       // 추가 상품 처리
@@ -109,25 +107,20 @@ public class MemberApiController {
 
       addOrUpdateCart(memberId, productCode, quantity);
 
-      Map<String, Object> data = new HashMap<>();
-      data.put("productCode", productDTO.getProductCode());
-      data.put("productType", productDTO.getProductType());
-      data.put("productName", productDTO.getProductName());
-      data.put("productUnit", productDTO.getProductUnit());
-      data.put("quantity", quantity);
-      data.put("productPrice", productDTO.getProductPrice());
-      data.put("productFile", productDTO.getProductFile());
+      CartDTO data = new CartDTO();
+      data.setProductCode(productDTO.getProductCode());
+      data.setProductType(productDTO.getProductType());
+      data.setProductName(productDTO.getProductName());
+      data.setProductUnit(productDTO.getProductUnit());
+      data.setQuantity(quantity);
+      data.setProductPrice(productDTO.getProductPrice());
+      data.setProductFile(productDTO.getProductFile());
 
-      response.put("success", true);
-      response.put("data", data);
-
+      return ApiResponseDTO.success(data);
     } catch (Exception e) {
       log.error("장바구니 추가 실패", e);
-      response.put("success", false);
-      response.put("message", "장바구니 추가 중 오류가 발생했습니다.");
+      return ApiResponseDTO.error("장바구니 추가 중 오류가 발생했습니다.");
     }
-
-    return response;
   }
 
   @PostMapping("/cart/update")
