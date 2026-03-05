@@ -10,7 +10,9 @@
         </a>
       </div>
       <div class="member_signup_form_wrap">
-        <form th:action="@{/member/memberProfilePro}" name="f" method="post" class="member_signup_form" id="profileForm">
+        <form th:action="@{/member/memberProfilePro}" name="f" method="post"
+              class="member_signup_form" id="profileForm"
+              enctype="multipart/form-data">
           <p>회원 정보</p>
           <table class="member_signup_form_info">
             <tbody>

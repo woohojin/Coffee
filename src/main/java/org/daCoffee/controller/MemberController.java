@@ -504,8 +504,8 @@ public class MemberController {
   }
 
   @RequestMapping("memberProfilePro")
-  public String memberProfilePro(HttpSession session, Model model, MemberDTO memberDTO, String memberExistingPassword,
-                                 @SessionAttribute String memberId) {
+  public String memberProfilePro(HttpServletRequest request, HttpSession session, Model model, MemberDTO memberDTO,
+                                 String memberExistingPassword, @RequestParam MultipartFile file, @SessionAttribute String memberId) {
 
     MemberDTO existingMemberDTO = memberDao.memberSelectOne(memberId); // 기존 회원 정보
     memberDTO.setMemberId(memberId); // 사용자가 임의로 변경하는 것을 막기 위함
@@ -525,6 +525,29 @@ public class MemberController {
         return "alert";
       }
       session.removeAttribute("isVerified");
+    }
+
+    String filePath = request.getServletContext().getRealPath("/") + "view/files/";
+    File uploadPath = new File(filePath);
+    if (!uploadPath.exists()) {
+      uploadPath.mkdirs();
+    }
+
+    String memberFile = memberDTO.getMemberFile();
+    if (memberFile != null && !memberFile.trim().isEmpty()) {
+      String fileName = file.getOriginalFilename();
+      File uploadFile = new File(filePath, fileName);
+      try {
+        file.transferTo(uploadFile);
+      } catch (IOException e) {
+        log.error("파일 업로드 실패", e);
+        msg = "파일 업로드 중 오류가 발생했습니다.";
+        model.addAttribute("msg", msg);
+        model.addAttribute("url", url);
+        return "alert";
+      }
+    } else {
+      memberDTO.setMemberFile(existingMemberDTO.getMemberFile());  // 기존 파일 유지 (없으면 null 값이 들어감)
     }
 
     if(memberExistingPassword != null) {
