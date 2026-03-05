@@ -60,6 +60,36 @@ public class MemberApiController {
     }
   }
 
+  private ApiResponseDTO<List<String>> findId(Map<String, String> body) {
+    String memberName = body.get("memberName");
+    String memberEmail = body.get("memberEmail");
+
+    List<MemberDTO> list = memberDao.memberFindId(memberName, memberEmail);
+    if (list == null || list.isEmpty()) {
+      return ApiResponseDTO.error("이름 또는 이메일이 일치하지 않습니다.");
+    }
+
+    List<String> ids = list.stream().map(MemberDTO::getMemberId).toList();
+    return ApiResponseDTO.success(ids);
+  }
+
+  private ApiResponseDTO<Void> findPassword(Map<String, String> body) {
+    String memberId = body.get("memberId");
+    String memberEmail = body.get("memberEmail");
+
+    String found = memberDao.memberFindPassword(memberId, memberEmail);
+    if (found == null || found.isEmpty()) {
+      return ApiResponseDTO.error("아이디 또는 이메일이 일치하지 않습니다.");
+    }
+
+    String tempPassword = getRandomPassword(8);
+    sendEmail(memberEmail, "다올커피 임시 비밀번호", "임시 비밀번호: ", tempPassword);
+    String encoded = passwordEncoder.encode(tempPassword);
+    memberDao.memberTempPasswordUpdate(memberId, encoded);
+
+    return ApiResponseDTO.success("임시 비밀번호가 이메일로 전송되었습니다.", null);
+  }
+
   @GetMapping("/cart")
   public ApiResponseDTO<CartDataDTO> getCart(@SessionAttribute String memberId) {
     try {
@@ -309,55 +339,25 @@ public class MemberApiController {
   }
 
   @PostMapping("/findAccount")
-  public Map<String, Object> findAccount(
+  public ApiResponseDTO<?> findAccount(
     @RequestBody Map<String, String> body,
     HttpSession session) {
 
     String findType = body.get("findType");
-    String memberName = body.get("memberName");
-    String memberEmail = body.get("memberEmail");
-    String memberId = body.get("memberId");
-
-    Map<String, Object> response = new HashMap<>();
 
     Boolean isVerified = (Boolean) session.getAttribute("isVerified");
     if (isVerified == null || !isVerified) {
-      response.put("success", false);
-      response.put("message", "이메일 인증이 필요합니다.");
-      return response;
+      return ApiResponseDTO.error("이메일 인증이 필요합니다.");
     }
     session.removeAttribute("isVerified");
 
     if ("id".equals(findType)) {
-      List<MemberDTO> list = memberDao.memberFindId(memberName, memberEmail);
-      if (list != null && !list.isEmpty()) {
-        List<String> ids = list.stream().map(MemberDTO::getMemberId).toList();
-        Map<String, Object> data = new HashMap<>();
-        data.put("ids", ids);
-        response.put("success", true);
-        response.put("data", data);
-      } else {
-        response.put("success", false);
-        response.put("message", "이름 또는 이메일이 일치하지 않습니다.");
-      }
+      return findId(body);
     } else if ("password".equals(findType)) {
-      String found = memberDao.memberFindPassword(memberId, memberEmail);
-      if (found != null && !found.isEmpty()) {
-        String tempPassword = getRandomPassword(8);
-        sendEmail(memberEmail, "다올커피 임시 비밀번호", "임시 비밀번호: ", tempPassword);
-
-        String encoded = passwordEncoder.encode(tempPassword);
-        memberDao.memberTempPasswordUpdate(memberId, encoded);
-
-        response.put("success", true);
-        response.put("message", "임시 비밀번호가 이메일로 전송되었습니다.");
-      } else {
-        response.put("success", false);
-        response.put("message", "아이디 또는 이메일이 일치하지 않습니다.");
-      }
+      return findPassword(body);
     }
 
-    return response;
+    return ApiResponseDTO.error("잘못된 요청입니다.");
   }
 
   @PostMapping("/verifyEmail")
