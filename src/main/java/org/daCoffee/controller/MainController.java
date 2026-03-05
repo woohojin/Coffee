@@ -53,19 +53,16 @@ public class MainController {
             response.setHeader("Content-Disposition", "attachment; filename=" + file.getName());
             response.setContentLength((int) file.length());
 
-            InputStream inputStream = new FileInputStream(file);
-            OutputStream outputStream = response.getOutputStream();
-
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
+            try(InputStream inputStream = new FileInputStream(file);
+                OutputStream outputStream = response.getOutputStream()) {
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
             }
-
-            inputStream.close();
-            outputStream.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("File download error", e);
         }
     }
 
