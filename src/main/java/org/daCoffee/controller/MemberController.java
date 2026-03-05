@@ -64,29 +64,16 @@ public class MemberController {
 
   @RequestMapping("memberSignUpPro")
   public String memberSignUpPro(HttpServletRequest request, HttpSession session, Model model, MemberDTO memberDTO,
-                                @RequestParam MultipartFile file,
-                                @RequestParam String verifyCode,
-                                @SessionAttribute String storedVerifyCode) {
+                                @RequestParam MultipartFile file) {
 
-    if(verifyCode == null || verifyCode.equals("timeout")) {
-      String url = "/member/memberSignUp";
-      String msg = "인증시간이 초과되었습니다.";
-
-      model.addAttribute("url", url);
-      model.addAttribute("msg", msg);
-
+    Boolean isVerified = (Boolean) session.getAttribute("isVerified");
+    if (isVerified == null || !isVerified) {
+      model.addAttribute("url", "/member/memberSignUp");
+      model.addAttribute("msg", "이메일 인증이 필요합니다.");
       return "alert";
     }
 
-    if(!verifyCode.equals(storedVerifyCode)) {
-      String url = "/member/memberSignUp";
-      String msg = "인증번호가 일치하지 않습니다.";
-
-      model.addAttribute("url", url);
-      model.addAttribute("msg", msg);
-
-      return "alert";
-    }
+    session.removeAttribute("isVerified");
 
     String msg = "회원 가입 중 문제가 발생 했습니다. 다시 시도해주세요.";
     String url = "/member/memberSignUp";
