@@ -23,7 +23,6 @@ import java.util.Map;
 @Slf4j
 public class ProductController {
   private final ProductDAO productDao;
-  private final CartDAO cartDao;
 
   int limit = 15; // 한 page당 게시물 개수
   int bottomLine = 100; // pagination 개수
@@ -67,8 +66,6 @@ public class ProductController {
                            @RequestParam String productCode,
                            @SessionAttribute Integer memberTier) {
 
-    if(memberTier == null) memberTier = 0;
-
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("productCode", productCode);
     model.addAttribute("pageType", "bean");
@@ -81,8 +78,6 @@ public class ProductController {
                           @RequestParam String productCode,
                           @SessionAttribute Integer memberTier) {
 
-    if(memberTier == null) memberTier = 0;
-
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("productCode", productCode);
     model.addAttribute("pageType", "mix");
@@ -94,8 +89,6 @@ public class ProductController {
   public String cafeDetail(Model model,
                            @RequestParam String productCode,
                            @SessionAttribute Integer memberTier) {
-
-    if(memberTier == null) memberTier = 0;
 
     model.addAttribute("memberTier", memberTier);
     model.addAttribute("productCode", productCode);
@@ -110,7 +103,7 @@ public class ProductController {
   }
 
   @RequestMapping("productSearch")
-  public String productSearch(HttpServletRequest request, HttpSession session, Model model,
+  public String productSearch(HttpServletRequest request, Model model,
                               @RequestParam(defaultValue = "1") int pageInt,
                               @SessionAttribute Integer memberTier) {
 
@@ -119,8 +112,6 @@ public class ProductController {
     String searchText = request.getParameter("searchText");
 
     int productSearchCount = 0;
-
-    if(memberTier == null) memberTier = 0;
 
     if(memberTier != 0) {
       productDao.rownumSet();
