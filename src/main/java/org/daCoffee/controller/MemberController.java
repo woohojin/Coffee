@@ -549,26 +549,10 @@ public class MemberController {
                               @SessionAttribute String memberId) {
 
     LocalDate now = LocalDate.now();
-    int year = now.getYear();
-    int dayOfMonth = now.getDayOfMonth();
-    int monthValue = now.getMonthValue() - 3;
-    String month = String.valueOf(monthValue);
-    String day = String.valueOf(dayOfMonth);
+    LocalDate startLocalDate = now.minusMonths(3);
 
-    if(monthValue < 10 ) {
-      month = "0" + monthValue;
-    }
-
-    if(monthValue <= 2) {
-      month = "01";
-    }
-
-    if(dayOfMonth < 10 ) {
-      day = "0" + dayOfMonth;
-    }
-
-    String startDate = year + "-" + month + "-" + day;
-    String endDate = String.valueOf(now);
+    String startDate = startLocalDate.toString();
+    String endDate = now.toString();
 
     List<HistoryDTO> list = historyDao.historySelectBetween(memberId, startDate, endDate);
     int historyCount = historyDao.historyCountBetween(memberId, startDate, endDate);
