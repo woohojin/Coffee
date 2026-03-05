@@ -9,6 +9,7 @@ import org.daCoffee.dto.ProductDTO;
 import org.daCoffee.exception.BusinessException;
 import org.daCoffee.exception.NotFoundException;
 import org.daCoffee.exception.UnauthorizedException;
+import org.daCoffee.util.PaginationUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,24 +24,6 @@ import java.util.Map;
 public class ProductApiController {
   private final ProductDAO productDao;
   private final ImageDAO imageDao;
-  private static final int LIMIT = 15;
-  private static final int BOTTOM_LINE = 100;
-
-  private Map<String, Integer> calculatePagination(int pageInt, int count) {
-    Map<String, Integer> paginationInfo = new HashMap<>();
-
-    int start = (pageInt - 1) / BOTTOM_LINE * BOTTOM_LINE + 1;
-    int end = start + BOTTOM_LINE - 1;
-    int maxPage = (count / LIMIT) + (count % LIMIT == 0 ? 0 : 1);
-
-    if (end > maxPage) end = maxPage;
-    if (end > count) end = count;
-
-    paginationInfo.put("start", start);
-    paginationInfo.put("end", end);
-
-    return paginationInfo;
-  }
 
   @GetMapping
   public ResponseEntity<ApiResponseDTO<Map<String, Object>>> getProductList(
@@ -66,10 +49,10 @@ public class ProductApiController {
     };
 
     productDao.rownumSet();
-    List<ProductDTO> list = productDao.productListByMemberTierByProductType(pageInt, LIMIT, memberTier, productType);
+    List<ProductDTO> list = productDao.productListByMemberTierByProductType(pageInt, PaginationUtil.LIMIT, memberTier, productType);
     int productCount = productDao.productCountByTierByProductType(memberTier, productType);
 
-    Map<String, Integer> paginationInfo = calculatePagination(pageInt, productCount);
+    Map<String, Integer> paginationInfo = PaginationUtil.calculatePagination(pageInt, productCount);
     int start = paginationInfo.get("start");
     int end = paginationInfo.get("end");
 

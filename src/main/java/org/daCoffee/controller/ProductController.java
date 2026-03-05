@@ -1,13 +1,10 @@
 package org.daCoffee.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.daCoffee.dao.CartDAO;
 import org.daCoffee.dao.ProductDAO;
-import org.daCoffee.dto.CartDTO;
 import org.daCoffee.dto.ProductDTO;
+import org.daCoffee.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,30 +20,6 @@ import java.util.Map;
 @Slf4j
 public class ProductController {
   private final ProductDAO productDao;
-
-  int limit = 15; // 한 page당 게시물 개수
-  int bottomLine = 100; // pagination 개수
-
-  // 제품 페이지 페이지네이션 계산 함수
-  public Map<String, Integer> calculatePagination(int pageInt, int count) {
-    Map<String, Integer> paginationInfo = new HashMap<>();
-
-    int start = (pageInt - 1) / bottomLine * bottomLine + 1;
-    int end = start + bottomLine - 1;
-    int maxPage = (count / limit) + (count % limit == 0 ? 0 : 1);
-
-    if (end > maxPage) {
-      end = maxPage;
-    }
-    if (end > count) {
-      end = count;
-    }
-
-    paginationInfo.put("start", start);
-    paginationInfo.put("end", end);
-
-    return paginationInfo;
-  }
 
   @GetMapping("productList")
   public String productList(Model model,
@@ -112,12 +85,12 @@ public class ProductController {
 
     if(memberTier != 0) {
       productDao.rownumSet();
-      List<ProductDTO> list = productDao.productSearchListByMemberTier(pageInt, limit, memberTier, searchText);
+      List<ProductDTO> list = productDao.productSearchListByMemberTier(pageInt, PaginationUtil.LIMIT, memberTier, searchText);
       productSearchCount = productDao.productSearchCountByTier(memberTier, searchText);
       model.addAttribute("list", list);
     }
 
-    Map<String, Integer> paginationInfo = calculatePagination(pageInt, productSearchCount);
+    Map<String, Integer> paginationInfo = PaginationUtil.calculatePagination(pageInt, productSearchCount);
     int start = paginationInfo.get("start");
     int end = paginationInfo.get("end");
 
