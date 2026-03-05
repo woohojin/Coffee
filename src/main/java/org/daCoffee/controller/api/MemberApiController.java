@@ -242,39 +242,29 @@ public class MemberApiController {
   }
 
   @PostMapping("/payments/success")
-  public Map<String, Object> paymentsSuccess(
+  public ApiResponseDTO<Void> paymentsSuccess(
     HttpSession session,
     @SessionAttribute String memberId,
     @RequestParam String orderId,
     @RequestParam int amount) {
 
-    Map<String, Object> response = new HashMap<>();
-
-    String errorMessage = "로그인 후 결제를 진행해주세요.";
-
     try {
       // 회원 검증
       MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
       if (memberDTO == null) {
-        response.put("success", false);
-        response.put("message", errorMessage);
-        return response;
+        return ApiResponseDTO.error("회원 정보를 찾을 수 없습니다.");
       }
 
       // 장바구니에서 넘어오는 최종 가격 검증
       Integer sessionTotal = (Integer) session.getAttribute("totalPrice");
       if (sessionTotal == null || sessionTotal != amount) {
-        response.put("success", false);
-        response.put("message", "결제 금액 불일치");
-        return response;
+        return ApiResponseDTO.error("결제 금액 불일치");
       }
 
       // 장바구니 상품 검증
       List<CartDTO> list = cartDao.cartSelectMember(memberId);
       if (list == null || list.isEmpty()) {
-        response.put("success", false);
-        response.put("message", "장바구니에 상품이 존재하지 않습니다.");
-        return response;
+        return ApiResponseDTO.error("장바구니에 상품이 존재하지 않습니다.");
       }
 
       for (CartDTO cartDTO : list) {
@@ -298,16 +288,11 @@ public class MemberApiController {
       session.removeAttribute("orderId");
       session.removeAttribute("totalPrice");
 
-      response.put("success", true);
-      response.put("message", "결제 완료되었습니다.");
-
+      return ApiResponseDTO.success("결제 완료되었습니다.", null);
     } catch (Exception e) {
       log.error("결제 성공 처리 중 오류", e);
-      response.put("success", false);
-      response.put("message", "결제 처리 중 오류 발생");
+      return ApiResponseDTO.error("결제 처리 중 오류 발생");
     }
-
-    return response;
   }
 
   @PostMapping("/payments/confirm")
