@@ -1,7 +1,8 @@
-package org.daCoffee.dto;
+package org.daCoffee.dto.response;
 
 import lombok.Builder;
 import lombok.Data;
+import org.daCoffee.dto.ProductDTO;
 
 @Data
 @Builder

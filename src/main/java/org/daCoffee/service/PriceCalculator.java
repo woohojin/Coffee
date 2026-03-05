@@ -2,7 +2,7 @@ package org.daCoffee.service;
 
 import lombok.RequiredArgsConstructor;
 import org.daCoffee.dao.CartDAO;
-import org.daCoffee.dto.CartPriceDTO;
+import org.daCoffee.dto.response.CartPriceDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

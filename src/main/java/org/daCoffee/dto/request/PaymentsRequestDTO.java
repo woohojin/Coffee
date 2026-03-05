@@ -1,4 +1,4 @@
-package org.daCoffee.dto;
+package org.daCoffee.dto.request;
 
 import lombok.Data;
 import lombok.ToString;
