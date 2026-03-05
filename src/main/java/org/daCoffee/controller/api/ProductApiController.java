@@ -31,8 +31,6 @@ public class ProductApiController {
     @RequestParam(defaultValue = "1") int pageInt,
     @SessionAttribute(required = false) Integer memberTier) {
 
-    if(memberTier == null) memberTier = 0;
-
     // 직접 memberTier를 체크해서 예외처리가 이루어지기 때문에 파라미터에서는 required가 false
     if (memberTier == 0) {
       throw new UnauthorizedException("회원가입 진행 후 1566-0904로 연락 부탁드립니다.");
@@ -73,7 +71,6 @@ public class ProductApiController {
   public ResponseEntity<ApiResponseDTO<Map<String, Object>>> getProductDetail(@PathVariable("productCode") String productCode,
                                                               @SessionAttribute(required = false) Integer memberTier,
                                                               @RequestParam(defaultValue = "bean") String pageType) {
-    if(memberTier == null) memberTier = 0;
 
     if (memberTier == 0) {
       throw new UnauthorizedException("회원가입 진행 후 1566-0904로 연락 부탁드립니다.");
