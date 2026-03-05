@@ -361,9 +361,8 @@ public class MemberApiController {
   }
 
   @PostMapping("/verifyEmail")
-  public Map<String, Object> verifyEmail(HttpSession session, @RequestBody Map<String, String> body) {
+  public ApiResponseDTO<Void> verifyEmail(HttpSession session, @RequestBody Map<String, String> body) {
     String memberEmail = body.get("memberEmail");
-    Map<String, Object> response = new HashMap<>();
 
     try {
       String code = getRandomPassword(6);
@@ -374,45 +373,33 @@ public class MemberApiController {
       session.setAttribute("storedVerifyCode", code);
       session.setAttribute("verifyCodeExpiry", System.currentTimeMillis() + 180000L); // 3분
 
-      response.put("success", true);
-
+      return ApiResponseDTO.success(null);
     } catch (Exception e) {
       log.error("이메일 전송 실패 : ", e);
-      response.put("success", false);
-      response.put("message", "이메일 전송에 실패했습니다.");
+      return ApiResponseDTO.error("이메일 전송에 실패했습니다.");
     }
-
-    return response;
   }
 
   @PostMapping("/verifyCode")
-  public Map<String, Object> verifyCode(HttpSession session, @RequestBody Map<String, String> body) {
+  public ApiResponseDTO<Void> verifyCode(HttpSession session, @RequestBody Map<String, String> body) {
     String verifyCode = body.get("verifyCode");
-    Map<String, Object> response = new HashMap<>();
 
     String storedCode = (String) session.getAttribute("storedVerifyCode");
     Long expiry = (Long) session.getAttribute("verifyCodeExpiry");
 
     if (storedCode == null || expiry == null) {
-      response.put("success", false);
-      response.put("message", "인증번호를 먼저 요청해주세요.");
-      return response;
+      return ApiResponseDTO.error("인증번호를 먼저 요청해주세요.");
     }
 
     if (System.currentTimeMillis() > expiry) {
-      response.put("success", false);
-      response.put("message", "인증시간이 초과되었습니다.");
-      return response;
+      return ApiResponseDTO.error("인증시간이 초과되었습니다.");
     }
 
     if (!verifyCode.equals(storedCode)) {
-      response.put("success", false);
-      response.put("message", "인증번호가 일치하지 않습니다.");
-      return response;
+      return ApiResponseDTO.error("인증번호가 일치하지 않습니다.");
     }
 
     session.setAttribute("isVerified", true);
-    response.put("success", true);
-    return response;
+    return ApiResponseDTO.success(null);
   }
 }
