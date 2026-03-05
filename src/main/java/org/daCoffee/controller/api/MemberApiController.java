@@ -365,31 +365,16 @@ public class MemberApiController {
     String memberName = body.get("memberName");
     String memberEmail = body.get("memberEmail");
     String memberId = body.get("memberId");
-    String verifyCode = body.get("verifyCode");
 
     Map<String, Object> response = new HashMap<>();
 
-    // 인증번호 검증
-    String storedCode = (String) session.getAttribute("storedVerifyCode");
-    Long expiry = (Long) session.getAttribute("verifyCodeExpiry");
-
-    if (storedCode == null || expiry == null) {
+    Boolean isVerified = (Boolean) session.getAttribute("isVerified");
+    if (isVerified == null || !isVerified) {
       response.put("success", false);
-      response.put("message", "인증번호를 먼저 요청해주세요.");
+      response.put("message", "이메일 인증이 필요합니다.");
       return response;
     }
-
-    if (System.currentTimeMillis() > expiry) {
-      response.put("success", false);
-      response.put("message", "인증시간이 초과되었습니다.");
-      return response;
-    }
-
-    if (!verifyCode.equals(storedCode)) {
-      response.put("success", false);
-      response.put("message", "인증번호가 일치하지 않습니다.");
-      return response;
-    }
+    session.removeAttribute("isVerified");
 
     if ("id".equals(findType)) {
       List<MemberDTO> list = memberDao.memberFindId(memberName, memberEmail);
