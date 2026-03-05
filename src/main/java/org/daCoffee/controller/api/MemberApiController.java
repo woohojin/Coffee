@@ -192,34 +192,26 @@ public class MemberApiController {
   }
 
   @GetMapping("/payments")
-  public Map<String, Object> getPaymentsData(
+  public ApiResponseDTO<PaymentsDataDTO> getPaymentsData(
     HttpSession session,
     @SessionAttribute String memberId,
     @SessionAttribute(required = false) Integer totalPrice) {
 
-    Map<String, Object> response = new HashMap<>();
-
     // 회원 검증
     MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
     if (memberDTO == null) {
-      response.put("success", false);
-      response.put("message", "회원 정보를 찾을 수 없습니다.");
-      return response;
+      return ApiResponseDTO.error("회원 정보를 찾을 수 없습니다.");
     }
 
     // 장바구니에서 넘어오는 최종 가격 검증
     if (totalPrice == null) {
-      response.put("success", false);
-      response.put("message", "가격정보가 존재하지 않습니다.");
-      return response;
+      return ApiResponseDTO.error("가격정보가 존재하지 않습니다.");
     }
 
     // 장바구니 상품 검증
     List<CartDTO> list = cartDao.cartSelectMember(memberId);
     if (list == null || list.isEmpty()) {
-      response.put("success", false);
-      response.put("message", "장바구니에 상품이 존재하지 않습니다.");
-      return response;
+      return ApiResponseDTO.error("장바구니에 상품이 존재하지 않습니다.");
     }
 
     UUIDGenerateModule uuid = new UUIDGenerateModule();
@@ -237,15 +229,16 @@ public class MemberApiController {
     session.setAttribute("customerKey", customerKey);
     session.setAttribute("totalPrice", totalPrice);
 
-    response.put("success", true);
-    response.put("orderId", orderId);
-    response.put("customerKey", customerKey);
-    response.put("orderName", orderName);
-    response.put("totalPrice", totalPrice);
-    response.put("member", memberDTO);
-    response.put("cartItems", list);
+    PaymentsDataDTO data = PaymentsDataDTO.builder()
+      .orderId(orderId)
+      .customerKey(customerKey)
+      .orderName(orderName)
+      .totalPrice(totalPrice)
+      .member(memberDTO)
+      .cartItems(list)
+      .build();
 
-    return response;
+    return ApiResponseDTO.success(data);
   }
 
   @PostMapping("/payments/success")
