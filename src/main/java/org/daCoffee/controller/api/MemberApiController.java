@@ -195,13 +195,6 @@ public class MemberApiController {
 
     Map<String, Object> response = new HashMap<>();
 
-    // 로그인 검증
-    if (memberId == null) {
-      response.put("success", false);
-      response.put("message", "로그인 후 결제를 진행해주세요.");
-      return response;
-    }
-
     // 회원 검증
     MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
     if (memberDTO == null) {
@@ -263,13 +256,6 @@ public class MemberApiController {
     String errorMessage = "로그인 후 결제를 진행해주세요.";
 
     try {
-      // 로그인 검증
-      if (memberId == null) {
-        response.put("success", false);
-        response.put("message", errorMessage);
-        return response;
-      }
-
       // 회원 검증
       MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
       if (memberDTO == null) {
