@@ -66,6 +66,7 @@ public class MemberController {
   public String memberSignUpPro(HttpServletRequest request, HttpSession session, Model model, MemberDTO memberDTO,
                                 @RequestParam MultipartFile file) {
 
+    // MemberApiController에서 session에 isVerified = true 저장 됨
     Boolean isVerified = (Boolean) session.getAttribute("isVerified");
     if (isVerified == null || !isVerified) {
       model.addAttribute("url", "/member/memberSignUp");
@@ -511,6 +512,20 @@ public class MemberController {
 
     String url = "/member/memberProfile";
     String msg = "회원 정보가 수정되었습니다.";
+
+    String newEmail = memberDTO.getMemberEmail();
+    String existingEmail = existingMemberDTO.getMemberEmail();
+
+    if (!newEmail.equals(existingEmail)) {
+      Boolean isVerified = (Boolean) session.getAttribute("isVerified");
+      if (isVerified == null || !isVerified) {
+        msg = "이메일 인증이 필요합니다.";
+        model.addAttribute("msg", msg);
+        model.addAttribute("url", url);
+        return "alert";
+      }
+      session.removeAttribute("isVerified");
+    }
 
     if(memberExistingPassword != null) {
       if(passwordEncoder.matches(memberExistingPassword, existingMemberDTO.getMemberPassword())) { // 입력한 기존 비밀번호와 db의 비밀번호가 일치 할 때 변경
