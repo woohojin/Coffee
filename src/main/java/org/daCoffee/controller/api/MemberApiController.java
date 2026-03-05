@@ -42,10 +42,6 @@ public class MemberApiController {
   @Value("${SECRET_TOSS_WIDGET_KEY}")
   private String secretTossWidgetKey;
 
-  public void sendEmail(String toEmail, String subject, String main, String code) {
-    mailService.sendEmail(toEmail, subject, main, code);
-  }
-
   private void addOrUpdateCart(String memberId, String productCode, int quantity) throws Exception {
     CartDTO cartDTOCheck = cartDao.cartSelectOne(memberId, productCode);
     if (cartDTOCheck == null) {
@@ -83,7 +79,7 @@ public class MemberApiController {
     }
 
     String tempPassword = getRandomPassword(8);
-    sendEmail(memberEmail, "다올커피 임시 비밀번호", "임시 비밀번호: ", tempPassword);
+    mailService.sendEmail(memberEmail, "다올커피 임시 비밀번호", "임시 비밀번호: ", tempPassword);
     String encoded = passwordEncoder.encode(tempPassword);
     memberDao.memberTempPasswordUpdate(memberId, encoded);
 
@@ -369,7 +365,7 @@ public class MemberApiController {
       String subject = "다올커피 - 이메일 인증번호가 도착했습니다.";
       String main = "회원님의 이메일 인증번호는";
 
-      sendEmail(memberEmail, subject, main, code);
+      mailService.sendEmail(memberEmail, subject, main, code);
       session.setAttribute("storedVerifyCode", code);
       session.setAttribute("verifyCodeExpiry", System.currentTimeMillis() + 180000L); // 3분
 
