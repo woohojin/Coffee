@@ -73,7 +73,7 @@ public class ProductController {
     return "products/beanDetail";
   }
 
-  @RequestMapping("mixDetail")
+  @GetMapping("mixDetail")
   public String mixDetail(Model model,
                           @RequestParam String productCode,
                           @SessionAttribute Integer memberTier) {
@@ -85,7 +85,7 @@ public class ProductController {
     return "products/mixDetail";
   }
 
-  @RequestMapping("cafeDetail")
+  @GetMapping("cafeDetail")
   public String cafeDetail(Model model,
                            @RequestParam String productCode,
                            @SessionAttribute Integer memberTier) {
