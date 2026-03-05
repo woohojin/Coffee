@@ -42,9 +42,6 @@ public class MemberController {
   private final HistoryDAO historyDao;
   private final PasswordEncoder passwordEncoder;
 
-  @Value("${COOKIE_LOGIN}")
-  private String COOKIE_LOGIN;
-
   private void deleteCookies(HttpServletResponse response, String memberId) {
     Cookie cookieId = new Cookie("memberId", null);
     Cookie cookieToken = new Cookie("token", null);
@@ -113,7 +110,14 @@ public class MemberController {
         String memberFile = memberDTO.getMemberFile();
 
         if(memberFile != null && !memberFile.trim().isEmpty()) {
-          file.transferTo(uploadFile);
+          try {
+            file.transferTo(uploadFile);
+          } catch (IOException e) {
+            log.error("파일 업로드 실패", e);
+            model.addAttribute("msg", "파일 업로드 중 오류가 발생했습니다.");
+            model.addAttribute("url", "/member/memberSignUp");
+            return "alert";
+          }
         } else {
           memberDTO.setMemberFile(null);
         }
@@ -217,7 +221,7 @@ public class MemberController {
   }
 
   @RequestMapping("memberProfile")
-  public String memberProfile(HttpSession session, Model model,
+  public String memberProfile(Model model,
                               @SessionAttribute String memberId) {
 
     MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
@@ -294,7 +298,7 @@ public class MemberController {
   }
 
   @RequestMapping("memberHistory")
-  public String memberHistory(HttpServletRequest request, HttpSession session,
+  public String memberHistory(HttpServletRequest request,
                               @SessionAttribute String memberId) {
 
     LocalDate now = LocalDate.now();
@@ -315,7 +319,7 @@ public class MemberController {
   }
 
   @RequestMapping("memberHistoryPro")
-  public String memberHistoryPro(HttpServletRequest request, HttpSession session,
+  public String memberHistoryPro(HttpServletRequest request,
                                  @RequestParam String startDate,
                                  @RequestParam String endDate,
                                  @SessionAttribute String memberId) {
