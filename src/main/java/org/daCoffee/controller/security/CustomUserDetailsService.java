@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = {@Autowired})
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final MemberDAO memberDAO;
@@ -24,15 +24,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         log.info("Loading user: {}", username);
 
         MemberDTO memberDTO = memberDAO.memberSelectOne(username);
-        try {
-            if (memberDTO == null) {
-                log.error("User not found: {}", username);
-                throw new UsernameNotFoundException("not_found");
-            }
-            // 나머지 코드 동일
-        } catch (Exception e) {
-            log.error("Error loading user {}: {}", username, e.getMessage(), e);
-            throw new UsernameNotFoundException("Error loading user", e);
+
+        if (memberDTO == null) {
+            log.error("User not found: {}", username);
+            throw new UsernameNotFoundException("not_found");
         }
 
         int isDisabled = memberDAO.disabledMemberSelectOne(username);
@@ -41,13 +36,12 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new DisabledException("disabled");
         }
 
-        String role = memberDTO.getMemberTier() == 9 ? "ADMIN" : "USER";
-        log.info("User password: {}, role: {}", memberDTO.getMemberPassword(), role);
-
         if (memberDTO.getMemberPassword() == null || memberDTO.getMemberPassword().isEmpty()) {
             log.error("Password is null or empty for user: {}", username);
             throw new UsernameNotFoundException("Invalid password");
         }
+
+        String role = memberDTO.getMemberTier() == 9 ? "ADMIN" : "USER";
 
         return User.withUsername(memberDTO.getMemberId())
           .password(memberDTO.getMemberPassword())

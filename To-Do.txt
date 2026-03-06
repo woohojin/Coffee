@@ -2,7 +2,8 @@
 
 전체적으로 REST 방식으로 변경 완료 마지막 검토 진행중
 ㄴ TestController, MemberController, Alertcontroller, ProductController, MainController, MemberApiController, ProductApiController 완료
-ㄴ memberInterceptor, GlobalExceptionHandler, EncryptionTypeHandler, MybatisConfig, WebConfig 완료
+ㄴ memberInterceptor, GlobalExceptionHandler, EncryptionTypeHandler, MybatisConfig, WebConfig, CustomAuthenticationSuccessHandler 완료
+ㄴ
 
 ㄴ memberCart만 변경 끝냄 / memberPayments부분 변경 완료했으나 기타 이유로 테스트 진행이 어려움 추후 예정, 동일 이슈로 memberFindAccount도 테스트 어려움 추후 예정
 ㄴ productDetailPro, productSearch 확인 필요
