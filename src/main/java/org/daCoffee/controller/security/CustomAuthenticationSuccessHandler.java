@@ -29,13 +29,14 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     MemberDTO memberDTO = memberDAO.memberSelectOne(username);
 
-    String memberId = memberDTO.getMemberId();
-    int memberTier = memberDTO.getMemberTier();
-
     if(memberDTO != null) {
+      String memberId = memberDTO.getMemberId();
+      int memberTier = memberDTO.getMemberTier();
+
       HttpSession session = request.getSession();
       session.setAttribute("memberId", memberId);
       session.setAttribute("memberTier", memberTier);
+
       log.info("Session attributes set - memberId : {}, memberTier : {}", memberId, memberTier);
     } else {
       log.error("Failed to retrieve memberDTO for user: {}", username);
