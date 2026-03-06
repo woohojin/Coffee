@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dto.ApiResponseDTO;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -37,6 +38,9 @@ public class SecurityConfig {
   private final DataSource dataSource;
   private final UserDetailsService userDetailsService;
   private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+
+  @Value("${REMEMBER_ME_KEY}")
+  private String rememberMeKey;
 
   @Bean
   public PasswordEncoder passwordEncoder() {
@@ -99,7 +103,7 @@ public class SecurityConfig {
         })
       )
       .rememberMe(remember -> remember
-        .key("uniqueAndSecretKey") // 고유한 키 (환경 변수로 관리 권장)
+        .key(rememberMeKey)
         .tokenRepository(persistentTokenRepository())
         .tokenValiditySeconds(60 * 60 * 24 * 30) // 30일
         .userDetailsService(userDetailsService)
