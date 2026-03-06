@@ -170,7 +170,7 @@ public class SecurityConfig {
       );
     http.addFilterAfter(
       new CspNonceFilter(),
-      org.springframework.security.web.context.SecurityContextPersistenceFilter.class
+      org.springframework.security.web.context.SecurityContextHolderFilter.class
     );
     return http.build();
   }
