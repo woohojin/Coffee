@@ -203,20 +203,6 @@ public class GlobalExceptionHandler {
       .body(response);
   }
 
-  @ExceptionHandler(Exception.class)
-  public ResponseEntity<ApiResponseDTO<Void>> handleGeneralException(Exception e) {
-    log.error("Unexpected error occurred", e);
-
-    ApiResponseDTO<Void> response = ApiResponseDTO.error(
-      "서버 오류가 발생했습니다. 관리자에게 문의해주세요.",
-      500
-    );
-
-    return ResponseEntity
-      .status(HttpStatus.INTERNAL_SERVER_ERROR)
-      .body(response);
-  }
-
   @ExceptionHandler(ResponseStatusException.class)
   public ResponseEntity<ApiResponseDTO<Void>> handleResponseStatusException(ResponseStatusException e) {
     log.error("Response status error occurred: {}", e.getReason(), e);
@@ -230,6 +216,20 @@ public class GlobalExceptionHandler {
 
     return ResponseEntity
       .status(e.getStatusCode())
+      .body(response);
+  }
+
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<ApiResponseDTO<Void>> handleGeneralException(Exception e) {
+    log.error("Unexpected error occurred", e);
+
+    ApiResponseDTO<Void> response = ApiResponseDTO.error(
+      "서버 오류가 발생했습니다. 관리자에게 문의해주세요.",
+      500
+    );
+
+    return ResponseEntity
+      .status(HttpStatus.INTERNAL_SERVER_ERROR)
       .body(response);
   }
 }
