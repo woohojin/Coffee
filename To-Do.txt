@@ -3,7 +3,7 @@
 전체적으로 REST 방식으로 변경 완료 마지막 검토 진행중
 ㄴ Admin 제외 Controller 전체 완료
 ㄴ memberInterceptor 완료
-ㄴ Security, Dao, Config, Handler 전체 완료
+ㄴ Security, Dao, Config, Handler, module 전체 완료
 
 REST 방식 업데이트
 ㄴ AdminController는 아직 진행 안함 추후 예정, dto, exception은 제외

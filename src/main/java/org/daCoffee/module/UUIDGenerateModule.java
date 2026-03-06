@@ -12,36 +12,19 @@ import java.util.UUID;
 public class UUIDGenerateModule {
 
     @Value("${SECRET_TOSS_CUSTOMER_KEY}")
-    private String TOSS_CUSTOMER_KEY;
+    private String tossCustomerKey;
+
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyMMdd");
 
     public String generateOrderId() {
-        UUID randomUUID = UUID.randomUUID();
-        String UUIDWithoutHyphens = randomUUID.toString().replace("-","");
-        String UUID8Digits = UUIDWithoutHyphens.substring(0, 8);
-
-        LocalDate currentDate = LocalDate.now();
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");
-        String formattedDate = currentDate.format(formatter);
-
-        String orderId = formattedDate + "_" + UUID8Digits;
-
-        return orderId;
+        String uuid8Digits = UUID.randomUUID().toString().replace("-", "").substring(0, 8);
+        return LocalDate.now().format(DATE_FORMATTER) + "_" + uuid8Digits;
     }
 
     public String generateCustomerKey(String memberId) {
-        String customString = memberId + TOSS_CUSTOMER_KEY;
+        String uuid8Digits = UUID.nameUUIDFromBytes((memberId + tossCustomerKey).getBytes(StandardCharsets.UTF_8))
+          .toString().replace("-", "").substring(0, 8);
 
-        assert TOSS_CUSTOMER_KEY != null;
-        UUID customUUID = UUID.nameUUIDFromBytes(customString.getBytes(StandardCharsets.UTF_8));
-        String UUIDWithoutHyphens = customUUID.toString().replace("-","");
-        String UUID8Digits = UUIDWithoutHyphens.substring(0, 8);
-
-        StringBuilder insertSpecialCharacterUUID = new StringBuilder(UUID8Digits);
-        insertSpecialCharacterUUID.insert(UUID8Digits.length() - 5, '_');
-
-        String customerKey = insertSpecialCharacterUUID.toString();
-
-        return customerKey;
+        return new StringBuilder(uuid8Digits).insert(uuid8Digits.length() - 5, '_').toString();
     }
 }
