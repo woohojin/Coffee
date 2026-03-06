@@ -4,22 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import org.daCoffee.dto.*;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ProductDAO {
     private final SqlSessionTemplate session;
 
-    @Autowired
-    public ProductDAO(SqlSessionTemplate session) {
-        this.session = session;
-    }
-
     private final static String NS = "org.daCoffee.dao.ProductDAO.";
-    private static Map map = new HashMap<>();
 
     public int productInsert(ProductDTO productDTO) {
         int num = session.insert(NS + "productInsert", productDTO);
@@ -77,7 +72,7 @@ public class ProductDAO {
     }
 
     public void productSoldOutUpdate(String productCode, int productSoldOut) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("productCode", productCode);
         map.put("productSoldOut", productSoldOut);
         session.update(NS + "productSoldoutUpdate", map);
@@ -89,7 +84,7 @@ public class ProductDAO {
     }
 
     public int productCountByTierByProductType(int memberTier, int productType) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("memberTier", memberTier);
         map.put("productType", productType);
         int num = session.selectOne(NS + "productCountByTierByProductType", map);
@@ -102,7 +97,7 @@ public class ProductDAO {
     }
 
     public int productSearchCountByTier(int memberTier, String searchText) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("memberTier", memberTier);
         map.put("searchText", searchText);
         int num = session.selectOne(NS + "productSearchCount", map);
@@ -110,7 +105,7 @@ public class ProductDAO {
     }
 
     public String productTypeFindByProductCode(String productCode) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("productCode", productCode);
         String str = session.selectOne(NS + "productTypeFindByProductCode", map);
         return str;
@@ -146,7 +141,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productList(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<ProductDTO> list = session.selectList(NS + "productList", map);
@@ -154,7 +149,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productListByMemberTierByProductType(int pageInt, int limit, int memberTier, int productType) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("memberTier", memberTier);
@@ -164,7 +159,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productSearchListByMemberTier(int pageInt, int limit, int memberTier, String searchText) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("memberTier", memberTier);
@@ -174,7 +169,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productSearchListByProductCode(int pageInt, int limit, String searchText) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
@@ -183,7 +178,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productSearchListByProductName(int pageInt, int limit, String searchText) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
@@ -192,7 +187,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productSearchListByProductType(int pageInt, int limit, String searchText) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
@@ -201,7 +196,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productSearchListByProductPrice(int pageInt, int limit, String searchText) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
@@ -210,7 +205,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productSearchListByProductUnit(int pageInt, int limit, String searchText) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
@@ -219,7 +214,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productSearchListByProductCountry(int pageInt, int limit, String searchText) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
@@ -228,7 +223,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productSearchListByProductSpecies(int pageInt, int limit, String searchText) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
@@ -237,7 +232,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productSearchListByProductCompany(int pageInt, int limit, String searchText) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
@@ -246,7 +241,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productSearchListByProductTier(int pageInt, int limit, String searchText) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
@@ -255,7 +250,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productSearchListByProductSoldOut(int pageInt, int limit, String searchText) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
@@ -264,7 +259,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productListByProductType(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<ProductDTO> list = session.selectList(NS + "productListByProductType", map);
@@ -272,7 +267,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productListDescByProductType(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<ProductDTO> list = session.selectList(NS + "productListDescByProductType", map);
@@ -280,7 +275,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productListByProductCode(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<ProductDTO> list = session.selectList(NS + "productListByProductCode", map);
@@ -288,7 +283,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productListDescByProductCode(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<ProductDTO> list = session.selectList(NS + "productListDescByProductCode", map);
@@ -296,7 +291,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productListByProductName(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<ProductDTO> list = session.selectList(NS + "productListByProductName", map);
@@ -304,7 +299,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productListDescByProductName(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<ProductDTO> list = session.selectList(NS + "productListDescByProductName", map);
@@ -312,7 +307,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productListByProductUnit(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<ProductDTO> list = session.selectList(NS + "productListByProductUnit", map);
@@ -320,7 +315,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productListDescByProductUnit(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<ProductDTO> list = session.selectList(NS + "productListDescByProductUnit", map);
@@ -328,7 +323,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productListByProductPrice(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<ProductDTO> list = session.selectList(NS + "productListByProductPrice", map);
@@ -336,7 +331,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productListDescByProductPrice(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<ProductDTO> list = session.selectList(NS + "productListDescByProductPrice", map);
@@ -344,7 +339,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productListByProductCountry(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<ProductDTO> list = session.selectList(NS + "productListByProductCountry", map);
@@ -352,7 +347,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productListDescByProductCountry(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<ProductDTO> list = session.selectList(NS + "productListDescByProductCountry", map);
@@ -360,7 +355,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productListByProductSpecies(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<ProductDTO> list = session.selectList(NS + "productListByProductSpecies", map);
@@ -368,7 +363,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productListDescByProductSpecies(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<ProductDTO> list = session.selectList(NS + "productListDescByProductSpecies", map);
@@ -376,7 +371,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productListByProductCompany(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<ProductDTO> list = session.selectList(NS + "productListByProductCompany", map);
@@ -384,7 +379,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productListDescByProductCompany(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<ProductDTO> list = session.selectList(NS + "productListDescByProductCompany", map);
@@ -392,7 +387,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productListByProductTier(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<ProductDTO> list = session.selectList(NS + "productListByProductTier", map);
@@ -400,7 +395,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productListDescByProductTier(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<ProductDTO> list = session.selectList(NS + "productListDescByProductTier", map);
@@ -408,7 +403,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productListByProductSoldOut(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<ProductDTO> list = session.selectList(NS + "productListByProductSoldOut", map);
@@ -416,7 +411,7 @@ public class ProductDAO {
     }
 
     public List<ProductDTO> productListDescByProductSoldOut(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<ProductDTO> list = session.selectList(NS + "productListDescByProductSoldOut", map);

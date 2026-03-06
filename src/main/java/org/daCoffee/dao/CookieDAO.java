@@ -3,26 +3,21 @@ package org.daCoffee.dao;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.RequiredArgsConstructor;
 import org.daCoffee.dto.CookieDTO;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
 @Component
+@RequiredArgsConstructor
 public class CookieDAO {
     private final SqlSessionTemplate session;
 
-    @Autowired
-    public CookieDAO(SqlSessionTemplate session) {
-        this.session = session;
-    }
-
     private final static String NS = "org.daCoffee.dao.CookieDAO.";
-    private static Map map = new HashMap<>();
 
     public int cookieInsert(String memberId, String token) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("memberId", memberId);
         map.put("token", token);
         int num = session.insert(NS+"cookieInsert", map);

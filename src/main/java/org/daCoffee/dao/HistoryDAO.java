@@ -4,22 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import org.daCoffee.dto.HistoryDTO;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class HistoryDAO {
   private final SqlSessionTemplate session;
 
-  @Autowired
-  public HistoryDAO(SqlSessionTemplate session) {
-    this.session = session;
-  }
-
   private final static String NS = "org.daCoffee.dao.HistoryDAO.";
-  private static Map map = new HashMap<>();
 
   public int historyInsert(HistoryDTO historyDTO) {
     int num = session.insert(NS + "historyInsert", historyDTO);
@@ -27,7 +22,7 @@ public class HistoryDAO {
   }
 
   public int historyFranCodeUpdate(String existMemberFranCode, String memberFranCode) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("existMemberFranCode", existMemberFranCode);
     map.put("memberFranCode", memberFranCode);
     int num = session.update(NS + "historyFranCodeUpdate", map);
@@ -40,7 +35,7 @@ public class HistoryDAO {
   }
 
   public int historyDelete(String orderId, String productCode) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("orderId", orderId);
     map.put("productCode", productCode);
     int num = session.delete(NS + "historyDelete", map);
@@ -57,7 +52,7 @@ public class HistoryDAO {
   }
 
   public int historyCountBetween(String memberId, String startDate, String endDate) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("memberId", memberId);
     map.put("startDate", startDate);
     map.put("endDate", endDate);
@@ -66,7 +61,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historyList(int pageInt, int limit) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     List<HistoryDTO> list = session.selectList(NS + "historyList", map);
@@ -79,7 +74,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historyListByHistoryCode(int pageInt, int limit) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     List<HistoryDTO> list = session.selectList(NS + "historyListByHistoryCode", map);
@@ -87,7 +82,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historyListDescByHistoryCode(int pageInt, int limit) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     List<HistoryDTO> list = session.selectList(NS + "historyListDescByHistoryCode", map);
@@ -95,7 +90,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historyListByMemberId(int pageInt, int limit) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     List<HistoryDTO> list = session.selectList(NS + "historyListByMemberId", map);
@@ -103,7 +98,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historyListDescByMemberId(int pageInt, int limit) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     List<HistoryDTO> list = session.selectList(NS + "historyListDescByMemberId", map);
@@ -111,7 +106,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historyListByProductCode(int pageInt, int limit) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     List<HistoryDTO> list = session.selectList(NS + "historyListByProductCode", map);
@@ -119,7 +114,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historyListDescByProductCode(int pageInt, int limit) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     List<HistoryDTO> list = session.selectList(NS + "historyListDescByProductCode", map);
@@ -127,7 +122,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historyListByProductName(int pageInt, int limit) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     List<HistoryDTO> list = session.selectList(NS + "historyListByProductName", map);
@@ -135,7 +130,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historyListDescByProductName(int pageInt, int limit) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     List<HistoryDTO> list = session.selectList(NS + "historyListDescByProductName", map);
@@ -143,7 +138,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historyListByProductUnit(int pageInt, int limit) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     List<HistoryDTO> list = session.selectList(NS + "historyListByProductUnit", map);
@@ -151,7 +146,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historyListDescByProductUnit(int pageInt, int limit) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     List<HistoryDTO> list = session.selectList(NS + "historyListDescByProductUnit", map);
@@ -159,7 +154,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historyListByProductPrice(int pageInt, int limit) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     List<HistoryDTO> list = session.selectList(NS + "historyListByProductPrice", map);
@@ -167,7 +162,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historyListDescByProductPrice(int pageInt, int limit) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     List<HistoryDTO> list = session.selectList(NS + "historyListDescByProductPrice", map);
@@ -175,7 +170,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historyListByQuantity(int pageInt, int limit) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     List<HistoryDTO> list = session.selectList(NS + "historyListByQuantity", map);
@@ -183,7 +178,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historyListDescByQuantity(int pageInt, int limit) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     List<HistoryDTO> list = session.selectList(NS + "historyListDescByQuantity", map);
@@ -191,7 +186,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historyListByDeliveryAddress(int pageInt, int limit) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     List<HistoryDTO> list = session.selectList(NS + "historyListByDeliveryAddress", map);
@@ -199,7 +194,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historyListDescByDeliveryAddress(int pageInt, int limit) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     List<HistoryDTO> list = session.selectList(NS + "historyListDescByDeliveryAddress", map);
@@ -207,7 +202,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historyListByOrderDate(int pageInt, int limit) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     List<HistoryDTO> list = session.selectList(NS + "historyListByOrderDate", map);
@@ -215,7 +210,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historyListDescByOrderDate(int pageInt, int limit) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     List<HistoryDTO> list = session.selectList(NS + "historyListDescByOrderDate", map);
@@ -223,7 +218,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historySearchListByOrderDate(int pageInt, int limit, String startDate, String endDate) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     map.put("startDate", startDate);
@@ -233,7 +228,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historySearchListByHistoryCode(int pageInt, int limit, String searchText) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     map.put("searchText", searchText);
@@ -242,7 +237,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historySearchListByMemberId(int pageInt, int limit, String searchText) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     map.put("searchText", searchText);
@@ -251,7 +246,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historySearchListByHistoryCodeAndMemberId(int pageInt, int limit, String searchText, String searchText1) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     map.put("searchText", searchText);
@@ -261,7 +256,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historySearchListByHistoryCodeWithOrderDate(int pageInt, int limit, String searchText, String startDate, String endDate) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     map.put("searchText", searchText);
@@ -272,7 +267,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historySearchListByMemberIdWithOrderDate(int pageInt, int limit, String searchText, String startDate, String endDate) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     map.put("searchText", searchText);
@@ -283,7 +278,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historySearchListByHistoryCodeAndMemberIdWithOrderDate(int pageInt, int limit, String searchText, String searchText1, String startDate, String endDate) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("start", (pageInt - 1) * limit + 1);
     map.put("end", (pageInt * limit));
     map.put("searchText", searchText);
@@ -294,14 +289,13 @@ public class HistoryDAO {
     return list;
   }
 
-
   public List<HistoryDTO> historySelectMember(String memberId) {
     List<HistoryDTO> list = session.selectList(NS + "historySelectMember", memberId);
     return list;
   }
 
   public HistoryDTO historySelectOne(String orderId, String productCode) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("orderId", orderId);
     map.put("productCode", productCode);
     HistoryDTO historyDTO = session.selectOne(NS + "historySelectOne", map);
@@ -309,7 +303,7 @@ public class HistoryDAO {
   }
 
   public List<HistoryDTO> historySelectBetween(String memberId, String startDate, String endDate) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("memberId", memberId);
     map.put("startDate", startDate);
     map.put("endDate", endDate);

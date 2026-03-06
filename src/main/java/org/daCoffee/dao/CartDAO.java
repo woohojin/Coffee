@@ -4,23 +4,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import org.daCoffee.dto.CartDTO;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class CartDAO {
 
   private final SqlSessionTemplate session;
 
-  @Autowired
-  public CartDAO(SqlSessionTemplate session) {
-    this.session = session;
-  }
-
   private final static String NS = "org.daCoffee.dao.CartDAO.";
-  private static Map map = new HashMap<>();
 
   public int cartInsert(CartDTO cartDTO) {
     int num = session.insert(NS + "cartInsert", cartDTO);
@@ -38,7 +33,7 @@ public class CartDAO {
   }
 
   public int cartCountByProductType(String memberId, int productType) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("memberId", memberId);
     map.put("productType", productType);
     int num = session.selectOne(NS + "cartCountByProductType", map);
@@ -47,7 +42,7 @@ public class CartDAO {
   }
 
   public Integer checkQuantityByProductCode(String memberId, String productCode) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("memberId", memberId);
     map.put("productCode", productCode);
     Integer num = session.selectOne(NS + "checkQuantityByProductCode", map);
@@ -56,7 +51,7 @@ public class CartDAO {
   }
 
   public List<Integer> checkQuantityByProductType(String memberId, int productType) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("memberId", memberId);
     map.put("productType", productType);
     List<Integer> list = session.selectList(NS + "checkQuantityByProductType", map);
@@ -70,7 +65,7 @@ public class CartDAO {
   }
 
   public CartDTO cartSelectOne(String memberId, String productCode) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("memberId", memberId);
     map.put("productCode", productCode);
     CartDTO cartDTO = session.selectOne(NS + "cartSelectOne", map);
@@ -85,32 +80,23 @@ public class CartDAO {
   }
 
   public int cartDelete(String memberId, String productCode) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("memberId", memberId);
     map.put("productCode", productCode);
-    int num = session.insert(NS + "cartDelete", map);
+    int num = session.delete(NS + "cartDelete", map);
     return num;
   }
 
   public int deleteCartByMember(String memberId) {
-    int num = session.insert(NS + "deleteCartByMember", memberId);
+    int num = session.delete(NS + "deleteCartByMember", memberId);
     return num;
   }
 
   public void cartQuantityUpdate(String memberId, String productCode, int delta) {
-    map.clear();
+    Map<String, Object> map = new HashMap<>();
     map.put("memberId", memberId);
     map.put("productCode", productCode);
     map.put("delta", delta);
     session.update(NS + "cartQuantityUpdate", map);
   }
-
-//  public void cartGrindingUpdate(String memberId, String productCode, int productGrinding) {
-//    map.clear();
-//    map.put("memberId", memberId);
-//    map.put("productCode", productCode);
-//    map.put("productGrinding", productGrinding);
-//    session.update(NS + "cartGrindingUpdate", map);
-//  }
-
 }

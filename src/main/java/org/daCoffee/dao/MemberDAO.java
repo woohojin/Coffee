@@ -4,22 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import org.daCoffee.dto.MemberDTO;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class MemberDAO {
     private final SqlSessionTemplate session;
 
-    @Autowired
-    public MemberDAO(SqlSessionTemplate session) {
-        this.session = session;
-    }
-
     private final static String NS = "org.daCoffee.dao.MemberDAO.";
-    private static Map map = new HashMap<>();
 
     public int memberInsert(MemberDTO memberDTO) {
         int num = session.insert(NS + "memberInsert", memberDTO);
@@ -46,7 +41,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberList(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<MemberDTO> list = session.selectList(NS + "memberList", map);
@@ -69,7 +64,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberFindId(String memberName, String memberEmail) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("memberName", memberName);
         map.put("memberEmail", memberEmail);
         List<MemberDTO> list = session.selectList(NS + "memberFindId", map);
@@ -77,7 +72,7 @@ public class MemberDAO {
     }
 
     public String memberFindPassword(String memberId, String memberEmail) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("memberId", memberId);
         map.put("memberEmail", memberEmail);
         String str = session.selectOne(NS + "memberFindPassword", map);
@@ -85,7 +80,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberListByMemberCompanyName(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<MemberDTO> list = session.selectList(NS + "memberListByMemberCompanyName", map);
@@ -93,7 +88,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberListDescByMemberCompanyName(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<MemberDTO> list = session.selectList(NS + "memberListDescByMemberCompanyName", map);
@@ -101,7 +96,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberListByMemberFranCode(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<MemberDTO> list = session.selectList(NS + "memberListByMemberFranCode", map);
@@ -109,7 +104,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberListDescByMemberFranCode(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<MemberDTO> list = session.selectList(NS + "memberListDescByMemberFranCode", map);
@@ -117,7 +112,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberListByMemberId(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<MemberDTO> list = session.selectList(NS + "memberListByMemberId", map);
@@ -125,7 +120,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberListDescByMemberId(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<MemberDTO> list = session.selectList(NS + "memberListDescByMemberId", map);
@@ -133,7 +128,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberListByMemberName(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<MemberDTO> list = session.selectList(NS + "memberListByMemberName", map);
@@ -141,7 +136,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberListDescByMemberName(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<MemberDTO> list = session.selectList(NS + "memberListDescByMemberName", map);
@@ -149,7 +144,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberListByMemberTel(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<MemberDTO> list = session.selectList(NS + "memberListByMemberTel", map);
@@ -157,7 +152,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberListDescByMemberTel(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<MemberDTO> list = session.selectList(NS + "memberListDescByMemberTel", map);
@@ -165,7 +160,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberListByMemberCompanyTel(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<MemberDTO> list = session.selectList(NS + "memberListByMemberCompanyTel", map);
@@ -173,7 +168,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberListDescByMemberCompanyTel(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<MemberDTO> list = session.selectList(NS + "memberListDescByMemberCompanyTel", map);
@@ -181,7 +176,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberListByMemberTier(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<MemberDTO> list = session.selectList(NS + "memberListByMemberTier", map);
@@ -189,7 +184,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberListDescByMemberTier(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<MemberDTO> list = session.selectList(NS + "memberListDescByMemberTier", map);
@@ -197,7 +192,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberListByMemberDate(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<MemberDTO> list = session.selectList(NS + "memberListByMemberDate", map);
@@ -205,7 +200,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberListDescByMemberDate(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<MemberDTO> list = session.selectList(NS + "memberListDescByMemberDate", map);
@@ -213,7 +208,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberListByMemberDisable(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<MemberDTO> list = session.selectList(NS + "memberListByMemberDisable", map);
@@ -221,7 +216,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberListDescByMemberDisable(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<MemberDTO> list = session.selectList(NS + "memberListDescByMemberDisable", map);
@@ -229,7 +224,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberSearchListByMemberCompanyName(int pageInt, int limit, String searchText) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
@@ -238,7 +233,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberSearchListByMemberFranCode(int pageInt, int limit, String searchText) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
@@ -247,7 +242,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberSearchListByMemberFranCodeByNull(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<MemberDTO> list = session.selectList(NS + "memberSearchListByMemberFranCodeByNull", map);
@@ -255,7 +250,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberSearchListByMemberId(int pageInt, int limit, String searchText) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
@@ -264,7 +259,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberSearchListByMemberName(int pageInt, int limit, String searchText) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
@@ -273,7 +268,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberSearchListByMemberTel(int pageInt, int limit, String searchText) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
@@ -282,7 +277,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberSearchListByMemberCompanyTel(int pageInt, int limit, String searchText) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
@@ -291,7 +286,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberSearchListByMemberTier(int pageInt, int limit, String searchText) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         map.put("searchText", searchText);
@@ -300,7 +295,7 @@ public class MemberDAO {
     }
 
     public List<MemberDTO> memberSearchListByMemberDisable(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<MemberDTO> list = session.selectList(NS + "memberSearchListByMemberDisable", map);
@@ -308,21 +303,21 @@ public class MemberDAO {
     }
 
     public void memberTierUpdate(String memberId, int memberTier) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("memberId", memberId);
         map.put("memberTier", memberTier);
         session.update(NS + "memberTierUpdate", map);
     }
 
     public void memberFranCodeUpdate(String memberId, String memberFranCode) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("memberId", memberId);
         map.put("memberFranCode", memberFranCode);
         session.update(NS + "memberFranCodeUpdate", map);
     }
 
     public void memberTempPasswordUpdate(String memberId, String memberTempPassword) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("memberId", memberId);
         map.put("memberTempPassword", memberTempPassword);
         session.update(NS + "memberTempPasswordUpdate", map);
@@ -341,12 +336,12 @@ public class MemberDAO {
     }
 
     public int memberWithdrawal(String memberId) {
-        int num = session.insert(NS + "memberWithdrawal", memberId);
+        int num = session.update(NS + "memberWithdrawal", memberId);
         return num;
     }
 
     public List<MemberDTO> memberWithdrawalList(int pageInt, int limit) {
-        map.clear();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", (pageInt - 1) * limit + 1);
         map.put("end", (pageInt * limit));
         List<MemberDTO> list = session.selectList(NS + "memberWithdrawalList", map);
@@ -364,11 +359,11 @@ public class MemberDAO {
     }
 
     public void memberDisable(String memberId) {
-        session.insert(NS + "memberDisable", memberId);
+        session.update(NS + "memberDisable", memberId);
     }
 
     public void memberEnable(String memberId) {
-        session.insert(NS + "memberEnable", memberId);
+        session.update(NS + "memberEnable", memberId);
     }
 
     public void memberDelete(String memberId) {
