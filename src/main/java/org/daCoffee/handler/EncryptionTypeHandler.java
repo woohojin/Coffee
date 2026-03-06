@@ -56,7 +56,7 @@ public class EncryptionTypeHandler extends BaseTypeHandler<String> {
     try {
       encryptedValue = aesEncryptionModule.encrypt(s);
     } catch (Exception e) {
-      throw new RuntimeException(e);
+      throw new SQLException("Encryption failed", e);
     }
 
     preparedStatement.setString(i, encryptedValue);
