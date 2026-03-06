@@ -39,6 +39,8 @@ public class SecurityConfig {
   private final UserDetailsService userDetailsService;
   private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
+  ObjectMapper objectMapper = new ObjectMapper();
+
   @Value("${REMEMBER_ME_KEY}")
   private String rememberMeKey;
 
@@ -137,7 +139,6 @@ public class SecurityConfig {
               403
             );
 
-            ObjectMapper objectMapper = new ObjectMapper();
             response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
           }  else {
             String msg = URLEncoder.encode("권한이 부족합니다.", StandardCharsets.UTF_8);
@@ -159,7 +160,6 @@ public class SecurityConfig {
               401
             );
 
-            ObjectMapper objectMapper = new ObjectMapper();
             response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
           } else {
             String msg = URLEncoder.encode("로그인이 필요합니다.", StandardCharsets.UTF_8);
