@@ -7,8 +7,8 @@ import java.util.Base64;
 
 @Slf4j
 public class AESEncryptionModule {
-    private final String AES_ALGORITHM = "AES";
-    private final String AES_MODE = "AES/ECB/PKCS5Padding";
+    private static final String AES_ALGORITHM = "AES";
+    private static final String AES_MODE = "AES/ECB/PKCS5Padding";
 
     private String AES_KEY;
 
@@ -25,8 +25,6 @@ public class AESEncryptionModule {
     }
 
     public String encrypt(String data) throws Exception {
-      log.info("Encrypting data: {}", data);
-
       if (data == null) {
           throw new IllegalArgumentException("Data to encrypt cannot be null");
       }
