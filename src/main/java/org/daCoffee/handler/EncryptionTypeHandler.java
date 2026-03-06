@@ -35,11 +35,19 @@ public class EncryptionTypeHandler extends BaseTypeHandler<String> {
       }
       Properties props = new Properties();
       props.load(input);
+
       String aesKey = props.getProperty("SECRET_AES_KEY");
       if (aesKey == null || aesKey.isEmpty()) {
         throw new RuntimeException("SECRET_AES_KEY not found in secrets.properties");
       }
       aesEncryptionModule.setAesKey(aesKey); // Setter 사용
+
+      String aesIv = props.getProperty("SECRET_AES_IV");
+      if (aesIv == null || aesIv.isEmpty()) {
+        throw new RuntimeException("SECRET_AES_IV not found in secrets.properties");
+      }
+      aesEncryptionModule.setAesIv(aesIv);
+
     } catch (Exception e) {
       throw new RuntimeException("Failed to load SECRET_AES_KEY from secrets.properties", e);
     }
