@@ -1,9 +1,6 @@
 package org.daCoffee.controller.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,14 +17,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.sql.DataSource;
-import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.UUID;
 
 @Configuration
 @EnableWebSecurity
@@ -71,7 +64,6 @@ public class SecurityConfig {
           "/member/memberSignUpPro",
           "/member/memberTerms",
           "/member/memberFindAccount",
-          "/member/verifyEmail",
           "/css/**",
           "/image/**",
           "/js/**",
@@ -121,7 +113,7 @@ public class SecurityConfig {
         .logoutSuccessUrl("/main")
       )
       .csrf(csrf -> csrf
-        .ignoringRequestMatchers("/alert", "/member/verifyEmail")
+        .ignoringRequestMatchers("/alert")
       )
       // URLEncoder는 한글을 사용하기 위해서 UTF_8로 인코딩을 하는 것
       .exceptionHandling(ex -> ex
