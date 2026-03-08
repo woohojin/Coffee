@@ -2,7 +2,13 @@ import { apiGet, apiPostForm} from './api-utils.js'
 
 function formatPrice(price) {
   if (!price) return '0';
-  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return Number(price).toLocaleString('ko-KR');
+}
+
+function updateOrderSummary(data) {
+  document.getElementById('sum-price').textContent = formatPrice(data.sumPrice) + " 원";
+  document.getElementById('delivery-fee').textContent = formatPrice(data.deliveryFee) + " 원";
+  document.getElementById('total-price').textContent = formatPrice(data.totalPrice) + " 원";
 }
 
 export async function fetchCart() {
@@ -99,9 +105,7 @@ function renderCart(data) {
   container.innerHTML = html;
 
   // 주문 요약 업데이트
-  document.getElementById('sum-price').textContent = formatPrice(data.sumPrice) + " 원";
-  document.getElementById('delivery-fee').textContent = formatPrice(data.deliveryFee) + " 원";
-  document.getElementById('total-price').textContent = formatPrice(data.totalPrice) + " 원";
+  updateOrderSummary(data);
 }
 
 // 페이지 로드 시 장바구니 불러오기
@@ -149,9 +153,7 @@ document.addEventListener('click', async (e) => {
     const data = await apiPostForm('/api/member/cart/update', formData);
 
     // 주문 요약 업데이트
-    document.getElementById('sum-price').textContent = formatPrice(data.sumPrice) + " 원";
-    document.getElementById('delivery-fee').textContent = formatPrice(data.deliveryFee) + " 원";
-    document.getElementById('total-price').textContent = formatPrice(data.totalPrice) + " 원";
+    updateOrderSummary(data);
 
     if (status === 'increase' || status === 'decrease') {
       const updatedItem = data.list.find(item => item.productCode === form.querySelector('[name="productCode"]').value);
@@ -160,7 +162,7 @@ document.addEventListener('click', async (e) => {
 
         const priceCell = form.closest('tr').querySelector('.member_cart_price p');
         if (priceCell) {
-          priceCell.innerHTML = updatedItem.productSoldOut === 1
+          priceCell.textContent = updatedItem.productSoldOut === 1
             ? 'Sold Out'
             : `${formatPrice(updatedItem.productPrice * updatedItem.quantity)} 원`;
         }
