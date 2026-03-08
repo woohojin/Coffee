@@ -18,27 +18,20 @@ export async function apiRequest(url, options = {}) {
 
     const result = await response.json();
 
-    if (!result.success) {
-      if (result.message) {
-        alert(result.message);
-      }
+    if (!response.ok) {
+      throw new Error(result.message || `HTTP error ${response.status}`);
+    }
 
+    if (!result.success) {
       if (result.redirectUrl) {
         window.location.href = result.redirectUrl;
       }
-
       throw new Error(result.message || 'API 요청 실패');
     }
-
     return result.data;
 
   } catch (error) {
     console.error('API Error:', error);
-
-    if (error.message === 'Failed to fetch') {
-      alert('서버와의 연결에 실패했습니다.');
-    }
-
     throw error;
   }
 }
@@ -54,7 +47,7 @@ export async function apiPost(url, data) {
   });
 }
 
-export async function apiPostForm(url, formData = {}) {
+export async function apiPostForm(url, formData) {
   return apiRequest(url, {
     method: 'POST',
     body: formData,
