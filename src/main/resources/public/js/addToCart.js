@@ -36,20 +36,36 @@ document.addEventListener("DOMContentLoaded", function () {
     text?.querySelectorAll("a").forEach((el) => el.remove());
 
     // 이미지 추가
-    const imgHtml = `
-      <a href="${detailUrl}?productCode=${productCode}">
-        <img src="/files/${folder}/${productCode}/${productFile}" alt="${productName}" />
-      </a>
-    `;
-    info?.insertAdjacentHTML("afterbegin", imgHtml);
+    const linkEl = document.createElement("a");
+    linkEl.href = `${detailUrl}?productCode=${productCode}`;
+
+    const imgEl = document.createElement("img");
+    imgEl.src = `/files/${folder}/${productCode}/${productFile}`;
+    imgEl.alt = productName;
+
+    linkEl.appendChild(imgEl);
+    info?.prepend(linkEl);
 
     // 텍스트 업데이트
-    text.innerHTML = `
-      <p class="cart_product_name">${productName}</p>
-      <p class="cart_product_unit">${productUnit}</p>
-      <p class="cart_quantity">${quantity} 개</p>
-      <p class="cart_product_price">${Number(productPrice).toLocaleString("ko-KR")} 원</p>
-    `;
+    const nameEl = document.createElement("p");
+    nameEl.className = "cart_product_name";
+    nameEl.textContent = productName;
+    text.appendChild(nameEl);
+
+    const unitEl = document.createElement("p");
+    unitEl.className = "cart_product_unit";
+    unitEl.textContent = productUnit;
+    text.appendChild(unitEl);
+
+    const quantityEl = document.createElement("p");
+    quantityEl.className = "cart_quantity";
+    quantityEl.textContent = `${quantity} 개`;
+    text.appendChild(quantityEl);
+
+    const priceEl = document.createElement("p");
+    priceEl.className = "cart_product_price";
+    priceEl.textContent = `${Number(productPrice).toLocaleString("ko-KR")} 원`;
+    text.appendChild(priceEl);
 
     let count = Number(cartCount?.textContent) || 0;
     cartCount.textContent = count + 1;
@@ -58,14 +74,6 @@ document.addEventListener("DOMContentLoaded", function () {
     cart?.classList.add("open");
     background?.classList.add("visible");
 
-    // 4초 제한
-    setTimeout(() => {
-      cart?.classList.remove("open");
-      setTimeout(() => {
-        background?.classList.remove("visible");
-      }, 1000);
-    }, 4000);
-
     // 클릭 이벤트 수동 닫기
     const closeHandler = () => {
       cart?.classList.remove("open");
@@ -73,6 +81,10 @@ document.addEventListener("DOMContentLoaded", function () {
         background?.classList.remove("visible");
       }, 1000);
     };
+
+    // 4초 제한
+    setTimeout(closeHandler, 4000);
+
 
     document.querySelector(".cart_close_btn")?.addEventListener("click", closeHandler, { once: true });
     background?.addEventListener("click", closeHandler, { once: true });
