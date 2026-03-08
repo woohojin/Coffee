@@ -15,7 +15,7 @@ export async function fetchCart() {
   return apiGet('/api/member/cart');
 }
 
-function renderCart(data) {
+export function renderCart(data) {
   const container = document.getElementById('cart-container');
 
   if (data.cartCount < 1) {

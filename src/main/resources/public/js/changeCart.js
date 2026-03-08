@@ -1,4 +1,5 @@
-import {apiPostForm} from "./api-utils.js";
+import { apiPostForm } from "./api-utils.js";
+import { renderCart } from "./cart.js";
 
 function increaseCartQuantity(num) {
     updateCart(num, 1);
@@ -20,7 +21,7 @@ function deleteCart(num) {
 }
 
 // num = 장바구니 내 상품 위치 change = status와 비슷하지만 1과 -1로 증감을 구분 0으로 삭제
-function updateCart(num, change) {
+async function updateCart(num, change) {
     const form = document.querySelector(".form" + num);
     if (!form) return;
 
@@ -41,18 +42,11 @@ function updateCart(num, change) {
     formData.append('quantity', quantity);
     formData.append('productCode', productCode);
 
-    const headers = {};
-    if (window.csrf?.name && window.csrf?.value) {
-        headers[window.csrf.name] = window.csrf.value;
+    try {
+        const data = await apiPostForm('/api/member/cart/update', formData);
+        renderCart(data);
+    } catch (err) {
+        console.error("장바구니 업데이트 실패:", err);
+        alert('오류가 발생했습니다. 다시 시도 해주세요.');
     }
-
-    apiPostForm('/api/member/cart/update', formData, headers)
-      .then(data => {
-          // 여기서 data.success 체크 필요 없음 → 성공 시에만 여기로 옴
-          renderCart(data);
-      })
-      .catch(err => {
-          console.error("장바구니 업데이트 실패:", err);
-          alert('오류가 발생했습니다. 다시 시도 해주세요.');
-      });
 }
