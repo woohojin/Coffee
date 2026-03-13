@@ -1,10 +1,10 @@
 package org.daCoffee.dto;
 
-import lombok.Data;
-import lombok.ToString;
+import lombok.Builder;
+import lombok.Getter;
 
-@Data
-@ToString
+@Getter
+@Builder
 public class ImageDTO {
   String productCode;
   String existProductCode; // admin productUpdate

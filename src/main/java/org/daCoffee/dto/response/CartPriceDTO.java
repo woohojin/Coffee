@@ -1,8 +1,8 @@
 package org.daCoffee.dto.response;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class CartPriceDTO {
   private int sumPrice;
   private int deliveryFee;

@@ -1,10 +1,10 @@
 package org.daCoffee.dto.response;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import org.daCoffee.dto.ProductDTO;
 
-@Data
+@Getter
 @Builder
 public class ProductDetailDataDTO {
   private int memberTier;

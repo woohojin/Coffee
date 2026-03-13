@@ -1,90 +1,42 @@
 package org.daCoffee.dto;
 
-import lombok.Data;
-import lombok.ToString;
+import lombok.Builder;
+import lombok.Getter;
 
-@Data
-@ToString
+@Getter
+@Builder
 public class ProductDTO {
-    String productCode;
-    String existProductCode; // admin productUpdate
-    int productType;
-    String productName;
-    int productPrice;
-    String productUnit;
-    int productTier;
-    String productFile;
-    int productSoldOut;
-    String productRegisterName;
-    String productRegisterDate;
-    String productModifierName;
-    String productModifierDate;
+    private String productCode;
+    private String existProductCode; // admin productUpdate
+    private int productType;
+    private String productName;
+    private int productPrice;
+    private String productUnit;
+    private int productTier;
+    private String productFile;
+    private int productSoldOut;
+    private String productRegisterName;
+    private String productRegisterDate;
+    private String productModifierName;
+    private String productModifierDate;
 
     //bean
 
-    String beanCountry;
-    String beanSpecies;
-    String beanCompany;
-    String beanUseByDate;
-    String beanRegisterName;
-    String beanRegisterDate;
-    String beanModifierName;
-    String beanModifierDate;
+    private String beanCountry;
+    private String beanSpecies;
+    private String beanCompany;
+    private String beanUseByDate;
+    private String beanRegisterName;
+    private String beanRegisterDate;
+    private String beanModifierName;
+    private String beanModifierDate;
 
     // mix
 
-    String mixCompany;
-    String mixUseByDate;
-    String mixRegisterName;
-    String mixRegisterDate;
-    String mixModifierName;
-    String mixModifierDate;
-
-    // cafe
-
-//    String cafeCompany;
-//    String cafeRegisterName;
-//    String cafeRegisterDate;
-//    String cafeModifierName;
-//    String cafeModifierDate;
-//
-//    public String getCafeCompany() {
-//        return cafeCompany;
-//    }
-//
-//    public void setCafeCompany(String cafeCompany) {
-//        this.cafeCompany = cafeCompany;
-//    }
-//
-//    public String getCafeRegisterName() {
-//        return cafeRegisterName;
-//    }
-//
-//    public void setCafeRegisterName(String cafeRegisterName) {
-//        this.cafeRegisterName = cafeRegisterName;
-//    }
-//
-//    public String getCafeRegisterDate() {
-//        return cafeRegisterDate;
-//    }
-//
-//    public void setCafeRegisterDate(String cafeRegisterDate) {
-//        this.cafeRegisterDate = cafeRegisterDate;
-//    }
-//
-//    public String getCafeModifierName() {
-//        return cafeModifierName;
-//    }
-//
-//    public void setCafeModifierName(String cafeModifierName) {
-//        this.cafeModifierName = cafeModifierName;
-//    }
-//
-//    public String getCafeModifierDate() {
-//        return cafeModifierDate;
-//    }
-//
-//    public void setCafeModifierDate(String cafeModifierDate) {
-//        this.cafeModifierDate = cafeModifierDate;
-//    }
+    private String mixCompany;
+    private String mixUseByDate;
+    private String mixRegisterName;
+    private String mixRegisterDate;
+    private String mixModifierName;
+    private String mixModifierDate;
 }

@@ -1,10 +1,10 @@
 package org.daCoffee.dto.request;
 
-import lombok.Data;
-import lombok.ToString;
+import lombok.Builder;
+import lombok.Getter;
 
-@Data
-@ToString
+@Getter
+@Builder
 public class PaymentsRequestDTO {
     private String paymentKey;
     private String orderId;

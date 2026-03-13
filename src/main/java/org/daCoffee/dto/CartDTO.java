@@ -1,19 +1,19 @@
 package org.daCoffee.dto;
 
-import lombok.Data;
-import lombok.ToString;
+import lombok.Builder;
+import lombok.Getter;
 
-@Data
-@ToString
+@Getter
+@Builder
 public class CartDTO {
-  String memberId;
-  String productCode;
-  String productName;
-  String productFile;
-  String productUnit;
-  int productPrice;
-  int productSoldOut;
-  int quantity;
-  int productGrinding;
-  int productType;
+  private String memberId;
+  private String productCode;
+  private String productName;
+  private String productFile;
+  private String productUnit;
+  private int productPrice;
+  private int productSoldOut;
+  private int quantity;
+  private int productGrinding;
+  private int productType;
 }

@@ -1,12 +1,12 @@
 package org.daCoffee.dto.response;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import org.daCoffee.dto.ProductDTO;
 
 import java.util.List;
 
-@Data
+@Getter
 @Builder
 public class ProductListDataDTO {
   private List<ProductDTO> list;

@@ -1,11 +1,11 @@
 package org.daCoffee.dto;
 
-import lombok.Data;
-import lombok.ToString;
+import lombok.Builder;
+import lombok.Getter;
 
-@Data
-@ToString
+@Getter
+@Builder
 public class CookieDTO {
-    String memberId;
-    String token;
+    private String memberId;
+    private String token;
 }

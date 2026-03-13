@@ -1,29 +1,29 @@
 package org.daCoffee.dto;
 
-import lombok.Data;
-import lombok.ToString;
+import lombok.Builder;
+import lombok.Getter;
 
-@Data
-@ToString
+@Getter
+@Builder
 public class MemberDTO {
-    String memberId;
-    String memberName;
-    String memberCompanyName;
-    String memberPassword;
-    String memberTel;
-    String memberCompanyTel;
-    String memberAddress;
-    String memberDetailAddress;
-    String memberDeliveryAddress;
-    String memberDetailDeliveryAddress;
-    String memberEmail;
-    String memberFile;
-    String memberFranCode;
-    Integer memberTier;
-    String memberDate;
-    String memberDisableDate;
-    String memberModifierName;
-    String memberModifierDate;
-    String memberWithdrawalDate; // 모델에서만 필요함
+    private String memberId;
+    private String memberName;
+    private String memberCompanyName;
+    private String memberPassword;
+    private String memberTel;
+    private String memberCompanyTel;
+    private String memberAddress;
+    private String memberDetailAddress;
+    private String memberDeliveryAddress;
+    private String memberDetailDeliveryAddress;
+    private String memberEmail;
+    private String memberFile;
+    private String memberFranCode;
+    private Integer memberTier;
+    private String memberDate;
+    private String memberDisableDate;
+    private String memberModifierName;
+    private String memberModifierDate;
+    private String memberWithdrawalDate; // 모델에서만 필요함
 }
 

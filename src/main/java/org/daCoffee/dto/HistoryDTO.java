@@ -1,28 +1,28 @@
 package org.daCoffee.dto;
 
-import lombok.Data;
-import lombok.ToString;
+import lombok.Builder;
+import lombok.Getter;
 
-@Data
-@ToString
+@Getter
+@Builder
 public class HistoryDTO {
-  String orderId;
-  int memberTier;
-  String memberId;
-  String memberName;
-  String memberCompanyName;
-  String memberFranCode;
-  String productCode;
-  String productName;
-  String productUnit;
-  int productPrice;
-  int quantity;
-  String orderDate;
-  String deliveryAddress;
-  String detailDeliveryAddress;
-  int productGrinding;
-  int totalPrice;
-  String deliveryCode;
-  String historyModifierName;
-  String historyModifierDate;
+  private String orderId;
+  private int memberTier;
+  private String memberId;
+  private String memberName;
+  private String memberCompanyName;
+  private String memberFranCode;
+  private String productCode;
+  private String productName;
+  private String productUnit;
+  private int productPrice;
+  private int quantity;
+  private String orderDate;
+  private String deliveryAddress;
+  private String detailDeliveryAddress;
+  private int productGrinding;
+  private int totalPrice;
+  private String deliveryCode;
+  private String historyModifierName;
+  private String historyModifierDate;
 }
