@@ -5,9 +5,9 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.daCoffee.dto.ImageDTO;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component
+@Repository
 @RequiredArgsConstructor
 public class ImageDAO {
   private final SqlSessionTemplate session;

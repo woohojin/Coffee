@@ -6,10 +6,10 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.daCoffee.dto.CookieDTO;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 
-@Component
+@Repository
 @RequiredArgsConstructor
 public class CookieDAO {
     private final SqlSessionTemplate session;

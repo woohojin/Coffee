@@ -7,9 +7,9 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.daCoffee.dto.*;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component
+@Repository
 @RequiredArgsConstructor
 public class ProductDAO {
     private final SqlSessionTemplate session;

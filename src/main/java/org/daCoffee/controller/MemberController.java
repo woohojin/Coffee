@@ -2,19 +2,12 @@ package org.daCoffee.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.daCoffee.dao.CartDAO;
 import org.daCoffee.dao.CookieDAO;
 import org.daCoffee.dao.HistoryDAO;
 import org.daCoffee.dao.MemberDAO;
 import org.daCoffee.dto.*;
-import org.daCoffee.module.UUIDGenerateModule;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-import org.daCoffee.service.*;
 
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,8 +21,6 @@ import jakarta.servlet.http.HttpSession;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
-
-import static org.daCoffee.util.SecurityUtil.getRandomPassword;
 
 @Controller
 @RequestMapping("/member/")
