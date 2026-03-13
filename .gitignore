@@ -170,6 +170,8 @@ $RECYCLE.BIN/
 *.MF
 target
 target/*
+*.iml
+.idea/
 
 # Private Files
 config/secrets.properties
