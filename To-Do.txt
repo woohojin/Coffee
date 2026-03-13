@@ -13,7 +13,7 @@
 백엔드 전체 Restful 방식 사용으로 변경
 ㄴ 변경 하는 겸 front는 react를 도입하는 것으로 결정 + war대신 jar 배포를 위한 서버와 프로젝트 세팅을 다시 하는 것으로 결정
 
-enum 방식으로 코드 개선, 디자인 패턴 적용 유무 고려
+enum 방식으로 코드 개선, 디자인 패턴 적용 유무 고려 및 SOLID 원칙 준수
 커스텀 어노테이션, jwt, 어노테이션 + URL REST 방식으로 개선, ngnix
 채팅 상담 기능 구현해보기(WebSocket)
 Docker 사용, CI/CD 사용
