@@ -4,12 +4,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.daCoffee.dao.MemberDAO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.daCoffee.dto.MemberDTO;
+import org.daCoffee.entity.Member;
+import org.daCoffee.service.MemberService;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -20,27 +21,24 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-  private final MemberDAO memberDAO;
+  private final MemberService memberService;
 
   @Override
   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
     String username = authentication.getName();
     log.info("Authentication success for user : {}", username);
 
-    MemberDTO memberDTO = memberDAO.memberSelectOne(username);
+    Member member = memberService.findById(username)
+      .orElseThrow(() -> {
+        log.error("Failed to retrieve member for user: {}", username);
+        return new UsernameNotFoundException("not_found");
+      });
 
-    if(memberDTO != null) {
-      String memberId = memberDTO.getMemberId();
-      int memberTier = memberDTO.getMemberTier();
+    HttpSession session = request.getSession();
+    session.setAttribute("memberId", member.getMemberId());
+    session.setAttribute("memberTier", member.getMemberTier());
 
-      HttpSession session = request.getSession();
-      session.setAttribute("memberId", memberId);
-      session.setAttribute("memberTier", memberTier);
-
-      log.info("Session attributes set - memberId : {}, memberTier : {}", memberId, memberTier);
-    } else {
-      log.error("Failed to retrieve memberDTO for user: {}", username);
-    }
+    log.info("Session attributes set - memberId : {}, memberTier : {}", member.getMemberId(), member.getMemberTier());
 
     response.sendRedirect("/main");
   }

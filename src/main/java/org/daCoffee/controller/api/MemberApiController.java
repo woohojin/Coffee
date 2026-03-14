@@ -12,10 +12,12 @@ import org.daCoffee.dto.response.CartDataDTO;
 import org.daCoffee.dto.response.CartPriceDTO;
 import org.daCoffee.dto.response.PaymentsDataDTO;
 import org.daCoffee.entity.Cart;
+import org.daCoffee.entity.Member;
 import org.daCoffee.exception.NotFoundException;
 import org.daCoffee.module.UUIDGenerateModule;
 import org.daCoffee.service.CartService;
 import org.daCoffee.service.MailService;
+import org.daCoffee.service.MemberService;
 import org.daCoffee.service.PriceCalculator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -24,10 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.daCoffee.util.SecurityUtil.getRandomPassword;
 
@@ -36,7 +35,7 @@ import static org.daCoffee.util.SecurityUtil.getRandomPassword;
 @RequiredArgsConstructor
 @Slf4j
 public class MemberApiController {
-  private final MemberDAO memberDao;
+  private final MemberService memberService;
   private final ProductDAO productDao;
   private final CartService cartService;
   private final HistoryDAO historyDao;
@@ -51,12 +50,11 @@ public class MemberApiController {
     String memberName = body.get("memberName");
     String memberEmail = body.get("memberEmail");
 
-    List<MemberDTO> list = memberDao.memberFindId(memberName, memberEmail);
-    if (list == null || list.isEmpty()) {
+    List<String> ids = memberService.findMemberIdByNameAndEmail(memberName, memberEmail);
+    if (ids == null || ids.isEmpty()) {
       return ApiResponseDTO.error("이름 또는 이메일이 일치하지 않습니다.");
     }
 
-    List<String> ids = list.stream().map(MemberDTO::getMemberId).toList();
     return ApiResponseDTO.success(ids);
   }
 
@@ -64,15 +62,15 @@ public class MemberApiController {
     String memberId = body.get("memberId");
     String memberEmail = body.get("memberEmail");
 
-    String found = memberDao.memberFindPassword(memberId, memberEmail);
-    if (found == null || found.isEmpty()) {
+    Optional<String> found = memberService.findPasswordByMemberIdAndEmail(memberId, memberEmail);
+    if (found.isEmpty()) {
       return ApiResponseDTO.error("아이디 또는 이메일이 일치하지 않습니다.");
     }
 
     String tempPassword = getRandomPassword(8);
     mailService.sendEmail(memberEmail, "다올커피 임시 비밀번호", "임시 비밀번호: ", tempPassword);
     String encoded = passwordEncoder.encode(tempPassword);
-    memberDao.memberTempPasswordUpdate(memberId, encoded);
+    memberService.updatePassword(memberId, encoded);
 
     return ApiResponseDTO.success("임시 비밀번호가 이메일로 전송되었습니다.", null);
   }
@@ -220,10 +218,8 @@ public class MemberApiController {
     @SessionAttribute(required = false) Integer totalPrice) {
 
     // 회원 검증
-    MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
-    if (memberDTO == null) {
-      return ApiResponseDTO.error("회원 정보를 찾을 수 없습니다.");
-    }
+    Member member = memberService.findById(memberId)
+      .orElseThrow(() -> new NotFoundException("회원 정보를 찾을 수 없습니다."));
 
     // 장바구니에서 넘어오는 최종 가격 검증
     if (totalPrice == null) {
@@ -256,7 +252,7 @@ public class MemberApiController {
       .customerKey(customerKey)
       .orderName(orderName)
       .totalPrice(totalPrice)
-      .member(memberDTO)
+      .member(member)
       .cartItems(cartList)
       .build();
 
@@ -272,10 +268,8 @@ public class MemberApiController {
 
     try {
       // 회원 검증
-      MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
-      if (memberDTO == null) {
-        return ApiResponseDTO.error("회원 정보를 찾을 수 없습니다.");
-      }
+      Member member = memberService.findById(memberId)
+        .orElseThrow(() -> new NotFoundException("회원 정보를 찾을 수 없습니다."));
 
       // 장바구니에서 넘어오는 최종 가격 검증
       Integer sessionTotal = (Integer) session.getAttribute("totalPrice");
@@ -284,7 +278,7 @@ public class MemberApiController {
       }
 
       // 장바구니 상품 검증
-      List<Cart> cartList = cartService.getCartList(memberId)
+      List<Cart> cartList = cartService.getCartList(memberId);
       if (cartList == null || cartList.isEmpty()) {
         return ApiResponseDTO.error("장바구니에 상품이 존재하지 않습니다.");
       }

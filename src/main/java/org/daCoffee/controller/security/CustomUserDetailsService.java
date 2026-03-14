@@ -2,9 +2,8 @@ package org.daCoffee.controller.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.daCoffee.dao.MemberDAO;
-import org.daCoffee.dto.MemberDTO;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.daCoffee.entity.Member;
+import org.daCoffee.service.MemberService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,34 +16,32 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final MemberDAO memberDAO;
+    private final MemberService memberService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("Loading user: {}", username);
 
-        MemberDTO memberDTO = memberDAO.memberSelectOne(username);
+        Member member = memberService.findById(username)
+          .orElseThrow(() -> {
+              log.error("User not found: {}", username);
+              return new UsernameNotFoundException("not_found");
+          });
 
-        if (memberDTO == null) {
-            log.error("User not found: {}", username);
-            throw new UsernameNotFoundException("not_found");
-        }
-
-        int isDisabled = memberDAO.disabledMemberSelectOne(username);
-        if (isDisabled > 0) {
+        if (memberService.isDisabled(username)) {
             log.warn("User disabled: {}", username);
             throw new DisabledException("disabled");
         }
 
-        if (memberDTO.getMemberPassword() == null || memberDTO.getMemberPassword().isEmpty()) {
+        if (member.getMemberPassword() == null || member.getMemberPassword().isEmpty()) {
             log.error("Password is null or empty for user: {}", username);
             throw new UsernameNotFoundException("Invalid password");
         }
 
-        String role = memberDTO.getMemberTier() == 9 ? "ADMIN" : "USER";
+        String role = member.getMemberTier() == 9 ? "ADMIN" : "USER";
 
-        return User.withUsername(memberDTO.getMemberId())
-          .password(memberDTO.getMemberPassword())
+        return User.withUsername(member.getMemberId())
+          .password(member.getMemberPassword())
           .disabled(false)
           .roles(role)
           .build();

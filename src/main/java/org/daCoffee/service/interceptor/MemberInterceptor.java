@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dto.MemberDTO;
 import org.daCoffee.service.CartService;
+import org.daCoffee.service.MemberService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -23,7 +24,7 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 public class MemberInterceptor implements HandlerInterceptor {
 
-  private final MemberDAO memberDao;
+  private final MemberService memberService;
   private final CartService cartService;
 
   @Override
@@ -37,13 +38,11 @@ public class MemberInterceptor implements HandlerInterceptor {
       String memberId = authentication.getName();
       session.setAttribute("memberId", memberId);
 
-      MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
+      memberService.findById(memberId).ifPresent(member ->
+        session.setAttribute("memberTier", member.getMemberTier())
+      );
 
-      if(memberDTO != null) {
-        session.setAttribute("memberTier", memberDTO.getMemberTier());
-      }
-
-      if((requestURI.equals("/member/memberSignIn") || requestURI.equals("/member/memberSignUp"))) {
+      if (requestURI.equals("/member/memberSignIn") || requestURI.equals("/member/memberSignUp")) {
         String msg = URLEncoder.encode("이미 로그인하셨습니다.", StandardCharsets.UTF_8);
         String url = URLEncoder.encode("/main", StandardCharsets.UTF_8);
         response.sendRedirect("/alert?msg=" + msg + "&url=" + url);
@@ -57,11 +56,10 @@ public class MemberInterceptor implements HandlerInterceptor {
   @Override
   public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
     HttpSession session = request.getSession();
-
     String memberSessionId = (String) session.getAttribute("memberId");
 
     if (memberSessionId != null) {
-      long count = cartService.getCartCount(memberSessionId);
+      int count = cartService.getCartCount(memberSessionId);
       session.setAttribute("cartCount", count);
     } else {
       session.setAttribute("cartCount", 0);

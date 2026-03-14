@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dao.CookieDAO;
 import org.daCoffee.dao.HistoryDAO;
-import org.daCoffee.dao.MemberDAO;
 import org.daCoffee.dto.*;
+import org.daCoffee.dto.request.MemberSignUpRequestDTO;
+import org.daCoffee.dto.request.MemberUpdateRequestDTO;
+import org.daCoffee.entity.Member;
+import org.daCoffee.service.MemberService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +31,7 @@ import java.util.*;
 @Slf4j
 
 public class MemberController {
-  private final MemberDAO memberDao;
+  private final MemberService memberService;
   private final CookieDAO cookieDao;
   private final HistoryDAO historyDao;
   private final PasswordEncoder passwordEncoder;
@@ -56,7 +59,7 @@ public class MemberController {
   }
 
   @RequestMapping("memberSignUpPro")
-  public String memberSignUpPro(HttpServletRequest request, HttpSession session, Model model, MemberDTO memberDTO,
+  public String memberSignUpPro(HttpServletRequest request, HttpSession session, Model model, MemberSignUpRequestDTO signUpDTO,
                                 @RequestParam MultipartFile file) {
 
     // MemberApiController에서 session에 isVerified = true 저장 됨
@@ -72,35 +75,22 @@ public class MemberController {
     String msg = "회원 가입 중 문제가 발생 했습니다. 다시 시도해주세요.";
     String url = "/member/memberSignUp";
 
-    String memberId = memberDTO.getMemberId().toLowerCase();
-    memberDTO.setMemberId(memberId);
-
-    MemberDTO mem = null;
-
-    try{
-      mem = memberDao.memberSelectOne(memberId);
-    } catch (Exception e) {
-      log.error(e.getMessage());
-    }
+    String memberId = signUpDTO.getMemberId().toLowerCase();
 
     String filePath = request.getServletContext().getRealPath("/") + "view/files/";
-    String fileName = file.getOriginalFilename();
-    File uploadFile = new File(filePath, fileName);
     File uploadPath = new File(filePath);
-
     if (!uploadPath.exists()) {
-      uploadPath.mkdirs(); // 경로가 없으면 생성
+      uploadPath.mkdirs();
     }
 
     try{
-      if(mem == null) {
-        memberDTO.setMemberPassword(passwordEncoder.encode(memberDTO.getMemberPassword()));
-
-        String memberCompanyName = memberDTO.getMemberCompanyName();
-        String memberCompanyTel = memberDTO.getMemberCompanyTel();
-        String memberFile = memberDTO.getMemberFile();
+      if(!memberService.existsById(memberId)) {
+        String memberCompanyName = signUpDTO.getMemberCompanyName();
+        String memberCompanyTel = signUpDTO.getMemberCompanyTel();
+        String memberFile = signUpDTO.getMemberFile();
 
         if(memberFile != null && !memberFile.trim().isEmpty()) {
+          File uploadFile = new File(filePath, file.getOriginalFilename());
           try {
             file.transferTo(uploadFile);
           } catch (IOException e) {
@@ -110,26 +100,34 @@ public class MemberController {
             return "alert";
           }
         } else {
-          memberDTO.setMemberFile(null);
+          memberFile = null;
         }
 
-        if(memberCompanyName != null && memberCompanyName.trim().isEmpty()) {
-          memberDTO.setMemberCompanyName(null);
-        }
+        if (memberCompanyName != null && memberCompanyName.trim().isEmpty()) memberCompanyName = null;
+        if (memberCompanyTel != null && memberCompanyTel.trim().isEmpty()) memberCompanyTel = null;
 
-        if(memberCompanyTel != null && memberCompanyTel.trim().isEmpty()) {
-          memberDTO.setMemberCompanyTel(null);
-        }
+        Member member = Member.builder()
+          .memberId(memberId)
+          .memberName(signUpDTO.getMemberName())
+          .memberCompanyName(memberCompanyName)
+          .memberPassword(passwordEncoder.encode(signUpDTO.getMemberPassword()))
+          .memberTel(signUpDTO.getMemberTel())
+          .memberCompanyTel(memberCompanyTel)
+          .memberAddress(signUpDTO.getMemberAddress())
+          .memberDetailAddress(signUpDTO.getMemberDetailAddress())
+          .memberDeliveryAddress(signUpDTO.getMemberDeliveryAddress())
+          .memberDetailDeliveryAddress(signUpDTO.getMemberDetailDeliveryAddress())
+          .memberEmail(signUpDTO.getMemberEmail())
+          .memberFile(memberFile)
+          .memberTier(0)
+          .memberDisabledStatus(false)
+          .memberDate(LocalDate.now())
+          .build();
 
-        int num = memberDao.memberInsert(memberDTO);
+        memberService.save(member);
 
-        if (num > 0) {
-          msg = memberId + "님의 가입이 완료되었습니다.";
-          url = "/member/memberSignIn";
-        } else {
-          msg = "회원가입을 실패 했습니다.";
-          url = "/member/memberSignUp";
-        }
+        msg = memberId + "님의 가입이 완료되었습니다.";
+        url = "/member/memberSignIn";
       } else {
         msg = "이미 있는 아이디 입니다.";
         url = "/member/memberSignUp";
@@ -158,18 +156,16 @@ public class MemberController {
   public String memberWithdrawalPro(HttpSession session, Model model, HttpServletResponse response, String memberPassword,
                                     @SessionAttribute String memberId) {
 
-    MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
+    Member member = memberService.findById(memberId)
+      .orElseThrow(() -> new IllegalArgumentException("회원 없음: " + memberId));
 
     String msg = "회원 탈퇴에 실패했습니다.";
     String url = "/member/memberWithdrawal";
 
-    if(passwordEncoder.matches(memberPassword, memberDTO.getMemberPassword())) {
+    if (passwordEncoder.matches(memberPassword, member.getMemberPassword())) {
       deleteCookies(response, memberId);
-      memberDao.memberWithdrawal(memberId);
-      memberDao.memberDelete(memberId);
-
+      memberService.withdrawMember(memberId);
       session.invalidate();
-
       msg = "회원 탈퇴에 성공했습니다.";
       url = "/main";
     }
@@ -215,31 +211,29 @@ public class MemberController {
   public String memberProfile(Model model,
                               @SessionAttribute String memberId) {
 
-    MemberDTO memberDTO = memberDao.memberSelectOne(memberId);
+    Member member = memberService.findById(memberId)
+      .orElseThrow(() -> new IllegalArgumentException("회원 없음: " + memberId));
 
-    model.addAttribute("member", memberDTO);
+    model.addAttribute("member", member);
 
     return "member/memberProfile";
   }
 
   @RequestMapping("memberProfilePro")
-  public String memberProfilePro(HttpServletRequest request, HttpSession session, Model model, MemberDTO memberDTO,
-                                 String memberExistingPassword, @RequestParam MultipartFile file, @SessionAttribute String memberId) {
+  public String memberProfilePro(HttpServletRequest request, HttpSession session, Model model,
+                                 MemberUpdateRequestDTO updateDTO, String memberExistingPassword,
+                                 @RequestParam MultipartFile file, @SessionAttribute String memberId) {
 
-    MemberDTO existingMemberDTO = memberDao.memberSelectOne(memberId); // 기존 회원 정보
-    memberDTO.setMemberId(memberId); // 사용자가 임의로 변경하는 것을 막기 위함
+    Member existingMember = memberService.findById(memberId)
+      .orElseThrow(() -> new IllegalArgumentException("회원 없음: " + memberId));
 
     String url = "/member/memberProfile";
     String msg = "회원 정보가 수정되었습니다.";
 
-    String newEmail = memberDTO.getMemberEmail();
-    String existingEmail = existingMemberDTO.getMemberEmail();
-
-    if (!newEmail.equals(existingEmail)) {
+    if (!updateDTO.getMemberEmail().equals(existingMember.getMemberEmail())) {
       Boolean isVerified = (Boolean) session.getAttribute("isVerified");
       if (isVerified == null || !isVerified) {
-        msg = "이메일 인증이 필요합니다.";
-        model.addAttribute("msg", msg);
+        model.addAttribute("msg", "이메일 인증이 필요합니다.");
         model.addAttribute("url", url);
         return "alert";
       }
@@ -252,30 +246,27 @@ public class MemberController {
       uploadPath.mkdirs();
     }
 
-    String memberFile = memberDTO.getMemberFile();
+    String memberFile = updateDTO.getMemberFile();
     if (memberFile != null && !memberFile.trim().isEmpty()) {
-      String fileName = file.getOriginalFilename();
-      File uploadFile = new File(filePath, fileName);
+      File uploadFile = new File(filePath, file.getOriginalFilename());
       try {
         file.transferTo(uploadFile);
       } catch (IOException e) {
         log.error("파일 업로드 실패", e);
-        msg = "파일 업로드 중 오류가 발생했습니다.";
-        model.addAttribute("msg", msg);
+        model.addAttribute("msg", "파일 업로드 중 오류가 발생했습니다.");
         model.addAttribute("url", url);
         return "alert";
       }
     } else {
-      memberDTO.setMemberFile(existingMemberDTO.getMemberFile());  // 기존 파일 유지 (없으면 null 값이 들어감)
+      updateDTO.setMemberFile(existingMember.getMemberFile());  // 기존 파일 유지 (없으면 null 값이 들어감)
     }
 
     if(memberExistingPassword != null) {
-      if(passwordEncoder.matches(memberExistingPassword, existingMemberDTO.getMemberPassword())) { // 입력한 기존 비밀번호와 db의 비밀번호가 일치 할 때 변경
-        if(memberDTO.getMemberPassword() == null || memberDTO.getMemberPassword().isEmpty()) {
-          memberDao.memberUpdateNotPassword(memberDTO);
+      if(passwordEncoder.matches(memberExistingPassword, existingMember.getMemberPassword())) { // 입력한 기존 비밀번호와 db의 비밀번호가 일치 할 때 변경
+        if (updateDTO.getMemberPassword() == null || updateDTO.getMemberPassword().isEmpty()) {
+          memberService.updateWithoutPassword(memberId, updateDTO);
         } else {
-          memberDTO.setMemberPassword(passwordEncoder.encode(memberDTO.getMemberPassword()));
-          memberDao.memberUpdate(memberDTO);
+          memberService.update(memberId, passwordEncoder.encode(updateDTO.getMemberPassword()), updateDTO);
         }
       } else {
         msg = "기존 비밀번호가 틀렸습니다.";

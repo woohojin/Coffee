@@ -61,11 +61,11 @@ public class Member {
   @Column(name = "member_fran_code", length = 12)
   private String memberFranCode;
 
-  @Column(name = "member_tier", nullable = false, length = 1)
-  private String memberTier;
+  @Column(name = "member_tier", nullable = false)
+  private Integer memberTier;
 
-  @Column(name = "member_disabled_status", nullable = false, length = 1)
-  private String memberDisabledStatus;
+  @Column(name = "member_disabled_status", nullable = false)
+  private boolean memberDisabledStatus;
 
   @Column(name = "member_date", nullable = false)
   private LocalDate memberDate;
@@ -78,4 +78,39 @@ public class Member {
 
   @Column(name = "member_modifier_date")
   private LocalDate memberModifierDate;
+
+  // 회원 정보 수정 (비밀번호 포함)
+  public void update(String memberName, String memberPassword, String memberTel,
+                     String memberCompanyTel, String memberAddress, String memberDetailAddress,
+                     String memberDeliveryAddress, String memberDetailDeliveryAddress,
+                     String memberEmail, String memberFile) {
+    this.memberName = memberName;
+    this.memberPassword = memberPassword;
+    this.memberTel = memberTel;
+    this.memberCompanyTel = memberCompanyTel;
+    this.memberAddress = memberAddress;
+    this.memberDetailAddress = memberDetailAddress;
+    this.memberDeliveryAddress = memberDeliveryAddress;
+    this.memberDetailDeliveryAddress = memberDetailDeliveryAddress;
+    this.memberEmail = memberEmail;
+    this.memberFile = memberFile;
+    this.memberModifierDate = LocalDate.now();
+  }
+
+  // 회원 정보 수정 (비밀번호 제외)
+  public void updateWithoutPassword(String memberName, String memberTel,
+                                    String memberCompanyTel, String memberAddress, String memberDetailAddress,
+                                    String memberDeliveryAddress, String memberDetailDeliveryAddress,
+                                    String memberEmail, String memberFile) {
+    this.memberName = memberName;
+    this.memberTel = memberTel;
+    this.memberCompanyTel = memberCompanyTel;
+    this.memberAddress = memberAddress;
+    this.memberDetailAddress = memberDetailAddress;
+    this.memberDeliveryAddress = memberDeliveryAddress;
+    this.memberDetailDeliveryAddress = memberDetailDeliveryAddress;
+    this.memberEmail = memberEmail;
+    this.memberFile = memberFile;
+    this.memberModifierDate = LocalDate.now();
+  }
 }
