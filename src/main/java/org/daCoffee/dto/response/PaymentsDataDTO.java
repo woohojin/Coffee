@@ -2,8 +2,8 @@ package org.daCoffee.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.daCoffee.dto.CartDTO;
 import org.daCoffee.dto.MemberDTO;
+import org.daCoffee.entity.Cart;
 
 import java.util.List;
 
@@ -15,5 +15,5 @@ public class PaymentsDataDTO {
   private String orderName;
   private int totalPrice;
   private MemberDTO member;
-  private List<CartDTO> cartItems;
+  private List<Cart> cartItems;
 }

@@ -3,11 +3,11 @@ package org.daCoffee.service.interceptor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dto.MemberDTO;
+import org.daCoffee.service.CartService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
-import org.daCoffee.dao.CartDAO;
 import org.daCoffee.dao.MemberDAO;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -24,7 +24,7 @@ import java.nio.charset.StandardCharsets;
 public class MemberInterceptor implements HandlerInterceptor {
 
   private final MemberDAO memberDao;
-  private final CartDAO cartDao;
+  private final CartService cartService;
 
   @Override
   public boolean preHandle(HttpServletRequest request,HttpServletResponse response, Object handler) throws Exception {
@@ -61,7 +61,7 @@ public class MemberInterceptor implements HandlerInterceptor {
     String memberSessionId = (String) session.getAttribute("memberId");
 
     if (memberSessionId != null) {
-      int count = cartDao.cartCount(memberSessionId);
+      long count = cartService.getCartCount(memberSessionId);
       session.setAttribute("cartCount", count);
     } else {
       session.setAttribute("cartCount", 0);

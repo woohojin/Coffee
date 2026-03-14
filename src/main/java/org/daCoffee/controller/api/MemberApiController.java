@@ -3,7 +3,6 @@ package org.daCoffee.controller.api;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.daCoffee.dao.CartDAO;
 import org.daCoffee.dao.HistoryDAO;
 import org.daCoffee.dao.MemberDAO;
 import org.daCoffee.dao.ProductDAO;
@@ -12,8 +11,10 @@ import org.daCoffee.dto.request.PaymentsRequestDTO;
 import org.daCoffee.dto.response.CartDataDTO;
 import org.daCoffee.dto.response.CartPriceDTO;
 import org.daCoffee.dto.response.PaymentsDataDTO;
+import org.daCoffee.entity.Cart;
 import org.daCoffee.exception.NotFoundException;
 import org.daCoffee.module.UUIDGenerateModule;
+import org.daCoffee.service.CartService;
 import org.daCoffee.service.MailService;
 import org.daCoffee.service.PriceCalculator;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,7 +38,7 @@ import static org.daCoffee.util.SecurityUtil.getRandomPassword;
 public class MemberApiController {
   private final MemberDAO memberDao;
   private final ProductDAO productDao;
-  private final CartDAO cartDao;
+  private final CartService cartService;
   private final HistoryDAO historyDao;
   private final PriceCalculator priceCalculator;
   private final MailService mailService;
@@ -45,20 +46,6 @@ public class MemberApiController {
 
   @Value("${SECRET_TOSS_WIDGET_KEY}")
   private String secretTossWidgetKey;
-
-  private void addOrUpdateCart(String memberId, String productCode, int quantity) throws Exception {
-    CartDTO cartDTOCheck = cartDao.cartSelectOne(memberId, productCode);
-    if (cartDTOCheck == null) {
-      CartDTO cartDTO = new CartDTO();
-      cartDTO.setProductCode(productCode);
-      cartDTO.setMemberId(memberId);
-      cartDTO.setQuantity(quantity);
-      int num = cartDao.cartInsert(cartDTO);
-      if (num < 1) throw new Exception("장바구니 insert 실패: " + productCode);
-    } else {
-      cartDao.cartQuantityUpdate(memberId, productCode, quantity);
-    }
-  }
 
   private ApiResponseDTO<List<String>> findId(Map<String, String> body) {
     String memberName = body.get("memberName");
@@ -94,7 +81,22 @@ public class MemberApiController {
   public ApiResponseDTO<CartDataDTO> getCart(@SessionAttribute String memberId) {
     try {
       CartPriceDTO cartPriceDTO = priceCalculator.calculatePrice(memberId);
-      List<CartDTO> list = cartDao.cartSelectMember(memberId);
+      List<Cart> cartList = cartService.getCartList(memberId);
+
+      List<CartDTO> list = cartList.stream()
+        .map(c -> CartDTO.builder()
+          .memberId(c.getId().getMemberId())
+          .productCode(c.getId().getProductCode())
+          .productName(c.getProduct().getProductName())
+          .productUnit(c.getProduct().getProductUnit())
+          .productPrice(c.getProduct().getProductPrice())
+          .productFile(c.getProduct().getProductFile())
+          .productSoldOut(Integer.parseInt(c.getProduct().getProductSoldOut()))
+          .productType(c.getProduct().getProductType())
+          .quantity(c.getQuantity())
+          .productGrinding(Integer.parseInt(c.getProductGrinding()))
+          .build())
+        .toList();
 
       CartDataDTO data = CartDataDTO.builder()
         .cartCount(cartPriceDTO.getCartCount())
@@ -123,7 +125,7 @@ public class MemberApiController {
       if (additionalProductsCodes != null && !additionalProductsCodes.isEmpty()) {
         for (String code : additionalProductsCodes) {
           if (!code.equals("none")) {
-            addOrUpdateCart(memberId, code, 1);
+            cartService.addOrUpdate(memberId, code, 1);
           }
         }
       }
@@ -135,16 +137,17 @@ public class MemberApiController {
         throw new NotFoundException("상품을 찾을 수 없습니다.");
       }
 
-      addOrUpdateCart(memberId, productCode, quantity);
+      cartService.addOrUpdate(memberId, productCode, quantity);
 
-      CartDTO data = new CartDTO();
-      data.setProductCode(productDTO.getProductCode());
-      data.setProductType(productDTO.getProductType());
-      data.setProductName(productDTO.getProductName());
-      data.setProductUnit(productDTO.getProductUnit());
-      data.setQuantity(quantity);
-      data.setProductPrice(productDTO.getProductPrice());
-      data.setProductFile(productDTO.getProductFile());
+      CartDTO data = CartDTO.builder()
+        .productCode(productDTO.getProductCode())
+        .productType(productDTO.getProductType())
+        .productName(productDTO.getProductName())
+        .productUnit(productDTO.getProductUnit())
+        .quantity(quantity)
+        .productPrice(productDTO.getProductPrice())
+        .productFile(productDTO.getProductFile())
+        .build();
 
       return ApiResponseDTO.success(data);
     } catch (Exception e) {
@@ -163,18 +166,33 @@ public class MemberApiController {
 
     try {
       if ("delete".equals(status)) {
-        cartDao.cartDelete(memberId, productCode);
+        cartService.deleteCartItem(memberId, productCode);
       } else if ("increase".equals(status)) {
         delta = 1;
-        cartDao.cartQuantityUpdate(memberId, productCode, delta);
+        cartService.updateQuantity(memberId, productCode, 1);
       } else if("decrease".equals(status)) {
         delta = -1;
-        cartDao.cartQuantityUpdate(memberId, productCode, delta);
+        cartService.updateQuantity(memberId, productCode, -1);
       }
 
       // ==== 제품 갯수 변경 후 가격 계산 ====
       CartPriceDTO cartPriceDTO = priceCalculator.calculatePrice(memberId);
-      List<CartDTO> list = cartDao.cartSelectMember(memberId);
+      List<Cart> cartList = cartService.getCartList(memberId);
+
+      List<CartDTO> list = cartList.stream()
+        .map(c -> CartDTO.builder()
+          .memberId(c.getId().getMemberId())
+          .productCode(c.getId().getProductCode())
+          .productName(c.getProduct().getProductName())
+          .productUnit(c.getProduct().getProductUnit())
+          .productPrice(c.getProduct().getProductPrice())
+          .productFile(c.getProduct().getProductFile())
+          .productSoldOut(Integer.parseInt(c.getProduct().getProductSoldOut()))
+          .productType(c.getProduct().getProductType())
+          .quantity(c.getQuantity())
+          .productGrinding(Integer.parseInt(c.getProductGrinding()))
+          .build())
+        .toList();
 
       CartDataDTO data = CartDataDTO.builder()
         .cartCount(cartPriceDTO.getCartCount())
@@ -213,8 +231,8 @@ public class MemberApiController {
     }
 
     // 장바구니 상품 검증
-    List<CartDTO> list = cartDao.cartSelectMember(memberId);
-    if (list == null || list.isEmpty()) {
+    List<Cart> cartList = cartService.getCartList(memberId);
+    if (cartList == null || cartList.isEmpty()) {
       return ApiResponseDTO.error("장바구니에 상품이 존재하지 않습니다.");
     }
 
@@ -222,8 +240,8 @@ public class MemberApiController {
     String orderId = uuid.generateOrderId();
     String customerKey = uuid.generateCustomerKey(memberId);
 
-    List<String> productNames = list.stream()
-      .map(CartDTO::getProductName)
+    List<String> productNames = cartList.stream()
+      .map(c -> c.getProduct().getProductName())
       .toList();
 
     String orderName = productNames.get(0) + " 외 " + (productNames.size() - 1) + "건";
@@ -239,7 +257,7 @@ public class MemberApiController {
       .orderName(orderName)
       .totalPrice(totalPrice)
       .member(memberDTO)
-      .cartItems(list)
+      .cartItems(cartList)
       .build();
 
     return ApiResponseDTO.success(data);
@@ -266,12 +284,12 @@ public class MemberApiController {
       }
 
       // 장바구니 상품 검증
-      List<CartDTO> list = cartDao.cartSelectMember(memberId);
-      if (list == null || list.isEmpty()) {
+      List<Cart> cartList = cartService.getCartList(memberId)
+      if (cartList == null || cartList.isEmpty()) {
         return ApiResponseDTO.error("장바구니에 상품이 존재하지 않습니다.");
       }
 
-      for (CartDTO cartDTO : list) {
+      for (Cart cart : cartList) {
         HistoryDTO historyDTO = new HistoryDTO();
 
         historyDTO.setOrderId(orderId);
@@ -288,7 +306,7 @@ public class MemberApiController {
         historyDao.historyInsert(historyDTO);
       }
 
-      cartDao.deleteCartByMember(memberId);
+      cartService.deleteAllByMember(memberId);
       session.removeAttribute("orderId");
       session.removeAttribute("totalPrice");
 
