@@ -2,6 +2,8 @@ package org.daCoffee.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.daCoffee.handler.EncryptionConverter;
+
 import java.time.LocalDate;
 
 @Entity
@@ -16,6 +18,7 @@ public class Member {
   @Column(name = "member_id", length = 20)
   private String memberId;
 
+  @Convert(converter = EncryptionConverter.class)
   @Column(name = "member_name", nullable = false)
   private String memberName;
 
@@ -25,24 +28,30 @@ public class Member {
   @Column(name = "member_password", nullable = false)
   private String memberPassword;
 
+  @Convert(converter = EncryptionConverter.class)
   @Column(name = "member_tel", nullable = false)
   private String memberTel;
 
   @Column(name = "member_company_tel", length = 32)
   private String memberCompanyTel;
 
+  @Convert(converter = EncryptionConverter.class)
   @Column(name = "member_address", nullable = false)
   private String memberAddress;
 
+  @Convert(converter = EncryptionConverter.class)
   @Column(name = "member_detail_address", nullable = false)
   private String memberDetailAddress;
 
+  @Convert(converter = EncryptionConverter.class)
   @Column(name = "member_delivery_address", nullable = false)
   private String memberDeliveryAddress;
 
+  @Convert(converter = EncryptionConverter.class)
   @Column(name = "member_detail_delivery_address", nullable = false)
   private String memberDetailDeliveryAddress;
 
+  @Convert(converter = EncryptionConverter.class)
   @Column(name = "member_email", nullable = false)
   private String memberEmail;
 
