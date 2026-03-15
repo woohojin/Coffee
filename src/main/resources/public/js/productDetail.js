@@ -74,6 +74,9 @@ function renderDetail(data) {
   }
 
   const p = data.product;
+  const b = data.bean;
+  const m = data.mix;
+
   const detailImage = data.detailImageName;
   currentUnitPrice = p.productPrice;
 
@@ -84,20 +87,20 @@ function renderDetail(data) {
   if (pageType === 'bean') {
     tableRows = `
       <tr><th><span>식품유형</span></th><td><span>원두커피 100%</span></td></tr>
-      <tr><th><span>원산지</span></th><td><span>${p.beanCountry || ''}</span></td></tr>
-      <tr><th><span>품종</span></th><td><span>${p.beanSpecies || ''}</span></td></tr>
-      <tr><th><span>제조사</span></th><td><span>${p.beanCompany || ''}</span></td></tr>
-      <tr><th><span>소비기한</span></th><td><span>${p.beanUseByDate || ''}</span></td></tr>
+      <tr><th><span>원산지</span></th><td><span>${b?.beanCountry || ''}</span></td></tr>
+      <tr><th><span>품종</span></th><td><span>${b?.beanSpecies || ''}</span></td></tr>
+      <tr><th><span>제조사</span></th><td><span>${b?.beanCompany || ''}</span></td></tr>
+      <tr><th><span>소비기한</span></th><td><span>${b?.beanUseByDate || ''}</span></td></tr>
       <tr><th><span>용량</span></th><td><span>${p.productUnit || ''}</span></td></tr>
     `;
   } else if (pageType === 'mix') {
     tableRows = `
       <tr><th><span>식품유형</span></th><td><span>커피믹스</span></td></tr>
-      <tr><th><span>제조사</span></th><td><span>${p.mixCompany || ''}</span></td></tr>
-      <tr><th><span>소비기한</span></th><td><span>${p.mixUseByDate || ''}</span></td></tr>
+      <tr><th><span>제조사</span></th><td><span>${m?.mixCompany || ''}</span></td></tr>
+      <tr><th><span>소비기한</span></th><td><span>${m?.mixUseByDate || ''}</span></td></tr>
       <tr><th><span>용량</span></th><td><span>${p.productUnit || ''}</span></td></tr>
     `;
-  } else { // cafe 또는 기본
+  } else {
     tableRows = `
       <tr><th><span>용량</span></th><td><span>${p.productUnit || ''}</span></td></tr>
     `;

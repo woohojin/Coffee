@@ -107,7 +107,7 @@ public class MemberApiController {
   }
 
   @PostMapping("/cart/add")
-  public ApiResponseDTO<Cart> addToCart(
+  public ApiResponseDTO<CartDTO> addToCart(
     @SessionAttribute String memberId,
     @RequestParam String productCode,
     @RequestParam(defaultValue = "1") int quantity,
@@ -133,7 +133,19 @@ public class MemberApiController {
       Cart cart = cartService.getCartItem(memberId, productCode)
         .orElseThrow(() -> new NotFoundException("장바구니 항목 없음"));
 
-      return ApiResponseDTO.success(cart);
+      CartDTO cartDTO = CartDTO.builder()
+        .memberId(cart.getId().getMemberId())
+        .productCode(cart.getId().getProductCode())
+        .productName(cart.getProduct().getProductName())
+        .productUnit(cart.getProduct().getProductUnit())
+        .productPrice(cart.getProduct().getProductPrice())
+        .productFile(cart.getProduct().getProductFile())
+        .productSoldOut(cart.getProduct().isProductSoldOut() ? 1 : 0)
+        .productType(cart.getProduct().getProductType())
+        .quantity(cart.getQuantity())
+        .build();
+
+      return ApiResponseDTO.success(cartDTO);
     } catch (Exception e) {
       log.error("장바구니 추가 실패", e);
       return ApiResponseDTO.error("장바구니 추가 중 오류가 발생했습니다.");

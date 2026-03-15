@@ -17,7 +17,8 @@ public interface CartRepository extends JpaRepository<Cart, CartId> {
   List<Cart> findAllByMemberIdWithProduct(@Param("memberId") String memberId);
 
   // 특정 회원의 장바구니 상품 수 조회
-  long countById_MemberId(String memberId);
+  @Query("SELECT COUNT(c) FROM Cart c WHERE c.id.memberId = :memberId")
+  long countByMemberId(@Param("memberId") String memberId);
 
   // 특정 회원의 장바구니에 담긴 제품 코드 목록
   @Query("SELECT c.id.productCode FROM Cart c WHERE c.id.memberId = :memberId")

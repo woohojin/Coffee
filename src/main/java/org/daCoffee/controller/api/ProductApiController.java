@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dto.ApiResponseDTO;
 import org.daCoffee.dto.ProductDTO;
+import org.daCoffee.dto.response.BeanDataDTO;
+import org.daCoffee.dto.response.MixDataDTO;
 import org.daCoffee.dto.response.ProductDetailDataDTO;
 import org.daCoffee.dto.response.ProductListDataDTO;
 import org.daCoffee.entity.Bean;
@@ -83,13 +85,27 @@ public class ProductApiController {
     Product product = productService.findById(productCode)
       .orElseThrow(() -> new NotFoundException("상품을 찾을 수 없습니다."));
 
-    Bean bean = null;
-    Mix mix = null;
+    BeanDataDTO beanDTO = null;
+    MixDataDTO mixDTO = null;
 
     if (productType == 0) {
-      bean = productService.findBeanById(productCode).orElse(null);
+      Bean bean = productService.findBeanById(productCode).orElse(null);
+      if (bean != null) {
+        beanDTO = BeanDataDTO.builder()
+          .beanSpecies(bean.getBeanSpecies())
+          .beanCompany(bean.getBeanCompany())
+          .beanUseByDate(bean.getBeanUseByDate())
+          .beanCountry(bean.getBeanCountry())
+          .build();
+      }
     } else if (productType == 1) {
-      mix = productService.findMixById(productCode).orElse(null);
+      Mix mix = productService.findMixById(productCode).orElse(null);
+      if (mix != null) {
+        mixDTO = MixDataDTO.builder()
+          .mixCompany(mix.getMixCompany())
+          .mixUseByDate(mix.getMixUseByDate())
+          .build();
+      }
     }
 
     String detailImageName = productImageService.findDetailImage(productCode);
@@ -99,8 +115,8 @@ public class ProductApiController {
       .memberTier(memberTier)
       .productCount(productCount)
       .product(product)
-      .bean(bean)
-      .mix(mix)
+      .bean(beanDTO)
+      .mix(mixDTO)
       .detailImageName(detailImageName)
       .build();
 

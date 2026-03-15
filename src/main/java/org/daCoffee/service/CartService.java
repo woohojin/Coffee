@@ -37,7 +37,7 @@ public class CartService {
   // 특정 회원의 장바구니 상품 수 조회
   @Transactional(readOnly = true)
   public int getCartCount(String memberId) {
-    return (int) cartRepository.countById_MemberId(memberId);
+    return (int) cartRepository.countByMemberId(memberId);
   }
 
   // 특정 회원의 장바구니에 담긴 제품 코드 목록 조회

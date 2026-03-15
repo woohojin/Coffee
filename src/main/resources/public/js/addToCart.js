@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const text = document.querySelector(".hd_gnb_member_cart_text");
 
     info?.querySelectorAll("a").forEach((el) => el.remove());
-    text?.querySelectorAll("a").forEach((el) => el.remove());
+    text?.querySelectorAll("p").forEach((el) => el.remove());
 
     // 이미지 추가
     const linkEl = document.createElement("a");
