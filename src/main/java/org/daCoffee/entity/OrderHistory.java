@@ -21,8 +21,8 @@ public class OrderHistory {
   @Column(name = "order_id", nullable = false, length = 15)
   private String orderId;
 
-  @Column(name = "member_tier", nullable = false, length = 1)
-  private String memberTier;
+  @Column(name = "member_tier", nullable = false)
+  private Integer memberTier;
 
   @Column(name = "member_id", nullable = false, length = 20)
   private String memberId;
@@ -39,11 +39,17 @@ public class OrderHistory {
   @Column(name = "product_code", nullable = false, length = 10)
   private String productCode;
 
+  @Column(name = "product_name", nullable = false, length = 50)
+  private String productName;
+
+  @Column(name = "product_unit", nullable = false, length = 20)
+  private String productUnit;
+
+  @Column(name = "product_price", nullable = false)
+  private Integer productPrice;
+
   @Column(name = "quantity", nullable = false)
   private Integer quantity;
-
-  @Column(name = "product_grinding", nullable = false, length = 1)
-  private String productGrinding;
 
   @Column(name = "order_date", nullable = false)
   private LocalDateTime orderDate;
@@ -65,4 +71,8 @@ public class OrderHistory {
 
   @Column(name = "history_modifier_date")
   private LocalDate historyModifierDate;
+
+  public void updateDeliveryCode(String deliveryCode) {
+    this.deliveryCode = deliveryCode;
+  }
 }
