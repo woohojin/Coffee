@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const data = await apiGet(`/api/products?pageType=${pageType}&page=${page}`);
       renderProductList(data.list, data.pageType);
-      renderPagination(data.start, data.end, data.pageInt, data.productCount);
+      renderPagination(data.totalPages, data.pageInt);
     } catch (err) {
       console.error("상품 목록 로드 실패:", err);
     }
@@ -63,11 +63,11 @@ document.addEventListener('DOMContentLoaded', () => {
     container.innerHTML = html;
   }
 
-  function renderPagination(start, end, current, totalCount) {
+  function renderPagination(totalPages, current) {
     const pagination = document.querySelector('.pagination');
     pagination.innerHTML = '';
 
-    if (totalCount === 0) return;
+    if (totalPages === 0) return;
 
     // 이전 (3페이지 이동)
     if (current >= 4) {
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 숫자 버튼
-    for (let i = start; i <= end; i++) {
+    for (let i = 1; i <= totalPages; i++) {
       const a = document.createElement('a');
       a.href = 'javascript:void(0)';
       a.textContent = i;
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 다음 (3페이지 이동)
-    if (current < end - 3) {
+    if (current < totalPages - 3) {
       const next = document.createElement('a');
       next.href = 'javascript:void(0)';
       next.textContent = '»';

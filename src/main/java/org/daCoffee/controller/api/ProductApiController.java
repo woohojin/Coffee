@@ -2,16 +2,20 @@ package org.daCoffee.controller.api;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.daCoffee.dao.ImageDAO;
-import org.daCoffee.dao.ProductDAO;
 import org.daCoffee.dto.ApiResponseDTO;
 import org.daCoffee.dto.ProductDTO;
 import org.daCoffee.dto.response.ProductDetailDataDTO;
 import org.daCoffee.dto.response.ProductListDataDTO;
+import org.daCoffee.entity.Bean;
+import org.daCoffee.entity.Mix;
+import org.daCoffee.entity.Product;
 import org.daCoffee.exception.BusinessException;
 import org.daCoffee.exception.NotFoundException;
 import org.daCoffee.exception.UnauthorizedException;
+import org.daCoffee.service.ProductImageService;
+import org.daCoffee.service.ProductService;
 import org.daCoffee.util.PaginationUtil;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +27,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 public class ProductApiController {
-  private final ProductDAO productDao;
-  private final ImageDAO imageDao;
+  private final ProductService productService;
+  private final ProductImageService productImageService;
 
   @GetMapping
   public ResponseEntity<ApiResponseDTO<ProductListDataDTO>> getProductList(
@@ -47,17 +51,12 @@ public class ProductApiController {
       default -> throw new BusinessException("잘못된 상품 타입입니다.");
     };
 
-    productDao.rownumSet();
-    List<ProductDTO> list = productDao.productListByMemberTierByProductType(pageInt, PaginationUtil.LIMIT, memberTier, productType);
-    int productCount = productDao.productCountByTierByProductType(memberTier, productType);
-
-    Map<String, Integer> paginationInfo = PaginationUtil.calculatePagination(pageInt, productCount);
+    Page<Product> result = productService.getProductList(memberTier, productType, pageInt, PaginationUtil.LIMIT);
 
     ProductListDataDTO data = ProductListDataDTO.builder()
-      .list(list)
-      .productCount(productCount)
-      .start(paginationInfo.get("start"))
-      .end(paginationInfo.get("end"))
+      .list(result.getContent())
+      .productCount((int) result.getTotalElements())
+      .totalPages(result.getTotalPages())
       .pageInt(pageInt)
       .pageType(pageType)
       .memberTier(memberTier)
@@ -81,23 +80,27 @@ public class ProductApiController {
       default -> 0; // bean
     };
 
-    ProductDTO product = switch (pageType) {
-      case "mix" -> productDao.mixSelectOne(productCode);
-      case "cafe" -> productDao.productSelectOne(productCode); // cafe는 product 테이블에 필요 상품 데이터가 다 들어있음
-      default -> productDao.beanSelectOne(productCode); // bean
-    };
+    Product product = productService.findById(productCode)
+      .orElseThrow(() -> new NotFoundException("상품을 찾을 수 없습니다."));
 
-    if (product == null) {
-      throw new NotFoundException("상품을 찾을 수 없습니다.");
+    Bean bean = null;
+    Mix mix = null;
+
+    if (productType == 0) {
+      bean = productService.findBeanById(productCode).orElse(null);
+    } else if (productType == 1) {
+      mix = productService.findMixById(productCode).orElse(null);
     }
 
-    String detailImageName = imageDao.selectDetailImage(productCode);
-    int productCount = productDao.productCountByTierByProductType(memberTier, productType);
+    String detailImageName = productImageService.findDetailImage(productCode);
+    int productCount = productService.countByTierAndType(memberTier, productType);
 
     ProductDetailDataDTO data = ProductDetailDataDTO.builder()
       .memberTier(memberTier)
       .productCount(productCount)
       .product(product)
+      .bean(bean)
+      .mix(mix)
       .detailImageName(detailImageName)
       .build();
 

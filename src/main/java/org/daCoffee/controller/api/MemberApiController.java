@@ -3,9 +3,6 @@ package org.daCoffee.controller.api;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.daCoffee.dao.HistoryDAO;
-import org.daCoffee.dao.MemberDAO;
-import org.daCoffee.dao.ProductDAO;
 import org.daCoffee.dto.*;
 import org.daCoffee.dto.request.PaymentsRequestDTO;
 import org.daCoffee.dto.response.CartDataDTO;
@@ -13,12 +10,10 @@ import org.daCoffee.dto.response.CartPriceDTO;
 import org.daCoffee.dto.response.PaymentsDataDTO;
 import org.daCoffee.entity.Cart;
 import org.daCoffee.entity.Member;
+import org.daCoffee.entity.OrderHistory;
 import org.daCoffee.exception.NotFoundException;
 import org.daCoffee.module.UUIDGenerateModule;
-import org.daCoffee.service.CartService;
-import org.daCoffee.service.MailService;
-import org.daCoffee.service.MemberService;
-import org.daCoffee.service.PriceCalculator;
+import org.daCoffee.service.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -26,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.daCoffee.util.SecurityUtil.getRandomPassword;
@@ -36,9 +32,9 @@ import static org.daCoffee.util.SecurityUtil.getRandomPassword;
 @Slf4j
 public class MemberApiController {
   private final MemberService memberService;
-  private final ProductDAO productDao;
+  private final ProductService productService;
   private final CartService cartService;
-  private final HistoryDAO historyDao;
+  private final OrderHistoryService orderHistoryService;
   private final PriceCalculator priceCalculator;
   private final MailService mailService;
   private final PasswordEncoder passwordEncoder;
@@ -89,10 +85,9 @@ public class MemberApiController {
           .productUnit(c.getProduct().getProductUnit())
           .productPrice(c.getProduct().getProductPrice())
           .productFile(c.getProduct().getProductFile())
-          .productSoldOut(Integer.parseInt(c.getProduct().getProductSoldOut()))
+          .productSoldOut(c.getProduct().isProductSoldOut() ? 1 : 0)
           .productType(c.getProduct().getProductType())
           .quantity(c.getQuantity())
-          .productGrinding(Integer.parseInt(c.getProductGrinding()))
           .build())
         .toList();
 
@@ -112,7 +107,7 @@ public class MemberApiController {
   }
 
   @PostMapping("/cart/add")
-  public ApiResponseDTO<CartDTO> addToCart(
+  public ApiResponseDTO<Cart> addToCart(
     @SessionAttribute String memberId,
     @RequestParam String productCode,
     @RequestParam(defaultValue = "1") int quantity,
@@ -130,24 +125,15 @@ public class MemberApiController {
 
       if (quantity < 1) quantity = 1;
 
-      ProductDTO productDTO = productDao.productSelectOne(productCode);
-      if (productDTO == null) {
-        throw new NotFoundException("상품을 찾을 수 없습니다.");
-      }
+      productService.findById(productCode)
+        .orElseThrow(() -> new NotFoundException("상품을 찾을 수 없습니다."));
 
       cartService.addOrUpdate(memberId, productCode, quantity);
 
-      CartDTO data = CartDTO.builder()
-        .productCode(productDTO.getProductCode())
-        .productType(productDTO.getProductType())
-        .productName(productDTO.getProductName())
-        .productUnit(productDTO.getProductUnit())
-        .quantity(quantity)
-        .productPrice(productDTO.getProductPrice())
-        .productFile(productDTO.getProductFile())
-        .build();
+      Cart cart = cartService.getCartItem(memberId, productCode)
+        .orElseThrow(() -> new NotFoundException("장바구니 항목 없음"));
 
-      return ApiResponseDTO.success(data);
+      return ApiResponseDTO.success(cart);
     } catch (Exception e) {
       log.error("장바구니 추가 실패", e);
       return ApiResponseDTO.error("장바구니 추가 중 오류가 발생했습니다.");
@@ -185,10 +171,9 @@ public class MemberApiController {
           .productUnit(c.getProduct().getProductUnit())
           .productPrice(c.getProduct().getProductPrice())
           .productFile(c.getProduct().getProductFile())
-          .productSoldOut(Integer.parseInt(c.getProduct().getProductSoldOut()))
+          .productSoldOut(c.getProduct().isProductSoldOut() ? 1 : 0)
           .productType(c.getProduct().getProductType())
           .quantity(c.getQuantity())
-          .productGrinding(Integer.parseInt(c.getProductGrinding()))
           .build())
         .toList();
 
@@ -284,20 +269,25 @@ public class MemberApiController {
       }
 
       for (Cart cart : cartList) {
-        HistoryDTO historyDTO = new HistoryDTO();
+        OrderHistory orderHistory = OrderHistory.builder()
+          .orderId(orderId)
+          .memberTier(member.getMemberTier())
+          .memberId(memberId)
+          .memberName(member.getMemberName())
+          .memberCompanyName(member.getMemberCompanyName())
+          .memberFranCode(member.getMemberFranCode())
+          .productCode(cart.getProduct().getProductCode())
+          .productName(cart.getProduct().getProductName())
+          .productUnit(cart.getProduct().getProductUnit())
+          .productPrice(cart.getProduct().getProductPrice())
+          .quantity(cart.getQuantity())
+          .orderDate(LocalDateTime.now())
+          .deliveryAddress(member.getMemberDeliveryAddress())
+          .detailDeliveryAddress(member.getMemberDetailDeliveryAddress())
+          .totalPrice(amount)
+          .build();
 
-        historyDTO.setOrderId(orderId);
-        historyDTO.setMemberTier(memberDTO.getMemberTier());
-        historyDTO.setMemberId(memberId);
-        historyDTO.setMemberName(memberDTO.getMemberName());
-        historyDTO.setMemberFranCode(memberDTO.getMemberFranCode());
-        historyDTO.setProductCode(cartDTO.getProductCode());
-        historyDTO.setQuantity(cartDTO.getQuantity());
-        historyDTO.setDeliveryAddress(memberDTO.getMemberDeliveryAddress());
-        historyDTO.setDetailDeliveryAddress(memberDTO.getMemberDetailDeliveryAddress());
-        historyDTO.setTotalPrice(amount);
-
-        historyDao.historyInsert(historyDTO);
+        orderHistoryService.save(orderHistory);
       }
 
       cartService.deleteAllByMember(memberId);

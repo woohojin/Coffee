@@ -3,12 +3,13 @@ package org.daCoffee.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dao.CookieDAO;
-import org.daCoffee.dao.HistoryDAO;
 import org.daCoffee.dto.*;
 import org.daCoffee.dto.request.MemberSignUpRequestDTO;
 import org.daCoffee.dto.request.MemberUpdateRequestDTO;
 import org.daCoffee.entity.Member;
+import org.daCoffee.entity.OrderHistory;
 import org.daCoffee.service.MemberService;
+import org.daCoffee.service.OrderHistoryService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 @Controller
@@ -33,7 +36,7 @@ import java.util.*;
 public class MemberController {
   private final MemberService memberService;
   private final CookieDAO cookieDao;
-  private final HistoryDAO historyDao;
+  private final OrderHistoryService orderHistoryService;
   private final PasswordEncoder passwordEncoder;
 
   private void deleteCookies(HttpServletResponse response, String memberId) {
@@ -289,12 +292,15 @@ public class MemberController {
     String startDate = startLocalDate.toString();
     String endDate = now.toString();
 
-    List<HistoryDTO> list = historyDao.historySelectBetween(memberId, startDate, endDate);
-    int historyCount = historyDao.historyCountBetween(memberId, startDate, endDate);
+    List<OrderHistory> list = orderHistoryService.findByMemberIdBetween(
+      memberId,
+      LocalDateTime.of(startLocalDate, LocalTime.MIN),
+      LocalDateTime.of(now, LocalTime.MAX)
+    );
 
     request.setAttribute("startDate", startDate);
     request.setAttribute("endDate", endDate);
-    request.setAttribute("historyCount", historyCount);
+    request.setAttribute("historyCount", list.size());
     request.setAttribute("list", list);
 
     return "member/memberHistory";
@@ -306,12 +312,15 @@ public class MemberController {
                                  @RequestParam String endDate,
                                  @SessionAttribute String memberId) {
 
-    List<HistoryDTO> list = historyDao.historySelectBetween(memberId, startDate, endDate);
-    int historyCount = historyDao.historyCountBetween(memberId, startDate, endDate);
+    List<OrderHistory> list = orderHistoryService.findByMemberIdBetween(
+      memberId,
+      LocalDateTime.parse(startDate + "T00:00:00"),
+      LocalDateTime.parse(endDate + "T23:59:59")
+    );
 
     request.setAttribute("startDate", startDate);
     request.setAttribute("endDate", endDate);
-    request.setAttribute("historyCount", historyCount);
+    request.setAttribute("historyCount", list.size());
     request.setAttribute("list", list);
 
     return "member/memberHistory";

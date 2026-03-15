@@ -27,9 +27,6 @@ public class Cart {
   @Column(name = "quantity", nullable = false)
   private Integer quantity;
 
-  @Column(name = "product_grinding", nullable = false, length = 1)
-  private String productGrinding;
-
   public void updateQuantity(int quantity) {
     this.quantity = quantity;
   }
