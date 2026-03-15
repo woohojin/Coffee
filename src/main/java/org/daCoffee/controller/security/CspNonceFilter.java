@@ -51,13 +51,15 @@ public class CspNonceFilter extends OncePerRequestFilter {
         "https://code.jquery.com " +
         "https://t1.daumcdn.net https://s1.daumcdn.net https://s3.daumcdn.net " +
         "http://postcode.map.daum.net https://postcode.map.daum.net " +
+        "http://postcode.map.kakao.com https://postcode.map.kakao.com " +
         "https://js.tosspayments.com; " +
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
         "font-src 'self' data: https://fonts.gstatic.com; " +
         "img-src 'self' data:; " +
         "connect-src 'self' https://js.tosspayments.com " +
         "https://event.tosspayments.com wss://*.tosspayments.com; " +
-        "frame-src 'self' http://postcode.map.daum.net https://postcode.map.daum.net " +
+        "frame-src 'self' http://postcode.map.daum.net https://postcode.map.daum.net " + "https://t1.daumcdn.net " +
+        "http://postcode.map.kakao.com https://postcode.map.kakao.com " +
         "https://*.tosspayments.com; " +
         "frame-ancestors 'self';";
     } else {
