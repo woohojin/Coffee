@@ -2,6 +2,8 @@ package org.daCoffee.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.daCoffee.dto.request.admin.ProductRequestDTO;
+
 import java.time.LocalDate;
 
 @Entity
@@ -51,5 +53,17 @@ public class Product {
 
   public void updateSoldOut(boolean soldOut) {
     this.productSoldOut = soldOut;
+  }
+
+  public void adminUpdateProduct(ProductRequestDTO dto, String thumbnailFileName, String adminName) {
+    this.productCode = dto.getProductCode();
+    this.productType = dto.getProductType();
+    this.productName = dto.getProductName();
+    this.productPrice = dto.getProductPrice();
+    this.productUnit = dto.getProductUnit();
+    this.productTier = dto.getProductTier();
+    this.productFile = thumbnailFileName;
+    this.productModifierName = adminName;
+    this.productModifierDate = LocalDate.now();
   }
 }

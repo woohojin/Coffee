@@ -2,6 +2,8 @@ package org.daCoffee.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.daCoffee.dto.request.admin.ProductRequestDTO;
+
 import java.time.LocalDate;
 
 @Entity
@@ -44,4 +46,13 @@ public class Bean {
 
   @Column(name = "bean_modifier_date")
   private LocalDate beanModifierDate;
+
+  public void adminUpdate(ProductRequestDTO dto, String adminName) {
+    this.beanSpecies = dto.getBeanSpecies();
+    this.beanCompany = dto.getBeanCompany();
+    this.beanUseByDate = dto.getBeanUseByDate();
+    this.beanCountry = dto.getBeanCountry();
+    this.beanModifierName = adminName;
+    this.beanModifierDate = LocalDate.now();
+  }
 }

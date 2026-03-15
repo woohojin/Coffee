@@ -34,4 +34,11 @@ public class ProductImageService {
   public void save(ProductImage productImage) {
     productImageRepository.save(productImage);
   }
+
+  // 수정자 업데이트
+  @Transactional
+  public void updateModifier(int fileId, String fileName, String modifierName) {
+    productImageRepository.findById(fileId).ifPresent(img ->
+      img.updateModifier(fileName, modifierName));
+  }
 }

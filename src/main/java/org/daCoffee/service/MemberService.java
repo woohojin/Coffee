@@ -2,11 +2,15 @@ package org.daCoffee.service;
 
 import lombok.RequiredArgsConstructor;
 import org.daCoffee.dto.request.MemberUpdateRequestDTO;
+import org.daCoffee.dto.request.admin.MemberRequestDTO;
 import org.daCoffee.entity.Member;
 import org.daCoffee.entity.MemberWithdrawal;
 import org.daCoffee.repository.CartRepository;
 import org.daCoffee.repository.MemberRepository;
 import org.daCoffee.repository.MemberWithdrawalRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +24,16 @@ public class MemberService {
   private final MemberRepository memberRepository;
   private final MemberWithdrawalRepository memberWithdrawalRepository;
   private final CartRepository cartRepository;
+
+  // DB 컬럼명 → Entity 필드명 변환
+  private String resolveColumn(String column) {
+    return switch (column) {
+      case "member_tier" -> "memberTier";  // DB컬럼 → Entity 필드
+      case "member_id"   -> "memberId";
+      case "member_date" -> "memberDate";
+      default            -> "memberTier";
+    };
+  }
 
   // 회원 단건 조회
   @Transactional(readOnly = true)
@@ -69,30 +83,6 @@ public class MemberService {
     memberRepository.updateMemberPassword(memberId, encodedPassword);
   }
 
-  // 등급 업데이트
-  @Transactional
-  public void updateMemberTier(String memberId, int memberTier) {
-    memberRepository.updateMemberTier(memberId, memberTier);
-  }
-
-  // 사업자 코드 업데이트
-  @Transactional
-  public void updateMemberFranCode(String memberId, String memberFranCode) {
-    memberRepository.updateMemberFranCode(memberId, memberFranCode);
-  }
-
-  // 회원 비활성화
-  @Transactional
-  public void disableMember(String memberId) {
-    memberRepository.updateDisabledStatus(memberId, true);
-  }
-
-  // 회원 활성화
-  @Transactional
-  public void enableMember(String memberId) {
-    memberRepository.updateDisabledStatus(memberId, false);
-  }
-
   // 회원 탈퇴
   @Transactional
   public void withdrawMember(String memberId) {
@@ -134,4 +124,97 @@ public class MemberService {
       dto.getMemberEmail(), dto.getMemberFile());
   }
 
+  // ===================== Admin =====================
+
+  // 등급 업데이트
+  @Transactional
+  public void updateMemberTier(String memberId, int memberTier) {
+    memberRepository.updateMemberTier(memberId, memberTier);
+  }
+
+  // 사업자 코드 업데이트
+  @Transactional
+  public void updateMemberFranCode(String memberId, String memberFranCode) {
+    memberRepository.updateMemberFranCode(memberId, memberFranCode);
+  }
+
+  // 회원 비활성화
+  @Transactional
+  public void disableMember(String memberId) {
+    memberRepository.updateDisabledStatus(memberId, true);
+  }
+
+  // 회원 활성화
+  @Transactional
+  public void enableMember(String memberId) {
+    memberRepository.updateDisabledStatus(memberId, false);
+  }
+
+  // 전체 회원 목록 페이징 + 정렬
+  @Transactional(readOnly = true)
+  public Page<Member> findAllPaged(int pageInt, int limit, String column, String order) {
+    Sort sort = Sort.by(
+      "desc".equals(order) ? Sort.Direction.DESC : Sort.Direction.ASC,
+      resolveColumn(column)
+    );
+    PageRequest pageable = PageRequest.of(pageInt - 1, limit, sort);
+    return memberRepository.findAll(pageable);
+  }
+
+  // 비활성화 회원 목록 페이징
+  @Transactional(readOnly = true)
+  public Page<Member> findDisabledMembers(int pageInt, int limit) {
+    PageRequest pageable = PageRequest.of(pageInt - 1, limit);
+    return memberRepository.findDisabledMembers(pageable);
+  }
+
+  // 탈퇴 회원 목록 페이징
+  @Transactional(readOnly = true)
+  public Page<MemberWithdrawal> findWithdrawalMembers(int pageInt, int limit) {
+    PageRequest pageable = PageRequest.of(pageInt - 1, limit);
+    return memberWithdrawalRepository.findAll(pageable);
+  }
+
+  // 회원 검색 (컬럼 + 키워드 기준)
+  @Transactional(readOnly = true)
+  public Page<Member> searchMembers(String column, String keyword, int pageInt, int limit) {
+    PageRequest pageable = PageRequest.of(pageInt - 1, limit);
+    return switch (column) {
+      case "memberCompanyName" -> memberRepository.findByMemberCompanyNameContaining(keyword, pageable);
+      case "memberId"          -> memberRepository.findByMemberIdContaining(keyword, pageable);
+      case "memberName"        -> memberRepository.findByMemberNameContaining(keyword, pageable);
+      case "memberTel"         -> memberRepository.findByMemberTelContaining(keyword, pageable);
+      case "memberCompanyTel"  -> memberRepository.findByMemberCompanyTelContaining(keyword, pageable);
+      case "memberTier"        -> memberRepository.findByMemberTier(Integer.parseInt(keyword), pageable);
+      default                  -> memberRepository.findAll(pageable);
+    };
+  }
+
+  // 회원 정보 수정
+  @Transactional
+  public void adminUpdate(String adminName, MemberRequestDTO dto) {
+    Member member = memberRepository.findById(dto.getMemberId())
+      .orElseThrow(() -> new IllegalArgumentException("회원 없음: " + dto.getMemberId()));
+
+    member.adminUpdate(dto.getMemberName(), dto.getMemberCompanyName(), dto.getMemberTel(),
+      dto.getMemberCompanyTel(), dto.getMemberAddress(), dto.getMemberDetailAddress(),
+      dto.getMemberDeliveryAddress(), dto.getMemberDetailDeliveryAddress(),
+      dto.getMemberEmail(), dto.getMemberFranCode(), dto.getMemberTier(), adminName);
+  }
+
+  // 회원 활성화/비활성화 토글
+  @Transactional
+  public void toggleDisable(String memberId) {
+    Member member = memberRepository.findById(memberId)
+      .orElseThrow(() -> new IllegalArgumentException("회원 없음: " + memberId));
+
+    if (!member.isMemberDisabledStatus()) {
+      // 비활성화
+      member.disable();
+      cartRepository.deleteAllByMemberId(memberId);
+    } else {
+      // 활성화
+      member.enable();
+    }
+  }
 }

@@ -113,4 +113,39 @@ public class Member {
     this.memberFile = memberFile;
     this.memberModifierDate = LocalDate.now();
   }
+
+  // ===================== Admin =====================
+
+  // 회원 정보 수정 (등급, 가맹점코드 포함)
+  public void adminUpdate(String memberName, String memberCompanyName, String memberTel,
+                          String memberCompanyTel, String memberAddress, String memberDetailAddress,
+                          String memberDeliveryAddress, String memberDetailDeliveryAddress,
+                          String memberEmail, String memberFranCode, int memberTier,
+                          String adminName) {
+    this.memberName = memberName;
+    this.memberCompanyName = memberCompanyName;
+    this.memberTel = memberTel;
+    this.memberCompanyTel = memberCompanyTel;
+    this.memberAddress = memberAddress;
+    this.memberDetailAddress = memberDetailAddress;
+    this.memberDeliveryAddress = memberDeliveryAddress;
+    this.memberDetailDeliveryAddress = memberDetailDeliveryAddress;
+    this.memberEmail = memberEmail;
+    this.memberFranCode = memberFranCode;
+    this.memberTier = memberTier;
+    this.memberModifierName = adminName;
+    this.memberModifierDate = LocalDate.now();
+  }
+
+  // 회원 비활성화
+  public void disable() {
+    this.memberDisabledStatus = true;
+    this.memberDisableDate = LocalDate.now();
+  }
+
+  // 회원 활성화
+  public void enable() {
+    this.memberDisabledStatus = false;
+    this.memberDisableDate = null;
+  }
 }

@@ -2,6 +2,8 @@ package org.daCoffee.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.daCoffee.dto.request.admin.ProductRequestDTO;
+
 import java.time.LocalDate;
 
 @Entity
@@ -38,4 +40,11 @@ public class Mix {
 
   @Column(name = "mix_modifier_date")
   private LocalDate mixModifierDate;
+
+  public void adminUpdate(ProductRequestDTO dto, String adminName) {
+    this.mixCompany = dto.getMixCompany();
+    this.mixUseByDate = dto.getMixUseByDate();
+    this.mixModifierName = adminName;
+    this.mixModifierDate = LocalDate.now();
+  }
 }

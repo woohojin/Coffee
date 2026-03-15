@@ -1,6 +1,8 @@
 package org.daCoffee.repository;
 
 import org.daCoffee.entity.Member;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -46,4 +48,28 @@ public interface MemberRepository extends JpaRepository<Member, String> {
   // 전체 회원 목록
   @Query("SELECT m FROM Member m ORDER BY m.memberTier")
   List<Member> findAllOrderByMemberTier();
+
+  // ===================== Admin =====================
+
+  // 비활성화 회원 목록 페이징
+  @Query("SELECT m FROM Member m WHERE m.memberDisabledStatus = true")
+  Page<Member> findDisabledMembers(Pageable pageable);
+
+  // 회사명 검색
+  Page<Member> findByMemberCompanyNameContaining(String keyword, Pageable pageable);
+
+  // 아이디 검색
+  Page<Member> findByMemberIdContaining(String keyword, Pageable pageable);
+
+  // 이름 검색
+  Page<Member> findByMemberNameContaining(String keyword, Pageable pageable);
+
+  // 전화번호 검색
+  Page<Member> findByMemberTelContaining(String keyword, Pageable pageable);
+
+  // 회사 전화번호 검색
+  Page<Member> findByMemberCompanyTelContaining(String keyword, Pageable pageable);
+
+  // 등급 검색
+  Page<Member> findByMemberTier(int memberTier, Pageable pageable);
 }

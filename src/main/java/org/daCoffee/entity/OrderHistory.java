@@ -75,4 +75,20 @@ public class OrderHistory {
   public void updateDeliveryCode(String deliveryCode) {
     this.deliveryCode = deliveryCode;
   }
+
+  // ===================== Admin =====================
+
+  // 주문 정보 수정
+  public void adminUpdate(String memberFranCode, String memberName, String memberCompanyName,
+                          String deliveryAddress, String detailDeliveryAddress,
+                          String deliveryCode, String adminName) {
+    this.memberFranCode = memberFranCode;
+    this.memberName = memberName;
+    this.memberCompanyName = memberCompanyName;
+    this.deliveryAddress = deliveryAddress;
+    this.detailDeliveryAddress = detailDeliveryAddress;
+    this.deliveryCode = deliveryCode;
+    this.historyModifierName = adminName;
+    this.historyModifierDate = LocalDate.now();
+  }
 }

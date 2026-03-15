@@ -22,4 +22,40 @@ public interface OrderHistoryRepository extends JpaRepository<OrderHistory, Inte
   // 특정 회원의 날짜 범위 주문 목록
   List<OrderHistory> findByMemberIdAndOrderDateBetween(String memberId, LocalDateTime start, LocalDateTime end);
 
+  // ===================== Admin =====================
+
+  // 전체 주문 수
+  @Query("SELECT COUNT(h) FROM OrderHistory h")
+  int countAll();
+
+  // orderId 검색
+  Page<OrderHistory> findByOrderIdContaining(String keyword, Pageable pageable);
+
+  // memberId 검색
+  Page<OrderHistory> findByMemberIdContaining(String keyword, Pageable pageable);
+
+  // orderId + memberId 동시 검색
+  Page<OrderHistory> findByOrderIdContainingAndMemberIdContaining(
+    String orderId, String memberId, Pageable pageable);
+
+  // 날짜 범위 검색 (전체)
+  Page<OrderHistory> findByOrderDateBetween(LocalDateTime start, LocalDateTime end, Pageable pageable);
+
+  // orderId + 날짜 범위 검색
+  Page<OrderHistory> findByOrderIdContainingAndOrderDateBetween(
+    String orderId, LocalDateTime start, LocalDateTime end, Pageable pageable);
+
+  // memberId + 날짜 범위 검색
+  Page<OrderHistory> findByMemberIdContainingAndOrderDateBetween(
+    String memberId, LocalDateTime start, LocalDateTime end, Pageable pageable);
+
+  // orderId + memberId + 날짜 범위 검색
+  Page<OrderHistory> findByOrderIdContainingAndMemberIdContainingAndOrderDateBetween(
+    String orderId, String memberId, LocalDateTime start, LocalDateTime end, Pageable pageable);
+
+  // 주문 삭제
+  @Modifying
+  @Query("DELETE FROM OrderHistory h WHERE h.orderId = :orderId AND h.productCode = :productCode")
+  int deleteByOrderIdAndProductCode(@Param("orderId") String orderId, @Param("productCode") String productCode);
+
 }

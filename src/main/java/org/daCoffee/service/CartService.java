@@ -83,7 +83,6 @@ public class CartService {
         .member(member)
         .product(product)
         .quantity(quantity)
-        .productGrinding("0")
         .build();
       cartRepository.save(cart);
     }

@@ -22,7 +22,26 @@ public interface ProductRepository extends JpaRepository<Product, String> {
   @Query("UPDATE Product p SET p.productSoldOut = :soldOut WHERE p.productCode = :productCode")
   void updateSoldOut(@Param("productCode") String productCode, @Param("soldOut") boolean soldOut);
 
-  // 제품 이름으로 검색
+  // ===================== Admin =====================
+
+  // 제품 이름 검색
   Page<Product> findByProductNameContaining(String keyword, Pageable pageable);
 
+  // 제품 코드 검색
+  Page<Product> findByProductCodeContaining(String keyword, Pageable pageable);
+
+  // 제품 타입 검색
+  Page<Product> findByProductType(int productType, Pageable pageable);
+
+  // 제품 가격 검색
+  Page<Product> findByProductPrice(int productPrice, Pageable pageable);
+
+  // 제품 단위 검색
+  Page<Product> findByProductUnitContaining(String keyword, Pageable pageable);
+
+  // 제품 등급 검색
+  Page<Product> findByProductTier(int productTier, Pageable pageable);
+
+  // 제품 품절 상태 검색
+  Page<Product> findByProductSoldOut(boolean soldOut, Pageable pageable);
 }

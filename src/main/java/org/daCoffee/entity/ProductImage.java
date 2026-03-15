@@ -35,4 +35,11 @@ public class ProductImage {
 
   @Column(name = "file_modifier_date")
   private LocalDate fileModifierDate;
+  
+  // 수정자 업데이트
+  public void updateModifier(String fileName, String modifierName) {
+    this.fileName = fileName;
+    this.fileModifierName = modifierName;
+    this.fileModifierDate = LocalDate.now();
+  }
 }
