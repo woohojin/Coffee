@@ -24,7 +24,7 @@ public interface CartRepository extends JpaRepository<Cart, CartId> {
   List<String> findProductCodesByMemberId(@Param("memberId") String memberId);
 
   // 특정 회원의 품절된 제품을 제외한 제품의 가격 총합
-  @Query("SELECT COALESCE(SUM(c.quantity * c.product.productPrice), 0) FROM Cart c WHERE c.id.memberId = :memberId AND c.product.productSoldOut = '0'")
+  @Query("SELECT COALESCE(SUM(c.quantity * c.product.productPrice), 0) FROM Cart c WHERE c.id.memberId = :memberId AND c.product.productSoldOut = false")
   int sumPriceByMemberId(@Param("memberId") String memberId);
 
   // 특정 회원의 제품 한개의 갯수

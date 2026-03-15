@@ -28,14 +28,14 @@ public class Product {
   @Column(name = "product_unit", length = 20)
   private String productUnit;
 
-  @Column(name = "product_tier", nullable = false, length = 1)
-  private String productTier;
+  @Column(name = "product_tier", nullable = false)
+  private Integer productTier;
 
   @Column(name = "product_file", length = 30)
   private String productFile;
 
-  @Column(name = "product_sold_out", nullable = false, length = 1)
-  private String productSoldOut;
+  @Column(name = "product_sold_out", nullable = false)
+  private boolean productSoldOut;
 
   @Column(name = "product_register_name", nullable = false, length = 5)
   private String productRegisterName;
@@ -48,4 +48,8 @@ public class Product {
 
   @Column(name = "product_modifier_date")
   private LocalDate productModifierDate;
+
+  public void updateSoldOut(boolean soldOut) {
+    this.productSoldOut = soldOut;
+  }
 }
