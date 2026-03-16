@@ -33,8 +33,8 @@ function ProductList() {
   }, [pageInt, searchText ? searchText : pageType]);
 
   useEffect(() => {
-    console.log("products 변화", products);
-  }, [products]);
+    window.scrollTo(0, 0);
+  }, [pageType, searchText]);
 
   const getDetailPath = (p) => {
     if (p.productType === 1)
