@@ -71,6 +71,27 @@ public class MemberApiController {
     return ApiResponseDTO.success("임시 비밀번호가 이메일로 전송되었습니다.", null);
   }
 
+  @GetMapping("/me") // React 세션 정보 요청용
+  public ResponseEntity<ApiResponseDTO<MemberDTO>> getMe(
+          @SessionAttribute(name = "memberId", required = false) String memberId) {
+
+    if (memberId == null) {
+      return ResponseEntity.status(401)
+              .body(ApiResponseDTO.error("로그인이 필요합니다.", 401));
+    }
+
+    Member member = memberService.findById(memberId)
+            .orElseThrow(() -> new NotFoundException("회원 없음"));
+
+    MemberDTO dto = MemberDTO.builder()
+            .memberId(member.getMemberId())
+            .memberTier(member.getMemberTier())
+            .memberName(member.getMemberName())
+            .build();
+
+    return ResponseEntity.ok(ApiResponseDTO.success(dto));
+  }
+
   @GetMapping("/cart")
   public ApiResponseDTO<CartDataDTO> getCart(@SessionAttribute String memberId) {
     try {

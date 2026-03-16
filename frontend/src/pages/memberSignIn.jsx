@@ -9,13 +9,10 @@ function MemberSignIn() {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData();
-    formData.append("memberId", memberId);
-    formData.append("memberPassword", memberPassword);
-
     try {
-      await axiosInstance.post("/member/memberSignInPro", formData);
+      const res = await axiosInstance.post("/member/memberSignInPro", formData);
+      const meRes = await axiosInstance.get("/api/member/me");
+      setMember(meRes.data.data);
       navigate("/main");
     } catch (err) {
       alert(err.response?.data?.message || "로그인 실패");
