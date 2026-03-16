@@ -16,6 +16,9 @@ public interface ProductRepository extends JpaRepository<Product, String> {
   // 제품등급 + 타입으로 제품 수 조회
   int countByProductTierAndProductType(Integer productTier, Integer productType);
 
+  // 제품등급 + 검색어 조회
+  Page<Product> findByProductTierAndProductNameContaining(Integer productTier, String keyword, Pageable pageable);
+
   @Modifying
   @Query("UPDATE Product p SET p.productSoldOut = :soldOut WHERE p.productCode = :productCode")
   void updateSoldOut(@Param("productCode") String productCode, @Param("soldOut") boolean soldOut);

@@ -118,4 +118,28 @@ public class ProductApiController {
 
     return ResponseEntity.ok(ApiResponseDTO.success(data));
   }
+
+  @GetMapping("/search")
+  public ResponseEntity<ApiResponseDTO<ProductListDataDTO>> searchProducts(
+          @RequestParam String searchText,
+          @RequestParam(defaultValue = "1") int pageInt,
+          @SessionAttribute(required = false) Integer memberTier) {
+
+    if (memberTier == null || memberTier == 0) {
+      throw new UnauthorizedException("권한이 없습니다.");
+    }
+
+    Page<Product> result = productService.searchByName(searchText, memberTier, pageInt, PaginationUtil.LIMIT);
+
+    ProductListDataDTO data = ProductListDataDTO.builder()
+            .list(result.getContent())
+            .productCount((int) result.getTotalElements())
+            .totalPages(result.getTotalPages())
+            .pageInt(pageInt)
+            .searchText(searchText)
+            .memberTier(memberTier)
+            .build();
+
+    return ResponseEntity.ok(ApiResponseDTO.success(data));
+  }
 }

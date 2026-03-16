@@ -68,11 +68,11 @@ public class ProductService {
     return productRepository.countByProductTierAndProductType(memberTier, productType);
   }
 
-  // 제품 검색 (이름 기준, 페이징)
+  // 제품 검색 (검색어, 회원 등급)
   @Transactional(readOnly = true)
-  public Page<Product> searchByName(String keyword, int pageInt, int limit) {
+  public Page<Product> searchByName(String keyword, int memberTier, int pageInt, int limit) {
     PageRequest pageable = PageRequest.of(pageInt - 1, limit);
-    return productRepository.findByProductNameContaining(keyword, pageable);
+    return productRepository.findByProductTierAndProductNameContaining(memberTier, keyword, pageable);
   }
 
   // ===================== Admin =====================
