@@ -1,0 +1,55 @@
+import { Link } from "react-router-dom";
+
+function Footer() {
+  return (
+    <footer>
+      <div className="da_footer">
+        <div className="footer_anchor">
+          <span>
+            <Link to="/terms">이용약관</Link>
+          </span>
+          <span>
+            <Link to="/privacy">개인정보처리방침</Link>
+          </span>
+        </div>
+        <ul>
+          <li>
+            <p>법인명 : 다올커피 &nbsp; 대표 : 우경윤</p>
+          </li>
+          <li>
+            <span>사업자 등록번호 : 783-44-01146</span>
+            <a
+              href="http://www.ftc.go.kr/bizCommPop.do?wrkr_no=7834401146"
+              target="_blank"
+            >
+              [사업자정보확인]
+            </a>
+          </li>
+          <li>
+            <span>통신판매번호 : 2023-경기부천-4221</span>
+          </li>
+          <li>
+            <p>
+              주소 : 경기도 부천시 도약로 261 (부천대우테크노파크) C동 902-1호
+              다올커피
+            </p>
+          </li>
+          <li>
+            <p>개인정보 보호 책임자 : 우경윤</p>
+          </li>
+          <li>
+            <p>이메일 : coffeedaall@gmail.com</p>
+          </li>
+          <li>
+            <p>전화번호 : 1566-0904</p>
+          </li>
+          <li className="copyright">
+            <p>COPYRIGHT ⓒ 다올커피, All Rights Reserved.</p>
+          </li>
+        </ul>
+      </div>
+    </footer>
+  );
+}
+
+export default Footer;

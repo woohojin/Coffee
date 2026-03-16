@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 
 function Header() {
   const navigate = useNavigate();
-  const { member, setMember } = useAuth();
+  const { member, setMember, loading } = useAuth();
   const [searchText, setSearchText] = useState("");
   const [cartCount, setCartCount] = useState(0);
 
@@ -57,7 +57,7 @@ function Header() {
           </div>
           <div className="hd_gnb_menu">
             <ul>
-              {!member && (
+              {!loading && !member && (
                 <>
                   <li>
                     <Link to="/member/memberSignIn">로그인</Link>
@@ -67,7 +67,7 @@ function Header() {
                   </li>
                 </>
               )}
-              {member && member.memberTier !== 9 && (
+              {!loading && member && member.memberTier !== 9 && (
                 <>
                   <li>
                     <button onClick={handleLogout}>로그아웃</button>
@@ -77,7 +77,7 @@ function Header() {
                   </li>
                 </>
               )}
-              {member && member.memberTier === 9 && (
+              {!loading && member && member.memberTier === 9 && (
                 <>
                   <li>
                     <button onClick={handleLogout}>로그아웃</button>
@@ -107,6 +107,9 @@ function Header() {
           <div className="hd_lnb_list">
             <ul>
               <li>
+                <Link to="/products/machineDetail">임대머신</Link>
+              </li>
+              <li>
                 <Link to="/products/productList?pageType=bean">원두</Link>
               </li>
               <li>
@@ -114,9 +117,6 @@ function Header() {
               </li>
               <li>
                 <Link to="/products/productList?pageType=cafe">카페용품</Link>
-              </li>
-              <li>
-                <Link to="/products/machineDetail">임대머신</Link>
               </li>
             </ul>
           </div>

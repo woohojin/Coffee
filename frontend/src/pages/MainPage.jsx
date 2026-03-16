@@ -1,10 +1,12 @@
 import { useAuth } from "../store/authStore";
 
 function MainPage() {
-  const { member } = useAuth();
+  const { member, loading } = useAuth();
 
   let content;
-  if (member === null) {
+  if (loading) {
+    content = null;
+  } else if (member === null) {
     content = (
       <div className="denied-text">
         <p>로그인을 진행하시거나</p>
