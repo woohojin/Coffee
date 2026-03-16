@@ -2,11 +2,6 @@ package org.daCoffee.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.daCoffee.dao.*;
-import org.daCoffee.dto.HistoryDTO;
-import org.daCoffee.dto.ImageDTO;
-import org.daCoffee.dto.MemberDTO;
-import org.daCoffee.dto.ProductDTO;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -27,7 +22,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -43,7 +37,6 @@ public class AdminController {
   private final MemberService memberService;
   private final OrderHistoryService orderHistoryService;
   private final ProductImageService productImageService;
-  private final CartService cartService;
 
   private static final int LIMIT = 30;
   private static final int BOTTOM_LINE = 100;
@@ -477,10 +470,6 @@ public class AdminController {
                              @RequestParam(defaultValue = "1") int pageInt,
                              @RequestParam(required = false) String columnName,
                              @RequestParam(required = false) String searchText) {
-
-    List<MemberDTO> list = null;
-    String[] array = {"memberCompanyName", "memberFranCode", "memberId", "memberName",
-      "memberTel", "memberCompanyTel", "memberTier"};
 
     Page<Member> result = memberService.searchMembers(columnName, searchText, pageInt, LIMIT);
     Map<String, Integer> pagination = calculatePagination(pageInt, (int) result.getTotalElements());

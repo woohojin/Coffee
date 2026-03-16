@@ -3,7 +3,6 @@ package org.daCoffee.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dao.CookieDAO;
-import org.daCoffee.dto.*;
 import org.daCoffee.dto.request.MemberSignUpRequestDTO;
 import org.daCoffee.dto.request.MemberUpdateRequestDTO;
 import org.daCoffee.entity.Member;

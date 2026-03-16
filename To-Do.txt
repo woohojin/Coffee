@@ -5,10 +5,7 @@
 ㄴ Security, Dao, Config, Handler, module, Service, util 전체 완료
 ㄴ dto, exception은 제외
 
-예외처리의 경우 service에서 직접 error를 리턴시키고 있는데 GlobalExceptionHandler에서 처리하도록 변경(예외변환)
-
 ㄴ memberPayments부분 변경 완료했으나 기타 이유로 테스트 진행이 어려움 추후 예정, 동일 이슈로 memberFindAccount도 테스트 어려움 추후 예정
-ㄴ DTO들 @Data -> @Builder CartPriceDTO는 calculator에서 setter -> builder도 같이 수정
 
 백엔드 전체 Restful 방식 사용으로 변경
 ㄴ 변경 하는 겸 front는 react를 도입하는 것으로 결정 + war대신 jar 배포를 위한 서버와 프로젝트 세팅을 다시 하는 것으로 결정
@@ -17,8 +14,6 @@ enum 방식으로 코드 개선, 디자인 패턴 적용 유무 고려 및 SOLID
 커스텀 어노테이션, jwt, 어노테이션 + URL REST 방식으로 개선, ngnix
 채팅 상담 기능 구현해보기(WebSocket)
 Docker 사용, CI/CD 사용
-MainController FileInputStream 수정
-mybatis 에서 jpa로
 
 메인페이지
 이메일 변경

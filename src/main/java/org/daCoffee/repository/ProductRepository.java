@@ -8,8 +8,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
-
 public interface ProductRepository extends JpaRepository<Product, String> {
 
   // 페이징용 제품등급(회원과 일치) + 타입 목록 조회

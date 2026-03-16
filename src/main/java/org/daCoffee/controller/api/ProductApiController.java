@@ -3,7 +3,6 @@ package org.daCoffee.controller.api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dto.ApiResponseDTO;
-import org.daCoffee.dto.ProductDTO;
 import org.daCoffee.dto.response.BeanDataDTO;
 import org.daCoffee.dto.response.MixDataDTO;
 import org.daCoffee.dto.response.ProductDetailDataDTO;
@@ -20,9 +19,6 @@ import org.daCoffee.util.PaginationUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/products")
