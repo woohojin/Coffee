@@ -17,10 +17,14 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.sql.DataSource;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -31,6 +35,7 @@ public class SecurityConfig {
   private final DataSource dataSource;
   private final UserDetailsService userDetailsService;
   private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+  private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
   ObjectMapper objectMapper = new ObjectMapper();
 
@@ -50,11 +55,26 @@ public class SecurityConfig {
   }
 
   @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+
+    configuration.setAllowedOrigins(List.of("http://localhost:5173")); // React 개발 서버
+    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+    configuration.setAllowedHeaders(List.of("*"));
+    configuration.setAllowCredentials(true); // 쿠키/세션 허용
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
+  }
+
+  @Bean
   public SecurityFilterChain strictFilterChain(HttpSecurity http) throws Exception {
     http
       .headers(headers -> headers
         .frameOptions(frame -> frame.deny())
         .xssProtection(xss -> xss.disable()))
+      .cors(cors -> cors.configurationSource(corsConfigurationSource()))
       .securityMatcher("/**")
       .authorizeHttpRequests(auth -> auth
         .requestMatchers(
@@ -84,20 +104,10 @@ public class SecurityConfig {
       .formLogin(form -> form
         .loginPage("/member/memberSignIn")
         .loginProcessingUrl("/member/memberSignInPro")
-        .defaultSuccessUrl("/main", true)
-        .successHandler(customAuthenticationSuccessHandler)
         .usernameParameter("memberId")
         .passwordParameter("memberPassword")
-        .failureHandler((request, response, exception) -> {
-          String errorMessage = switch (exception.getClass().getSimpleName()) {
-            case "UsernameNotFoundException" -> "존재하지 않는 아이디입니다.";
-            case "DisabledException" -> "비활성화된 아이디입니다.";
-            default -> "아이디 또는 비밀번호가 잘못되었습니다.";
-          };
-          String msg = URLEncoder.encode(errorMessage, StandardCharsets.UTF_8);
-          String url = URLEncoder.encode("/member/memberSignIn", StandardCharsets.UTF_8);
-          response.sendRedirect("/alert?msg=" + msg + "&url=" + url);
-        })
+        .successHandler(customAuthenticationSuccessHandler)
+        .failureHandler(customAuthenticationFailureHandler)
       )
       .rememberMe(remember -> remember
         .key(rememberMeKey)
@@ -119,7 +129,8 @@ public class SecurityConfig {
         .ignoringRequestMatchers("/alert",
           "/api/member/verifyEmail",
           "/api/member/verifyCode",
-          "/api/member/findAccount")
+          "/api/member/findAccount",
+          "/member/memberSignInPro")
       )
       // URLEncoder는 한글을 사용하기 위해서 UTF_8로 인코딩을 하는 것
       .exceptionHandling(ex -> ex

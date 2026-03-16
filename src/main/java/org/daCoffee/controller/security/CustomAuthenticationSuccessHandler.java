@@ -1,5 +1,6 @@
 package org.daCoffee.controller.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -7,6 +8,7 @@ import jakarta.servlet.http.HttpSession;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.daCoffee.dto.ApiResponseDTO;
 import org.daCoffee.entity.Member;
 import org.daCoffee.service.MemberService;
 import org.springframework.security.core.Authentication;
@@ -26,13 +28,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
   @Override
   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
     String username = authentication.getName();
-    log.info("Authentication success for user : {}", username);
 
     Member member = memberService.findById(username)
-      .orElseThrow(() -> {
-        log.error("Failed to retrieve member for user: {}", username);
-        return new UsernameNotFoundException("not_found");
-      });
+            .orElseThrow(() -> new UsernameNotFoundException("not_found"));
 
     HttpSession session = request.getSession();
     session.setAttribute("memberId", member.getMemberId());
@@ -40,6 +38,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     log.info("Session attributes set - memberId : {}, memberTier : {}", member.getMemberId(), member.getMemberTier());
 
-    response.sendRedirect("/main");
+    response.setStatus(HttpServletResponse.SC_OK);
+    response.setContentType("application/json;charset=UTF-8");
+
+    ApiResponseDTO<Void> apiResponse = ApiResponseDTO.success(null);
+    response.getWriter().write(new ObjectMapper().writeValueAsString(apiResponse));
   }
 }
