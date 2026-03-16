@@ -66,10 +66,10 @@
 
 body {
   overflow-x: hidden;
-  user-select:none;
-  -webkit-user-select:none;
-  -moz-user-select:none;
-  -ms-user-select:none;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 body::-webkit-scrollbar {
   width: 12px;
@@ -135,7 +135,6 @@ input:focus {
   border: 2px solid var(--mainColor);
   border-radius: 4px;
   font-size: 14px;
-
 }
 .submit_btn,
 .btn {
@@ -201,8 +200,12 @@ input:focus {
 .pagination_wrap {
   margin-top: 70px;
 }
-.pagination a {
+.pagination button {
   font-size: 17px;
+  color: #666;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .main_slider,
