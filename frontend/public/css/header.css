@@ -77,7 +77,7 @@ header {
   right: 15px;
   width: 25px;
   filter: invert(45%) sepia(70%) saturate(1629%) hue-rotate(194deg)
-  brightness(99%) contrast(104%);
+    brightness(99%) contrast(104%);
 }
 .hd_gnb_menu {
   margin-right: 80px;
@@ -94,7 +94,7 @@ header {
 .hd_gnb_menu > ul > li > a {
   font-size: 17px;
 }
-.hd_gnb_menu > ul > li > form > button {
+.hd_gnb_menu > ul > li > button {
   font-size: 17px;
   background: transparent;
   text-decoration: none;
@@ -128,7 +128,7 @@ header {
   font-size: 13px;
 }
 .hd_gnb_member_cart_wrap {
-  position:relative;
+  position: relative;
 }
 .hd_gnb_member_cart {
   position: absolute;
@@ -170,7 +170,7 @@ header {
   display: flex;
 }
 .hd_gnb_member_cart_text {
-  display:flex;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: left;

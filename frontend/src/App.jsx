@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./store/authStore";
 import MemberSignIn from "./pages/MemberSignIn";
+import MainPage from "./pages/MainPage";
+import Layout from "./components/Layout";
 
 function ProtectedRoute({ member, loading, children }) {
   if (loading) return <div>로딩중...</div>;
@@ -18,14 +20,9 @@ function App() {
           path="/member/memberSignIn"
           element={<MemberSignIn setMember={setMember} />}
         />
-        <Route
-          path="/main"
-          element={
-            <ProtectedRoute member={member} loading={loading}>
-              <div>메인페이지 - {member?.memberName}</div>
-            </ProtectedRoute>
-          }
-        />
+        <Route element={<Layout />}>
+          <Route path="/main" element={<MainPage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
