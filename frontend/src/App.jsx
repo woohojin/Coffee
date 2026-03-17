@@ -6,6 +6,8 @@ import ProductListPage from "./pages/ProductListPage";
 import MemberSignInPage from "./pages/MemberSignInPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import CartPage from "./pages/CartPage";
+import MemberMyPage from "./pages/MemberMyPage";
+import MemberProfilePage from "./pages/MemberProfilePage";
 
 function ProtectedRoute({ member, loading, children }) {
   if (loading) return <div>로딩중...</div>;
@@ -40,6 +42,8 @@ function App() {
             element={<MemberSignInPage setMember={setMember} />}
           />
           <Route path="/member/memberCart" element={<CartPage />} />
+          <Route path="/member/memberMyPage" element={<MemberMyPage />} />
+          <Route path="/member/memberProfile" element={<MemberProfilePage />} />
         </Route>
       </Routes>
     </BrowserRouter>

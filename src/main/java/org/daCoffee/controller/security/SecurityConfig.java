@@ -130,7 +130,8 @@ public class SecurityConfig {
           "/api/member/verifyEmail",
           "/api/member/verifyCode",
           "/api/member/findAccount",
-          "/member/memberSignInPro")
+          "/member/memberSignInPro",
+          "/member/memberProfilePro" )
       )
       // URLEncoder는 한글을 사용하기 위해서 UTF_8로 인코딩을 하는 것
       .exceptionHandling(ex -> ex

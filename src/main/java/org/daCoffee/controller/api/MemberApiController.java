@@ -7,6 +7,7 @@ import org.daCoffee.dto.*;
 import org.daCoffee.dto.request.PaymentsRequestDTO;
 import org.daCoffee.dto.response.CartDataDTO;
 import org.daCoffee.dto.response.CartPriceDTO;
+import org.daCoffee.dto.response.MemberProfileDTO;
 import org.daCoffee.dto.response.PaymentsDataDTO;
 import org.daCoffee.entity.Cart;
 import org.daCoffee.entity.Member;
@@ -90,6 +91,30 @@ public class MemberApiController {
             .build();
 
     return ResponseEntity.ok(ApiResponseDTO.success(dto));
+  }
+
+  @GetMapping("/profile")
+  public ApiResponseDTO<MemberProfileDTO> getProfile(
+          @SessionAttribute String memberId) {
+
+    Member member = memberService.findById(memberId)
+            .orElseThrow(() -> new NotFoundException("회원 없음"));
+
+    MemberProfileDTO dto = MemberProfileDTO.builder()
+            .memberId(member.getMemberId())
+            .memberName(member.getMemberName())
+            .memberAddress(member.getMemberAddress())
+            .memberDetailAddress(member.getMemberDetailAddress())
+            .memberDeliveryAddress(member.getMemberDeliveryAddress())
+            .memberDetailDeliveryAddress(member.getMemberDetailDeliveryAddress())
+            .memberTel(member.getMemberTel())
+            .memberCompanyName(member.getMemberCompanyName())
+            .memberCompanyTel(member.getMemberCompanyTel())
+            .memberEmail(member.getMemberEmail())
+            .memberFile(member.getMemberFile())
+            .build();
+
+    return ApiResponseDTO.success(dto);
   }
 
   @GetMapping("/cart")
