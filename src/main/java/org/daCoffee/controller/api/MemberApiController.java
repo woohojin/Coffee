@@ -280,26 +280,24 @@ public class MemberApiController {
     }
   }
 
-  @GetMapping("/payments")
+  @PostMapping("/payments")
   public ApiResponseDTO<PaymentsDataDTO> getPaymentsData(
     HttpSession session,
     @SessionAttribute String memberId,
-    @SessionAttribute(required = false) Integer totalPrice) {
+    @RequestBody(required = false) Map<String, List<String>> body) {
 
     // 회원 검증
     Member member = memberService.findById(memberId)
       .orElseThrow(() -> new NotFoundException("회원 정보를 찾을 수 없습니다."));
-
-    // 장바구니에서 넘어오는 최종 가격 검증
-    if (totalPrice == null) {
-      return ApiResponseDTO.error("가격정보가 존재하지 않습니다.");
-    }
 
     // 장바구니 상품 검증
     List<Cart> cartList = cartService.getCartList(memberId);
     if (cartList == null || cartList.isEmpty()) {
       return ApiResponseDTO.error("장바구니에 상품이 존재하지 않습니다.");
     }
+
+    CartPriceDTO cartPriceDTO = priceCalculator.calculatePrice(memberId);
+    Integer totalPrice = cartPriceDTO.getTotalPrice();
 
     UUIDGenerateModule uuid = new UUIDGenerateModule();
     String orderId = uuid.generateOrderId();

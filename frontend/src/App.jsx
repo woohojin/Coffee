@@ -13,6 +13,9 @@ import MemberSignUpPage from "./pages/MemberSignUpPage";
 import MemberMyPage from "./pages/MemberMyPage";
 import MemberProfilePage from "./pages/MemberProfilePage";
 import MemberHistoryPage from "./pages/MemberHistory";
+import MemberPaymentsPage from "./pages/MemberPaymentsPage";
+import MemberPaymentsSuccessPage from "./pages/MemberPaymentsSuccessPage";
+import MemberPaymentsFailurePage from "./pages/MemberPaymentsFailurePage";
 
 function ProtectedRoute({ member, loading, children }) {
   if (loading) return <div>로딩중...</div>;
@@ -40,7 +43,6 @@ function App() {
                 path="/products/machineDetail"
                 element={<MachineDetailPage />}
               />
-
               <Route
                 path="/products/beanDetail"
                 element={<ProductDetailPage pageType="bean" />}
@@ -63,7 +65,21 @@ function App() {
                 path="/member/memberSignUp"
                 element={<MemberSignUpPage />}
               />
+
               <Route path="/member/memberCart" element={<CartPage />} />
+              <Route
+                path="/member/memberPayments"
+                element={<MemberPaymentsPage />}
+              />
+              <Route
+                path="/member/memberPaymentsSuccess"
+                element={<MemberPaymentsSuccessPage />}
+              />
+              <Route
+                path="/member/memberPaymentsFailure"
+                element={<MemberPaymentsFailurePage />}
+              />
+
               <Route path="/member/memberMyPage" element={<MemberMyPage />} />
               <Route
                 path="/member/memberProfile"

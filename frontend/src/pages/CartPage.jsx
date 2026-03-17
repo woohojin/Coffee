@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 
 function formatPrice(price) {
@@ -8,13 +9,11 @@ function formatPrice(price) {
 
 function CartPage() {
   const [cartData, setCartData] = useState(null);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    axiosInstance
-      .get("/api/member/cart")
-      .then((res) => setCartData(res.data.data))
-      .catch((err) => console.error("장바구니 로드 실패:", err));
-  }, []);
+  const handlePayments = () => {
+    navigate("/member/memberPayments");
+  };
 
   const updateCart = async (productCode, status) => {
     try {
@@ -32,6 +31,13 @@ function CartPage() {
     if (!confirm("장바구니에서 삭제하시겠습니까?")) return;
     await updateCart(productCode, "delete");
   };
+
+  useEffect(() => {
+    axiosInstance
+      .get("/api/member/cart")
+      .then((res) => setCartData(res.data.data))
+      .catch((err) => console.error("장바구니 로드 실패:", err));
+  }, []);
 
   if (!cartData)
     return (
@@ -176,7 +182,7 @@ function CartPage() {
           </div>
           <div className="btn_wrap">
             <div className="btn">
-              <a href="/member/memberPayments">결제하기</a>
+              <a onClick={handlePayments}>결제하기</a>
             </div>
           </div>
         </div>
