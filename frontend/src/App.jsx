@@ -6,6 +6,9 @@ import ProductListPage from "./pages/ProductListPage";
 import MemberSignInPage from "./pages/MemberSignInPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import CartPage from "./pages/CartPage";
+import MemberTermsPage from "./pages/MemberTermsPage";
+import MemberSignInPage from "./pages/MemberSignInPage";
+import MemberSignUpPage from "./pages/MemberSignUpPage";
 import MemberMyPage from "./pages/MemberMyPage";
 import MemberProfilePage from "./pages/MemberProfilePage";
 
@@ -39,7 +42,9 @@ function App() {
               path="/products/cafeDetail"
               element={<ProductDetailPage pageType="cafe" />}
             />
+            <Route path="/member/memberTerms" element={<MemberTermsPage />} />
             <Route path="/member/memberSignIn" element={<MemberSignInPage />} />
+            <Route path="/member/memberSignUp" element={<MemberSignUpPage />} />
             <Route path="/member/memberCart" element={<CartPage />} />
             <Route path="/member/memberMyPage" element={<MemberMyPage />} />
             <Route

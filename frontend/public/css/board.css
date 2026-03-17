@@ -291,10 +291,10 @@
 .cart-col-image {
   width: 15%;
 }
-.cart-col-info  {
+.cart-col-info {
   width: 25%;
 }
-.cart-col-unit  {
+.cart-col-unit {
   width: 25%;
 }
 .cart-col-qty {
@@ -303,8 +303,8 @@
 .cart-col-price {
   width: 20%;
 }
-.cart-col-delete  {
-  width:  5%;
+.cart-col-delete {
+  width: 5%;
 }
 
 #member_mypage_page {
@@ -352,7 +352,7 @@
   display: inline-block;
   border: 1px solid var(--grayLine);
   padding: 50px 100px;
-  background-color: #FCFCFC;
+  background-color: #fcfcfc;
 }
 .member_terms_textarea {
   padding: 0 50px;
@@ -383,7 +383,7 @@
   border: none;
   padding: 0 50px;
 }
-.member_terms_button input[type="submit"] {
+.member_terms_button input[type="button"] {
   width: 120px;
   height: 50px;
   margin-bottom: 50px;
