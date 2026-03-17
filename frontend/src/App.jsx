@@ -5,6 +5,7 @@ import MainPage from "./pages/MainPage";
 import ProductListPage from "./pages/ProductListPage";
 import MemberSignInPage from "./pages/MemberSignInPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
+import MachineDetailPage from "./pages/MachineDetailPage";
 import CartPage from "./pages/CartPage";
 import MemberTermsPage from "./pages/MemberTermsPage";
 import MemberSignInPage from "./pages/MemberSignInPage";
@@ -29,6 +30,10 @@ function App() {
             <Route
               path="/products/productSearch"
               element={<ProductListPage />}
+            />
+            <Route
+              path="/products/machineDetail"
+              element={<MachineDetailPage />}
             />
             <Route
               path="/products/beanDetail"
