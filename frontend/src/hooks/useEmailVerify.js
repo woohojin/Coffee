@@ -10,6 +10,7 @@ export function useEmailVerify() {
   const [countdown, setCountdown] = useState("");
   const countdownRef = useRef(null);
 
+  // 인증번호 전송
   const sendVerifyEmail = async (memberEmail) => {
     if (!emailRegex.test(memberEmail)) {
       alert("이메일 형식이 올바르지 않습니다.");
@@ -56,6 +57,7 @@ export function useEmailVerify() {
     }
   };
 
+  // 인증번호 확인
   const checkVerifyCode = async () => {
     if (!verifyCode.trim()) {
       alert("인증번호를 입력해주세요.");

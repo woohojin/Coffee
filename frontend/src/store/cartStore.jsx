@@ -20,9 +20,24 @@ export function CartProvider({ children }) {
       .catch(() => setCartCount(0));
   }, [member]);
 
+  const refreshCartCount = async () => {
+    try {
+      const res = await axiosInstance.get("/api/member/cart");
+      setCartCount(res.data.data.cartCount);
+    } catch {
+      setCartCount(0);
+    }
+  };
+
   return (
     <CartContext.Provider
-      value={{ cartCount, setCartCount, cartPreview, setCartPreview }}
+      value={{
+        cartCount,
+        setCartCount,
+        refreshCartCount,
+        cartPreview,
+        setCartPreview,
+      }}
     >
       {children}
     </CartContext.Provider>
@@ -32,4 +47,3 @@ export function CartProvider({ children }) {
 export function useCart() {
   return useContext(CartContext);
 }
-    

@@ -15,7 +15,7 @@ function ProductDetailPage({ pageType }) {
   const [data, setData] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const { refs, scrollTo } = useScrollTo();
-  const { setCartCount, setCartPreview } = useCart();
+  const { setCartPreview, refreshCartCount } = useCart();
 
   useEffect(() => {
     axiosInstance
@@ -50,7 +50,7 @@ function ProductDetailPage({ pageType }) {
     try {
       const res = await axiosInstance.post("/api/member/cart/add", formData);
       const cartDTO = res.data.data;
-      setCartCount((prev) => prev + 1);
+      await refreshCartCount();
       setCartPreview(cartDTO);
     } catch (err) {
       console.error("장바구니 추가 실패:", err);

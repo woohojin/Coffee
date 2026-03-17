@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useCart } from "../store/cartStore";
 
@@ -17,16 +17,21 @@ export function useCartPreview() {
   useEffect(() => {
     if (!cartPreview) return;
     setIsCartOpen(true);
-    const timer = setTimeout(() => {
+
+    const closeTimer = setTimeout(() => {
       setIsCartOpen(false);
-      setTimeout(() => setCartPreview(null), 700);
+      const clearTimer = setTimeout(() => setCartPreview(null), 700);
+      return () => clearTimeout(clearTimer);
     }, 4000);
-    return () => clearTimeout(timer);
+
+    return () => clearTimeout(closeTimer); // 새 cartPreview 들어오면 기존 타이머 취소
   }, [cartPreview]);
 
+  // 수동 클릭으로 팝업 닫을 때 타이머도 같이 정리
   const handleCloseCart = () => {
     setIsCartOpen(false);
-    setTimeout(() => setCartPreview(null), 700);
+    if (clearTimerRef.current) clearTimeout(clearTimerRef.current);
+    clearTimerRef.current = setTimeout(() => setCartPreview(null), 700);
   };
 
   const folder =
