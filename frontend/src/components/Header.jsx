@@ -1,13 +1,17 @@
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../store/authStore";
 import axiosInstance from "../api/axiosInstance";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useCartPreview } from "../hooks/useCartPreview";
+import { useCart } from "../store/cartStore";
 
 function Header() {
   const navigate = useNavigate();
   const { member, setMember, loading } = useAuth();
+  const { isCartOpen, handleCloseCart, cartPreview, folder, detailUrl } =
+    useCartPreview();
   const [searchText, setSearchText] = useState("");
-  const [cartCount, setCartCount] = useState(0);
+  const { cartCount } = useCart();
 
   const handleLogout = async () => {
     if (!confirm("로그아웃 하시겠습니까?")) return;
@@ -21,14 +25,6 @@ function Header() {
     if (!searchText.trim()) return;
     navigate(`/products/productSearch?searchText=${searchText}`);
   };
-
-  useEffect(() => {
-    if (!member) return;
-    axiosInstance
-      .get("/api/member/cart")
-      .then((res) => setCartCount(res.data.data.cartCount))
-      .catch(() => setCartCount(0));
-  }, [member]);
 
   return (
     <header>
@@ -99,6 +95,67 @@ function Header() {
                   </div>
                   <img src="/image/cart.png" alt="" />
                 </Link>
+
+                {/* 배경 오버레이 */}
+                <div
+                  className={`background-fadeout${isCartOpen ? " visible" : ""}`}
+                  onClick={handleCloseCart}
+                />
+
+                {/* 장바구니 팝업 */}
+                <div
+                  className={`hd_gnb_member_cart${isCartOpen ? " open" : ""}`}
+                >
+                  <div className="hd_gnb_member_cart_status">
+                    <div>
+                      <p>장바구니에 추가 완료</p>
+                    </div>
+                    <div>
+                      <a className="cart_close_btn" onClick={handleCloseCart}>
+                        <img src="/image/close.png" alt="Close" />
+                      </a>
+                    </div>
+                  </div>
+                  {cartPreview && (
+                    <div className="hd_gnb_member_cart_info">
+                      <Link
+                        to={`${detailUrl}?productCode=${cartPreview.productCode}`}
+                      >
+                        <img
+                          src={`/files/${folder}/${cartPreview.productCode}/${cartPreview.productFile}`}
+                          alt={cartPreview.productName}
+                        />
+                      </Link>
+                      <div className="hd_gnb_member_cart_text">
+                        <p className="cart_product_name">
+                          {cartPreview.productName}
+                        </p>
+                        <p className="cart_product_unit">
+                          {cartPreview.productUnit}
+                        </p>
+                        <p className="cart_quantity">
+                          {cartPreview.quantity} 개
+                        </p>
+                        <p className="cart_product_price">
+                          {Number(cartPreview.productPrice).toLocaleString(
+                            "ko-KR",
+                          )}{" "}
+                          원
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                  <div className="hd_gnb_member_cart_btn">
+                    <div className="btn">
+                      <Link to="/member/memberCart">
+                        장바구니 ({cartCount})
+                      </Link>
+                    </div>
+                    <div className="btn">
+                      <Link to="/member/memberPayments">결제하기</Link>
+                    </div>
+                  </div>
+                </div>
               </li>
             </ul>
           </div>

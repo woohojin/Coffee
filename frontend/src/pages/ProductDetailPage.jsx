@@ -1,6 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
+import { useScrollTo } from "../hooks/useScrollTo";
+import { useCart } from "../store/cartStore";
 
 function formatPrice(price) {
   if (!price) return "0";
@@ -12,6 +14,8 @@ function ProductDetailPage({ pageType }) {
   const productCode = searchParams.get("productCode") || "";
   const [data, setData] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const { refs, scrollTo } = useScrollTo();
+  const { setCartCount, setCartPreview } = useCart();
 
   useEffect(() => {
     axiosInstance
@@ -44,8 +48,10 @@ function ProductDetailPage({ pageType }) {
     e.preventDefault();
     const formData = new FormData(e.target);
     try {
-      await axiosInstance.post("/api/member/cart/add", formData);
-      alert("장바구니에 담겼습니다.");
+      const res = await axiosInstance.post("/api/member/cart/add", formData);
+      const cartDTO = res.data.data;
+      setCartCount((prev) => prev + 1);
+      setCartPreview(cartDTO);
     } catch (err) {
       console.error("장바구니 추가 실패:", err);
     }
@@ -282,20 +288,20 @@ function ProductDetailPage({ pageType }) {
 
         <ul className="product_detail_main">
           <li>
-            <div className="product_detail_list scroll1">
+            <div className="product_detail_list scroll1" ref={refs.scroll1}>
               <ul>
                 <li className="active">
-                  <a className="scrollBtn1" href="">
+                  <a className="scrollBtn1" onClick={() => scrollTo("scroll1")}>
                     상품상세정보
                   </a>
                 </li>
                 <li>
-                  <a className="scrollBtn2" href="">
+                  <a className="scrollBtn2" onClick={() => scrollTo("scroll2")}>
                     배송안내
                   </a>
                 </li>
                 <li>
-                  <a className="scrollBtn3" href="">
+                  <a className="scrollBtn3" onClick={() => scrollTo("scroll3")}>
                     교환 및 반품안내
                   </a>
                 </li>
@@ -309,20 +315,20 @@ function ProductDetailPage({ pageType }) {
             </div>
           </li>
           <li>
-            <div className="product_detail_list scroll2">
+            <div className="product_detail_list scroll2" ref={refs.scroll2}>
               <ul>
-                <li>
-                  <a className="scrollBtn1" href="">
+                <li className="active">
+                  <a className="scrollBtn1" onClick={() => scrollTo("scroll1")}>
                     상품상세정보
                   </a>
                 </li>
-                <li className="active">
-                  <a className="scrollBtn2" href="">
+                <li>
+                  <a className="scrollBtn2" onClick={() => scrollTo("scroll2")}>
                     배송안내
                   </a>
                 </li>
                 <li>
-                  <a className="scrollBtn3" href="">
+                  <a className="scrollBtn3" onClick={() => scrollTo("scroll3")}>
                     교환 및 반품안내
                   </a>
                 </li>
@@ -353,20 +359,20 @@ function ProductDetailPage({ pageType }) {
             </div>
           </li>
           <li>
-            <div className="product_detail_list scroll3">
+            <div className="product_detail_list scroll3" ref={refs.scroll3}>
               <ul>
-                <li>
-                  <a className="scrollBtn1" href="">
+                <li className="active">
+                  <a className="scrollBtn1" onClick={() => scrollTo("scroll1")}>
                     상품상세정보
                   </a>
                 </li>
                 <li>
-                  <a className="scrollBtn2" href="">
+                  <a className="scrollBtn2" onClick={() => scrollTo("scroll2")}>
                     배송안내
                   </a>
                 </li>
-                <li className="active">
-                  <a className="scrollBtn3" href="">
+                <li>
+                  <a className="scrollBtn3" onClick={() => scrollTo("scroll3")}>
                     교환 및 반품안내
                   </a>
                 </li>

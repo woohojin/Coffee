@@ -127,6 +127,7 @@ public class SecurityConfig {
       )
       .csrf(csrf -> csrf
         .ignoringRequestMatchers("/alert",
+          "/api/**",
           "/api/member/verifyEmail",
           "/api/member/verifyCode",
           "/api/member/findAccount",
