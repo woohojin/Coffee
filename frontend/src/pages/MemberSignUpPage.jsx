@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 import { useAddressSearch } from "../hooks/useAddressSearch";
 import { useEmailVerify } from "../hooks/useEmailVerify";
-import { validatePassword } from "../utils/validation";
+import { validateSignUp } from "../utils/validation";
 
 function MemberSignUpPage() {
   const navigate = useNavigate();
@@ -37,10 +37,13 @@ function MemberSignUpPage() {
     const form = e.target;
 
     if (
-      !validatePassword(
-        form.memberPassword.value,
-        form.memberPasswordCheck.value,
-      )
+      !validateSignUp({
+        memberId: form.memberId.value,
+        memberName: form.memberName.value,
+        memberPassword: form.memberPassword.value,
+        memberPasswordCheck: form.memberPasswordCheck.value,
+        memberTel: form.memberTel?.value,
+      })
     )
       return;
 

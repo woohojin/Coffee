@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 import { useAddressSearch } from "../hooks/useAddressSearch";
 import { useEmailVerify } from "../hooks/useEmailVerify";
-import { validateProfilePassword } from "../utils/validation";
+import { validateProfile } from "../utils/validation";
 
 function MemberProfilePage() {
   const navigate = useNavigate();
@@ -85,9 +85,7 @@ function MemberProfilePage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 비밀번호 검증
-    if (!validateProfilePassword(form.memberPassword, form.memberPasswordCheck))
-      return;
+    if (!validateProfile(form, member.memberEmail, verifiedEmail)) return;
 
     // multipart/form-data 전송
     const formData = new FormData();
