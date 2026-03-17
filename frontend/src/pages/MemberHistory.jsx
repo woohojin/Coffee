@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import axiosInstance from "../api/axiosInstance";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { ko } from "date-fns/locale";
 
 function formatPrice(price) {
   if (!price) return "0";
@@ -17,9 +20,10 @@ function getDefaultDates() {
 
 function MemberHistoryPage() {
   const { start, end } = getDefaultDates();
-  const [startDate, setStartDate] = useState(start);
-  const [endDate, setEndDate] = useState(end);
+  const [startDate, setStartDate] = useState(new Date(start));
+  const [endDate, setEndDate] = useState(new Date(end));
   const [list, setList] = useState([]);
+  const toDateString = (date) => date.toISOString().split("T")[0];
 
   const loadHistory = async (sd, ed) => {
     try {
@@ -33,12 +37,12 @@ function MemberHistoryPage() {
   };
 
   useEffect(() => {
-    loadHistory(startDate, endDate);
+    loadHistory(toDateString(startDate), toDateString(endDate));
   }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    loadHistory(startDate, endDate);
+    loadHistory(toDateString(startDate), toDateString(endDate));
   };
 
   return (
@@ -49,18 +53,20 @@ function MemberHistoryPage() {
         </div>
         <div className="datepicker_form_wrap">
           <form onSubmit={handleSearch} className="datepicker_form center">
-            <input
-              type="date"
+            <DatePicker
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              dateFormat="yyyy-MM-dd"
+              locale={ko}
               className="datepicker"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
             />
             <span>&nbsp;~&nbsp;</span>
-            <input
-              type="date"
+            <DatePicker
+              selected={endDate}
+              onChange={(date) => setEndDate(date)}
+              dateFormat="yyyy-MM-dd"
+              locale={ko}
               className="datepicker"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
             />
             <input type="submit" value="조회" className="submit_btn" />
           </form>
