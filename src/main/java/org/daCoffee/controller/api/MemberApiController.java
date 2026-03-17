@@ -22,7 +22,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 import static org.daCoffee.util.SecurityUtil.getRandomPassword;
@@ -115,6 +117,30 @@ public class MemberApiController {
             .build();
 
     return ApiResponseDTO.success(dto);
+  }
+
+  @GetMapping("/history")
+  public ApiResponseDTO<List<OrderHistory>> memberHistory(
+          @RequestParam(required = false) String startDate,
+          @RequestParam(required = false) String endDate,
+          HttpSession session) {
+
+    String memberId = (String) session.getAttribute("memberId");
+
+    LocalDateTime start;
+    LocalDateTime end;
+
+    if (startDate == null || endDate == null) {
+      LocalDate now = LocalDate.now();
+      start = LocalDateTime.of(now.minusMonths(3), LocalTime.MIN);
+      end = LocalDateTime.of(now, LocalTime.MAX);
+    } else {
+      start = LocalDateTime.parse(startDate + "T00:00:00");
+      end = LocalDateTime.parse(endDate + "T23:59:59");
+    }
+
+    List<OrderHistory> list = orderHistoryService.findByMemberIdBetween(memberId, start, end);
+    return ApiResponseDTO.success(list);
   }
 
   @GetMapping("/cart")

@@ -3,7 +3,6 @@ import { AuthProvider } from "./store/authStore";
 import Layout from "./components/Layout";
 import MainPage from "./pages/MainPage";
 import ProductListPage from "./pages/ProductListPage";
-import MemberSignInPage from "./pages/MemberSignInPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import MachineDetailPage from "./pages/MachineDetailPage";
 import CartPage from "./pages/CartPage";
@@ -12,6 +11,7 @@ import MemberSignInPage from "./pages/MemberSignInPage";
 import MemberSignUpPage from "./pages/MemberSignUpPage";
 import MemberMyPage from "./pages/MemberMyPage";
 import MemberProfilePage from "./pages/MemberProfilePage";
+import MemberHistoryPage from "./pages/MemberHistory";
 
 function ProtectedRoute({ member, loading, children }) {
   if (loading) return <div>로딩중...</div>;
@@ -55,6 +55,10 @@ function App() {
             <Route
               path="/member/memberProfile"
               element={<MemberProfilePage />}
+            />
+            <Route
+              path="/member/memberHistory"
+              element={<MemberHistoryPage />}
             />
           </Route>
         </Routes>
