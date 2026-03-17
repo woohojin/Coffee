@@ -224,7 +224,7 @@ public class MemberController {
   @RequestMapping("memberProfilePro")
   public String memberProfilePro(HttpServletRequest request, HttpSession session, Model model,
                                  MemberUpdateRequestDTO updateDTO, String memberExistingPassword,
-                                 @RequestParam MultipartFile file, @SessionAttribute String memberId) {
+                                 @RequestParam(required = false) MultipartFile file, @SessionAttribute String memberId) {
 
     Member existingMember = memberService.findById(memberId)
       .orElseThrow(() -> new IllegalArgumentException("회원 없음: " + memberId));

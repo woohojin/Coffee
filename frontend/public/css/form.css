@@ -27,7 +27,7 @@ input::file-selector-button {
   border-radius: 25px;
 }
 
-.file_input_wrap{
+.file_input_wrap {
   position: relative;
 }
 .file_input_wrap .input_btn {
@@ -97,7 +97,7 @@ input::file-selector-button {
   width: 200px;
 }
 .member_signup_form_info,
-.member_signup_form_personal_info{
+.member_signup_form_personal_info {
   border-top: 2px solid var(--mainColor);
   padding-top: 20px;
 }
@@ -116,6 +116,7 @@ input::file-selector-button {
   padding-top: 20px;
 }
 .member_signup_form tr {
+  position: relative;
   border-bottom: 1px solid rgba(51, 144, 255, 0.5);
 }
 .member_signup_form th {

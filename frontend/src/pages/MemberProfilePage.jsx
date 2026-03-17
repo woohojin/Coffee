@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
-
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const passwordRegex = /^(?=(.*[a-zA-Z]))(?=.*\d|.*\W).{8,}$/;
+import { useAddressSearch } from "../hooks/useAddressSearch";
+import { useEmailVerify } from "../hooks/useEmailVerify";
+import { validateProfilePassword } from "../utils/validation";
 
 function MemberProfilePage() {
   const navigate = useNavigate();
@@ -24,31 +24,14 @@ function MemberProfilePage() {
     memberFile: "",
   });
   const [file, setFile] = useState(null);
-  const [verifyCode, setVerifyCode] = useState("");
-  const [isEmailSending, setIsEmailSending] = useState(false);
-  const [countdown, setCountdown] = useState("");
-  const countdownRef = useRef(null);
-
-  // 회원 정보 조회
-  useEffect(() => {
-    axiosInstance.get("/api/member/profile").then((res) => {
-      const m = res.data.data;
-      setMember(m);
-      setForm((prev) => ({
-        ...prev,
-        memberName: m.memberName || "",
-        memberAddress: m.memberAddress || "",
-        memberDetailAddress: m.memberDetailAddress || "",
-        memberDeliveryAddress: m.memberDeliveryAddress || "",
-        memberDetailDeliveryAddress: m.memberDetailDeliveryAddress || "",
-        memberTel: m.memberTel || "",
-        memberCompanyName: m.memberCompanyName || "",
-        memberCompanyTel: m.memberCompanyTel || "",
-        memberEmail: m.memberEmail || "",
-        memberFile: m.memberFile || "",
-      }));
-    });
-  }, []);
+  const {
+    verifyCode,
+    setVerifyCode,
+    countdown,
+    sendVerifyEmail,
+    checkVerifyCode,
+    verifiedEmail,
+  } = useEmailVerify();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -71,81 +54,51 @@ function MemberProfilePage() {
     }));
   };
 
-  // 이메일 인증번호 발송
-  const sendVerifyEmail = async () => {
-    if (!emailRegex.test(form.memberEmail)) {
-      alert("이메일 형식이 올바르지 않습니다.");
-      return;
-    }
-    if (isEmailSending) {
-      alert("1분 뒤에 인증번호를 재전송 할 수 있습니다.");
-      return;
-    }
-    try {
-      await axiosInstance.post("/api/member/verifyEmail", {
-        memberEmail: form.memberEmail,
-      });
-      alert("인증번호가 전송되었습니다.");
-      setIsEmailSending(true);
-      startCountdown();
-      setTimeout(() => setIsEmailSending(false), 60000);
-    } catch (err) {
-      alert("이메일 전송 실패");
-    }
-  };
+  const { execAddress, execDeliveryAddress } = useAddressSearch(
+    (address) => setForm((prev) => ({ ...prev, memberAddress: address })),
+    (address) =>
+      setForm((prev) => ({ ...prev, memberDeliveryAddress: address })),
+  );
 
-  const startCountdown = () => {
-    if (countdownRef.current) clearInterval(countdownRef.current);
-    const endTime = Date.now() + 180000;
-    countdownRef.current = setInterval(() => {
-      const distance = endTime - Date.now();
-      if (distance <= 0) {
-        clearInterval(countdownRef.current);
-        setCountdown("0 : 0");
-        return;
-      }
-      const m = Math.floor(distance / 60000);
-      const s = Math.floor((distance % 60000) / 1000);
-      setCountdown(`${m} : ${s}`);
-    }, 1000);
-  };
+  // 회원 정보 조회
+  useEffect(() => {
+    axiosInstance.get("/api/member/profile").then((res) => {
+      const m = res.data.data;
+      setMember(m);
+      setForm((prev) => ({
+        ...prev,
+        memberName: m.memberName || "",
+        memberAddress: m.memberAddress || "",
+        memberDetailAddress: m.memberDetailAddress || "",
+        memberDeliveryAddress: m.memberDeliveryAddress || "",
+        memberDetailDeliveryAddress: m.memberDetailDeliveryAddress || "",
+        memberTel: m.memberTel || "",
+        memberCompanyName: m.memberCompanyName || "",
+        memberCompanyTel: m.memberCompanyTel || "",
+        memberEmail: m.memberEmail || "",
+        memberFile: m.memberFile || "",
+      }));
+    });
+  }, []);
 
   // 폼 제출
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // 비밀번호 검증
-    if (form.memberPassword !== form.memberPasswordCheck) {
-      alert("비밀번호와 재입력 비밀번호가 일치하지 않습니다.");
+    if (!validateProfilePassword(form.memberPassword, form.memberPasswordCheck))
       return;
-    }
-    if (form.memberPassword && !passwordRegex.test(form.memberPassword)) {
-      alert("비밀번호 조건이 부합하지 않습니다.");
-      return;
-    }
-
-    // 이메일 변경 시 인증 확인
-    if (form.memberEmail !== member.memberEmail) {
-      try {
-        await axiosInstance.post("/api/member/verifyCode", { verifyCode });
-      } catch (err) {
-        alert("이메일 인증에 실패했습니다.");
-        return;
-      }
-    }
 
     // multipart/form-data 전송
     const formData = new FormData();
     Object.entries(form).forEach(([key, value]) => {
       formData.append(key, value ?? "");
     });
-    formData.append("memberExistingPassword", form.memberExistingPassword);
+    formData.set("memberEmail", verifiedEmail || form.memberEmail);
     if (file) formData.append("file", file);
 
     try {
-      await axiosInstance.post("/member/memberProfilePro", formData, {
-        headers: { "Content-Type": undefined }, // axios가 자동으로 multipart 처리
-      });
+      await axiosInstance.post("/member/memberProfilePro", formData);
       alert("회원 정보가 수정되었습니다.");
       navigate("/member/memberMyPage");
     } catch (err) {
@@ -278,11 +231,9 @@ function MemberProfilePage() {
 
                     <div className="member_address_button">
                       <button
-                        className="input_btn"
                         type="button"
-                        onClick={() =>
-                          alert("주소 찾기는 추후 구현 예정입니다.")
-                        }
+                        className="input_btn"
+                        onClick={execAddress}
                       >
                         주소 찾기
                       </button>
@@ -321,6 +272,16 @@ function MemberProfilePage() {
                       />
                     </li>
 
+                    <div className="member_delivery_address_button">
+                      <button
+                        type="button"
+                        className="input_btn"
+                        onClick={execDeliveryAddress}
+                      >
+                        주소 찾기
+                      </button>
+                    </div>
+
                     <li>
                       <input
                         name="memberDetailDeliveryAddress"
@@ -332,17 +293,7 @@ function MemberProfilePage() {
                         required
                       />
                     </li>
-                    <div className="member_delivery_address_button">
-                      <button
-                        className="input_btn"
-                        type="button"
-                        onClick={() =>
-                          alert("주소 찾기는 추후 구현 예정입니다.")
-                        }
-                      >
-                        주소 찾기
-                      </button>
-                    </div>
+
                     <div className="member_delivery_address_button2">
                       <button
                         className="input_btn"
@@ -422,9 +373,10 @@ function MemberProfilePage() {
                   />
                   <div className="member_email_verify_button">
                     <button
+                      id="send-verify-btn"
                       className="input_btn"
                       type="button"
-                      onClick={sendVerifyEmail}
+                      onClick={() => sendVerifyEmail(form.memberEmail)}
                     >
                       인증번호 발송
                     </button>
@@ -443,6 +395,16 @@ function MemberProfilePage() {
                     value={verifyCode}
                     onChange={(e) => setVerifyCode(e.target.value)}
                   />
+                  <div className="member_email_verify_button">
+                    <button
+                      id="verify-btn"
+                      className="input_btn"
+                      type="button"
+                      onClick={() => checkVerifyCode()}
+                    >
+                      인증하기
+                    </button>
+                  </div>
                   <div className="remain_time">
                     <span className="countdown">{countdown}</span>
                   </div>

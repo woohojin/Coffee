@@ -467,25 +467,24 @@ public class MemberApiController {
   }
 
   @PostMapping("/verifyCode")
-  public ApiResponseDTO<Void> verifyCode(HttpSession session, @RequestBody Map<String, String> body) {
+  public ResponseEntity<ApiResponseDTO<Void>> verifyCode(HttpSession session, @RequestBody Map<String, String> body) {
     String verifyCode = body.get("verifyCode");
-
     String storedCode = (String) session.getAttribute("storedVerifyCode");
     Long expiry = (Long) session.getAttribute("verifyCodeExpiry");
 
     if (storedCode == null || expiry == null) {
-      return ApiResponseDTO.error("인증번호를 먼저 요청해주세요.");
+      return ResponseEntity.badRequest().body(ApiResponseDTO.error("인증번호를 먼저 요청해주세요."));
     }
 
     if (System.currentTimeMillis() > expiry) {
-      return ApiResponseDTO.error("인증시간이 초과되었습니다.");
+      return ResponseEntity.badRequest().body(ApiResponseDTO.error("인증시간이 초과되었습니다."));
     }
 
     if (!verifyCode.equals(storedCode)) {
-      return ApiResponseDTO.error("인증번호가 일치하지 않습니다.");
+      return ResponseEntity.badRequest().body(ApiResponseDTO.error("인증번호가 일치하지 않습니다."));
     }
 
     session.setAttribute("isVerified", true);
-    return ApiResponseDTO.success(null);
+    return ResponseEntity.ok(ApiResponseDTO.success(null));
   }
 }

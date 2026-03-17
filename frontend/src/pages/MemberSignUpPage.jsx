@@ -1,16 +1,12 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
-
-const passwordRegex = /^(?=(.*[a-zA-Z]))(?=.*\d|.*\W).{8,}$/;
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+import { useAddressSearch } from "../hooks/useAddressSearch";
+import { useEmailVerify } from "../hooks/useEmailVerify";
+import { validatePassword } from "../utils/validation";
 
 function MemberSignUpPage() {
   const navigate = useNavigate();
-  const [verifyCode, setVerifyCode] = useState("");
-  const [isEmailSending, setIsEmailSending] = useState(false);
-  const [countdown, setCountdown] = useState("");
-  const countdownRef = useRef(null);
   const [memberAddress, setMemberAddress] = useState("");
   const [memberDetailAddress, setMemberDetailAddress] = useState("");
   const [memberDeliveryAddress, setMemberDeliveryAddress] = useState("");
@@ -22,64 +18,35 @@ function MemberSignUpPage() {
     setMemberDetailDeliveryAddress(memberDetailAddress);
   };
 
-  const sendVerifyEmail = async () => {
-    const memberEmail = document.getElementById("member_email").value;
-    if (!emailRegex.test(memberEmail)) {
-      alert("이메일 형식이 올바르지 않습니다.");
-      return;
-    }
-    if (isEmailSending) {
-      alert("1분 뒤에 인증번호를 재전송 할 수 있습니다.");
-      return;
-    }
-    try {
-      await axiosInstance.post("/api/member/verifyEmail", { memberEmail });
-      alert("인증번호가 전송되었습니다.");
-      setIsEmailSending(true);
+  const { execAddress, execDeliveryAddress } = useAddressSearch(
+    (address) => setMemberAddress(address),
+    (address) => setMemberDeliveryAddress(address),
+  );
 
-      let timeLeft = 60;
-      setCountdown(`${timeLeft}초`);
-      countdownRef.current = setInterval(() => {
-        timeLeft--;
-        setCountdown(`${timeLeft}초`);
-        if (timeLeft <= 0) {
-          clearInterval(countdownRef.current);
-          setIsEmailSending(false);
-          setCountdown("");
-        }
-      }, 1000);
-    } catch (err) {
-      alert(err.response?.data?.message || "인증번호 전송 실패");
-    }
-  };
+  const {
+    verifyCode,
+    setVerifyCode,
+    countdown,
+    sendVerifyEmail,
+    checkVerifyCode,
+    verifiedEmail,
+  } = useEmailVerify();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
 
-    const memberPassword = form.memberPassword.value;
-    const memberPasswordCheck = form.memberPasswordCheck.value;
-
-    if (!passwordRegex.test(memberPassword)) {
-      alert(
-        "비밀번호는 영문/특수문자/숫자 중 2가지 이상 조합, 8자 이상이어야 합니다.",
-      );
+    if (
+      !validatePassword(
+        form.memberPassword.value,
+        form.memberPasswordCheck.value,
+      )
+    )
       return;
-    }
-    if (memberPassword !== memberPasswordCheck) {
-      alert("비밀번호가 일치하지 않습니다.");
-      return;
-    }
-
-    try {
-      await axiosInstance.post("/api/member/verifyCode", { verifyCode });
-    } catch (err) {
-      alert(err.response?.data?.message || "이메일 인증을 완료해주세요.");
-      return;
-    }
 
     try {
       const formData = new FormData(form);
+      formData.set("memberEmail", verifiedEmail);
       await axiosInstance.post("/member/memberSignUpPro", formData);
       alert("회원가입이 완료되었습니다.");
       navigate("/member/memberSignIn");
@@ -189,12 +156,9 @@ function MemberSignUpPage() {
                     </li>
                     <div className="member_address_button">
                       <button
-                        id="address-btn"
-                        className="input_btn"
                         type="button"
-                        onClick={() =>
-                          alert("주소 찾기는 추후 구현 예정입니다.")
-                        }
+                        className="input_btn"
+                        onClick={execAddress}
                       >
                         주소 찾기
                       </button>
@@ -235,12 +199,9 @@ function MemberSignUpPage() {
                     </li>
                     <div className="member_delivery_address_button">
                       <button
-                        id="delivery-address-btn"
-                        className="input_btn"
                         type="button"
-                        onClick={() =>
-                          alert("주소 찾기는 추후 구현 예정입니다.")
-                        }
+                        className="input_btn"
+                        onClick={execDeliveryAddress}
                       >
                         주소 찾기
                       </button>
@@ -339,7 +300,11 @@ function MemberSignUpPage() {
                       id="send-verify-btn"
                       className="input_btn"
                       type="button"
-                      onClick={sendVerifyEmail}
+                      onClick={() =>
+                        sendVerifyEmail(
+                          document.getElementById("member_email").value,
+                        )
+                      }
                     >
                       인증번호 발송
                     </button>
@@ -352,14 +317,23 @@ function MemberSignUpPage() {
                 </th>
                 <td>
                   <input
-                    name="verifyCode"
-                    className="verify_code"
                     type="text"
+                    className="verify_code"
                     spellCheck="false"
                     required
                     value={verifyCode}
                     onChange={(e) => setVerifyCode(e.target.value)}
                   />
+                  <div className="member_email_verify_button">
+                    <button
+                      id="verify-btn"
+                      className="input_btn"
+                      type="button"
+                      onClick={() => checkVerifyCode()}
+                    >
+                      인증하기
+                    </button>
+                  </div>
                   <div className="remain_time">
                     <span className="countdown">{countdown}</span>
                   </div>

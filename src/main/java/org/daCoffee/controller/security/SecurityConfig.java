@@ -131,6 +131,7 @@ public class SecurityConfig {
           "/api/member/verifyCode",
           "/api/member/findAccount",
           "/member/memberSignInPro",
+          "/member/memberSignUpPro",
           "/member/memberProfilePro" )
       )
       // URLEncoder는 한글을 사용하기 위해서 UTF_8로 인코딩을 하는 것
