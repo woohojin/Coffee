@@ -1,11 +1,13 @@
 import { useState } from "react";
 import axiosInstance from "../api/axiosInstance";
 import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../store/authStore";
 
-function MemberSignInPage({ setMember }) {
+function MemberSignInPage() {
+  const navigate = useNavigate();
   const [memberId, setMemberId] = useState("");
   const [memberPassword, setMemberPassword] = useState("");
-  const navigate = useNavigate();
+  const { setMember } = useAuth();
 
   const handleSignIn = async (e) => {
     e.preventDefault();
