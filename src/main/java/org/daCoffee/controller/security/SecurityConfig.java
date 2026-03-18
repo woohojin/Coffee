@@ -5,23 +5,22 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dto.ApiResponseDTO;
+import org.daCoffee.jwt.JwtTokenProvider;
+import org.daCoffee.service.RedisService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.security.config.http.SessionCreationPolicy;
 
-import javax.sql.DataSource;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -32,10 +31,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-  private final DataSource dataSource;
-  private final UserDetailsService userDetailsService;
   private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
   private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+  private final CustomLogoutHandler customLogoutHandler;
+  private final JwtTokenProvider jwtTokenProvider;
+  private final RedisService redisService;
 
   ObjectMapper objectMapper = new ObjectMapper();
 
@@ -45,13 +45,6 @@ public class SecurityConfig {
   @Bean
   public PasswordEncoder passwordEncoder() {
       return new BCryptPasswordEncoder();
-  }
-
-  @Bean
-  public PersistentTokenRepository persistentTokenRepository() {
-    JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
-    tokenRepository.setDataSource(dataSource);
-    return tokenRepository;
   }
 
   @Bean
@@ -75,6 +68,8 @@ public class SecurityConfig {
         .frameOptions(frame -> frame.deny())
         .xssProtection(xss -> xss.disable()))
       .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+      .sessionManagement(session -> session
+      .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .securityMatcher("/**")
       .authorizeHttpRequests(auth -> auth
         .requestMatchers(
@@ -109,21 +104,10 @@ public class SecurityConfig {
         .successHandler(customAuthenticationSuccessHandler)
         .failureHandler(customAuthenticationFailureHandler)
       )
-      .rememberMe(remember -> remember
-        .key(rememberMeKey)
-        .tokenRepository(persistentTokenRepository())
-        .tokenValiditySeconds(60 * 60 * 24 * 30) // 30일
-        .userDetailsService(userDetailsService)
-        .rememberMeParameter("autoLogin") // 폼의 체크박스 이름
-        .rememberMeCookieName("remember-me") // 쿠키 이름
-      )
       .logout(logout -> logout
-        .logoutRequestMatcher(new AntPathRequestMatcher("/member/memberLogout"))
         .logoutUrl("/member/memberLogout")
-        .deleteCookies("JSESSIONID", "remember-me")
-        .clearAuthentication(true)
-        .invalidateHttpSession(true)
-        .logoutSuccessUrl("/main")
+        .addLogoutHandler(customLogoutHandler)
+        .logoutSuccessHandler(customLogoutHandler)
       )
       .csrf(csrf -> csrf
         .ignoringRequestMatchers("/alert",
@@ -133,7 +117,9 @@ public class SecurityConfig {
           "/api/member/findAccount",
           "/member/memberSignInPro",
           "/member/memberSignUpPro",
-          "/member/memberProfilePro" )
+          "/member/memberProfilePro",
+          "/member/memberLogout"
+        )
       )
       // URLEncoder는 한글을 사용하기 위해서 UTF_8로 인코딩을 하는 것
       .exceptionHandling(ex -> ex
@@ -179,11 +165,16 @@ public class SecurityConfig {
             response.sendRedirect("/alert?msg=" + msg + "&url=" + url);
           }
         })
-      );
-    http.addFilterAfter(
+      )
+      .addFilterBefore(
+        new JwtAuthenticationFilter(jwtTokenProvider, redisService),
+        UsernamePasswordAuthenticationFilter.class
+      )
+      .addFilterAfter(
       new CspNonceFilter(),
       org.springframework.security.web.context.SecurityContextHolderFilter.class
     );
+
     return http.build();
   }
 }
