@@ -82,6 +82,7 @@ public class SecurityConfig {
           "/api/member/verifyEmail",
           "/api/member/verifyCode",
           "/api/member/findAccount",
+          "/api/auth/**",
           "/css/**",
           "/image/**",
           "/js/**",
