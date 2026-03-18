@@ -1,9 +1,9 @@
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../store/authStore";
+import { useCart } from "../store/cartStore";
 import axiosInstance from "../api/axiosInstance";
 import { useState } from "react";
 import { useCartPreview } from "../hooks/useCartPreview";
-import { useCart } from "../store/cartStore";
 
 function Header() {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ function Header() {
   const { isCartOpen, handleCloseCart, cartPreview, folder, detailUrl } =
     useCartPreview();
   const [searchText, setSearchText] = useState("");
-  const { cartCount } = useCart();
+  const { cartCount, refreshCartCount } = useCart();
 
   const handleLogout = async () => {
     if (!confirm("로그아웃 하시겠습니까?")) return;
