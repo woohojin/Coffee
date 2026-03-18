@@ -64,7 +64,10 @@ export function useEmailVerify() {
       return;
     }
     try {
-      await axiosInstance.post("/api/member/verifyCode", { verifyCode });
+      await axiosInstance.post("/api/member/verifyCode", {
+        verifyCode,
+        memberEmail: verifiedEmail,
+      });
       clearInterval(countdownRef.current);
       setCountdown("");
       setIsVerified(true);
