@@ -7,8 +7,12 @@ import org.daCoffee.dto.request.MemberSignUpRequestDTO;
 import org.daCoffee.dto.request.MemberUpdateRequestDTO;
 import org.daCoffee.entity.Member;
 import org.daCoffee.entity.OrderHistory;
+import org.daCoffee.jwt.JwtUserDetails;
 import org.daCoffee.service.MemberService;
 import org.daCoffee.service.OrderHistoryService;
+import org.daCoffee.service.RedisService;
+import org.springframework.http.ResponseCookie;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +24,6 @@ import org.springframework.stereotype.Controller;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -37,6 +40,7 @@ public class MemberController {
   private final CookieDAO cookieDao;
   private final OrderHistoryService orderHistoryService;
   private final PasswordEncoder passwordEncoder;
+  private final RedisService redisService;
 
   private void deleteCookies(HttpServletResponse response, String memberId) {
     Cookie cookieId = new Cookie("memberId", null);
@@ -61,18 +65,16 @@ public class MemberController {
   }
 
   @RequestMapping("memberSignUpPro")
-  public String memberSignUpPro(HttpServletRequest request, HttpSession session, Model model, MemberSignUpRequestDTO signUpDTO,
+  public String memberSignUpPro(HttpServletRequest request, Model model, MemberSignUpRequestDTO signUpDTO,
                                 @RequestParam MultipartFile file) {
 
-    // MemberApiController에서 session에 isVerified = true 저장 됨
-    Boolean isVerified = (Boolean) session.getAttribute("isVerified");
-    if (isVerified == null || !isVerified) {
+    String memberEmail = signUpDTO.getMemberEmail();
+    if (!redisService.isVerified(memberEmail)) {
       model.addAttribute("url", "/member/memberSignUp");
       model.addAttribute("msg", "이메일 인증이 필요합니다.");
       return "alert";
     }
-
-    session.removeAttribute("isVerified");
+    redisService.deleteVerified(memberEmail);
 
     String msg = "회원 가입 중 문제가 발생 했습니다. 다시 시도해주세요.";
     String url = "/member/memberSignUp";
@@ -85,7 +87,7 @@ public class MemberController {
       uploadPath.mkdirs();
     }
 
-    try{
+    try {
       if(!memberService.existsById(memberId)) {
         String memberCompanyName = signUpDTO.getMemberCompanyName();
         String memberCompanyTel = signUpDTO.getMemberCompanyTel();
@@ -155,9 +157,10 @@ public class MemberController {
   }
 
   @RequestMapping("memberWithdrawalPro")
-  public String memberWithdrawalPro(HttpSession session, Model model, HttpServletResponse response, String memberPassword,
-                                    @SessionAttribute String memberId) {
+  public String memberWithdrawalPro(Model model, HttpServletResponse response, String memberPassword,
+                                    @AuthenticationPrincipal JwtUserDetails userDetails) {
 
+    String memberId = userDetails.getMemberId();
     Member member = memberService.findById(memberId)
       .orElseThrow(() -> new IllegalArgumentException("회원 없음: " + memberId));
 
@@ -167,7 +170,15 @@ public class MemberController {
     if (passwordEncoder.matches(memberPassword, member.getMemberPassword())) {
       deleteCookies(response, memberId);
       memberService.withdrawMember(memberId);
-      session.invalidate();
+
+      ResponseCookie accessCookie = ResponseCookie.from("accessToken", "")
+              .httpOnly(true).sameSite("Lax").path("/").maxAge(0).build();
+      ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", "")
+              .httpOnly(true).sameSite("Lax").path("/api/auth/refresh").maxAge(0).build();
+
+      response.addHeader("Set-Cookie", accessCookie.toString());
+      response.addHeader("Set-Cookie", refreshCookie.toString());
+
       msg = "회원 탈퇴에 성공했습니다.";
       url = "/main";
     }
@@ -180,8 +191,9 @@ public class MemberController {
 
   @GetMapping("memberCart")
   public String memberCart(Model model,
-                           @SessionAttribute String memberId) {
+                           @AuthenticationPrincipal JwtUserDetails userDetails) {
 
+    String memberId = userDetails.getMemberId();
     model.addAttribute("memberId", memberId);
 
     return "member/memberCart";
@@ -211,8 +223,9 @@ public class MemberController {
 
   @RequestMapping("memberProfile")
   public String memberProfile(Model model,
-                              @SessionAttribute String memberId) {
+                              @AuthenticationPrincipal JwtUserDetails userDetails) {
 
+    String memberId = userDetails.getMemberId();
     Member member = memberService.findById(memberId)
       .orElseThrow(() -> new IllegalArgumentException("회원 없음: " + memberId));
 
@@ -222,10 +235,12 @@ public class MemberController {
   }
 
   @RequestMapping("memberProfilePro")
-  public String memberProfilePro(HttpServletRequest request, HttpSession session, Model model,
+  public String memberProfilePro(HttpServletRequest request, Model model,
                                  MemberUpdateRequestDTO updateDTO, String memberExistingPassword,
-                                 @RequestParam(required = false) MultipartFile file, @SessionAttribute String memberId) {
+                                 @RequestParam(required = false) MultipartFile file, @AuthenticationPrincipal JwtUserDetails userDetails) {
 
+    String memberId = userDetails.getMemberId();
+    String memberEmail = updateDTO.getMemberEmail();
     Member existingMember = memberService.findById(memberId)
       .orElseThrow(() -> new IllegalArgumentException("회원 없음: " + memberId));
 
@@ -233,13 +248,12 @@ public class MemberController {
     String msg = "회원 정보가 수정되었습니다.";
 
     if (!updateDTO.getMemberEmail().equals(existingMember.getMemberEmail())) {
-      Boolean isVerified = (Boolean) session.getAttribute("isVerified");
-      if (isVerified == null || !isVerified) {
+      if (!redisService.isVerified(memberEmail)) {
         model.addAttribute("msg", "이메일 인증이 필요합니다.");
         model.addAttribute("url", url);
         return "alert";
       }
-      session.removeAttribute("isVerified");
+      redisService.deleteVerified(memberEmail);
     }
 
     String filePath = request.getServletContext().getRealPath("/") + "view/files/";
@@ -283,8 +297,9 @@ public class MemberController {
 
   @RequestMapping("memberHistory")
   public String memberHistory(HttpServletRequest request,
-                              @SessionAttribute String memberId) {
+                              @AuthenticationPrincipal JwtUserDetails userDetails) {
 
+    String memberId = userDetails.getMemberId();
     LocalDate now = LocalDate.now();
     LocalDate startLocalDate = now.minusMonths(3);
 
@@ -309,8 +324,9 @@ public class MemberController {
   public String memberHistoryPro(HttpServletRequest request,
                                  @RequestParam String startDate,
                                  @RequestParam String endDate,
-                                 @SessionAttribute String memberId) {
+                                 @AuthenticationPrincipal JwtUserDetails userDetails) {
 
+    String memberId = userDetails.getMemberId();
     List<OrderHistory> list = orderHistoryService.findByMemberIdBetween(
       memberId,
       LocalDateTime.parse(startDate + "T00:00:00"),

@@ -1,6 +1,5 @@
 package org.daCoffee.controller.api;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dto.*;
@@ -13,11 +12,13 @@ import org.daCoffee.entity.Cart;
 import org.daCoffee.entity.Member;
 import org.daCoffee.entity.OrderHistory;
 import org.daCoffee.exception.NotFoundException;
+import org.daCoffee.jwt.JwtUserDetails;
 import org.daCoffee.module.UUIDGenerateModule;
 import org.daCoffee.service.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -41,6 +42,7 @@ public class MemberApiController {
   private final PriceCalculator priceCalculator;
   private final MailService mailService;
   private final PasswordEncoder passwordEncoder;
+  private final RedisService redisService;
 
   @Value("${SECRET_TOSS_WIDGET_KEY}")
   private String secretTossWidgetKey;
@@ -76,8 +78,9 @@ public class MemberApiController {
 
   @GetMapping("/me") // React 세션 정보 요청용
   public ResponseEntity<ApiResponseDTO<MemberDTO>> getMe(
-          @SessionAttribute(name = "memberId", required = false) String memberId) {
+          @AuthenticationPrincipal JwtUserDetails userDetails) {
 
+    String memberId = userDetails.getMemberId();
     if (memberId == null) {
       return ResponseEntity.status(401)
               .body(ApiResponseDTO.error("로그인이 필요합니다.", 401));
@@ -97,8 +100,9 @@ public class MemberApiController {
 
   @GetMapping("/profile")
   public ApiResponseDTO<MemberProfileDTO> getProfile(
-          @SessionAttribute String memberId) {
+          @AuthenticationPrincipal JwtUserDetails userDetails) {
 
+    String memberId = userDetails.getMemberId();
     Member member = memberService.findById(memberId)
             .orElseThrow(() -> new NotFoundException("회원 없음"));
 
@@ -123,10 +127,9 @@ public class MemberApiController {
   public ApiResponseDTO<List<OrderHistory>> memberHistory(
           @RequestParam(required = false) String startDate,
           @RequestParam(required = false) String endDate,
-          HttpSession session) {
+          @AuthenticationPrincipal JwtUserDetails userDetails) {
 
-    String memberId = (String) session.getAttribute("memberId");
-
+    String memberId = userDetails.getMemberId();
     LocalDateTime start;
     LocalDateTime end;
 
@@ -144,8 +147,9 @@ public class MemberApiController {
   }
 
   @GetMapping("/cart")
-  public ApiResponseDTO<CartDataDTO> getCart(@SessionAttribute String memberId) {
+  public ApiResponseDTO<CartDataDTO> getCart(@AuthenticationPrincipal JwtUserDetails userDetails) {
     try {
+      String memberId = userDetails.getMemberId();
       CartPriceDTO cartPriceDTO = priceCalculator.calculatePrice(memberId);
       List<Cart> cartList = cartService.getCartList(memberId);
 
@@ -180,10 +184,12 @@ public class MemberApiController {
 
   @PostMapping("/cart/add")
   public ApiResponseDTO<CartDTO> addToCart(
-    @SessionAttribute String memberId,
+    @AuthenticationPrincipal JwtUserDetails userDetails,
     @RequestParam String productCode,
     @RequestParam(defaultValue = "1") int quantity,
     @RequestParam(value = "additionalProducts", required = false) List<String> additionalProductsCodes) {
+
+    String memberId = userDetails.getMemberId();
 
     try {
       // 추가 상품 처리
@@ -228,8 +234,9 @@ public class MemberApiController {
   public ApiResponseDTO<CartDataDTO> updateCart(
     @RequestParam String status,
     @RequestParam String productCode,
-    @SessionAttribute String memberId) {
+    @AuthenticationPrincipal JwtUserDetails userDetails) {
 
+    String memberId = userDetails.getMemberId();
     int delta = 0;
 
     try {
@@ -282,10 +289,9 @@ public class MemberApiController {
 
   @PostMapping("/payments")
   public ApiResponseDTO<PaymentsDataDTO> getPaymentsData(
-    HttpSession session,
-    @SessionAttribute String memberId,
-    @RequestBody(required = false) Map<String, List<String>> body) {
+    @AuthenticationPrincipal JwtUserDetails userDetails) {
 
+    String memberId = userDetails.getMemberId();
     // 회원 검증
     Member member = memberService.findById(memberId)
       .orElseThrow(() -> new NotFoundException("회원 정보를 찾을 수 없습니다."));
@@ -309,10 +315,7 @@ public class MemberApiController {
 
     String orderName = productNames.get(0) + " 외 " + (productNames.size() - 1) + "건";
 
-    //세션에 저장 (결제 성공 검증용)
-    session.setAttribute("orderId", orderId);
-    session.setAttribute("customerKey", customerKey);
-    session.setAttribute("totalPrice", totalPrice);
+    redisService.savePaymentsData(memberId, orderId, customerKey, totalPrice);
 
     PaymentsDataDTO data = PaymentsDataDTO.builder()
       .orderId(orderId)
@@ -328,21 +331,28 @@ public class MemberApiController {
 
   @PostMapping("/payments/success")
   public ApiResponseDTO<Void> paymentsSuccess(
-    HttpSession session,
-    @SessionAttribute String memberId,
+    @AuthenticationPrincipal JwtUserDetails userDetails,
     @RequestParam String orderId,
     @RequestParam int amount) {
 
+    String memberId = userDetails.getMemberId();
+
     try {
+      // Redis에서 결제 데이터 검증
+      Map<Object, Object> paymentsData = redisService.getPaymentsData(memberId);
+      if (paymentsData.isEmpty()) {
+        return ApiResponseDTO.error("결제 정보가 존재하지 않습니다.");
+      }
+
+      // 장바구니에서 넘어오는 최종 가격 검증
+      Integer savedTotal = Integer.parseInt((String) paymentsData.get("totalPrice"));
+      if (savedTotal != amount) {
+        return ApiResponseDTO.error("결제 금액 불일치");
+      }
+
       // 회원 검증
       Member member = memberService.findById(memberId)
         .orElseThrow(() -> new NotFoundException("회원 정보를 찾을 수 없습니다."));
-
-      // 장바구니에서 넘어오는 최종 가격 검증
-      Integer sessionTotal = (Integer) session.getAttribute("totalPrice");
-      if (sessionTotal == null || sessionTotal != amount) {
-        return ApiResponseDTO.error("결제 금액 불일치");
-      }
 
       // 장바구니 상품 검증
       List<Cart> cartList = cartService.getCartList(memberId);
@@ -373,8 +383,7 @@ public class MemberApiController {
       }
 
       cartService.deleteAllByMember(memberId);
-      session.removeAttribute("orderId");
-      session.removeAttribute("totalPrice");
+      redisService.deletePaymentsData(memberId);
 
       return ApiResponseDTO.success("결제 완료되었습니다.", null);
     } catch (Exception e) {
@@ -402,7 +411,8 @@ public class MemberApiController {
         apiUrl,
         HttpMethod.POST,
         entity,
-        new ParameterizedTypeReference<Map<String, Object>>() {}
+          new ParameterizedTypeReference<>() {
+          }
       );
 
       Map<String, Object> body = responseEntity.getBody();
@@ -424,16 +434,15 @@ public class MemberApiController {
 
   @PostMapping("/findAccount")
   public ApiResponseDTO<?> findAccount(
-    @RequestBody Map<String, String> body,
-    HttpSession session) {
+    @RequestBody Map<String, String> body) {
 
     String findType = body.get("findType");
+    String memberEmail = body.get("memberEmail");
 
-    Boolean isVerified = (Boolean) session.getAttribute("isVerified");
-    if (isVerified == null || !isVerified) {
+    if (!redisService.isVerified(memberEmail)) {
       return ApiResponseDTO.error("이메일 인증이 필요합니다.");
     }
-    session.removeAttribute("isVerified");
+    redisService.deleteVerified(memberEmail);
 
     if ("id".equals(findType)) {
       return findId(body);
@@ -445,7 +454,7 @@ public class MemberApiController {
   }
 
   @PostMapping("/verifyEmail")
-  public ApiResponseDTO<Void> verifyEmail(HttpSession session, @RequestBody Map<String, String> body) {
+  public ApiResponseDTO<Void> verifyEmail(@RequestBody Map<String, String> body) {
     String memberEmail = body.get("memberEmail");
 
     try {
@@ -454,8 +463,7 @@ public class MemberApiController {
       String main = "회원님의 이메일 인증번호는";
 
       mailService.sendEmail(memberEmail, subject, main, code);
-      session.setAttribute("storedVerifyCode", code);
-      session.setAttribute("verifyCodeExpiry", System.currentTimeMillis() + 180000L); // 3분
+      redisService.saveVerifyCode(memberEmail, code);
 
       return ApiResponseDTO.success(null);
     } catch (Exception e) {
@@ -465,24 +473,23 @@ public class MemberApiController {
   }
 
   @PostMapping("/verifyCode")
-  public ResponseEntity<ApiResponseDTO<Void>> verifyCode(HttpSession session, @RequestBody Map<String, String> body) {
+  public ResponseEntity<ApiResponseDTO<Void>> verifyCode(@RequestBody Map<String, String> body) {
     String verifyCode = body.get("verifyCode");
-    String storedCode = (String) session.getAttribute("storedVerifyCode");
-    Long expiry = (Long) session.getAttribute("verifyCodeExpiry");
+    String memberEmail = body.get("memberEmail");
 
-    if (storedCode == null || expiry == null) {
+    String storedCode = redisService.getVerifyCode(memberEmail);
+
+    if (storedCode == null) {
       return ResponseEntity.badRequest().body(ApiResponseDTO.error("인증번호를 먼저 요청해주세요."));
-    }
-
-    if (System.currentTimeMillis() > expiry) {
-      return ResponseEntity.badRequest().body(ApiResponseDTO.error("인증시간이 초과되었습니다."));
     }
 
     if (!verifyCode.equals(storedCode)) {
       return ResponseEntity.badRequest().body(ApiResponseDTO.error("인증번호가 일치하지 않습니다."));
     }
 
-    session.setAttribute("isVerified", true);
+    redisService.deleteVerifyCode(memberEmail);
+    redisService.saveVerified(memberEmail);
+
     return ResponseEntity.ok(ApiResponseDTO.success(null));
   }
 }
