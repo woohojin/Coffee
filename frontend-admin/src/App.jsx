@@ -12,6 +12,7 @@ import MemberWithdrawalPage from "./pages/MemberWithdrawalPage";
 import ProductListPage from "./pages/ProductListPage";
 import ProductUploadPage from "./pages/ProductUploadPage";
 import ProductDeletePage from "./pages/ProductDeletePage";
+import ProductUpdatePage from "./pages/ProductUpdatePage";
 
 function App() {
   return (
@@ -50,8 +51,12 @@ function App() {
               path="/admin/productDelete"
               element={<ProductDeletePage />}
             />
+            <Route
+              path="/admin/productUpdate"
+              element={<ProductUpdatePage />}
+            />
           </Route>
-          <Route path="*" element={<Navigate to="/admin/dashboard" />} />
+          <Route path="*" element={<Navigate to="/admin/login" />} />
         </Routes>
       </BrowserRouter>
     </AdminAuthProvider>

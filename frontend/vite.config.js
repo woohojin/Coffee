@@ -7,6 +7,9 @@ export default defineConfig({
     proxy: {
       "/api": "http://localhost:8080",
       "/files": "http://localhost:8080",
+      "/member": "http://localhost:8080",
+      "/css": "http://localhost:8080",
+      "/image": "http://localhost:8080",
     },
   },
 });

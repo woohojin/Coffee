@@ -16,38 +16,39 @@ function AdminLayout() {
   return (
     <div id="admin_wrap">
       <header>
-        <div id="hd_wrap">
-          <nav>
-            <ul>
-              <li>
-                <Link to="/admin/orderHistory">주문 기록</Link>
-              </li>
-              <li>
-                <Link to="/admin/memberList">회원 리스트</Link>
-              </li>
-              <li>
-                <Link to="/admin/memberTierUpdate">회원 승인 요청</Link>
-              </li>
-              <li>
-                <Link to="/admin/productList">제품 리스트</Link>
-              </li>
-              <li>
-                <Link to="/admin/productUpload">제품 등록</Link>
-              </li>
-              <li>
-                <Link to="/admin/productDelete">제품 삭제</Link>
-              </li>
-              <li>
-                <Link to="/admin/memberDisableUpdate">회원 비활성화</Link>
-              </li>
-              <li>
-                <Link to="/admin/memberWithdrawalList">탈퇴 회원</Link>
-              </li>
-              <li>
-                <button onClick={handleLogout}>로그아웃</button>
-              </li>
-            </ul>
-          </nav>
+        <div id="hd_wrap" className="center">
+          <div className="hd_lnb">
+            <div className="hd_lnb_list">
+              <ul>
+                <li>
+                  <Link to="/admin/orderHistory">주문 기록</Link>
+                </li>
+                <li>
+                  <Link to="/admin/memberList">회원 리스트</Link>
+                </li>
+                <li>
+                  <Link to="/admin/memberTierUpdate">회원 승인 요청</Link>
+                </li>
+                <li>
+                  <Link to="/admin/productList">제품 리스트</Link>
+                </li>
+                <li>
+                  <Link to="/admin/productUpload">제품 등록</Link>
+                </li>
+                <li>
+                  <Link to="/admin/productDelete">제품 삭제</Link>
+                </li>
+                <li>
+                  <Link to="/admin/memberDisableUpdate">
+                    회원 비활성화 수정
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/admin/memberWithdrawalList">탈퇴 회원 리스트</Link>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </header>
       <main>

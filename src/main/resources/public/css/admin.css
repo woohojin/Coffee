@@ -61,6 +61,7 @@ td a {
 }
 .hd_lnb_list ul li::after {
   content: "|";
+  margin-left: 3px;
 }
 .page_head a {
   color: black;

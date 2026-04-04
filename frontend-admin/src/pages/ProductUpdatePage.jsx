@@ -1,16 +1,20 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 
-function ProductUploadPage() {
+function ProductUpdatePage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const productCode = searchParams.get("productCode");
 
   const [productType, setProductType] = useState("0");
-  const [productCode, setProductCode] = useState("");
+  const [existProductCode, setExistProductCode] = useState("");
+  const [newProductCode, setNewProductCode] = useState("");
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productUnit, setProductUnit] = useState("");
   const [productTier, setProductTier] = useState("1");
+  const [productSoldOut, setProductSoldOut] = useState("0");
   const [files, setFiles] = useState(null);
 
   // 원두 추가 필드
@@ -23,21 +27,52 @@ function ProductUploadPage() {
   const [mixCompany, setMixCompany] = useState("");
   const [mixUseByDate, setMixUseByDate] = useState("");
 
+  useEffect(() => {
+    if (!productCode) return;
+
+    axiosInstance
+      .get(`/api/admin/products/${productCode}`)
+      .then((res) => {
+        const p = res.data.data;
+        setExistProductCode(p.productCode);
+        setNewProductCode(p.productCode);
+        setProductType(String(p.productType));
+        setProductName(p.productName);
+        setProductPrice(String(p.productPrice));
+        setProductUnit(p.productUnit);
+        setProductTier(String(p.productTier));
+        setProductSoldOut(p.productSoldOut ? "1" : "0");
+
+        if (p.bean) {
+          setBeanSpecies(p.bean.beanSpecies || "");
+          setBeanCompany(p.bean.beanCompany || "");
+          setBeanUseByDate(p.bean.beanUseByDate || "");
+          setBeanCountry(p.bean.beanCountry || "");
+        }
+        if (p.mix) {
+          setMixCompany(p.mix.mixCompany || "");
+          setMixUseByDate(p.mix.mixUseByDate || "");
+        }
+      })
+      .catch((err) => console.error("제품 조회 실패:", err));
+  }, [productCode]);
+
   const handlePriceInput = (e) => {
-    const value = e.target.value.replace(/[^0-9]/g, "");
-    setProductPrice(value);
+    setProductPrice(e.target.value.replace(/[^0-9]/g, ""));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
+    formData.append("existProductCode", existProductCode);
+    formData.append("productCode", newProductCode);
     formData.append("productType", productType);
-    formData.append("productCode", productCode);
     formData.append("productName", productName);
     formData.append("productPrice", productPrice);
     formData.append("productUnit", productUnit);
     formData.append("productTier", productTier);
+    formData.append("productSoldOut", productSoldOut);
 
     if (productType === "0") {
       formData.append("beanSpecies", beanSpecies);
@@ -56,15 +91,18 @@ function ProductUploadPage() {
     }
 
     try {
-      const res = await axiosInstance.post("/api/admin/products", formData);
+      const res = await axiosInstance.put(
+        `/api/admin/products/${existProductCode}`,
+        formData,
+      );
       if (res.data.success) {
-        alert("제품 등록에 성공하였습니다.");
+        alert("제품 수정에 성공하였습니다.");
         navigate("/admin/productList");
       } else {
-        alert(res.data.message || "제품 등록에 실패하였습니다.");
+        alert(res.data.message || "제품 수정에 실패하였습니다.");
       }
     } catch (err) {
-      alert(err.response?.data?.message || "제품 등록 중 오류가 발생했습니다.");
+      alert(err.response?.data?.message || "제품 수정 중 오류가 발생했습니다.");
     }
   };
 
@@ -76,11 +114,12 @@ function ProductUploadPage() {
             onClick={() => navigate("/admin/productList")}
             style={{ cursor: "pointer" }}
           >
-            <h1>제품 등록</h1>
+            <h1>제품 수정</h1>
           </a>
         </div>
 
         <form onSubmit={handleSubmit} encType="multipart/form-data">
+          <input type="hidden" value={existProductCode} readOnly />
           <div className="product_form center">
             <ul>
               <li>
@@ -101,8 +140,8 @@ function ProductUploadPage() {
                 <input
                   className="product_code"
                   type="text"
-                  value={productCode}
-                  onChange={(e) => setProductCode(e.target.value)}
+                  value={newProductCode}
+                  onChange={(e) => setNewProductCode(e.target.value)}
                   required
                 />
               </li>
@@ -153,14 +192,17 @@ function ProductUploadPage() {
                 </select>
               </li>
               <li>
-                <label>제품 파일 : </label>
-                <input
-                  className="file"
-                  type="file"
-                  multiple
-                  onChange={(e) => setFiles(e.target.files)}
+                <label>제품 품절 여부 : </label>
+                <select
+                  className="product_sold_out"
+                  value={productSoldOut}
+                  onChange={(e) => setProductSoldOut(e.target.value)}
                   required
-                />
+                  style={{ width: "193px" }}
+                >
+                  <option value="0">0 - 품절 X</option>
+                  <option value="1">1 - 품절 O</option>
+                </select>
               </li>
 
               {/* 원두 추가 필드 */}
@@ -230,10 +272,19 @@ function ProductUploadPage() {
               )}
 
               <li>
+                <label>제품 파일 : </label>
+                <input
+                  className="file"
+                  type="file"
+                  multiple
+                  onChange={(e) => setFiles(e.target.files)}
+                />
+              </li>
+              <li>
                 <div className="submit">
                   <input
                     type="submit"
-                    value="게시물 작성"
+                    value="수정하기"
                     className="submit_btn"
                   />
                 </div>
@@ -246,4 +297,4 @@ function ProductUploadPage() {
   );
 }
 
-export default ProductUploadPage;
+export default ProductUpdatePage;
