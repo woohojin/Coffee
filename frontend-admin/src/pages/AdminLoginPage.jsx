@@ -12,11 +12,10 @@ function AdminLoginPage() {
   const handleSignIn = async (e) => {
     e.preventDefault();
     try {
-      const formData = new FormData();
-      formData.append("memberId", memberId);
-      formData.append("memberPassword", memberPassword);
-
-      await axiosInstance.post("/member/memberSignInPro", formData);
+      const params = new URLSearchParams();
+      params.append("memberId", memberId);
+      params.append("memberPassword", memberPassword);
+      await axiosInstance.post("/member/memberSignInPro", params);
 
       const res = await axiosInstance.get("/api/admin/me");
       setAdmin(res.data.data);

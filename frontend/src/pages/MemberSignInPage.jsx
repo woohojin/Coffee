@@ -12,11 +12,11 @@ function MemberSignInPage() {
   const handleSignIn = async (e) => {
     e.preventDefault();
     try {
-      const formData = new FormData();
-      formData.append("memberId", memberId);
-      formData.append("memberPassword", memberPassword);
+      const params = new URLSearchParams();
+      params.append("memberId", memberId);
+      params.append("memberPassword", memberPassword);
+      await axiosInstance.post("/member/memberSignInPro", params);
 
-      await axiosInstance.post("/member/memberSignInPro", formData);
       const meRes = await axiosInstance.get("/api/member/me");
       setMember(meRes.data.data);
       navigate("/main");
