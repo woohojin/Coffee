@@ -93,7 +93,6 @@ public class SecurityConfig {
           "/test/**",
           "/main"
         ).permitAll() // 인증 없이 접근 가능
-        .requestMatchers("/admin/**").hasRole("ADMIN")
         .requestMatchers("/member/**").authenticated()
         .anyRequest().authenticated()
       )
