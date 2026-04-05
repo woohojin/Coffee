@@ -66,7 +66,9 @@ function Header() {
               {!loading && member && member.memberTier !== 9 && (
                 <>
                   <li>
-                    <button onClick={handleLogout}>로그아웃</button>
+                    <button id="logout_button" onClick={handleLogout}>
+                      로그아웃
+                    </button>
                   </li>
                   <li>
                     <Link to="/member/memberMyPage">마이페이지</Link>
@@ -76,7 +78,9 @@ function Header() {
               {!loading && member && member.memberTier === 9 && (
                 <>
                   <li>
-                    <button onClick={handleLogout}>로그아웃</button>
+                    <button id="logout_button" onClick={handleLogout}>
+                      로그아웃
+                    </button>
                   </li>
                   <li>
                     <a href="/admin/dashboard" target="_blank">

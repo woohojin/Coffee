@@ -251,7 +251,7 @@
   position: absolute;
   color: white;
   background-color: var(--mainColor);
-  height: -webkit-fill-available;
+  height: 110%;
   width: 350px;
   top: 0;
   right: 0;
