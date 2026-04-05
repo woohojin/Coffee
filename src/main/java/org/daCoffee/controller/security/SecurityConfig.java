@@ -73,12 +73,7 @@ public class SecurityConfig {
       .securityMatcher("/**")
       .authorizeHttpRequests(auth -> auth
         .requestMatchers(
-          "/member/memberSignIn",
-          "/member/memberSignUp",
           "/member/memberSignInPro",
-          "/member/memberSignUpPro",
-          "/member/memberTerms",
-          "/member/memberFindAccount",
           "/api/member/verifyEmail",
           "/api/member/verifyCode",
           "/api/member/findAccount",
@@ -86,10 +81,7 @@ public class SecurityConfig {
           "/css/**",
           "/image/**",
           "/js/**",
-          "/favicon.ico",
-          "/error",
-          "/alert",
-          "/main"
+          "/favicon.ico"
         ).permitAll() // 인증 없이 접근 가능
         .requestMatchers("/member/**").authenticated()
         .anyRequest().authenticated()
@@ -108,14 +100,9 @@ public class SecurityConfig {
         .logoutSuccessHandler(customLogoutHandler)
       )
       .csrf(csrf -> csrf
-        .ignoringRequestMatchers("/alert",
+        .ignoringRequestMatchers(
           "/api/**",
-          "/api/member/verifyEmail",
-          "/api/member/verifyCode",
-          "/api/member/findAccount",
           "/member/memberSignInPro",
-          "/member/memberSignUpPro",
-          "/member/memberProfilePro",
           "/member/memberLogout"
         )
       )
