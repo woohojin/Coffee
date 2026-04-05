@@ -16,6 +16,7 @@ import org.daCoffee.entity.*;
 import org.daCoffee.exception.NotFoundException;
 import org.daCoffee.jwt.JwtUserDetails;
 import org.daCoffee.service.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,6 +36,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 public class AdminApiController {
+
+    @Value("${FILE_UPLOAD_PATH}")
+    private String fileUploadPath;
 
     private final MemberService memberService;
     private final ProductService productService;
@@ -195,7 +199,6 @@ public class AdminApiController {
 
     @PostMapping("/products")
     public ApiResponseDTO<Void> uploadProduct(
-            HttpServletRequest request,
             @ModelAttribute ProductRequestDTO dto,
             @RequestParam(value = "files", required = false) List<MultipartFile> files,
             @AuthenticationPrincipal JwtUserDetails userDetails) throws IOException {
@@ -220,8 +223,7 @@ public class AdminApiController {
             default -> "bean";
         };
 
-        String filePath = request.getServletContext().getRealPath("/") + "view/files/"
-                + typeFolder + "/" + dto.getProductCode();
+        String filePath = fileUploadPath + "/" + typeFolder + "/" + dto.getProductCode();
 
         File uploadPath = new File(filePath);
         if (!uploadPath.exists()) {
@@ -394,7 +396,6 @@ public class AdminApiController {
 
     @PutMapping("/products/{productCode}")
     public ApiResponseDTO<Void> updateProduct(
-            HttpServletRequest request,
             @PathVariable String productCode,
             @ModelAttribute ProductRequestDTO dto,
             @RequestParam(value = "files", required = false) List<MultipartFile> files,
@@ -415,8 +416,7 @@ public class AdminApiController {
             default -> "bean";
         };
 
-        String filePath = request.getServletContext().getRealPath("/") + "view/files/"
-                + typeFolder + "/" + productCode;
+        String filePath = fileUploadPath + "/" + typeFolder + "/" + dto.getProductCode();
 
         File uploadPath = new File(filePath);
         if (!uploadPath.exists()) {
