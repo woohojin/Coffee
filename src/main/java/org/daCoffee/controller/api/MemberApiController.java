@@ -1,5 +1,6 @@
 package org.daCoffee.controller.api;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dto.*;
@@ -121,6 +122,34 @@ public class MemberApiController {
             .build();
 
     return ApiResponseDTO.success(dto);
+  }
+
+  @PostMapping("/withdrawal")
+  public ResponseEntity<ApiResponseDTO<Void>> memberWithdrawal(
+          @RequestParam String memberPassword,
+          @AuthenticationPrincipal JwtUserDetails userDetails,
+          HttpServletResponse response) {
+
+    String memberId = userDetails.getMemberId();
+    Member member = memberService.findById(memberId)
+            .orElseThrow(() -> new NotFoundException("회원 없음"));
+
+    if (!passwordEncoder.matches(memberPassword, member.getMemberPassword())) {
+      return ResponseEntity.badRequest()
+              .body(ApiResponseDTO.error("비밀번호가 틀렸습니다."));
+    }
+
+    memberService.withdrawMember(memberId);
+
+    ResponseCookie accessCookie = ResponseCookie.from("accessToken", "")
+            .httpOnly(true).sameSite("Lax").path("/").maxAge(0).build();
+    ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", "")
+            .httpOnly(true).sameSite("Lax").path("/api/auth/refresh").maxAge(0).build();
+
+    response.addHeader("Set-Cookie", accessCookie.toString());
+    response.addHeader("Set-Cookie", refreshCookie.toString());
+
+    return ResponseEntity.ok(ApiResponseDTO.success(null));
   }
 
   @GetMapping("/history")
