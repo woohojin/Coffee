@@ -175,20 +175,6 @@ public class GlobalExceptionHandler {
       .body(response);
   }
 
-  @ExceptionHandler(TemplateInputException.class)
-  public ResponseEntity<ApiResponseDTO<Void>> handleTemplateInputException(TemplateInputException e) {
-    log.error("Template input error occurred", e);
-
-    ApiResponseDTO<Void> response = ApiResponseDTO.error(
-      "템플릿 오류가 발생했습니다.",
-      500
-    );
-
-    return ResponseEntity
-      .status(HttpStatus.INTERNAL_SERVER_ERROR)
-      .body(response);
-  }
-
   @ExceptionHandler(NoSuchAlgorithmException.class)
   public ResponseEntity<ApiResponseDTO<Void>> handleNoSuchAlgorithmException(NoSuchAlgorithmException e) {
     log.error("Encryption error occurred", e);
