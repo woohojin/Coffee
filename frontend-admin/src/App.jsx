@@ -5,7 +5,9 @@ import AdminLayout from "./components/AdminLayout";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import OrderHistoryPage from "./pages/OrderHistoryPage";
+import OrderHistoryUpdatePage from "./pages/OrderHistoryUpdate";
 import MemberListPage from "./pages/MemberListPage";
+import MemberUpdatePage from "./pages/MemberUpdate";
 import MemberTierUpdatePage from "./pages/MemberTierUpdatePage";
 import MemberDisablePage from "./pages/MemberDisablePage";
 import MemberWithdrawalPage from "./pages/MemberWithdrawalPage";
@@ -29,7 +31,12 @@ function App() {
           >
             <Route path="/admin/dashboard" element={<DashboardPage />} />
             <Route path="/admin/orderHistory" element={<OrderHistoryPage />} />
+            <Route
+              path="/admin/orderHistoryUpdate"
+              element={<OrderHistoryUpdatePage />}
+            />
             <Route path="/admin/memberList" element={<MemberListPage />} />
+            <Route path="/admin/memberUpdate" element={<MemberUpdatePage />} />
             <Route
               path="/admin/memberTierUpdate"
               element={<MemberTierUpdatePage />}
