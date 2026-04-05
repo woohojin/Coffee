@@ -89,8 +89,6 @@ public class SecurityConfig {
           "/favicon.ico",
           "/error",
           "/alert",
-          "/META-INF/resources/WEB-INF/view/**",
-          "/test/**",
           "/main"
         ).permitAll() // 인증 없이 접근 가능
         .requestMatchers("/member/**").authenticated()
