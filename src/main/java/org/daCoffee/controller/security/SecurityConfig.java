@@ -21,8 +21,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Configuration
@@ -38,9 +36,6 @@ public class SecurityConfig {
   private final RedisService redisService;
 
   ObjectMapper objectMapper = new ObjectMapper();
-
-  @Value("${REMEMBER_ME_KEY}")
-  private String rememberMeKey;
 
   @Bean
   public PasswordEncoder passwordEncoder() {
@@ -109,46 +104,24 @@ public class SecurityConfig {
       // URLEncoder는 한글을 사용하기 위해서 UTF_8로 인코딩을 하는 것
       .exceptionHandling(ex -> ex
         .accessDeniedHandler((request, response, accessDeniedException) -> {
-          log.info("Access Denied: {}", accessDeniedException.getMessage());
-
-          String uri = request.getRequestURI();
-          if (uri.startsWith("/api/")) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            response.setContentType("application/json;charset=UTF-8");
-
-            ApiResponseDTO<Void> apiResponse = ApiResponseDTO.error(
-              "권한이 부족합니다.",
-              "/member/memberSignIn",
-              403
-            );
-
-            response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
-          }  else {
-            String msg = URLEncoder.encode("권한이 부족합니다.", StandardCharsets.UTF_8);
-            String url = URLEncoder.encode("/main", StandardCharsets.UTF_8);
-            response.sendRedirect("/alert?msg=" + msg + "&url=" + url);
-          }
+          response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+          response.setContentType("application/json;charset=UTF-8");
+          ApiResponseDTO<Void> apiResponse = ApiResponseDTO.error(
+                  "권한이 부족합니다.",
+                  "/member/memberSignIn",
+                  403
+          );
+          response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
         })
         .authenticationEntryPoint((request, response, authException) -> {
-          log.info("Authentication Required: {}", authException.getMessage());
-
-          String uri = request.getRequestURI();
-          if (uri.startsWith("/api/")) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.setContentType("application/json;charset=UTF-8");
-
-            ApiResponseDTO<Void> apiResponse = ApiResponseDTO.error(
-              "로그인이 필요합니다.",
-              "/member/memberSignIn",
-              401
-            );
-
-            response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
-          } else {
-            String msg = URLEncoder.encode("로그인이 필요합니다.", StandardCharsets.UTF_8);
-            String url = URLEncoder.encode("/member/memberSignIn", StandardCharsets.UTF_8);
-            response.sendRedirect("/alert?msg=" + msg + "&url=" + url);
-          }
+          response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+          response.setContentType("application/json;charset=UTF-8");
+          ApiResponseDTO<Void> apiResponse = ApiResponseDTO.error(
+                  "로그인이 필요합니다.",
+                  "/member/memberSignIn",
+                  401
+          );
+          response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
         })
       )
       .addFilterBefore(
