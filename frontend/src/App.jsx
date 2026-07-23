@@ -4,6 +4,7 @@ import { CartProvider } from "./store/cartStore";
 import Layout from "./components/Layout";
 import MainPage from "./pages/MainPage";
 import PrivacyPage from "./pages/PrivacyPage";
+import TermsPage from "./pages/TermsPage";
 import ProductListPage from "./pages/ProductListPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import MachineDetailPage from "./pages/MachineDetailPage";
@@ -34,6 +35,7 @@ function App() {
             <Route element={<Layout />}>
               <Route path="/main" element={<MainPage />} />
               <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/terms" element={<TermsPage />} />
               <Route
                 path="/products/productList"
                 element={<ProductListPage />}
