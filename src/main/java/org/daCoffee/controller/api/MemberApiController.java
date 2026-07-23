@@ -77,15 +77,15 @@ public class MemberApiController {
     return ApiResponseDTO.success("임시 비밀번호가 이메일로 전송되었습니다.", null);
   }
 
-  @GetMapping("/me") // React 세션 정보 요청용
+  @GetMapping("/me") // React 로그인 여부 확인용 - 비로그인도 정상 응답(200, data: null)
   public ResponseEntity<ApiResponseDTO<MemberDTO>> getMe(
           @AuthenticationPrincipal JwtUserDetails userDetails) {
 
-    String memberId = userDetails.getMemberId();
-    if (memberId == null) {
-      return ResponseEntity.status(401)
-              .body(ApiResponseDTO.error("로그인이 필요합니다.", 401));
+    if (userDetails == null) {
+      return ResponseEntity.ok(ApiResponseDTO.success(null));
     }
+
+    String memberId = userDetails.getMemberId();
 
     Member member = memberService.findById(memberId)
             .orElseThrow(() -> new NotFoundException("회원 없음"));
