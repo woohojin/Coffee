@@ -198,7 +198,7 @@ public class AdminApiController {
     }
 
     @PostMapping("/products")
-    public ApiResponseDTO<Void> uploadProduct(
+    public ResponseEntity<ApiResponseDTO<Void>> uploadProduct(
             @ModelAttribute ProductRequestDTO dto,
             @RequestParam(value = "files", required = false) List<MultipartFile> files,
             @AuthenticationPrincipal JwtUserDetails userDetails) throws IOException {
@@ -206,11 +206,13 @@ public class AdminApiController {
         String adminId = userDetails.getMemberId();
 
         if (productService.findById(dto.getProductCode()).isPresent()) {
-            return ApiResponseDTO.error("이미 존재하는 제품입니다.");
+            ApiResponseDTO<Void> response = ApiResponseDTO.error("이미 존재하는 제품입니다.");
+            return ResponseEntity.status(response.getStatusCode()).body(response);
         }
 
         if (files == null || files.isEmpty() || files.stream().allMatch(MultipartFile::isEmpty)) {
-            return ApiResponseDTO.error("업로드 된 파일이 없습니다.");
+            ApiResponseDTO<Void> response = ApiResponseDTO.error("업로드 된 파일이 없습니다.");
+            return ResponseEntity.status(response.getStatusCode()).body(response);
         }
 
         String adminName = memberService.findById(adminId)
@@ -295,7 +297,7 @@ public class AdminApiController {
             productService.saveMix(mix);
         }
 
-        return ApiResponseDTO.success(null);
+        return ResponseEntity.ok(ApiResponseDTO.success(null));
     }
 
     @DeleteMapping("/products/{productCode}")
@@ -363,7 +365,7 @@ public class AdminApiController {
     }
 
     @PutMapping("/orders/{orderId}")
-    public ApiResponseDTO<Void> updateOrderHistory(
+    public ResponseEntity<ApiResponseDTO<Void>> updateOrderHistory(
             @RequestBody OrderHistoryRequestDTO dto,
             @PathVariable String orderId,
             @AuthenticationPrincipal JwtUserDetails userDetails) {
@@ -375,27 +377,34 @@ public class AdminApiController {
                 .orElse("admin");
 
         boolean success = orderHistoryService.adminUpdate(adminName, dto);
-        if (!success) return ApiResponseDTO.error("주문 기록 수정에 실패했습니다.");
-        return ApiResponseDTO.success(null);
+        if (!success) {
+            ApiResponseDTO<Void> response = ApiResponseDTO.error("주문 기록 수정에 실패했습니다.");
+            return ResponseEntity.status(response.getStatusCode()).body(response);
+        }
+        return ResponseEntity.ok(ApiResponseDTO.success(null));
     }
 
     @DeleteMapping("/orders/{orderId}")
-    public ApiResponseDTO<Void> deleteOrderHistory(
+    public ResponseEntity<ApiResponseDTO<Void>> deleteOrderHistory(
             @PathVariable String orderId,
             @RequestParam String productCode,
             @RequestParam String confirmDelete) {
 
         if (!orderId.equals(confirmDelete)) {
-            return ApiResponseDTO.error("주문번호와 일치하지 않습니다.");
+            ApiResponseDTO<Void> response = ApiResponseDTO.error("주문번호와 일치하지 않습니다.");
+            return ResponseEntity.status(response.getStatusCode()).body(response);
         }
 
         boolean success = orderHistoryService.adminDelete(orderId, productCode);
-        if (!success) return ApiResponseDTO.error("주문 기록 삭제에 실패했습니다.");
-        return ApiResponseDTO.success(null);
+        if (!success) {
+            ApiResponseDTO<Void> response = ApiResponseDTO.error("주문 기록 삭제에 실패했습니다.");
+            return ResponseEntity.status(response.getStatusCode()).body(response);
+        }
+        return ResponseEntity.ok(ApiResponseDTO.success(null));
     }
 
     @PutMapping("/products/{productCode}")
-    public ApiResponseDTO<Void> updateProduct(
+    public ResponseEntity<ApiResponseDTO<Void>> updateProduct(
             @PathVariable String productCode,
             @ModelAttribute ProductRequestDTO dto,
             @RequestParam(value = "files", required = false) List<MultipartFile> files,
@@ -425,7 +434,8 @@ public class AdminApiController {
         }
 
         if (files == null || files.isEmpty() || files.stream().allMatch(MultipartFile::isEmpty)) {
-            return ApiResponseDTO.error("업로드 된 파일이 없습니다.");
+            ApiResponseDTO<Void> response = ApiResponseDTO.error("업로드 된 파일이 없습니다.");
+            return ResponseEntity.status(response.getStatusCode()).body(response);
         }
 
         String thumbnailFileName = product.getProductFile();
@@ -472,7 +482,7 @@ public class AdminApiController {
                     .ifPresent(mix -> mix.adminUpdate(dto, adminName));
         }
 
-        return ApiResponseDTO.success(null);
+        return ResponseEntity.ok(ApiResponseDTO.success(null));
     }
 
     @GetMapping("/excel/products")

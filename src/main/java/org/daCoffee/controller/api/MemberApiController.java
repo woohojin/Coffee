@@ -176,7 +176,7 @@ public class MemberApiController {
   }
 
   @GetMapping("/cart")
-  public ApiResponseDTO<CartDataDTO> getCart(@AuthenticationPrincipal JwtUserDetails userDetails) {
+  public ResponseEntity<ApiResponseDTO<CartDataDTO>> getCart(@AuthenticationPrincipal JwtUserDetails userDetails) {
     try {
       String memberId = userDetails.getMemberId();
       CartPriceDTO cartPriceDTO = priceCalculator.calculatePrice(memberId);
@@ -204,15 +204,16 @@ public class MemberApiController {
         .list(list)
         .build();
 
-      return ApiResponseDTO.success(data);
+      return ResponseEntity.ok(ApiResponseDTO.success(data));
     } catch (Exception e) {
       log.error("장바구니 조회 실패", e);
-      return ApiResponseDTO.error("장바구니 조회 중 오류가 발생했습니다.");
+      ApiResponseDTO<CartDataDTO> response = ApiResponseDTO.error("장바구니 조회 중 오류가 발생했습니다.");
+      return ResponseEntity.status(response.getStatusCode()).body(response);
     }
   }
 
   @PostMapping("/cart/add")
-  public ApiResponseDTO<CartDTO> addToCart(
+  public ResponseEntity<ApiResponseDTO<CartDTO>> addToCart(
     @AuthenticationPrincipal JwtUserDetails userDetails,
     @RequestParam String productCode,
     @RequestParam(defaultValue = "1") int quantity,
@@ -252,15 +253,16 @@ public class MemberApiController {
         .quantity(cart.getQuantity())
         .build();
 
-      return ApiResponseDTO.success(cartDTO);
+      return ResponseEntity.ok(ApiResponseDTO.success(cartDTO));
     } catch (Exception e) {
       log.error("장바구니 추가 실패", e);
-      return ApiResponseDTO.error("장바구니 추가 중 오류가 발생했습니다.");
+      ApiResponseDTO<CartDTO> response = ApiResponseDTO.error("장바구니 추가 중 오류가 발생했습니다.");
+      return ResponseEntity.status(response.getStatusCode()).body(response);
     }
   }
 
   @PostMapping("/cart/update")
-  public ApiResponseDTO<CartDataDTO> updateCart(
+  public ResponseEntity<ApiResponseDTO<CartDataDTO>> updateCart(
     @RequestParam String status,
     @RequestParam String productCode,
     @AuthenticationPrincipal JwtUserDetails userDetails) {
@@ -308,16 +310,17 @@ public class MemberApiController {
       log.info("updateCart called: memberId={}, productCode={}, status={}, delta={}",
         memberId, productCode, status, delta);
 
-      return ApiResponseDTO.success(data);
+      return ResponseEntity.ok(ApiResponseDTO.success(data));
 
     } catch (Exception e) {
       log.error("장바구니 업데이트 실패", e);
-      return ApiResponseDTO.error("처리 중 오류 발생");
+      ApiResponseDTO<CartDataDTO> response = ApiResponseDTO.error("처리 중 오류 발생");
+      return ResponseEntity.status(response.getStatusCode()).body(response);
     }
   }
 
   @PostMapping("/payments")
-  public ApiResponseDTO<PaymentsDataDTO> getPaymentsData(
+  public ResponseEntity<ApiResponseDTO<PaymentsDataDTO>> getPaymentsData(
     @AuthenticationPrincipal JwtUserDetails userDetails) {
 
     String memberId = userDetails.getMemberId();
@@ -328,7 +331,8 @@ public class MemberApiController {
     // 장바구니 상품 검증
     List<Cart> cartList = cartService.getCartList(memberId);
     if (cartList == null || cartList.isEmpty()) {
-      return ApiResponseDTO.error("장바구니에 상품이 존재하지 않습니다.");
+      ApiResponseDTO<PaymentsDataDTO> response = ApiResponseDTO.error("장바구니에 상품이 존재하지 않습니다.");
+      return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
     CartPriceDTO cartPriceDTO = priceCalculator.calculatePrice(memberId);
@@ -355,11 +359,11 @@ public class MemberApiController {
       .cartItems(cartList)
       .build();
 
-    return ApiResponseDTO.success(data);
+    return ResponseEntity.ok(ApiResponseDTO.success(data));
   }
 
   @PostMapping("/payments/success")
-  public ApiResponseDTO<Void> paymentsSuccess(
+  public ResponseEntity<ApiResponseDTO<Void>> paymentsSuccess(
     @AuthenticationPrincipal JwtUserDetails userDetails,
     @RequestParam String orderId,
     @RequestParam int amount) {
@@ -370,13 +374,15 @@ public class MemberApiController {
       // Redis에서 결제 데이터 검증
       Map<Object, Object> paymentsData = redisService.getPaymentsData(memberId);
       if (paymentsData.isEmpty()) {
-        return ApiResponseDTO.error("결제 정보가 존재하지 않습니다.");
+        ApiResponseDTO<Void> response = ApiResponseDTO.error("결제 정보가 존재하지 않습니다.");
+        return ResponseEntity.status(response.getStatusCode()).body(response);
       }
 
       // 장바구니에서 넘어오는 최종 가격 검증
       Integer savedTotal = Integer.parseInt((String) paymentsData.get("totalPrice"));
       if (savedTotal != amount) {
-        return ApiResponseDTO.error("결제 금액 불일치");
+        ApiResponseDTO<Void> response = ApiResponseDTO.error("결제 금액 불일치");
+        return ResponseEntity.status(response.getStatusCode()).body(response);
       }
 
       // 회원 검증
@@ -386,7 +392,8 @@ public class MemberApiController {
       // 장바구니 상품 검증
       List<Cart> cartList = cartService.getCartList(memberId);
       if (cartList == null || cartList.isEmpty()) {
-        return ApiResponseDTO.error("장바구니에 상품이 존재하지 않습니다.");
+        ApiResponseDTO<Void> response = ApiResponseDTO.error("장바구니에 상품이 존재하지 않습니다.");
+        return ResponseEntity.status(response.getStatusCode()).body(response);
       }
 
       for (Cart cart : cartList) {
@@ -414,10 +421,11 @@ public class MemberApiController {
       cartService.deleteAllByMember(memberId);
       redisService.deletePaymentsData(memberId);
 
-      return ApiResponseDTO.success("결제 완료되었습니다.", null);
+      return ResponseEntity.ok(ApiResponseDTO.success("결제 완료되었습니다.", null));
     } catch (Exception e) {
       log.error("결제 성공 처리 중 오류", e);
-      return ApiResponseDTO.error("결제 처리 중 오류 발생");
+      ApiResponseDTO<Void> response = ApiResponseDTO.error("결제 처리 중 오류 발생");
+      return ResponseEntity.status(response.getStatusCode()).body(response);
     }
   }
 
@@ -462,28 +470,32 @@ public class MemberApiController {
   }
 
   @PostMapping("/findAccount")
-  public ApiResponseDTO<?> findAccount(
+  public ResponseEntity<ApiResponseDTO<?>> findAccount(
     @RequestBody Map<String, String> body) {
 
     String findType = body.get("findType");
     String memberEmail = body.get("memberEmail");
 
     if (!redisService.isVerified(memberEmail)) {
-      return ApiResponseDTO.error("이메일 인증이 필요합니다.");
+      ApiResponseDTO<?> response = ApiResponseDTO.error("이메일 인증이 필요합니다.");
+      return ResponseEntity.status(response.getStatusCode()).body(response);
     }
     redisService.deleteVerified(memberEmail);
 
+    ApiResponseDTO<?> response;
     if ("id".equals(findType)) {
-      return findId(body);
+      response = findId(body);
     } else if ("password".equals(findType)) {
-      return findPassword(body);
+      response = findPassword(body);
+    } else {
+      response = ApiResponseDTO.error("잘못된 요청입니다.");
     }
 
-    return ApiResponseDTO.error("잘못된 요청입니다.");
+    return ResponseEntity.status(response.getStatusCode()).body(response);
   }
 
   @PostMapping("/verifyEmail")
-  public ApiResponseDTO<Void> verifyEmail(@RequestBody Map<String, String> body) {
+  public ResponseEntity<ApiResponseDTO<Void>> verifyEmail(@RequestBody Map<String, String> body) {
     String memberEmail = body.get("memberEmail");
 
     try {
@@ -494,10 +506,11 @@ public class MemberApiController {
       mailService.sendEmail(memberEmail, subject, main, code);
       redisService.saveVerifyCode(memberEmail, code);
 
-      return ApiResponseDTO.success(null);
+      return ResponseEntity.ok(ApiResponseDTO.success(null));
     } catch (Exception e) {
       log.error("이메일 전송 실패 : ", e);
-      return ApiResponseDTO.error("이메일 전송에 실패했습니다.");
+      ApiResponseDTO<Void> response = ApiResponseDTO.error("이메일 전송에 실패했습니다.");
+      return ResponseEntity.status(response.getStatusCode()).body(response);
     }
   }
 

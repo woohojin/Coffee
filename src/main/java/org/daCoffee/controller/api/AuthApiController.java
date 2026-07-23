@@ -13,6 +13,7 @@ import org.daCoffee.service.MemberService;
 import org.daCoffee.service.RedisService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +32,7 @@ public class AuthApiController {
     private long refreshExpiration;
 
     @PostMapping("/refresh")
-    public ApiResponseDTO<Void> refresh(HttpServletRequest request,
+    public ResponseEntity<ApiResponseDTO<Void>> refresh(HttpServletRequest request,
                                         HttpServletResponse response) {
 
         // 쿠키에서 Refresh Token 추출
@@ -46,12 +47,14 @@ public class AuthApiController {
         }
 
         if (refreshToken == null) {
-            return ApiResponseDTO.error("Refresh Token이 없습니다.");
+            ApiResponseDTO<Void> body = ApiResponseDTO.error("Refresh Token이 없습니다.");
+            return ResponseEntity.status(body.getStatusCode()).body(body);
         }
 
         // Refresh Token 유효성 검증
         if (!jwtTokenProvider.validateToken(refreshToken)) {
-            return ApiResponseDTO.error("유효하지 않은 Refresh Token입니다.");
+            ApiResponseDTO<Void> body = ApiResponseDTO.error("유효하지 않은 Refresh Token입니다.");
+            return ResponseEntity.status(body.getStatusCode()).body(body);
         }
 
         String memberId = jwtTokenProvider.getMemberId(refreshToken);
@@ -59,7 +62,8 @@ public class AuthApiController {
         // Redis에 저장된 Refresh Token과 비교
         String savedRefreshToken = redisService.getRefreshToken(memberId);
         if (!refreshToken.equals(savedRefreshToken)) {
-            return ApiResponseDTO.error("Refresh Token이 일치하지 않습니다.");
+            ApiResponseDTO<Void> body = ApiResponseDTO.error("Refresh Token이 일치하지 않습니다.");
+            return ResponseEntity.status(body.getStatusCode()).body(body);
         }
 
         // DB에서 최신 memberTier 조회 (변경된 경우 반영)
@@ -98,6 +102,6 @@ public class AuthApiController {
         response.addHeader("Set-Cookie", refreshCookie.toString());
 
         log.info("토큰 재발급 - memberId: {}", memberId);
-        return ApiResponseDTO.success(null);
+        return ResponseEntity.ok(ApiResponseDTO.success(null));
     }
 }
