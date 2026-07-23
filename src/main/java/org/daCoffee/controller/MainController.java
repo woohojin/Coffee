@@ -28,21 +28,6 @@ public class MainController {
         return "redirect:/main";
     }
     
-    @RequestMapping("main")
-    public String main() {
-        return "main";
-    }
-
-    @RequestMapping("terms")
-    public String terms() {
-        return "terms";
-    }
-
-    @RequestMapping("privacy")
-    public String privacy() {
-        return "privacy";
-    }
-
     @RequestMapping("fileDownload")
     public void fileDownload(HttpServletResponse response,
                              @RequestParam String fileName) throws IOException {
