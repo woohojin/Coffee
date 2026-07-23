@@ -3,6 +3,7 @@ import { AuthProvider } from "./store/authStore";
 import { CartProvider } from "./store/cartStore";
 import Layout from "./components/Layout";
 import MainPage from "./pages/MainPage";
+import PrivacyPage from "./pages/PrivacyPage";
 import ProductListPage from "./pages/ProductListPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import MachineDetailPage from "./pages/MachineDetailPage";
@@ -32,6 +33,7 @@ function App() {
           <Routes>
             <Route element={<Layout />}>
               <Route path="/main" element={<MainPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
               <Route
                 path="/products/productList"
                 element={<ProductListPage />}
