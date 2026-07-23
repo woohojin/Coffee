@@ -314,7 +314,7 @@ function MemberSignUpPage() {
                   </div>
                 </td>
               </tr>
-              <tr>
+              <tr className="member_verify_wrap">
                 <th>
                   <label>인증번호</label>
                 </th>

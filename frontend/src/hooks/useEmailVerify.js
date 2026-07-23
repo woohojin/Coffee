@@ -26,7 +26,13 @@ export function useEmailVerify() {
     }
 
     try {
-      await axiosInstance.post("/api/member/verifyEmail", { memberEmail });
+      const res = await axiosInstance.post("/api/member/verifyEmail", {
+        memberEmail,
+      });
+      if (!res.data.success) {
+        alert(res.data.message || "인증번호 전송 실패");
+        return;
+      }
       alert("인증번호가 전송되었습니다.");
 
       if (countdownRef.current) clearInterval(countdownRef.current);

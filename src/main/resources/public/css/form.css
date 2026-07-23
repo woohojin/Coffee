@@ -41,7 +41,8 @@ input::file-selector-button {
 }
 .member_address_wrap,
 .member_delivery_address_wrap,
-.member_email_wrap {
+.member_email_wrap,
+.member_verify_wrap {
   position: relative;
 }
 .member_address_button,
