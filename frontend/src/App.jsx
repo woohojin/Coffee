@@ -10,6 +10,7 @@ import CartPage from "./pages/CartPage";
 import MemberTermsPage from "./pages/MemberTermsPage";
 import MemberSignInPage from "./pages/MemberSignInPage";
 import MemberSignUpPage from "./pages/MemberSignUpPage";
+import MemberFindAccountPage from "./pages/MemberFindAccountPage";
 import MemberMyPage from "./pages/MemberMyPage";
 import MemberProfilePage from "./pages/MemberProfilePage";
 import MemberHistoryPage from "./pages/MemberHistory";
@@ -64,6 +65,10 @@ function App() {
               <Route
                 path="/member/memberSignUp"
                 element={<MemberSignUpPage />}
+              />
+              <Route
+                path="/member/memberFindAccount"
+                element={<MemberFindAccountPage />}
               />
 
               <Route path="/member/memberCart" element={<CartPage />} />
