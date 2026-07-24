@@ -96,7 +96,7 @@ function MemberProfilePage() {
     if (file) formData.append("file", file);
 
     try {
-      await axiosInstance.post("/member/memberProfilePro", formData);
+      await axiosInstance.put("/api/member/profile", formData);
       alert("회원 정보가 수정되었습니다.");
       navigate("/member/memberMyPage");
     } catch (err) {

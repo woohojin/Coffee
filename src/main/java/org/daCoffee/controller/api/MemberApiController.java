@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dto.*;
 import org.daCoffee.dto.request.MemberSignUpRequestDTO;
+import org.daCoffee.dto.request.MemberUpdateRequestDTO;
 import org.daCoffee.dto.request.PaymentsRequestDTO;
 import org.daCoffee.dto.response.CartDataDTO;
 import org.daCoffee.dto.response.CartPriceDTO;
@@ -186,6 +187,52 @@ public class MemberApiController {
             .build();
 
     return ApiResponseDTO.success(dto);
+  }
+
+  @PutMapping("/profile")
+  public ResponseEntity<ApiResponseDTO<Void>> updateProfile(
+          @ModelAttribute MemberUpdateRequestDTO dto,
+          @RequestParam String memberExistingPassword,
+          @RequestParam(value = "file", required = false) MultipartFile file,
+          @AuthenticationPrincipal JwtUserDetails userDetails) throws IOException {
+
+    String memberId = userDetails.getMemberId();
+    Member member = memberService.findById(memberId)
+            .orElseThrow(() -> new NotFoundException("회원 없음"));
+
+    if (!passwordEncoder.matches(memberExistingPassword, member.getMemberPassword())) {
+      ApiResponseDTO<Void> response = ApiResponseDTO.error("기존 비밀번호가 일치하지 않습니다.");
+      return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
+
+    if (file != null && !file.isEmpty()) {
+      String filePath = fileUploadPath + "/member/" + memberId;
+
+      File uploadPath = new File(filePath);
+      if (!uploadPath.exists()) {
+        boolean created = uploadPath.mkdirs();
+        if (!created) log.error("디렉토리 생성 실패: {}", filePath);
+      }
+
+      String fileName = file.getOriginalFilename();
+      try {
+        file.transferTo(new File(filePath, fileName));
+        dto.setMemberFile(fileName);
+      } catch (IOException e) {
+        log.error("파일 업로드 실패: {}", e.getMessage());
+      }
+    } else {
+      dto.setMemberFile(member.getMemberFile());
+    }
+
+    if (dto.getMemberPassword() != null && !dto.getMemberPassword().isBlank()) {
+      String encoded = passwordEncoder.encode(dto.getMemberPassword());
+      memberService.update(memberId, encoded, dto);
+    } else {
+      memberService.updateWithoutPassword(memberId, dto);
+    }
+
+    return ResponseEntity.ok(ApiResponseDTO.success(null));
   }
 
   @PostMapping("/withdrawal")
