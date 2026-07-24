@@ -28,9 +28,9 @@ function ProtectedRoute({ member, loading, children }) {
 
 function App() {
   return (
-    <AuthProvider>
-      <CartProvider>
-        <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
+        <CartProvider>
           <Routes>
             <Route element={<Layout />}>
               <Route path="/main" element={<MainPage />} />
@@ -100,9 +100,9 @@ function App() {
               />
             </Route>
           </Routes>
-        </BrowserRouter>
-      </CartProvider>
-    </AuthProvider>
+        </CartProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 
