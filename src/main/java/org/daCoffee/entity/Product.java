@@ -62,6 +62,7 @@ public class Product {
     this.productPrice = dto.getProductPrice();
     this.productUnit = dto.getProductUnit();
     this.productTier = dto.getProductTier();
+    this.productSoldOut = dto.isProductSoldOut();
     this.productFile = thumbnailFileName;
     this.productModifierName = adminName;
     this.productModifierDate = LocalDate.now();

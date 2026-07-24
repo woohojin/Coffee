@@ -13,6 +13,7 @@ public class ProductRequestDTO {
   private int productPrice;
   private String productUnit;
   private int productTier;
+  private boolean productSoldOut;
 
   // Bean
   private String beanSpecies;
