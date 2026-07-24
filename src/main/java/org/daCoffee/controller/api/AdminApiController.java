@@ -12,6 +12,8 @@ import org.daCoffee.dto.ApiResponseDTO;
 import org.daCoffee.dto.request.admin.MemberRequestDTO;
 import org.daCoffee.dto.request.admin.OrderHistoryRequestDTO;
 import org.daCoffee.dto.request.admin.ProductRequestDTO;
+import org.daCoffee.dto.response.BeanDataDTO;
+import org.daCoffee.dto.response.MixDataDTO;
 import org.daCoffee.entity.*;
 import org.daCoffee.exception.NotFoundException;
 import org.daCoffee.jwt.JwtUserDetails;
@@ -28,6 +30,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -195,6 +198,37 @@ public class AdminApiController {
                 "totalPages", result.getTotalPages(),
                 "page", page
         ));
+    }
+
+    @GetMapping("/products/{productCode}")
+    public ApiResponseDTO<Map<String, Object>> getProduct(@PathVariable String productCode) {
+        Product product = productService.findById(productCode)
+                .orElseThrow(() -> new NotFoundException("제품이 존재하지 않습니다."));
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("productCode", product.getProductCode());
+        data.put("productType", product.getProductType());
+        data.put("productName", product.getProductName());
+        data.put("productPrice", product.getProductPrice());
+        data.put("productUnit", product.getProductUnit());
+        data.put("productTier", product.getProductTier());
+        data.put("productSoldOut", product.isProductSoldOut());
+
+        if (product.getProductType() == 0) {
+            productService.findBeanById(productCode).ifPresent(bean -> data.put("bean", BeanDataDTO.builder()
+                    .beanSpecies(bean.getBeanSpecies())
+                    .beanCompany(bean.getBeanCompany())
+                    .beanUseByDate(bean.getBeanUseByDate())
+                    .beanCountry(bean.getBeanCountry())
+                    .build()));
+        } else if (product.getProductType() == 1) {
+            productService.findMixById(productCode).ifPresent(mix -> data.put("mix", MixDataDTO.builder()
+                    .mixCompany(mix.getMixCompany())
+                    .mixUseByDate(mix.getMixUseByDate())
+                    .build()));
+        }
+
+        return ApiResponseDTO.success(data);
     }
 
     @PostMapping("/products")
