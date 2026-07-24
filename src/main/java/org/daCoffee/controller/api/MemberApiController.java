@@ -86,6 +86,15 @@ public class MemberApiController {
     return ApiResponseDTO.success("임시 비밀번호가 이메일로 전송되었습니다.", null);
   }
 
+  @GetMapping("/checkId")
+  public ResponseEntity<ApiResponseDTO<Boolean>> checkId(@RequestParam String memberId) {
+    if (memberService.existsById(memberId)) {
+      ApiResponseDTO<Boolean> response = ApiResponseDTO.error("이미 사용 중인 아이디입니다.");
+      return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
+    return ResponseEntity.ok(ApiResponseDTO.success("사용 가능한 아이디입니다.", true));
+  }
+
   @PostMapping("/signup")
   public ResponseEntity<ApiResponseDTO<Void>> signUp(
     @ModelAttribute MemberSignUpRequestDTO dto,

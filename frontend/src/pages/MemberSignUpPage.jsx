@@ -7,6 +7,8 @@ import { validateSignUp } from "../utils/validation";
 
 function MemberSignUpPage() {
   const navigate = useNavigate();
+  const [memberId, setMemberId] = useState("");
+  const [isIdChecked, setIsIdChecked] = useState(false);
   const [memberAddress, setMemberAddress] = useState("");
   const [memberDetailAddress, setMemberDetailAddress] = useState("");
   const [memberDeliveryAddress, setMemberDeliveryAddress] = useState("");
@@ -32,6 +34,21 @@ function MemberSignUpPage() {
     verifiedEmail,
   } = useEmailVerify();
 
+  const handleCheckId = async () => {
+    if (!memberId.trim()) {
+      alert("아이디를 입력해주세요.");
+      return;
+    }
+    try {
+      await axiosInstance.get("/api/member/checkId", { params: { memberId } });
+      alert("사용 가능한 아이디입니다.");
+      setIsIdChecked(true);
+    } catch (err) {
+      setIsIdChecked(false);
+      alert(err.response?.data?.message || "중복 확인에 실패했습니다.");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -46,6 +63,11 @@ function MemberSignUpPage() {
       })
     )
       return;
+
+    if (!isIdChecked) {
+      alert("아이디 중복확인을 해주세요.");
+      return;
+    }
 
     try {
       const formData = new FormData(form);
@@ -65,7 +87,7 @@ function MemberSignUpPage() {
           <p>회원 정보</p>
           <table className="member_signup_form_info">
             <tbody>
-              <tr>
+              <tr className="member_id_wrap">
                 <th>
                   <label htmlFor="member_id">아이디</label>
                   <div className="form_required">*</div>
@@ -79,8 +101,23 @@ function MemberSignUpPage() {
                     minLength="4"
                     maxLength="20"
                     spellCheck="false"
+                    value={memberId}
+                    onChange={(e) => {
+                      setMemberId(e.target.value);
+                      setIsIdChecked(false);
+                    }}
                     required
                   />
+                  <div className="member_id_check_button">
+                    <button
+                      id="check-id-btn"
+                      className="input_btn"
+                      type="button"
+                      onClick={handleCheckId}
+                    >
+                      중복확인
+                    </button>
+                  </div>
                 </td>
               </tr>
               <tr>

@@ -42,13 +42,15 @@ input::file-selector-button {
 .member_address_wrap,
 .member_delivery_address_wrap,
 .member_email_wrap,
-.member_verify_wrap {
+.member_verify_wrap,
+.member_id_wrap {
   position: relative;
 }
 .member_address_button,
 .member_delivery_address_button,
 .member_delivery_address_button2,
-.member_email_verify_button {
+.member_email_verify_button,
+.member_id_check_button {
   position: absolute;
   right: -91px;
   top: 20px;

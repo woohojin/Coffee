@@ -70,6 +70,7 @@ public class SecurityConfig {
         .requestMatchers(
           "/member/memberSignInPro",
           "/api/member/signup",
+          "/api/member/checkId",
           "/api/member/me",
           "/api/member/verifyEmail",
           "/api/member/verifyCode",
