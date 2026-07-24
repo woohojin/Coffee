@@ -467,53 +467,57 @@ public class AdminApiController {
             if (!created) log.error("디렉토리 생성 실패: {}", filePath);
         }
 
-        if (files == null || files.isEmpty() || files.stream().allMatch(MultipartFile::isEmpty)) {
-            ApiResponseDTO<Void> response = ApiResponseDTO.error("업로드 된 파일이 없습니다.");
-            return ResponseEntity.status(response.getStatusCode()).body(response);
-        }
-
         String thumbnailFileName = product.getProductFile();
 
-        for (MultipartFile file : files) {
-            String fileName = file.getOriginalFilename();
-            if (fileName == null || fileName.isEmpty()) continue;
+        if (files != null && !files.isEmpty() && !files.stream().allMatch(MultipartFile::isEmpty)) {
+            for (MultipartFile file : files) {
+                String fileName = file.getOriginalFilename();
+                if (fileName == null || fileName.isEmpty()) continue;
 
-            File dest = new File(filePath, fileName);
-            if (dest.exists()) dest.delete();
-            file.transferTo(dest);
+                File dest = new File(filePath, fileName);
+                if (dest.exists()) dest.delete();
+                file.transferTo(dest);
 
-            if (fileName.contains("thumbnail")) thumbnailFileName = fileName;
+                if (fileName.contains("thumbnail")) thumbnailFileName = fileName;
 
-            final String finalFileName = fileName;
-            boolean exists = productImageService.findByProductCode(productCode)
-                    .stream()
-                    .anyMatch(img -> img.getFileName().equals(finalFileName));
-
-            if (exists) {
-                productImageService.findByProductCode(productCode)
+                final String finalFileName = fileName;
+                boolean exists = productImageService.findByProductCode(productCode)
                         .stream()
-                        .filter(img -> img.getFileName().equals(finalFileName))
-                        .findFirst()
-                        .ifPresent(img -> productImageService.updateModifier(img.getFileId(), finalFileName, adminName));
-            } else {
-                ProductImage image = ProductImage.builder()
-                        .product(product)
-                        .fileName(finalFileName)
-                        .fileRegisterName(adminName)
-                        .fileRegisterDate(LocalDate.now())
-                        .build();
-                productImageService.save(image);
+                        .anyMatch(img -> img.getFileName().equals(finalFileName));
+
+                if (exists) {
+                    productImageService.findByProductCode(productCode)
+                            .stream()
+                            .filter(img -> img.getFileName().equals(finalFileName))
+                            .findFirst()
+                            .ifPresent(img -> productImageService.updateModifier(img.getFileId(), finalFileName, adminName));
+                } else {
+                    ProductImage image = ProductImage.builder()
+                            .product(product)
+                            .fileName(finalFileName)
+                            .fileRegisterName(adminName)
+                            .fileRegisterDate(LocalDate.now())
+                            .build();
+                    productImageService.save(image);
+                }
             }
         }
 
         product.adminUpdateProduct(dto, thumbnailFileName, adminName);
+        productService.updateProduct(product);
 
         if (dto.getProductType() == 0) {
             productService.findBeanById(productCode)
-                    .ifPresent(bean -> bean.adminUpdate(dto, adminName));
+                    .ifPresent(bean -> {
+                        bean.adminUpdate(dto, adminName);
+                        productService.updateBean(bean);
+                    });
         } else if (dto.getProductType() == 1) {
             productService.findMixById(productCode)
-                    .ifPresent(mix -> mix.adminUpdate(dto, adminName));
+                    .ifPresent(mix -> {
+                        mix.adminUpdate(dto, adminName);
+                        productService.updateMix(mix);
+                    });
         }
 
         return ResponseEntity.ok(ApiResponseDTO.success(null));
