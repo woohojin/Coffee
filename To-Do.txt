@@ -1,3 +1,10 @@
+** 내일 할 것 (2026-07-24) **
+ㄴ memberPayments 실제 결제 플로우 테스트 (토스 테스트키 발급받고 진행: 장바구니→결제위젯→승인→성공/실패페이지)
+ㄴ REST 2순위: 액션 기반 URL 정리
+  - POST /api/member/cart/add, /cart/update → 리소스+HTTP verb 방식으로 (POST /cart/items, PATCH 등)
+  - POST /api/member/findAccount → findType으로 아이디찾기/비번찾기 분기하는 거 엔드포인트 분리
+  - POST /api/member/withdrawal → DELETE /api/member/me로
+
 ** 실제 서버 배포 전에 SecurityConfig의 rememberMe key 환경변수 저장 **
 
 전체적으로 REST 방식으로 변경 완료 마지막 검토 진행중
@@ -38,6 +45,9 @@ productDetail 추가 상품 여러개로 선택가능하게 구현
 memberDisabled 수정 필요(disabledMemberList 등)
 footer 및 제품 상세페이지 등 레이아웃 일치
 전체 레이아웃 수정
+프론트엔드 UI/UX 스타일 전면 개편 (후순위, 2026-07-24 논의, 착수 전)
+ㄴ 시작 전 방향성(참고 사이트, 톤) 먼저 정할 것
+ㄴ 한번에 다 바꾸지 말고 페이지 하나로 시안 먼저 (css가 public/css/*.css로 전역 공유되는 구조라 한번에 바꾸면 회귀 추적 어려움)
 order 테이블도 필요해보임 (현재 주문 상태, 주문번호 등)
 장바구니/결제 및 주문기록에 현금영수증, 세금계산서 추가
 주문기록에 세금계산서 현금영수증 + 프론트에서 선택 후 form 생성
