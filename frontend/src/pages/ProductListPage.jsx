@@ -79,23 +79,34 @@ function ProductList() {
               {products.length === 0 ? (
                 <p>제품을 찾을 수 없습니다.</p>
               ) : (
-                products.map((p) => (
-                  <li key={p.productCode}>
-                    {p.productSoldOut === 1 && (
+                products.map((p) =>
+                  p.productSoldOut === 1 ? (
+                    <li key={p.productCode}>
                       <div className="sold_out">Sold Out</div>
-                    )}
-                    <a href={getDetailPath(p)}>
                       <img
                         src={`/files/${getImgFolder(p)}/${p.productCode}/${p.productFile}`}
                         alt={p.productName || "상품 이미지"}
                       />
-                    </a>
-                    <div>
-                      <a href={getDetailPath(p)}>{p.productName}</a>
-                      <p>{formatPrice(p.productPrice)} 원</p>
-                    </div>
-                  </li>
-                ))
+                      <div>
+                        <span>{p.productName}</span>
+                        <p>{formatPrice(p.productPrice)} 원</p>
+                      </div>
+                    </li>
+                  ) : (
+                    <li key={p.productCode}>
+                      <a href={getDetailPath(p)}>
+                        <img
+                          src={`/files/${getImgFolder(p)}/${p.productCode}/${p.productFile}`}
+                          alt={p.productName || "상품 이미지"}
+                        />
+                      </a>
+                      <div>
+                        <a href={getDetailPath(p)}>{p.productName}</a>
+                        <p>{formatPrice(p.productPrice)} 원</p>
+                      </div>
+                    </li>
+                  ),
+                )
               )}
             </div>
           </ul>
