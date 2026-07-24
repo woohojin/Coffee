@@ -29,7 +29,7 @@ function MemberPaymentsPage() {
         paymentsData;
 
       const paymentWidget = window.PaymentWidget(
-        "test_ck_yZqmkKeP8gNW0G14QzkBrbQRxB9l",
+        "test_gck_kYG57Eba3GpqPjpjen99VpWDOxmA",
         customerKey,
       );
 
