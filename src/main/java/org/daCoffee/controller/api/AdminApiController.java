@@ -86,10 +86,16 @@ public class AdminApiController {
     @GetMapping("/members/search")
     public ApiResponseDTO<Map<String, Object>> searchMembers(
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(required = false) String columnName,
-            @RequestParam(required = false) String searchText) {
+            @RequestParam(required = false) String memberCompanyName,
+            @RequestParam(required = false) String memberFranCode,
+            @RequestParam(required = false) String memberId,
+            @RequestParam(required = false) String memberName,
+            @RequestParam(required = false) String memberTel,
+            @RequestParam(required = false) String memberCompanyTel,
+            @RequestParam(required = false) String memberTier) {
 
-        Page<Member> result = memberService.searchMembers(columnName, searchText, page, LIMIT);
+        Page<Member> result = memberService.searchMembers(memberCompanyName, memberFranCode, memberId,
+                memberName, memberTel, memberCompanyTel, memberTier, page, LIMIT);
 
         return ApiResponseDTO.success(Map.of(
                 "list", result.getContent(),
@@ -139,7 +145,7 @@ public class AdminApiController {
     // 회원 승인 대기 목록 (tier == 0)
     @GetMapping("/members/pending")
     public ApiResponseDTO<Map<String, Object>> getPendingMembers() {
-        Page<Member> result = memberService.searchMembers("memberTier", "0", 1, 100);
+        Page<Member> result = memberService.searchMembers(null, null, null, null, null, null, "0", 1, 100);
         return ApiResponseDTO.success(Map.of(
                 "list", result.getContent(),
                 "totalCount", result.getTotalElements()
@@ -188,10 +194,16 @@ public class AdminApiController {
     @GetMapping("/products/search")
     public ApiResponseDTO<Map<String, Object>> searchProducts(
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(required = false) String columnName,
-            @RequestParam(required = false) String searchText) {
+            @RequestParam(required = false) String productCode,
+            @RequestParam(required = false) String productName,
+            @RequestParam(required = false) String productType,
+            @RequestParam(required = false) String productPrice,
+            @RequestParam(required = false) String productUnit,
+            @RequestParam(required = false) String productTier,
+            @RequestParam(required = false) String productSoldOut) {
 
-        Page<Product> result = productService.searchProducts(columnName, searchText, page, LIMIT);
+        Page<Product> result = productService.searchProducts(productCode, productName, productType,
+                productPrice, productUnit, productTier, productSoldOut, page, LIMIT);
         return ApiResponseDTO.success(Map.of(
                 "list", result.getContent(),
                 "totalCount", result.getTotalElements(),

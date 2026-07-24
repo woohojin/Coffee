@@ -9,8 +9,10 @@ import org.daCoffee.repository.CartRepository;
 import org.daCoffee.repository.MemberRepository;
 import org.daCoffee.repository.MemberWithdrawalRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -175,19 +177,53 @@ public class MemberService {
     return memberWithdrawalRepository.findAll(pageable);
   }
 
-  // 회원 검색 (컬럼 + 키워드 기준)
+  // 회원 검색 (입력된 필드 전부 AND 조합)
+  // memberName/memberTel은 DB에 암호화되어 저장되어 있어 SQL LIKE로 부분일치가 불가능하므로,
+  // 암호화 안 된 필드로만 DB에서 1차로 거른 뒤 복호화된 값으로 메모리에서 필터링한다.
   @Transactional(readOnly = true)
-  public Page<Member> searchMembers(String column, String keyword, int pageInt, int limit) {
-    PageRequest pageable = PageRequest.of(pageInt - 1, limit);
-    return switch (column) {
-      case "memberCompanyName" -> memberRepository.findByMemberCompanyNameContaining(keyword, pageable);
-      case "memberId"          -> memberRepository.findByMemberIdContaining(keyword, pageable);
-      case "memberName"        -> memberRepository.findByMemberNameContaining(keyword, pageable);
-      case "memberTel"         -> memberRepository.findByMemberTelContaining(keyword, pageable);
-      case "memberCompanyTel"  -> memberRepository.findByMemberCompanyTelContaining(keyword, pageable);
-      case "memberTier"        -> memberRepository.findByMemberTier(Integer.parseInt(keyword), pageable);
-      default                  -> memberRepository.findAll(pageable);
-    };
+  public Page<Member> searchMembers(String memberCompanyName, String memberFranCode, String memberId,
+                                     String memberName, String memberTel, String memberCompanyTel,
+                                     String memberTier, int pageInt, int limit) {
+    Specification<Member> spec = Specification.where(null);
+    if (memberCompanyName != null && !memberCompanyName.isBlank()) {
+      spec = spec.and((root, query, cb) ->
+              cb.like(root.get("memberCompanyName"), "%" + memberCompanyName + "%"));
+    }
+    if (memberFranCode != null && !memberFranCode.isBlank()) {
+      spec = spec.and((root, query, cb) ->
+              cb.like(root.get("memberFranCode"), "%" + memberFranCode + "%"));
+    }
+    if (memberId != null && !memberId.isBlank()) {
+      spec = spec.and((root, query, cb) ->
+              cb.like(root.get("memberId"), "%" + memberId + "%"));
+    }
+    if (memberCompanyTel != null && !memberCompanyTel.isBlank()) {
+      spec = spec.and((root, query, cb) ->
+              cb.like(root.get("memberCompanyTel"), "%" + memberCompanyTel + "%"));
+    }
+    if (memberTier != null && !memberTier.isBlank()) {
+      spec = spec.and((root, query, cb) ->
+              cb.equal(root.get("memberTier"), Integer.parseInt(memberTier)));
+    }
+
+    boolean hasEncryptedFilter = (memberName != null && !memberName.isBlank())
+            || (memberTel != null && !memberTel.isBlank());
+
+    if (!hasEncryptedFilter) {
+      return memberRepository.findAll(spec, PageRequest.of(pageInt - 1, limit));
+    }
+
+    List<Member> filtered = memberRepository.findAll(spec).stream()
+            .filter(m -> memberName == null || memberName.isBlank()
+                    || (m.getMemberName() != null && m.getMemberName().contains(memberName)))
+            .filter(m -> memberTel == null || memberTel.isBlank()
+                    || (m.getMemberTel() != null && m.getMemberTel().contains(memberTel)))
+            .toList();
+
+    int start = Math.min((pageInt - 1) * limit, filtered.size());
+    int end = Math.min(start + limit, filtered.size());
+
+    return new PageImpl<>(filtered.subList(start, end), PageRequest.of(pageInt - 1, limit), filtered.size());
   }
 
   // 회원 정보 수정
