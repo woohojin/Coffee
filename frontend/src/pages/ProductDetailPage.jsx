@@ -266,7 +266,7 @@ function ProductDetailPage({ pageType }) {
                       </select>
                     </div>
                   )}
-                  {p.productSoldOut === 1 ? (
+                  {p.productSoldOut ? (
                     <div className="product_quantity_submit">
                       <br />
                       <p>Sold Out</p>

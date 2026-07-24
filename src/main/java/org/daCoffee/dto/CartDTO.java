@@ -12,7 +12,7 @@ public class CartDTO {
   private String productFile;
   private String productUnit;
   private int productPrice;
-  private int productSoldOut;
+  private boolean productSoldOut;
   private int quantity;
   private int productGrinding;
   private int productType;

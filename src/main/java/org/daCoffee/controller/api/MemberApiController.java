@@ -299,7 +299,7 @@ public class MemberApiController {
         .productUnit(c.getProduct().getProductUnit())
         .productPrice(c.getProduct().getProductPrice())
         .productFile(c.getProduct().getProductFile())
-        .productSoldOut(c.getProduct().isProductSoldOut() ? 1 : 0)
+        .productSoldOut(c.getProduct().isProductSoldOut())
         .productType(c.getProduct().getProductType())
         .quantity(c.getQuantity())
         .build())
@@ -362,7 +362,7 @@ public class MemberApiController {
         .productUnit(cart.getProduct().getProductUnit())
         .productPrice(cart.getProduct().getProductPrice())
         .productFile(cart.getProduct().getProductFile())
-        .productSoldOut(cart.getProduct().isProductSoldOut() ? 1 : 0)
+        .productSoldOut(cart.getProduct().isProductSoldOut())
         .productType(cart.getProduct().getProductType())
         .quantity(cart.getQuantity())
         .build();

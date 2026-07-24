@@ -80,7 +80,7 @@ function ProductList() {
                 <p>제품을 찾을 수 없습니다.</p>
               ) : (
                 products.map((p) =>
-                  p.productSoldOut === 1 ? (
+                  p.productSoldOut ? (
                     <li key={p.productCode}>
                       <div className="sold_out">Sold Out</div>
                       <img

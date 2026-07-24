@@ -157,7 +157,7 @@ function CartPage() {
                           </div>
                         </td>
                         <td className="member_cart_price">
-                          {c.productSoldOut === 1 ? (
+                          {c.productSoldOut ? (
                             <p>Sold Out</p>
                           ) : (
                             <p>{formatPrice(c.productPrice * c.quantity)} 원</p>
