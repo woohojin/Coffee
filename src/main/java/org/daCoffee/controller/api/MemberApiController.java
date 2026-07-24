@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dto.*;
+import org.daCoffee.dto.request.MemberSignUpRequestDTO;
 import org.daCoffee.dto.request.PaymentsRequestDTO;
 import org.daCoffee.dto.response.CartDataDTO;
 import org.daCoffee.dto.response.CartPriceDTO;
@@ -23,7 +24,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -44,6 +48,9 @@ public class MemberApiController {
   private final MailService mailService;
   private final PasswordEncoder passwordEncoder;
   private final RedisService redisService;
+
+  @Value("${FILE_UPLOAD_PATH}")
+  private String fileUploadPath;
 
   @Value("${SECRET_TOSS_WIDGET_KEY}")
   private String secretTossWidgetKey;
@@ -75,6 +82,63 @@ public class MemberApiController {
     memberService.updatePassword(memberId, encoded);
 
     return ApiResponseDTO.success("임시 비밀번호가 이메일로 전송되었습니다.", null);
+  }
+
+  @PostMapping("/signup")
+  public ResponseEntity<ApiResponseDTO<Void>> signUp(
+    @ModelAttribute MemberSignUpRequestDTO dto,
+    @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+
+    if (!redisService.isVerified(dto.getMemberEmail())) {
+      ApiResponseDTO<Void> response = ApiResponseDTO.error("이메일 인증이 필요합니다.");
+      return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
+    redisService.deleteVerified(dto.getMemberEmail());
+
+    if (memberService.existsById(dto.getMemberId())) {
+      ApiResponseDTO<Void> response = ApiResponseDTO.error("이미 사용 중인 아이디입니다.");
+      return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
+
+    String memberFile = null;
+    if (file != null && !file.isEmpty()) {
+      String filePath = fileUploadPath + "/member/" + dto.getMemberId();
+
+      File uploadPath = new File(filePath);
+      if (!uploadPath.exists()) {
+        boolean created = uploadPath.mkdirs();
+        if (!created) log.error("디렉토리 생성 실패: {}", filePath);
+      }
+
+      memberFile = file.getOriginalFilename();
+      try {
+        file.transferTo(new File(filePath, memberFile));
+      } catch (IOException e) {
+        log.error("파일 업로드 실패: {}", e.getMessage());
+      }
+    }
+
+    Member member = Member.builder()
+      .memberId(dto.getMemberId())
+      .memberName(dto.getMemberName())
+      .memberCompanyName(dto.getMemberCompanyName())
+      .memberPassword(passwordEncoder.encode(dto.getMemberPassword()))
+      .memberTel(dto.getMemberTel())
+      .memberCompanyTel(dto.getMemberCompanyTel())
+      .memberAddress(dto.getMemberAddress())
+      .memberDetailAddress(dto.getMemberDetailAddress())
+      .memberDeliveryAddress(dto.getMemberDeliveryAddress())
+      .memberDetailDeliveryAddress(dto.getMemberDetailDeliveryAddress())
+      .memberEmail(dto.getMemberEmail())
+      .memberFile(memberFile)
+      .memberTier(0)
+      .memberDisabledStatus(false)
+      .memberDate(LocalDate.now())
+      .build();
+
+    memberService.save(member);
+
+    return ResponseEntity.ok(ApiResponseDTO.success(null));
   }
 
   @GetMapping("/me") // React 로그인 여부 확인용 - 비로그인도 정상 응답(200, data: null)

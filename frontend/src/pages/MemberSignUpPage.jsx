@@ -50,7 +50,7 @@ function MemberSignUpPage() {
     try {
       const formData = new FormData(form);
       formData.set("memberEmail", verifiedEmail);
-      await axiosInstance.post("/member/memberSignUpPro", formData);
+      await axiosInstance.post("/api/member/signup", formData);
       alert("회원가입이 완료되었습니다.");
       navigate("/member/memberSignIn");
     } catch (err) {

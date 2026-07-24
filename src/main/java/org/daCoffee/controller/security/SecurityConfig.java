@@ -69,6 +69,7 @@ public class SecurityConfig {
       .authorizeHttpRequests(auth -> auth
         .requestMatchers(
           "/member/memberSignInPro",
+          "/api/member/signup",
           "/api/member/me",
           "/api/member/verifyEmail",
           "/api/member/verifyCode",
