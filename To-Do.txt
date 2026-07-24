@@ -1,7 +1,5 @@
 ** 실제 서버 배포 전에 SecurityConfig의 rememberMe key 환경변수 저장 **
 
-enum 방식으로 코드 개선, 디자인 패턴 적용 유무 고려 및 SOLID 원칙 준수
-커스텀 어노테이션, jwt, 어노테이션 + URL REST 방식으로 개선, ngnix
 Docker 사용, CI/CD 사용
 
 메인페이지
