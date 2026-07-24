@@ -13,9 +13,11 @@
   justify-content: center;
   align-items: center;
   position: absolute;
+  top: 0;
+  left: 0;
   color: white;
-  width: 115px;
-  height: 115px;
+  width: 200px;
+  height: 200px;
   background-color: rgba(131, 131, 131, 0.7);
   font-size: 20px;
 }
