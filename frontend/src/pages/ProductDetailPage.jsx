@@ -48,7 +48,7 @@ function ProductDetailPage({ pageType }) {
     e.preventDefault();
     const formData = new FormData(e.target);
     try {
-      const res = await axiosInstance.post("/api/member/cart/add", formData);
+      const res = await axiosInstance.post("/api/member/cart/items", formData);
       const cartDTO = res.data.data;
       await refreshCartCount();
       setCartPreview(cartDTO);

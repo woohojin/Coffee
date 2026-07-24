@@ -287,36 +287,38 @@ public class MemberApiController {
     return ApiResponseDTO.success(list);
   }
 
+  private CartDataDTO buildCartData(String memberId) {
+    CartPriceDTO cartPriceDTO = priceCalculator.calculatePrice(memberId);
+    List<Cart> cartList = cartService.getCartList(memberId);
+
+    List<CartDTO> list = cartList.stream()
+      .map(c -> CartDTO.builder()
+        .memberId(c.getId().getMemberId())
+        .productCode(c.getId().getProductCode())
+        .productName(c.getProduct().getProductName())
+        .productUnit(c.getProduct().getProductUnit())
+        .productPrice(c.getProduct().getProductPrice())
+        .productFile(c.getProduct().getProductFile())
+        .productSoldOut(c.getProduct().isProductSoldOut() ? 1 : 0)
+        .productType(c.getProduct().getProductType())
+        .quantity(c.getQuantity())
+        .build())
+      .toList();
+
+    return CartDataDTO.builder()
+      .cartCount(cartPriceDTO.getCartCount())
+      .sumPrice(cartPriceDTO.getSumPrice())
+      .deliveryFee(cartPriceDTO.getDeliveryFee())
+      .totalPrice(cartPriceDTO.getTotalPrice())
+      .list(list)
+      .build();
+  }
+
   @GetMapping("/cart")
   public ResponseEntity<ApiResponseDTO<CartDataDTO>> getCart(@AuthenticationPrincipal JwtUserDetails userDetails) {
     try {
       String memberId = userDetails.getMemberId();
-      CartPriceDTO cartPriceDTO = priceCalculator.calculatePrice(memberId);
-      List<Cart> cartList = cartService.getCartList(memberId);
-
-      List<CartDTO> list = cartList.stream()
-        .map(c -> CartDTO.builder()
-          .memberId(c.getId().getMemberId())
-          .productCode(c.getId().getProductCode())
-          .productName(c.getProduct().getProductName())
-          .productUnit(c.getProduct().getProductUnit())
-          .productPrice(c.getProduct().getProductPrice())
-          .productFile(c.getProduct().getProductFile())
-          .productSoldOut(c.getProduct().isProductSoldOut() ? 1 : 0)
-          .productType(c.getProduct().getProductType())
-          .quantity(c.getQuantity())
-          .build())
-        .toList();
-
-      CartDataDTO data = CartDataDTO.builder()
-        .cartCount(cartPriceDTO.getCartCount())
-        .sumPrice(cartPriceDTO.getSumPrice())
-        .deliveryFee(cartPriceDTO.getDeliveryFee())
-        .totalPrice(cartPriceDTO.getTotalPrice())
-        .list(list)
-        .build();
-
-      return ResponseEntity.ok(ApiResponseDTO.success(data));
+      return ResponseEntity.ok(ApiResponseDTO.success(buildCartData(memberId)));
     } catch (Exception e) {
       log.error("장바구니 조회 실패", e);
       ApiResponseDTO<CartDataDTO> response = ApiResponseDTO.error("장바구니 조회 중 오류가 발생했습니다.");
@@ -324,7 +326,7 @@ public class MemberApiController {
     }
   }
 
-  @PostMapping("/cart/add")
+  @PostMapping("/cart/items")
   public ResponseEntity<ApiResponseDTO<CartDTO>> addToCart(
     @AuthenticationPrincipal JwtUserDetails userDetails,
     @RequestParam String productCode,
@@ -373,59 +375,36 @@ public class MemberApiController {
     }
   }
 
-  @PostMapping("/cart/update")
-  public ResponseEntity<ApiResponseDTO<CartDataDTO>> updateCart(
-    @RequestParam String status,
-    @RequestParam String productCode,
+  @PatchMapping("/cart/items/{productCode}")
+  public ResponseEntity<ApiResponseDTO<CartDataDTO>> updateCartItemQuantity(
+    @PathVariable String productCode,
+    @RequestParam int delta,
     @AuthenticationPrincipal JwtUserDetails userDetails) {
 
     String memberId = userDetails.getMemberId();
-    int delta = 0;
 
     try {
-      if ("delete".equals(status)) {
-        cartService.deleteCartItem(memberId, productCode);
-      } else if ("increase".equals(status)) {
-        delta = 1;
-        cartService.updateQuantity(memberId, productCode, 1);
-      } else if("decrease".equals(status)) {
-        delta = -1;
-        cartService.updateQuantity(memberId, productCode, -1);
-      }
-
-      // ==== 제품 갯수 변경 후 가격 계산 ====
-      CartPriceDTO cartPriceDTO = priceCalculator.calculatePrice(memberId);
-      List<Cart> cartList = cartService.getCartList(memberId);
-
-      List<CartDTO> list = cartList.stream()
-        .map(c -> CartDTO.builder()
-          .memberId(c.getId().getMemberId())
-          .productCode(c.getId().getProductCode())
-          .productName(c.getProduct().getProductName())
-          .productUnit(c.getProduct().getProductUnit())
-          .productPrice(c.getProduct().getProductPrice())
-          .productFile(c.getProduct().getProductFile())
-          .productSoldOut(c.getProduct().isProductSoldOut() ? 1 : 0)
-          .productType(c.getProduct().getProductType())
-          .quantity(c.getQuantity())
-          .build())
-        .toList();
-
-      CartDataDTO data = CartDataDTO.builder()
-        .cartCount(cartPriceDTO.getCartCount())
-        .sumPrice(cartPriceDTO.getSumPrice())
-        .deliveryFee(cartPriceDTO.getDeliveryFee())
-        .totalPrice(cartPriceDTO.getTotalPrice())
-        .list(list)
-        .build();
-
-      log.info("updateCart called: memberId={}, productCode={}, status={}, delta={}",
-        memberId, productCode, status, delta);
-
-      return ResponseEntity.ok(ApiResponseDTO.success(data));
-
+      cartService.updateQuantity(memberId, productCode, delta);
+      return ResponseEntity.ok(ApiResponseDTO.success(buildCartData(memberId)));
     } catch (Exception e) {
-      log.error("장바구니 업데이트 실패", e);
+      log.error("장바구니 수량 변경 실패", e);
+      ApiResponseDTO<CartDataDTO> response = ApiResponseDTO.error("처리 중 오류 발생");
+      return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
+  }
+
+  @DeleteMapping("/cart/items/{productCode}")
+  public ResponseEntity<ApiResponseDTO<CartDataDTO>> deleteCartItem(
+    @PathVariable String productCode,
+    @AuthenticationPrincipal JwtUserDetails userDetails) {
+
+    String memberId = userDetails.getMemberId();
+
+    try {
+      cartService.deleteCartItem(memberId, productCode);
+      return ResponseEntity.ok(ApiResponseDTO.success(buildCartData(memberId)));
+    } catch (Exception e) {
+      log.error("장바구니 삭제 실패", e);
       ApiResponseDTO<CartDataDTO> response = ApiResponseDTO.error("처리 중 오류 발생");
       return ResponseEntity.status(response.getStatusCode()).body(response);
     }

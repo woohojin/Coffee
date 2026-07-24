@@ -15,12 +15,13 @@ function CartPage() {
     navigate("/member/memberPayments");
   };
 
-  const updateCart = async (productCode, status) => {
+  const updateCart = async (productCode, delta) => {
     try {
-      const formData = new FormData();
-      formData.append("productCode", productCode);
-      formData.append("status", status);
-      const res = await axiosInstance.post("/api/member/cart/update", formData);
+      const res = await axiosInstance.patch(
+        `/api/member/cart/items/${productCode}`,
+        null,
+        { params: { delta } },
+      );
       setCartData(res.data.data);
     } catch (err) {
       alert("서버와의 연결에 문제가 발생했습니다.");
@@ -29,7 +30,14 @@ function CartPage() {
 
   const handleDelete = async (productCode) => {
     if (!confirm("장바구니에서 삭제하시겠습니까?")) return;
-    await updateCart(productCode, "delete");
+    try {
+      const res = await axiosInstance.delete(
+        `/api/member/cart/items/${productCode}`,
+      );
+      setCartData(res.data.data);
+    } catch (err) {
+      alert("서버와의 연결에 문제가 발생했습니다.");
+    }
   };
 
   useEffect(() => {
@@ -115,9 +123,7 @@ function CartPage() {
                               <button
                                 type="button"
                                 className="up_btn"
-                                onClick={() =>
-                                  updateCart(c.productCode, "increase")
-                                }
+                                onClick={() => updateCart(c.productCode, 1)}
                               >
                                 <img
                                   src="/image/triangle-up.png"
@@ -127,9 +133,7 @@ function CartPage() {
                               <button
                                 type="button"
                                 className="down_btn"
-                                onClick={() =>
-                                  updateCart(c.productCode, "decrease")
-                                }
+                                onClick={() => updateCart(c.productCode, -1)}
                               >
                                 <img
                                   src="/image/triangle-down.png"
