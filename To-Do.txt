@@ -1,39 +1,14 @@
 ** 실제 서버 배포 전에 SecurityConfig의 rememberMe key 환경변수 저장 **
 
-전체적으로 REST 방식으로 변경 완료 마지막 검토 진행중
-ㄴ Admin 제외 Controller 전체 완료
-ㄴ Security, Dao, Config, Handler, module, Service, util 전체 완료
-ㄴ dto, exception은 제외
-
-예외처리의 경우 service에서 직접 error를 리턴시키고 있는데 GlobalExceptionHandler에서 처리하도록 변경(예외변환)
-
-ㄴ memberPayments부분 변경 완료했으나 기타 이유로 테스트 진행이 어려움 추후 예정, 동일 이슈로 memberFindAccount도 테스트 어려움 추후 예정
-ㄴ DTO들 @Data -> @Builder CartPriceDTO는 calculator에서 setter -> builder도 같이 수정
-
-백엔드 전체 Restful 방식 사용으로 변경
-ㄴ 변경 하는 겸 front는 react를 도입하는 것으로 결정 + war대신 jar 배포를 위한 서버와 프로젝트 세팅을 다시 하는 것으로 결정
-
 enum 방식으로 코드 개선, 디자인 패턴 적용 유무 고려 및 SOLID 원칙 준수
 커스텀 어노테이션, jwt, 어노테이션 + URL REST 방식으로 개선, ngnix
-채팅 상담 기능 구현해보기(WebSocket)
 Docker 사용, CI/CD 사용
-MainController FileInputStream 수정
-mybatis 에서 jpa로
 
 메인페이지
 이메일 변경
-어드민 검색 쿼리문 업데이트 필요
 회원가입 아이디 중복확인
 
-spring.mvc.throw-exception-if-no-handler-found가 deprecated 되어서 서버 에러를 예외 처리 하는 방법을 찾아야함 현재는 계속 error.html로 이어짐
-ㄴ확인 결과 GlobalExceptionHandler에서 이미 예외처리를 정상적으로 진행하고 있어서 필요 없는 설정이었으며 Internal server error를 처리하지 못하던 문제는 memberPayments의 단독적인 문제임
-
-장바구니에서 상품 이미지 클릭 시 해당 상품으로 이동
-어드민 검색조건 비우고 검색시 초기리스트로 변경
-카트 주문하기 버튼 클릭시 에러 발생 예외처리 필요
 springSecurity 자세히 살펴보기
-Redis 사용 여부 판단
-수정테이블 생성
 어드민 엑셀 불러오기 모듈화
 페이지 사용 중 세션 만료시 재로그인 후 해당 페이지로 이동
 장바구니에 선택 주문 추가
@@ -43,10 +18,12 @@ productDetail 추가 상품 여러개로 선택가능하게 구현
 memberDisabled 수정 필요(disabledMemberList 등)
 footer 및 제품 상세페이지 등 레이아웃 일치
 전체 레이아웃 수정
+프론트엔드 UI/UX 스타일 전면 개편 (후순위, 2026-07-24 논의, 착수 전)
+ㄴ 시작 전 방향성(참고 사이트, 톤) 먼저 정할 것
+ㄴ 한번에 다 바꾸지 말고 페이지 하나로 시안 먼저 (css가 public/css/*.css로 전역 공유되는 구조라 한번에 바꾸면 회귀 추적 어려움)
 order 테이블도 필요해보임 (현재 주문 상태, 주문번호 등)
 장바구니/결제 및 주문기록에 현금영수증, 세금계산서 추가
 주문기록에 세금계산서 현금영수증 + 프론트에서 선택 후 form 생성
-productGrinding이 다를 경우 카트 제품 여러개로
 로그저장
 대시보드
 admin 클릭시 복사
@@ -58,7 +35,6 @@ admin 클릭시 복사
 css 정리 분류부터 다시
 공지사항
 텍스트에디터
-장바구니 수량 추가 동일 상품시 count는 그대로인데 장바구니 숫자가 늘어남 js
 헤더 fixed 로고 빼고 가져오기
 위시리스트
 국세청 전자세금계산서 api확인

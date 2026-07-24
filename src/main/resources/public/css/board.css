@@ -251,7 +251,7 @@
   position: absolute;
   color: white;
   background-color: var(--mainColor);
-  height: -webkit-fill-available;
+  height: 110%;
   width: 350px;
   top: 0;
   right: 0;
@@ -383,7 +383,7 @@
   border: none;
   padding: 0 50px;
 }
-.member_terms_button input[type="submit"] {
+.member_terms_button #terms-submit_btn {
   width: 120px;
   height: 50px;
   margin-bottom: 50px;

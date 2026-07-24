@@ -10,9 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,21 +28,6 @@ public class MainController {
         return "redirect:/main";
     }
     
-    @RequestMapping("main")
-    public String main() {
-        return "main";
-    }
-
-    @RequestMapping("terms")
-    public String terms() {
-        return "terms";
-    }
-
-    @RequestMapping("privacy")
-    public String privacy() {
-        return "privacy";
-    }
-
     @RequestMapping("fileDownload")
     public void fileDownload(HttpServletResponse response,
                              @RequestParam String fileName) throws IOException {

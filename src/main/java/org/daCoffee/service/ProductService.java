@@ -10,10 +10,10 @@ import org.daCoffee.repository.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -69,11 +69,11 @@ public class ProductService {
     return productRepository.countByProductTierAndProductType(memberTier, productType);
   }
 
-  // 제품 검색 (이름 기준, 페이징)
+  // 제품 검색 (검색어, 회원 등급)
   @Transactional(readOnly = true)
-  public Page<Product> searchByName(String keyword, int pageInt, int limit) {
+  public Page<Product> searchByName(String keyword, int memberTier, int pageInt, int limit) {
     PageRequest pageable = PageRequest.of(pageInt - 1, limit);
-    return productRepository.findByProductNameContaining(keyword, pageable);
+    return productRepository.findByProductTierAndProductNameContaining(memberTier, keyword, pageable);
   }
 
   // ===================== Admin =====================
@@ -139,19 +139,43 @@ public class ProductService {
     return productRepository.findAll(pageable);
   }
 
-  // 제품 검색 (컬럼 + 키워드)
+  // 제품 검색 (입력된 필드 전부 AND 조합)
   @Transactional(readOnly = true)
-  public Page<Product> searchProducts(String column, String keyword, int pageInt, int limit) {
+  public Page<Product> searchProducts(String productCode, String productName, String productType,
+                                       String productPrice, String productUnit, String productTier,
+                                       String productSoldOut, int pageInt, int limit) {
     PageRequest pageable = PageRequest.of(pageInt - 1, limit);
-    return switch (column) {
-      case "product_name"     -> productRepository.findByProductNameContaining(keyword, pageable);
-      case "product_code"     -> productRepository.findByProductCodeContaining(keyword, pageable);
-      case "product_unit"     -> productRepository.findByProductUnitContaining(keyword, pageable);
-      case "product_type"     -> productRepository.findByProductType(Integer.parseInt(keyword), pageable);
-      case "product_price"    -> productRepository.findByProductPrice(Integer.parseInt(keyword), pageable);
-      case "product_tier"     -> productRepository.findByProductTier(Integer.parseInt(keyword), pageable);
-      case "product_sold_out" -> productRepository.findByProductSoldOut("1".equals(keyword), pageable);
-      default                 -> productRepository.findAll(pageable);
-    };
+
+    Specification<Product> spec = Specification.where(null);
+    if (productCode != null && !productCode.isBlank()) {
+      spec = spec.and((root, query, cb) ->
+              cb.like(root.get("productCode"), "%" + productCode + "%"));
+    }
+    if (productName != null && !productName.isBlank()) {
+      spec = spec.and((root, query, cb) ->
+              cb.like(root.get("productName"), "%" + productName + "%"));
+    }
+    if (productType != null && !productType.isBlank()) {
+      spec = spec.and((root, query, cb) ->
+              cb.equal(root.get("productType"), Integer.parseInt(productType)));
+    }
+    if (productPrice != null && !productPrice.isBlank()) {
+      spec = spec.and((root, query, cb) ->
+              cb.equal(root.get("productPrice"), Integer.parseInt(productPrice)));
+    }
+    if (productUnit != null && !productUnit.isBlank()) {
+      spec = spec.and((root, query, cb) ->
+              cb.like(root.get("productUnit"), "%" + productUnit + "%"));
+    }
+    if (productTier != null && !productTier.isBlank()) {
+      spec = spec.and((root, query, cb) ->
+              cb.equal(root.get("productTier"), Integer.parseInt(productTier)));
+    }
+    if (productSoldOut != null && !productSoldOut.isBlank()) {
+      spec = spec.and((root, query, cb) ->
+              cb.equal(root.get("productSoldOut"), "1".equals(productSoldOut)));
+    }
+
+    return productRepository.findAll(spec, pageable);
   }
 }

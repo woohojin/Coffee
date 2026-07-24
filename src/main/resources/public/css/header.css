@@ -94,7 +94,7 @@ header {
 .hd_gnb_menu > ul > li > a {
   font-size: 17px;
 }
-.hd_gnb_menu > ul > li > form > button {
+.hd_gnb_menu > ul > li > button {
   font-size: 17px;
   background: transparent;
   text-decoration: none;

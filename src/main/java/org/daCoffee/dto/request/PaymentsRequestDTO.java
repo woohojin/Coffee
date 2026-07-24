@@ -8,5 +8,5 @@ import lombok.Getter;
 public class PaymentsRequestDTO {
     private String paymentKey;
     private String orderId;
-    private String amount;
+    private Integer amount;
 }

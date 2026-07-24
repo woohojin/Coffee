@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
-import org.thymeleaf.exceptions.TemplateInputException;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -167,20 +166,6 @@ public class GlobalExceptionHandler {
 
     ApiResponseDTO<Void> response = ApiResponseDTO.error(
       "데이터베이스 오류가 발생했습니다.",
-      500
-    );
-
-    return ResponseEntity
-      .status(HttpStatus.INTERNAL_SERVER_ERROR)
-      .body(response);
-  }
-
-  @ExceptionHandler(TemplateInputException.class)
-  public ResponseEntity<ApiResponseDTO<Void>> handleTemplateInputException(TemplateInputException e) {
-    log.error("Template input error occurred", e);
-
-    ApiResponseDTO<Void> response = ApiResponseDTO.error(
-      "템플릿 오류가 발생했습니다.",
       500
     );
 

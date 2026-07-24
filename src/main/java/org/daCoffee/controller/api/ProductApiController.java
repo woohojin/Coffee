@@ -3,7 +3,6 @@ package org.daCoffee.controller.api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dto.ApiResponseDTO;
-import org.daCoffee.dto.ProductDTO;
 import org.daCoffee.dto.response.BeanDataDTO;
 import org.daCoffee.dto.response.MixDataDTO;
 import org.daCoffee.dto.response.ProductDetailDataDTO;
@@ -14,15 +13,14 @@ import org.daCoffee.entity.Product;
 import org.daCoffee.exception.BusinessException;
 import org.daCoffee.exception.NotFoundException;
 import org.daCoffee.exception.UnauthorizedException;
+import org.daCoffee.jwt.JwtUserDetails;
 import org.daCoffee.service.ProductImageService;
 import org.daCoffee.service.ProductService;
 import org.daCoffee.util.PaginationUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/products")
@@ -36,7 +34,9 @@ public class ProductApiController {
   public ResponseEntity<ApiResponseDTO<ProductListDataDTO>> getProductList(
     @RequestParam(value = "pageType", defaultValue = "bean") String pageType,
     @RequestParam(defaultValue = "1") int pageInt,
-    @SessionAttribute(required = false) Integer memberTier) {
+    @AuthenticationPrincipal JwtUserDetails userDetails) {
+
+    Integer memberTier = userDetails != null ? userDetails.getMemberTier() : 0;
 
     // 직접 memberTier를 체크해서 예외처리가 이루어지기 때문에 파라미터에서는 required가 false
     if (memberTier == 0) {
@@ -69,8 +69,10 @@ public class ProductApiController {
 
   @GetMapping("/{productCode}")
   public ResponseEntity<ApiResponseDTO<ProductDetailDataDTO>> getProductDetail(@PathVariable("productCode") String productCode,
-                                                                               @SessionAttribute(required = false) Integer memberTier,
+                                                                               @AuthenticationPrincipal JwtUserDetails userDetails,
                                                                                @RequestParam(defaultValue = "bean") String pageType) {
+
+    Integer memberTier = userDetails != null ? userDetails.getMemberTier() : 0;
 
     if (memberTier == 0) {
       throw new UnauthorizedException("회원가입 진행 후 1566-0904로 연락 부탁드립니다.");
@@ -119,6 +121,32 @@ public class ProductApiController {
       .mix(mixDTO)
       .detailImageName(detailImageName)
       .build();
+
+    return ResponseEntity.ok(ApiResponseDTO.success(data));
+  }
+
+  @GetMapping("/search")
+  public ResponseEntity<ApiResponseDTO<ProductListDataDTO>> searchProducts(
+          @RequestParam String searchText,
+          @RequestParam(defaultValue = "1") int pageInt,
+          @AuthenticationPrincipal JwtUserDetails userDetails) {
+
+    Integer memberTier = userDetails != null ? userDetails.getMemberTier() : 0;
+
+    if (memberTier == null || memberTier == 0) {
+      throw new UnauthorizedException("권한이 없습니다.");
+    }
+
+    Page<Product> result = productService.searchByName(searchText, memberTier, pageInt, PaginationUtil.LIMIT);
+
+    ProductListDataDTO data = ProductListDataDTO.builder()
+            .list(result.getContent())
+            .productCount((int) result.getTotalElements())
+            .totalPages(result.getTotalPages())
+            .pageInt(pageInt)
+            .searchText(searchText)
+            .memberTier(memberTier)
+            .build();
 
     return ResponseEntity.ok(ApiResponseDTO.success(data));
   }

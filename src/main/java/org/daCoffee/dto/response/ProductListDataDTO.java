@@ -15,4 +15,5 @@ public class ProductListDataDTO {
   private int pageInt;
   private String pageType;
   private int memberTier;
+  private String searchText;
 }
