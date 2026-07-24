@@ -8,6 +8,7 @@ function formatPrice(price) {
 }
 
 const PRODUCT_TYPE = { 0: "원두", 1: "믹스", 2: "카페용품" };
+const PRODUCT_TYPE_REVERSE = { 원두: "0", 믹스: "1", 카페용품: "2" };
 const PRODUCT_TIER = { 0: "비활성화", 1: "임대", 2: "미임대", 3: "카페고객" };
 
 function ProductListPage() {
@@ -85,7 +86,7 @@ function ProductListPage() {
     searchParams.current = {
       productCode: searchProductCode,
       productName: searchProductName,
-      productType: searchProductType,
+      productType: PRODUCT_TYPE_REVERSE[searchProductType] ?? searchProductType,
       productPrice: searchProductPrice,
       productUnit: searchProductUnit,
       productTier: searchProductTier,
