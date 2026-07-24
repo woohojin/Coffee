@@ -15,6 +15,14 @@ function CartPage() {
     navigate("/member/memberPayments");
   };
 
+  const getDetailPath = (c) => {
+    if (c.productType === 1)
+      return `/products/mixDetail?productCode=${c.productCode}`;
+    if (c.productType === 2)
+      return `/products/cafeDetail?productCode=${c.productCode}`;
+    return `/products/beanDetail?productCode=${c.productCode}`;
+  };
+
   const updateCart = async (productCode, delta) => {
     try {
       const res = await axiosInstance.patch(
@@ -100,10 +108,15 @@ function CartPage() {
                     return (
                       <tr key={c.productCode}>
                         <td className="member_cart_image">
-                          <img
-                            src={`/files/${folder}/${c.productCode}/${c.productFile}`}
-                            alt={c.productName}
-                          />
+                          <a
+                            onClick={() => navigate(getDetailPath(c))}
+                            style={{ cursor: "pointer" }}
+                          >
+                            <img
+                              src={`/files/${folder}/${c.productCode}/${c.productFile}`}
+                              alt={c.productName}
+                            />
+                          </a>
                         </td>
                         <td className="member_cart_info">
                           <p>{c.productName}</p>
