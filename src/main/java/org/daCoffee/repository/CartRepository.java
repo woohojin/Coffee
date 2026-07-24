@@ -2,6 +2,7 @@ package org.daCoffee.repository;
 
 import org.daCoffee.entity.Cart;
 import org.daCoffee.entity.CartId;
+import org.daCoffee.entity.ProductType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -34,7 +35,7 @@ public interface CartRepository extends JpaRepository<Cart, CartId> {
 
   // 특정 회원의 장바구니에 특정 제품 종류가 담긴 갯수
   @Query("SELECT c.quantity FROM Cart c WHERE c.id.memberId = :memberId AND c.product.productType = :productType")
-  List<Integer> findQuantitiesByMemberIdAndProductType(@Param("memberId") String memberId, @Param("productType") int productType);
+  List<Integer> findQuantitiesByMemberIdAndProductType(@Param("memberId") String memberId, @Param("productType") ProductType productType);
 
   // 특정 회원의 장바구니 전체 삭제
   @Modifying

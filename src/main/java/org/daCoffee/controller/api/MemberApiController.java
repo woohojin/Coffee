@@ -13,6 +13,7 @@ import org.daCoffee.dto.response.MemberProfileDTO;
 import org.daCoffee.dto.response.PaymentsDataDTO;
 import org.daCoffee.entity.Cart;
 import org.daCoffee.entity.Member;
+import org.daCoffee.entity.MemberTier;
 import org.daCoffee.entity.OrderHistory;
 import org.daCoffee.exception.NotFoundException;
 import org.daCoffee.jwt.JwtUserDetails;
@@ -132,7 +133,7 @@ public class MemberApiController {
       .memberDetailDeliveryAddress(dto.getMemberDetailDeliveryAddress())
       .memberEmail(dto.getMemberEmail())
       .memberFile(memberFile)
-      .memberTier(0)
+      .memberTier(MemberTier.UNAPPROVED)
       .memberDisabledStatus(false)
       .memberDate(LocalDate.now())
       .build();
@@ -157,7 +158,7 @@ public class MemberApiController {
 
     MemberDTO dto = MemberDTO.builder()
             .memberId(member.getMemberId())
-            .memberTier(member.getMemberTier())
+            .memberTier(member.getMemberTier().getCode())
             .memberName(member.getMemberName())
             .build();
 
@@ -300,7 +301,7 @@ public class MemberApiController {
         .productPrice(c.getProduct().getProductPrice())
         .productFile(c.getProduct().getProductFile())
         .productSoldOut(c.getProduct().isProductSoldOut())
-        .productType(c.getProduct().getProductType())
+        .productType(c.getProduct().getProductType().getCode())
         .quantity(c.getQuantity())
         .build())
       .toList();
@@ -363,7 +364,7 @@ public class MemberApiController {
         .productPrice(cart.getProduct().getProductPrice())
         .productFile(cart.getProduct().getProductFile())
         .productSoldOut(cart.getProduct().isProductSoldOut())
-        .productType(cart.getProduct().getProductType())
+        .productType(cart.getProduct().getProductType().getCode())
         .quantity(cart.getQuantity())
         .build();
 
@@ -490,7 +491,7 @@ public class MemberApiController {
       for (Cart cart : cartList) {
         OrderHistory orderHistory = OrderHistory.builder()
           .orderId(orderId)
-          .memberTier(member.getMemberTier())
+          .memberTier(member.getMemberTier().getCode())
           .memberId(memberId)
           .memberName(member.getMemberName())
           .memberCompanyName(member.getMemberCompanyName())

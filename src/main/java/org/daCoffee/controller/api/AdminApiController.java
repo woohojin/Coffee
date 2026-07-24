@@ -218,14 +218,14 @@ public class AdminApiController {
         data.put("productTier", product.getProductTier());
         data.put("productSoldOut", product.isProductSoldOut());
 
-        if (product.getProductType() == 0) {
+        if (product.getProductType() == ProductType.BEAN) {
             productService.findBeanById(productCode).ifPresent(bean -> data.put("bean", BeanDataDTO.builder()
                     .beanSpecies(bean.getBeanSpecies())
                     .beanCompany(bean.getBeanCompany())
                     .beanUseByDate(bean.getBeanUseByDate())
                     .beanCountry(bean.getBeanCountry())
                     .build()));
-        } else if (product.getProductType() == 1) {
+        } else if (product.getProductType() == ProductType.MIX) {
             productService.findMixById(productCode).ifPresent(mix -> data.put("mix", MixDataDTO.builder()
                     .mixCompany(mix.getMixCompany())
                     .mixUseByDate(mix.getMixUseByDate())
@@ -288,7 +288,7 @@ public class AdminApiController {
         // dto.setProductFile() 대신 thumbnailFileName을 builder에 직접 전달
         Product product = Product.builder()
                 .productCode(dto.getProductCode())
-                .productType(dto.getProductType())
+                .productType(ProductType.fromCode(dto.getProductType()))
                 .productName(dto.getProductName())
                 .productPrice(dto.getProductPrice())
                 .productUnit(dto.getProductUnit())
@@ -553,7 +553,7 @@ public class AdminApiController {
         for (Product p : list) {
             Row row = sheet.createRow(rowNum++);
             row.createCell(0).setCellValue(p.getProductCode());
-            row.createCell(1).setCellValue(p.getProductType());
+            row.createCell(1).setCellValue(p.getProductType().getCode());
             row.createCell(2).setCellValue(p.getProductName());
             row.createCell(3).setCellValue(p.getProductPrice());
             row.createCell(4).setCellValue(p.getProductUnit());
@@ -599,7 +599,7 @@ public class AdminApiController {
         int rowNum = 1;
         for (Member m : list) {
             Row row = sheet.createRow(rowNum++);
-            row.createCell(0).setCellValue(m.getMemberTier());
+            row.createCell(0).setCellValue(m.getMemberTier().getCode());
             row.createCell(1).setCellValue(m.getMemberId());
             row.createCell(2).setCellValue(m.getMemberName());
             row.createCell(3).setCellValue(m.getMemberCompanyName());

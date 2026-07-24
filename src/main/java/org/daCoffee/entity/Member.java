@@ -3,6 +3,7 @@ package org.daCoffee.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.daCoffee.handler.EncryptionConverter;
+import org.daCoffee.handler.MemberTierConverter;
 
 import java.time.LocalDate;
 
@@ -61,8 +62,9 @@ public class Member {
   @Column(name = "member_fran_code", length = 12)
   private String memberFranCode;
 
+  @Convert(converter = MemberTierConverter.class)
   @Column(name = "member_tier", nullable = false)
-  private Integer memberTier;
+  private MemberTier memberTier;
 
   @Column(name = "member_disabled_status", nullable = false)
   private boolean memberDisabledStatus;
@@ -120,7 +122,7 @@ public class Member {
   public void adminUpdate(String memberName, String memberCompanyName, String memberTel,
                           String memberCompanyTel, String memberAddress, String memberDetailAddress,
                           String memberDeliveryAddress, String memberDetailDeliveryAddress,
-                          String memberEmail, String memberFranCode, int memberTier,
+                          String memberEmail, String memberFranCode, MemberTier memberTier,
                           String adminName) {
     this.memberName = memberName;
     this.memberCompanyName = memberCompanyName;

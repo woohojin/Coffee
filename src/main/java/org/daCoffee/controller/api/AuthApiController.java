@@ -73,7 +73,7 @@ public class AuthApiController {
         // 새 Access Token 발급
         String newAccessToken = jwtTokenProvider.generateAccessToken(
             memberId,
-            member.getMemberTier()
+            member.getMemberTier().getCode()
         );
 
         // 새 Refresh Token 발급 (Refresh Token Rotation)

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.daCoffee.entity.Bean;
 import org.daCoffee.entity.Mix;
 import org.daCoffee.entity.Product;
+import org.daCoffee.entity.ProductType;
 import org.daCoffee.repository.BeanRepository;
 import org.daCoffee.repository.MixRepository;
 import org.daCoffee.repository.ProductRepository;
@@ -60,13 +61,13 @@ public class ProductService {
   @Transactional(readOnly = true)
   public Page<Product> getProductList(int memberTier, int productType, int pageInt, int limit) {
     PageRequest pageable = PageRequest.of(pageInt - 1, limit);
-    return productRepository.findByProductTierAndProductType(memberTier, productType, pageable);
+    return productRepository.findByProductTierAndProductType(memberTier, ProductType.fromCode(productType), pageable);
   }
 
   // 제품등급 + 타입으로 제품 수 조회
   @Transactional(readOnly = true)
   public int countByTierAndType(int memberTier, int productType) {
-    return productRepository.countByProductTierAndProductType(memberTier, productType);
+    return productRepository.countByProductTierAndProductType(memberTier, ProductType.fromCode(productType));
   }
 
   // 제품 검색 (검색어, 회원 등급)
@@ -157,7 +158,7 @@ public class ProductService {
     }
     if (productType != null && !productType.isBlank()) {
       spec = spec.and((root, query, cb) ->
-              cb.equal(root.get("productType"), Integer.parseInt(productType)));
+              cb.equal(root.get("productType"), ProductType.fromCode(Integer.parseInt(productType))));
     }
     if (productPrice != null && !productPrice.isBlank()) {
       spec = spec.and((root, query, cb) ->

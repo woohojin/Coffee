@@ -3,6 +3,7 @@ package org.daCoffee.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.daCoffee.dto.request.admin.ProductRequestDTO;
+import org.daCoffee.handler.ProductTypeConverter;
 
 import java.time.LocalDate;
 
@@ -18,8 +19,9 @@ public class Product {
   @Column(name = "product_code", length = 10)
   private String productCode;
 
+  @Convert(converter = ProductTypeConverter.class)
   @Column(name = "product_type")
-  private Integer productType;
+  private ProductType productType;
 
   @Column(name = "product_name", length = 50)
   private String productName;
@@ -57,7 +59,7 @@ public class Product {
 
   public void adminUpdateProduct(ProductRequestDTO dto, String thumbnailFileName, String adminName) {
     this.productCode = dto.getProductCode();
-    this.productType = dto.getProductType();
+    this.productType = ProductType.fromCode(dto.getProductType());
     this.productName = dto.getProductName();
     this.productPrice = dto.getProductPrice();
     this.productUnit = dto.getProductUnit();

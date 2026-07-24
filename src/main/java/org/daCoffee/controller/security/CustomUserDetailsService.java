@@ -3,6 +3,7 @@ package org.daCoffee.controller.security;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.entity.Member;
+import org.daCoffee.entity.MemberTier;
 import org.daCoffee.service.MemberService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,7 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Invalid password");
         }
 
-        String role = member.getMemberTier() == 9 ? "ADMIN" : "USER";
+        String role = member.getMemberTier() == MemberTier.ADMIN ? "ADMIN" : "USER";
 
         return User.withUsername(member.getMemberId())
           .password(member.getMemberPassword())

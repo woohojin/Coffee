@@ -2,6 +2,7 @@ package org.daCoffee.service;
 
 import lombok.RequiredArgsConstructor;
 import org.daCoffee.dto.response.CartPriceDTO;
+import org.daCoffee.entity.ProductType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,7 @@ public class PriceCalculator {
   private int calculateDeliveryFee(String memberId, int sumPrice) {
     if (sumPrice == 0) return 0;
 
-    List<Integer> beanQuantityList = cartService.getQuantitiesByProductType(memberId, 0);
+    List<Integer> beanQuantityList = cartService.getQuantitiesByProductType(memberId, ProductType.BEAN.getCode());
     int quantityBySpecificProduct = cartService.getQuantityByProductCode(memberId, SPECIFIC_FEE_PRODUCT_CODE);
 
     boolean twoKgOrMore = beanQuantityList.stream().anyMatch(q -> q >= 2);

@@ -5,6 +5,7 @@ import org.daCoffee.entity.Cart;
 import org.daCoffee.entity.CartId;
 import org.daCoffee.entity.Member;
 import org.daCoffee.entity.Product;
+import org.daCoffee.entity.ProductType;
 import org.daCoffee.repository.CartRepository;
 import org.daCoffee.repository.MemberRepository;
 import org.daCoffee.repository.ProductRepository;
@@ -55,7 +56,7 @@ public class CartService {
   // 특정 회원의 장바구니에 특정 제품 종류가 담긴 갯수
   @Transactional(readOnly = true)
   public List<Integer> getQuantitiesByProductType(String memberId, int productType) {
-    return cartRepository.findQuantitiesByMemberIdAndProductType(memberId, productType);
+    return cartRepository.findQuantitiesByMemberIdAndProductType(memberId, ProductType.fromCode(productType));
   }
 
   // 특정 회원의 제품 한개의 갯수

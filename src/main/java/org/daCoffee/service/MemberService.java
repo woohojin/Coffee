@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.daCoffee.dto.request.MemberUpdateRequestDTO;
 import org.daCoffee.dto.request.admin.MemberRequestDTO;
 import org.daCoffee.entity.Member;
+import org.daCoffee.entity.MemberTier;
 import org.daCoffee.entity.MemberWithdrawal;
 import org.daCoffee.repository.CartRepository;
 import org.daCoffee.repository.MemberRepository;
@@ -131,7 +132,7 @@ public class MemberService {
   // 등급 업데이트
   @Transactional
   public void updateMemberTier(String memberId, int memberTier) {
-    memberRepository.updateMemberTier(memberId, memberTier);
+    memberRepository.updateMemberTier(memberId, MemberTier.fromCode(memberTier));
   }
 
   // 사업자 코드 업데이트
@@ -203,7 +204,7 @@ public class MemberService {
     }
     if (memberTier != null && !memberTier.isBlank()) {
       spec = spec.and((root, query, cb) ->
-              cb.equal(root.get("memberTier"), Integer.parseInt(memberTier)));
+              cb.equal(root.get("memberTier"), MemberTier.fromCode(Integer.parseInt(memberTier))));
     }
 
     boolean hasEncryptedFilter = (memberName != null && !memberName.isBlank())
@@ -235,7 +236,7 @@ public class MemberService {
     member.adminUpdate(dto.getMemberName(), dto.getMemberCompanyName(), dto.getMemberTel(),
       dto.getMemberCompanyTel(), dto.getMemberAddress(), dto.getMemberDetailAddress(),
       dto.getMemberDeliveryAddress(), dto.getMemberDetailDeliveryAddress(),
-      dto.getMemberEmail(), dto.getMemberFranCode(), dto.getMemberTier(), adminName);
+      dto.getMemberEmail(), dto.getMemberFranCode(), MemberTier.fromCode(dto.getMemberTier()), adminName);
   }
 
   // 회원 활성화/비활성화 토글

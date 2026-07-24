@@ -43,7 +43,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     String accessToken = jwtTokenProvider.generateAccessToken(
             member.getMemberId(),
-            member.getMemberTier()
+            member.getMemberTier().getCode()
     );
 
     String refreshToken = jwtTokenProvider.generateRefreshToken(member.getMemberId());

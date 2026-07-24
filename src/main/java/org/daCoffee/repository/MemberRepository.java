@@ -1,6 +1,7 @@
 package org.daCoffee.repository;
 
 import org.daCoffee.entity.Member;
+import org.daCoffee.entity.MemberTier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,7 +26,7 @@ public interface MemberRepository extends JpaRepository<Member, String>, JpaSpec
   // 회원 등급 업데이트
   @Modifying
   @Query("UPDATE Member m SET m.memberTier = :memberTier WHERE m.memberId = :memberId")
-  void updateMemberTier(@Param("memberId") String memberId, @Param("memberTier") int memberTier);
+  void updateMemberTier(@Param("memberId") String memberId, @Param("memberTier") MemberTier memberTier);
 
   // 회원 사업자코드 업데이트
   @Modifying
