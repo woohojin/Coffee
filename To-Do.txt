@@ -1,5 +1,7 @@
 ** 실제 서버 배포 전에 SecurityConfig의 rememberMe key 환경변수 저장 **
 
+디자인 패턴 적용 유무 고려 및 SOLID 원칙 준수 (enum 전환은 완료, 이 부분은 미착수)
+
 Docker 사용, CI/CD 사용
 
 메인페이지
