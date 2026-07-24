@@ -235,12 +235,13 @@ public class MemberApiController {
     return ResponseEntity.ok(ApiResponseDTO.success(null));
   }
 
-  @PostMapping("/withdrawal")
+  @DeleteMapping("/profile")
   public ResponseEntity<ApiResponseDTO<Void>> memberWithdrawal(
-          @RequestParam String memberPassword,
+          @RequestBody Map<String, String> body,
           @AuthenticationPrincipal JwtUserDetails userDetails,
           HttpServletResponse response) {
 
+    String memberPassword = body.get("memberPassword");
     String memberId = userDetails.getMemberId();
     Member member = memberService.findById(memberId)
             .orElseThrow(() -> new NotFoundException("회원 없음"));

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 import { useAddressSearch } from "../hooks/useAddressSearch";
 import { useEmailVerify } from "../hooks/useEmailVerify";
@@ -423,7 +423,7 @@ function MemberProfilePage() {
 
           <div className="signup" style={{ justifyContent: "space-between" }}>
             <div className="input_btn">
-              <a href="/member/memberWithdrawal">회원탈퇴</a>
+              <Link to="/member/memberWithdrawal">회원탈퇴</Link>
             </div>
             <input type="submit" value="수정" className="submit_btn" />
           </div>

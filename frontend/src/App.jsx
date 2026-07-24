@@ -15,6 +15,7 @@ import MemberSignUpPage from "./pages/MemberSignUpPage";
 import MemberFindAccountPage from "./pages/MemberFindAccountPage";
 import MemberMyPage from "./pages/MemberMyPage";
 import MemberProfilePage from "./pages/MemberProfilePage";
+import MemberWithdrawalPage from "./pages/MemberWithdrawalPage";
 import MemberHistoryPage from "./pages/MemberHistory";
 import MemberPaymentsPage from "./pages/MemberPaymentsPage";
 import MemberPaymentsSuccessPage from "./pages/MemberPaymentsSuccessPage";
@@ -93,6 +94,10 @@ function App() {
               <Route
                 path="/member/memberProfile"
                 element={<MemberProfilePage />}
+              />
+              <Route
+                path="/member/memberWithdrawal"
+                element={<MemberWithdrawalPage />}
               />
               <Route
                 path="/member/memberHistory"
