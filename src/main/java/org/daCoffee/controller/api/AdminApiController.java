@@ -53,17 +53,9 @@ public class AdminApiController {
     @GetMapping("/me")
     public ResponseEntity<ApiResponseDTO<Map<String, Object>>> getAdminMe(
             @AuthenticationPrincipal JwtUserDetails userDetails) {
-        String adminId = userDetails.getMemberId();
-        int memberTier = userDetails.getMemberTier();
-
-        if (adminId == null || memberTier != 9) {
-            return ResponseEntity.status(401)
-                    .body(ApiResponseDTO.error("관리자 권한이 필요합니다.", 401));
-        }
-
         return ResponseEntity.ok(ApiResponseDTO.success(Map.of(
-                "adminId", adminId,
-                "memberTier", memberTier
+                "adminId", userDetails.getMemberId(),
+                "memberTier", userDetails.getMemberTier()
         )));
     }
 

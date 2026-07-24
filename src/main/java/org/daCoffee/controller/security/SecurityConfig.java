@@ -81,6 +81,7 @@ public class SecurityConfig {
           "/favicon.ico"
         ).permitAll() // 인증 없이 접근 가능
         .requestMatchers("/member/**").authenticated()
+        .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
         .anyRequest().authenticated()
       )
       .formLogin(form -> form
