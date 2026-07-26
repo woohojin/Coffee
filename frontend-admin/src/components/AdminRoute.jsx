@@ -1,8 +1,14 @@
-import { Navigate } from "react-router-dom";
+import { useEffect } from "react";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAdminAuth } from "../store/adminAuthStore";
 
 function AdminRoute({ children }) {
-  const { admin, loading } = useAdminAuth();
+  const { admin, loading, checkAuth } = useAdminAuth();
+  const location = useLocation();
+
+  useEffect(() => {
+    checkAuth();
+  }, [location.pathname]);
 
   if (loading) return <div>로딩중...</div>;
   if (!admin) return <Navigate to="/admin/login" />;
