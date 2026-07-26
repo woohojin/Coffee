@@ -34,6 +34,7 @@ function App() {
         <CartProvider>
           <Routes>
             <Route element={<Layout />}>
+              <Route path="/" element={<Navigate to="/main" replace />} />
               <Route path="/main" element={<MainPage />} />
               <Route path="/privacy" element={<PrivacyPage />} />
               <Route path="/terms" element={<TermsPage />} />
