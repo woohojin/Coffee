@@ -125,7 +125,7 @@ erDiagram
 | --- | --- | --- |
 | `AuthApiController` | `/api/auth` | Access Token 재발급 (`POST /refresh`) |
 | `MemberApiController` | `/api/member` | 회원가입/로그인 상태 확인/프로필/장바구니/결제/비밀번호 찾기 |
-| `ProductApiController` | `/api/products` | 상품 목록/상세/검색 (일반 사용자용, 인증 불필요) |
+| `ProductApiController` | `/api/products` | 상품 목록/상세/검색 (승인된 회원 전용 — 등급별 도매가가 노출되기 때문에 비로그인/미승인 회원은 차단) |
 | `AdminApiController` | `/api/admin` | 회원/상품/주문 관리, 엑셀 다운로드 (관리자 전용) |
 
 ### 결제 처리
