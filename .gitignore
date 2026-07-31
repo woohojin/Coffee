@@ -179,3 +179,4 @@ config/secrets.properties
 secrets.properties
 src/main/webapp/WEB-INF/classes/application.properties
 *.iml
+.env

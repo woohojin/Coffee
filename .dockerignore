@@ -1,0 +1,7 @@
+target/
+frontend/
+frontend-admin/
+.git/
+.idea/
+*.iml
+src/main/resources/config/secrets.properties
