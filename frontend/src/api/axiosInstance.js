@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:8080",
+  // 프로덕션에서는 같은 오리진의 Nginx가 /api 등을 백엔드로 프록시함 (nginx.conf 참고)
+  baseURL: import.meta.env.VITE_API_BASE_URL ?? "",
   withCredentials: true,
 });
 
