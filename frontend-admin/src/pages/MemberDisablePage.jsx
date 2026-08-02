@@ -12,7 +12,6 @@ const MEMBER_TIER = {
 
 function MemberDisablePage() {
   const navigate = useNavigate();
-  const [memberId, setMemberId] = useState("");
   const [members, setMembers] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
 
@@ -31,29 +30,6 @@ function MemberDisablePage() {
     fetchMembers();
   }, []);
 
-  const handleUpdate = async () => {
-    if (!memberId.trim()) {
-      alert("아이디를 입력해주세요.");
-      return;
-    }
-    if (!confirm("멤버 비활성화 상태가 변경됩니다. 진행하시겠습니까?")) return;
-
-    try {
-      const res = await axiosInstance.patch(
-        `/api/admin/members/${memberId}/disable`,
-      );
-      if (res.data.success) {
-        alert("멤버 비활성화 상태 수정 성공");
-        setMemberId("");
-        fetchMembers();
-      } else {
-        alert(res.data.message || "수정에 실패했습니다.");
-      }
-    } catch (err) {
-      alert(err.response?.data?.message || "수정 중 오류가 발생했습니다.");
-    }
-  };
-
   const sortIcon = () => <img src="/image/down-arrow.png" alt="" />;
 
   return (
@@ -64,37 +40,8 @@ function MemberDisablePage() {
             onClick={() => navigate("/admin/memberDisableUpdate")}
             style={{ cursor: "pointer" }}
           >
-            <h1>회원 비활성화 수정</h1>
+            <h1>비활성화 회원 리스트</h1>
           </a>
-        </div>
-
-        <div className="search_form_wrap center">
-          <div className="inline_wrap">
-            <div
-              className="search_form"
-              style={{ maxHeight: "70px", overflowY: "hidden", width: "480px" }}
-            >
-              <div style={{ justifyContent: "center" }}>
-                <label htmlFor="memberId" style={{ flex: "none" }}>
-                  아이디
-                </label>
-                <input
-                  type="text"
-                  id="memberId"
-                  value={memberId}
-                  onChange={(e) => setMemberId(e.target.value)}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="btn_wrap center">
-          <div className="btn">
-            <a onClick={handleUpdate} style={{ cursor: "pointer" }}>
-              업데이트
-            </a>
-          </div>
         </div>
 
         <div className="list">
@@ -192,7 +139,16 @@ function MemberDisablePage() {
                           <p>{m.memberFranCode}</p>
                         </td>
                         <td>
-                          <p>{m.memberId}</p>
+                          <a
+                            onClick={() =>
+                              navigate(
+                                `/admin/memberDisableProcess?memberId=${m.memberId}`,
+                              )
+                            }
+                            style={{ cursor: "pointer" }}
+                          >
+                            {m.memberId}
+                          </a>
                         </td>
                         <td>
                           <p>{m.memberName}</p>

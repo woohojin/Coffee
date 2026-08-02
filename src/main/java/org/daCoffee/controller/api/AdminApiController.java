@@ -134,6 +134,14 @@ public class AdminApiController {
         return ApiResponseDTO.success(null);
     }
 
+    @DeleteMapping("/members/{memberId}")
+    public ApiResponseDTO<Void> withdrawMember(
+            @PathVariable String memberId,
+            @RequestParam(required = false) String memo) {
+        memberService.withdrawMember(memberId, memo);
+        return ApiResponseDTO.success(null);
+    }
+
     // 회원 승인 대기 목록 (tier == 0)
     @GetMapping("/members/pending")
     public ApiResponseDTO<Map<String, Object>> getPendingMembers() {
@@ -150,6 +158,26 @@ public class AdminApiController {
             @RequestParam(defaultValue = "1") int page) {
 
         Page<MemberWithdrawal> result = memberService.findWithdrawalMembers(page, LIMIT);
+        return ApiResponseDTO.success(Map.of(
+                "list", result.getContent(),
+                "totalCount", result.getTotalElements(),
+                "totalPages", result.getTotalPages(),
+                "page", page
+        ));
+    }
+
+    @GetMapping("/members/withdrawal/search")
+    public ApiResponseDTO<Map<String, Object>> searchWithdrawalMembers(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(required = false) String memberId,
+            @RequestParam(required = false) String memberCompanyName,
+            @RequestParam(required = false) String memberTel,
+            @RequestParam(required = false) String memberCompanyTel,
+            @RequestParam(required = false) String withdrawalMemo,
+            @RequestParam(required = false) String memberEmail) {
+
+        Page<MemberWithdrawal> result = memberService.searchWithdrawalMembers(memberId, memberCompanyName,
+                memberTel, memberCompanyTel, withdrawalMemo, memberEmail, page, LIMIT);
         return ApiResponseDTO.success(Map.of(
                 "list", result.getContent(),
                 "totalCount", result.getTotalElements(),

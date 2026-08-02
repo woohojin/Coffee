@@ -10,6 +10,7 @@ import MemberListPage from "./pages/MemberListPage";
 import MemberUpdatePage from "./pages/MemberUpdate";
 import MemberTierUpdatePage from "./pages/MemberTierUpdatePage";
 import MemberDisablePage from "./pages/MemberDisablePage";
+import MemberDisableProcessPage from "./pages/MemberDisableProcessPage";
 import MemberWithdrawalPage from "./pages/MemberWithdrawalPage";
 import ProductListPage from "./pages/ProductListPage";
 import ProductUploadPage from "./pages/ProductUploadPage";
@@ -44,6 +45,10 @@ function App() {
             <Route
               path="/admin/memberDisableUpdate"
               element={<MemberDisablePage />}
+            />
+            <Route
+              path="/admin/memberDisableProcess"
+              element={<MemberDisableProcessPage />}
             />
             <Route
               path="/admin/memberWithdrawalList"

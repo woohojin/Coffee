@@ -261,7 +261,7 @@ public class MemberApiController {
               .body(ApiResponseDTO.error("비밀번호가 틀렸습니다."));
     }
 
-    memberService.withdrawMember(memberId);
+    memberService.withdrawMember(memberId, "회원 직접 탈퇴");
 
     ResponseCookie accessCookie = ResponseCookie.from("accessToken", "")
             .httpOnly(true).sameSite("Lax").path("/").maxAge(0).build();

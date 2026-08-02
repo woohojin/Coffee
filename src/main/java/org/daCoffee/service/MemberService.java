@@ -88,7 +88,7 @@ public class MemberService {
 
   // 회원 탈퇴
   @Transactional
-  public void withdrawMember(String memberId) {
+  public void withdrawMember(String memberId, String withdrawalMemo) {
     Member member = memberRepository.findById(memberId)
       .orElseThrow(() -> new IllegalArgumentException("회원 없음: " + memberId));
 
@@ -97,6 +97,8 @@ public class MemberService {
       .memberCompanyName(member.getMemberCompanyName())
       .memberTel(member.getMemberTel())
       .memberCompanyTel(member.getMemberCompanyTel())
+      .memberEmail(member.getMemberEmail())
+      .withdrawalMemo(withdrawalMemo)
       .memberWithdrawalDate(LocalDate.now())
       .build();
 
@@ -161,7 +163,8 @@ public class MemberService {
       resolveColumn(column)
     );
     PageRequest pageable = PageRequest.of(pageInt - 1, limit, sort);
-    return memberRepository.findAll(pageable);
+    Specification<Member> spec = (root, query, cb) -> cb.isFalse(root.get("memberDisabledStatus"));
+    return memberRepository.findAll(spec, pageable);
   }
 
   // 비활성화 회원 목록 페이징
@@ -178,6 +181,50 @@ public class MemberService {
     return memberWithdrawalRepository.findAll(pageable);
   }
 
+  // 탈퇴 회원 검색 (입력된 필드 전부 AND 조합)
+  // memberEmail은 DB에 암호화되어 저장되어 있어 SQL LIKE로 부분일치가 불가능하므로,
+  // 암호화 안 된 필드로만 DB에서 1차로 거른 뒤 복호화된 값으로 메모리에서 필터링한다.
+  @Transactional(readOnly = true)
+  public Page<MemberWithdrawal> searchWithdrawalMembers(String memberId, String memberCompanyName,
+                                                         String memberTel, String memberCompanyTel,
+                                                         String withdrawalMemo, String memberEmail,
+                                                         int pageInt, int limit) {
+    Specification<MemberWithdrawal> spec = Specification.where(null);
+    if (memberId != null && !memberId.isBlank()) {
+      spec = spec.and((root, query, cb) ->
+              cb.like(root.get("memberId"), "%" + memberId + "%"));
+    }
+    if (memberCompanyName != null && !memberCompanyName.isBlank()) {
+      spec = spec.and((root, query, cb) ->
+              cb.like(root.get("memberCompanyName"), "%" + memberCompanyName + "%"));
+    }
+    if (memberTel != null && !memberTel.isBlank()) {
+      spec = spec.and((root, query, cb) ->
+              cb.like(root.get("memberTel"), "%" + memberTel + "%"));
+    }
+    if (memberCompanyTel != null && !memberCompanyTel.isBlank()) {
+      spec = spec.and((root, query, cb) ->
+              cb.like(root.get("memberCompanyTel"), "%" + memberCompanyTel + "%"));
+    }
+    if (withdrawalMemo != null && !withdrawalMemo.isBlank()) {
+      spec = spec.and((root, query, cb) ->
+              cb.like(root.get("withdrawalMemo"), "%" + withdrawalMemo + "%"));
+    }
+
+    if (memberEmail == null || memberEmail.isBlank()) {
+      return memberWithdrawalRepository.findAll(spec, PageRequest.of(pageInt - 1, limit));
+    }
+
+    List<MemberWithdrawal> filtered = memberWithdrawalRepository.findAll(spec).stream()
+            .filter(w -> w.getMemberEmail() != null && w.getMemberEmail().contains(memberEmail))
+            .toList();
+
+    int start = Math.min((pageInt - 1) * limit, filtered.size());
+    int end = Math.min(start + limit, filtered.size());
+
+    return new PageImpl<>(filtered.subList(start, end), PageRequest.of(pageInt - 1, limit), filtered.size());
+  }
+
   // 회원 검색 (입력된 필드 전부 AND 조합)
   // memberName/memberTel은 DB에 암호화되어 저장되어 있어 SQL LIKE로 부분일치가 불가능하므로,
   // 암호화 안 된 필드로만 DB에서 1차로 거른 뒤 복호화된 값으로 메모리에서 필터링한다.
@@ -185,7 +232,7 @@ public class MemberService {
   public Page<Member> searchMembers(String memberCompanyName, String memberFranCode, String memberId,
                                      String memberName, String memberTel, String memberCompanyTel,
                                      String memberTier, int pageInt, int limit) {
-    Specification<Member> spec = Specification.where(null);
+    Specification<Member> spec = (root, query, cb) -> cb.isFalse(root.get("memberDisabledStatus"));
     if (memberCompanyName != null && !memberCompanyName.isBlank()) {
       spec = spec.and((root, query, cb) ->
               cb.like(root.get("memberCompanyName"), "%" + memberCompanyName + "%"));

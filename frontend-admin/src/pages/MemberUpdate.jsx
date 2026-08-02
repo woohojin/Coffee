@@ -53,6 +53,24 @@ function MemberUpdatePage() {
       .catch((err) => console.error("회원 조회 실패:", err));
   }, [memberId]);
 
+  const handleDisable = async () => {
+    if (!confirm("멤버 비활성화 상태가 변경됩니다. 진행하시겠습니까?")) return;
+
+    try {
+      const res = await axiosInstance.patch(
+        `/api/admin/members/${memberId}/disable`,
+      );
+      if (res.data.success) {
+        alert("멤버 비활성화 상태 수정 성공");
+        navigate("/admin/memberList");
+      } else {
+        alert(res.data.message || "수정에 실패했습니다.");
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || "수정 중 오류가 발생했습니다.");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -315,7 +333,14 @@ function MemberUpdatePage() {
             </tbody>
           </table>
 
-          <div className="signup">
+          <div className="signup" style={{ justifyContent: "space-between" }}>
+            <button
+              type="button"
+              className="submit_btn"
+              onClick={handleDisable}
+            >
+              비활성화
+            </button>
             <input type="submit" value="수정하기" className="submit_btn" />
           </div>
         </form>

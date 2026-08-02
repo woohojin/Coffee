@@ -40,7 +40,7 @@ function AdminLayout() {
                 </li>
                 <li>
                   <Link to="/admin/memberDisableUpdate">
-                    회원 비활성화 수정
+                    비활성화 회원 리스트
                   </Link>
                 </li>
                 <li>
