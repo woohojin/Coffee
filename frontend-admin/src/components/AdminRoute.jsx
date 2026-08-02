@@ -8,7 +8,7 @@ function AdminRoute({ children }) {
 
   useEffect(() => {
     checkAuth();
-  }, [location.pathname]);
+  }, [location.pathname, checkAuth]);
 
   if (loading) return <div>로딩중...</div>;
   if (!admin) return <Navigate to="/admin/login" />;
