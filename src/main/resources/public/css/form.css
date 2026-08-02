@@ -87,8 +87,10 @@ input::file-selector-button {
 .member_signup_form input[type="tel"],
 .member_signup_form input[type="email"],
 .member_signup_form input[type="password"],
+.member_signup_form select,
 .member_signin_form input[type="text"],
 .member_signin_form input[type="password"] {
+  box-sizing: border-box;
   width: 350px;
   height: 40px;
   padding-left: 10px;

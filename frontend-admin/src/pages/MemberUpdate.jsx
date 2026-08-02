@@ -3,6 +3,14 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 import { useAddressSearch } from "../hooks/useAddressSearch";
 
+const MEMBER_TIER = {
+  0: "미승인",
+  1: "임대",
+  2: "미임대",
+  3: "카페고객",
+  9: "관리자",
+};
+
 function MemberUpdatePage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -321,13 +329,18 @@ function MemberUpdatePage() {
                   <label htmlFor="member_tier">회원 등급</label>
                 </th>
                 <td>
-                  <input
+                  <select
                     id="member_tier"
-                    type="text"
                     value={memberTier}
                     onChange={(e) => setMemberTier(e.target.value)}
                     required
-                  />
+                  >
+                    {Object.entries(MEMBER_TIER).map(([code, label]) => (
+                      <option key={code} value={code}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
                 </td>
               </tr>
             </tbody>
