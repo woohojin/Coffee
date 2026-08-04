@@ -149,6 +149,8 @@ public class MemberApiController {
 
     memberService.save(member);
 
+    log.info("회원가입 완료 - memberId: {}", member.getMemberId());
+
     return ResponseEntity.ok(ApiResponseDTO.success(null));
   }
 

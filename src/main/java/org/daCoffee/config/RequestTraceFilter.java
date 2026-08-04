@@ -22,6 +22,14 @@ public class RequestTraceFilter extends OncePerRequestFilter {
   private static final String TRACE_ID_KEY = "traceId";
 
   @Override
+  protected boolean shouldNotFilter(HttpServletRequest request) {
+    String uri = request.getRequestURI();
+    return uri.startsWith("/css/") || uri.startsWith("/image/") || uri.startsWith("/js/")
+            || uri.equals("/favicon.ico")
+            || uri.equals("/api/member/me") || uri.equals("/api/admin/me");
+  }
+
+  @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                    FilterChain filterChain) throws ServletException, IOException {
     MDC.put(TRACE_ID_KEY, UUID.randomUUID().toString().substring(0, 8));

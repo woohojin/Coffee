@@ -1,15 +1,16 @@
 <configuration debug="true">
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%-5level] [%X{traceId}] %logger{36} - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%-5level] [%X{traceId}] [%X{memberId:-guest}] %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <logger name="org.springframework" level="DEBUG" />
-    <logger name="org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor" level="DEBUG" />
+    <logger name="org.springframework" level="WARN" />
+    <logger name="org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor" level="WARN" />
     <logger name="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" level="WARN" />
+    <logger name="org.daCoffee" level="DEBUG" />
 
-    <root level="TRACE">
+    <root level="WARN">
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>

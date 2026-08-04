@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.jwt.JwtTokenProvider;
 import org.daCoffee.jwt.JwtUserDetails;
 import org.daCoffee.service.RedisService;
+import org.slf4j.MDC;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +22,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    private static final String MEMBER_ID_KEY = "memberId";
 
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisService redisService;
@@ -44,31 +47,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = resolveToken(request);
 
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            String memberId = jwtTokenProvider.getMemberId(token);
+        try {
+            if (token != null && jwtTokenProvider.validateToken(token)) {
+                String memberId = jwtTokenProvider.getMemberId(token);
 
-            // 블랙리스트 확인
-            if (redisService.isBlacklisted(memberId)) {
-                log.warn("블랙리스트 토큰 요청: {}", memberId);
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
+                // 블랙리스트 확인
+                if (redisService.isBlacklisted(memberId)) {
+                    log.warn("블랙리스트 토큰 요청: {}", memberId);
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    return;
+                }
+
+                int memberTier = jwtTokenProvider.getMemberTier(token);
+                String role = memberTier == 9 ? "ROLE_ADMIN" : "ROLE_USER";
+
+                JwtUserDetails userDetails = new JwtUserDetails(memberId, memberTier);
+
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                List.of(new SimpleGrantedAuthority(role))
+                        );
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                MDC.put(MEMBER_ID_KEY, memberId);
             }
 
-            int memberTier = jwtTokenProvider.getMemberTier(token);
-            String role = memberTier == 9 ? "ROLE_ADMIN" : "ROLE_USER";
-
-            JwtUserDetails userDetails = new JwtUserDetails(memberId, memberTier);
-
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            List.of(new SimpleGrantedAuthority(role))
-                    );
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            filterChain.doFilter(request, response);
+        } finally {
+            MDC.remove(MEMBER_ID_KEY);
         }
-
-        filterChain.doFilter(request, response);
     }
 }
