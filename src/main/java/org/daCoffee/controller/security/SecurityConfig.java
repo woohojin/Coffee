@@ -46,7 +46,10 @@ public class SecurityConfig {
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
 
-    configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174")); // React 개발 서버
+    configuration.setAllowedOrigins(List.of(
+            "http://localhost:5173", "http://localhost:5174", // React 개발 서버
+            "http://3.36.83.165:5173", "http://3.36.83.165:5174" // EC2 배포
+    ));
     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
     configuration.setAllowedHeaders(List.of("*"));
     configuration.setAllowCredentials(true); // 쿠키/세션 허용
