@@ -26,11 +26,12 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // 401이고 재시도 안 한 요청이면 (단, 로그인 여부 확인용 /api/member/me는 401이 정상 응답이므로 제외)
+    // 401이고 재시도 안 한 요청이면 (단, 로그인 여부 확인용 /api/member/me와 로그인 자체는 401이 정상 응답이므로 제외)
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      !originalRequest.url?.includes("/api/member/me")
+      !originalRequest.url?.includes("/api/member/me") &&
+      !originalRequest.url?.includes("/member/memberSignInPro")
     ) {
       if (isRefreshing) {
         // 이미 refresh 중이면 대기열에 추가
