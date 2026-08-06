@@ -9,4 +9,4 @@ FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
 COPY --from=build /build/target/*.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-cp", "app.jar", "-Dloader.path=/app", "org.springframework.boot.loader.launch.PropertiesLauncher"]
+ENTRYPOINT ["java", "-Xmx320m", "-XX:MaxMetaspaceSize=128m", "-cp", "app.jar", "-Dloader.path=/app", "org.springframework.boot.loader.launch.PropertiesLauncher"]
