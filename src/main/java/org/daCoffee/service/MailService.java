@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 
 @Service
 @RequiredArgsConstructor
@@ -53,8 +53,9 @@ public class MailService {
     if (templateCache == null) {
       try {
         ClassPathResource resource = new ClassPathResource("mail.html");
-        byte[] fileBytes = Files.readAllBytes(resource.getFile().toPath());
-        templateCache = new String(fileBytes, StandardCharsets.UTF_8);
+        try (InputStream is = resource.getInputStream()) {
+          templateCache = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+        }
       } catch (IOException e) {
         LOGGER.error("메일 템플릿 읽기 실패: {}", e.getMessage());
         throw new RuntimeException(e);
