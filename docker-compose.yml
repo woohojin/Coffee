@@ -30,7 +30,10 @@ services:
       - "8080:8080"
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        VITE_ADMIN_URL: https://admin.daallcoffee.com
     restart: unless-stopped
     depends_on:
       - backend

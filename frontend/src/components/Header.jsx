@@ -83,7 +83,7 @@ function Header() {
                     </button>
                   </li>
                   <li>
-                    <a href="http://localhost:5174/admin/dashboard" target="_blank">
+                    <a href={`${import.meta.env.VITE_ADMIN_URL ?? "http://localhost:5174"}/admin/dashboard`} target="_blank">
                       관리자페이지
                     </a>
                   </li>

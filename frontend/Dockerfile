@@ -3,6 +3,8 @@ WORKDIR /build
 COPY package*.json ./
 RUN npm install
 COPY . .
+ARG VITE_ADMIN_URL
+ENV VITE_ADMIN_URL=$VITE_ADMIN_URL
 RUN npm run build
 
 FROM nginx:alpine
