@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.daCoffee.dto.ApiResponseDTO;
 import org.daCoffee.jwt.JwtTokenProvider;
 import org.daCoffee.service.RedisService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
@@ -24,6 +25,9 @@ public class CustomLogoutHandler implements LogoutHandler, LogoutSuccessHandler 
 
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisService redisService;
+
+    @Value("${cookie.domain:}")
+    private String cookieDomain;
 
     @Override
     public void logout(HttpServletRequest request,
@@ -51,20 +55,22 @@ public class CustomLogoutHandler implements LogoutHandler, LogoutSuccessHandler 
         }
 
         // Access Token 쿠키 삭제
-        ResponseCookie accessCookie = ResponseCookie.from("accessToken", "")
+        ResponseCookie.ResponseCookieBuilder accessBuilder = ResponseCookie.from("accessToken", "")
                 .httpOnly(true)
                 .sameSite("Lax")
                 .path("/")
-                .maxAge(0)
-                .build();
+                .maxAge(0);
+        if (!cookieDomain.isBlank()) accessBuilder.domain(cookieDomain);
+        ResponseCookie accessCookie = accessBuilder.build();
 
         // Refresh Token 쿠키 삭제
-        ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", "")
+        ResponseCookie.ResponseCookieBuilder refreshBuilder = ResponseCookie.from("refreshToken", "")
                 .httpOnly(true)
                 .sameSite("Lax")
                 .path("/api/auth/refresh")
-                .maxAge(0)
-                .build();
+                .maxAge(0);
+        if (!cookieDomain.isBlank()) refreshBuilder.domain(cookieDomain);
+        ResponseCookie refreshCookie = refreshBuilder.build();
 
         response.addHeader("Set-Cookie", accessCookie.toString());
         response.addHeader("Set-Cookie", refreshCookie.toString());

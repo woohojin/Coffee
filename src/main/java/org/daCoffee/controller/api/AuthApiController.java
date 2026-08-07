@@ -31,6 +31,9 @@ public class AuthApiController {
     @Value("${JWT_REFRESH_EXPIRATION}")
     private long refreshExpiration;
 
+    @Value("${cookie.domain:}")
+    private String cookieDomain;
+
     @PostMapping("/refresh")
     public ResponseEntity<ApiResponseDTO<Void>> refresh(HttpServletRequest request,
                                         HttpServletResponse response) {
@@ -84,19 +87,21 @@ public class AuthApiController {
         redisService.deleteBlacklist(memberId);
 
         // 쿠키 갱신
-        ResponseCookie accessCookie = ResponseCookie.from("accessToken", newAccessToken)
+        ResponseCookie.ResponseCookieBuilder accessBuilder = ResponseCookie.from("accessToken", newAccessToken)
             .httpOnly(true)
             .sameSite("Lax")
             .path("/")
-            .maxAge(1800)
-            .build();
+            .maxAge(1800);
+        if (!cookieDomain.isBlank()) accessBuilder.domain(cookieDomain);
+        ResponseCookie accessCookie = accessBuilder.build();
 
-        ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", newRefreshToken)
+        ResponseCookie.ResponseCookieBuilder refreshBuilder = ResponseCookie.from("refreshToken", newRefreshToken)
             .httpOnly(true)
             .sameSite("Lax")
             .path("/api/auth/refresh")
-            .maxAge(604800)
-            .build();
+            .maxAge(604800);
+        if (!cookieDomain.isBlank()) refreshBuilder.domain(cookieDomain);
+        ResponseCookie refreshCookie = refreshBuilder.build();
 
         response.addHeader("Set-Cookie", accessCookie.toString());
         response.addHeader("Set-Cookie", refreshCookie.toString());

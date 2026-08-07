@@ -34,6 +34,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
   @Value("${JWT_REFRESH_EXPIRATION}")
   private long refreshExpiration;
 
+  @Value("${cookie.domain:}")
+  private String cookieDomain;
+
   @Override
   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
     String username = authentication.getName();
@@ -51,19 +54,21 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     redisService.saveRefreshToken(member.getMemberId(), refreshToken, refreshExpiration);
     redisService.deleteBlacklist(member.getMemberId());
 
-    ResponseCookie accessCookie = ResponseCookie.from("accessToken", accessToken)
+    ResponseCookie.ResponseCookieBuilder accessBuilder = ResponseCookie.from("accessToken", accessToken)
       .httpOnly(true)
       .sameSite("Lax")
       .path("/")
-      .maxAge(1800) // 30분
-      .build();
+      .maxAge(1800); // 30분
+    if (!cookieDomain.isBlank()) accessBuilder.domain(cookieDomain);
+    ResponseCookie accessCookie = accessBuilder.build();
 
-    ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", refreshToken)
+    ResponseCookie.ResponseCookieBuilder refreshBuilder = ResponseCookie.from("refreshToken", refreshToken)
       .httpOnly(true)
       .sameSite("Lax")
       .path("/api/auth/refresh")
-      .maxAge(604800) // 7일
-      .build();
+      .maxAge(604800); // 7일
+    if (!cookieDomain.isBlank()) refreshBuilder.domain(cookieDomain);
+    ResponseCookie refreshCookie = refreshBuilder.build();
 
     response.addHeader("Set-Cookie", accessCookie.toString());
     response.addHeader("Set-Cookie", refreshCookie.toString());

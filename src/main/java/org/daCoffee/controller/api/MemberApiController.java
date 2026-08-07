@@ -57,6 +57,9 @@ public class MemberApiController {
   @Value("${SECRET_TOSS_WIDGET_KEY}")
   private String secretTossWidgetKey;
 
+  @Value("${cookie.domain:}")
+  private String cookieDomain;
+
   private ApiResponseDTO<List<String>> findId(Map<String, String> body) {
     String memberName = body.get("memberName");
     String memberEmail = body.get("memberEmail");
@@ -263,10 +266,15 @@ public class MemberApiController {
 
     memberService.withdrawMember(memberId, "회원 직접 탈퇴");
 
-    ResponseCookie accessCookie = ResponseCookie.from("accessToken", "")
-            .httpOnly(true).sameSite("Lax").path("/").maxAge(0).build();
-    ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", "")
-            .httpOnly(true).sameSite("Lax").path("/api/auth/refresh").maxAge(0).build();
+    ResponseCookie.ResponseCookieBuilder accessBuilder = ResponseCookie.from("accessToken", "")
+            .httpOnly(true).sameSite("Lax").path("/").maxAge(0);
+    if (!cookieDomain.isBlank()) accessBuilder.domain(cookieDomain);
+    ResponseCookie accessCookie = accessBuilder.build();
+
+    ResponseCookie.ResponseCookieBuilder refreshBuilder = ResponseCookie.from("refreshToken", "")
+            .httpOnly(true).sameSite("Lax").path("/api/auth/refresh").maxAge(0);
+    if (!cookieDomain.isBlank()) refreshBuilder.domain(cookieDomain);
+    ResponseCookie refreshCookie = refreshBuilder.build();
 
     response.addHeader("Set-Cookie", accessCookie.toString());
     response.addHeader("Set-Cookie", refreshCookie.toString());
