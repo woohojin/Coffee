@@ -48,7 +48,8 @@ public class SecurityConfig {
 
     configuration.setAllowedOrigins(List.of(
             "http://localhost:5173", "http://localhost:5174", // React 개발 서버
-            "http://3.36.83.165:5173", "http://3.36.83.165:5174" // EC2 배포
+            "http://3.36.83.165:5173", "http://3.36.83.165:5174", // EC2 배포 (IP, 임시)
+            "https://daallcoffee.com", "https://admin.daallcoffee.com" // EC2 배포 (도메인)
     ));
     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
     configuration.setAllowedHeaders(List.of("*"));
