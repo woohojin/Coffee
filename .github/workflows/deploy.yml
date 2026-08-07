@@ -76,7 +76,9 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            set -e
             cd ~/Coffee
+            git pull
             docker compose pull
             docker compose up -d
             docker image prune -f
